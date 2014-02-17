@@ -1,8 +1,18 @@
 class User < ActiveRecord::Base
+  DEFAULT_BIRTHDAY = '1970-01-01'
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  devise :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
+
+  # VALIDATIONS
+  validates :first_name, :last_name, :presence => true
+  validates_date :birthday
+
+  # CALLBACKS
+  before_create :init_default_birthday
 
   # CLASS METHODS
   class << self
@@ -18,6 +28,9 @@ class User < ActiveRecord::Base
   #protected
 
   # PRIVATE METHODS
-  #private
+  private
 
+  def init_default_birthday
+    self[:birthday] = DEFAULT_BIRTHDAY unless self.birthday
+  end
 end

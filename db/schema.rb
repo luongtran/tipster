@@ -42,6 +42,18 @@ ActiveRecord::Schema.define(version: 20140217065043) do
     t.datetime "updated_at"
   end
 
+  create_table "authorizations", force: true do |t|
+    t.integer  "user_id"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "avatar_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "authorizations", ["uid"], name: "index_authorizations_on_uid", using: :btree
+  add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id", using: :btree
+
   create_table "users", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"

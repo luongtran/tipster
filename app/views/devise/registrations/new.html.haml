@@ -1,6 +1,5 @@
 %h2 Sign up
 = simple_form_for resource, :as => resource_name, :url => registration_path(resource_name), :html => {class: 'form-horizontal'} do |f|
-  = f.error_notification
   .form-inputs
     = render 'shared/user_basic_fields', f: f
   .form-actions

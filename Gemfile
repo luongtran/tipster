@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.0'
 
 # Use mysql2 as the database for Active Record
-gem 'mysql2'
+gem 'mysql2', '0.3.13'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -66,3 +66,5 @@ end
 
 #Paypal billing,payment,refund
 gem 'activemerchant'
+# DateTime validator
+gem 'validates_timeliness', '~> 3.0'

@@ -1,0 +1,24 @@
+development:
+  facebook:
+    app_id: "479388308748402"
+    app_secret: "185fe85120c05103bbbe5520f1f2bf36"
+  google:
+    app_id: "28634308733.apps.googleusercontent.com"
+    app_secret: "FdViCWB7X35Jsbl53AxZmQiw"
+
+test:
+  facebook:
+    app_id: "429968693767890"
+    app_secret: "2179362080d6081a086e1e62d1c6d0ab"
+  google:
+    app_id: "920097647662.apps.googleusercontent.com"
+    app_secret: "A_6A7lujArGVGhYn2HR7ci7R"
+
+# TODO: change this when the app go live.
+production:
+  facebook:
+    app_id: "x"
+    app_secret: "y"
+  google:
+    app_id: "z"
+    app_secret: "t"
