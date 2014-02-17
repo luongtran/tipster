@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140217111926) do
+ActiveRecord::Schema.define(version: 20140217153521) do
 
   create_table "authorizations", force: true do |t|
     t.integer  "user_id"
@@ -24,11 +24,6 @@ ActiveRecord::Schema.define(version: 20140217111926) do
 
   add_index "authorizations", ["uid"], name: "index_authorizations_on_uid", using: :btree
   add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id", using: :btree
-
-  create_table "carts", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "carts_tipsters", force: true do |t|
     t.integer "cart_id"

@@ -1,11 +1,19 @@
 class CartsController < ApplicationController
-  before_filter :load_cart
+
   def add_tipster
-    @cart.tipsters << params[:id]
-    render nothing: true
+    tipster_id = params[:id]
+    if Tipster.exists?(tipster_id)
+      initial_cart_session if session[:cart].nil?
+      session[:cart][:tipster_ids] << tipster_id unless session[:cart][:tipster_ids].include? tipster_id
+    end
+    redirect_to pricing_url
   end
-  private
-  def load_cart
-    @cart = Cart.find session[:cart_id]
+
+  def drop_tipster
+    tipster_id = params[:id]
+    session[:cart][:tipster_ids].delete(tipster_id) if session[:cart][:tipster_ids].include? tipster_id
+
+    # Continue to coding here
   end
+
 end

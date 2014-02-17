@@ -1,5 +1,5 @@
 class TipstersController < ApplicationController
   def top_tipster
-    @tipster = Tipster.all # Just for test
+    @tipsters = Tipster.all # Just for test
   end
 end

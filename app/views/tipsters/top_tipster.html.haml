@@ -7,7 +7,7 @@
       %th Created at
       %td Action
   %tbody
-    - if @tipster.nil?
+    - if @tipsters.nil?
       %tr
         %td
           There are no any tipster found.
@@ -15,7 +15,7 @@
         %td
         %td
     - else
-      - @tipster.each do |tipster|
+      - @tipsters.each do |tipster|
         %tr
           %td
             = tipster.name

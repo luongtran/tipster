@@ -1,4 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
+
   def new
     super
   end
@@ -6,8 +7,10 @@ class Users::SessionsController < Devise::SessionsController
   protected
 
   def after_sign_in_path_for(resource)
-    cart = Cart.create!
-    session[:cart_id] = cart.id
+    if resource.is_a?(Subscriber)
+      initial_cart_session
+    end
+    super # Default by super class or your own path
   end
 
 end
