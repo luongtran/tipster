@@ -63,3 +63,6 @@ group :development do
   # Receive email from development
   gem 'mailcatcher'
 end
+
+# DateTime validator
+gem 'validates_timeliness', '~> 3.0'
