@@ -1,3 +1,3 @@
-class OmniauthCallbacksController < ApplicationController
+class Users::OmniauthCallbacksController < ApplicationController
 
 end
