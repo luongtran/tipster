@@ -12,4 +12,14 @@
       = link_to 'Register', new_user_registration_path
       |
       = link_to 'Sign In', new_user_session_path
+      #flash
+        - if notice
+          %div{:class => "alert alert-info fade in", 'data-alert' => "alert"}
+            %a{:class => "close", 'data-dismiss' => 'alert', :href => "#"} &times;
+            = notice
+
+        - if alert
+          %div{:class => "alert alert-error fade in", 'data-alert' => "alert"}
+            %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+            = alert
     = yield
