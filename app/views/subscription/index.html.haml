@@ -2,21 +2,40 @@
   %caption TipsterHero Subscription Plans
   %thead
     %tr
-      %th Title
-      %th Description
-      %th Price
-      %th Number tipster
-      %td Action
-  %tbody
-    - @plan.each do |plan|
-      %tr
-        %td
+      %th
+      - @plan.each do |plan|
+        %th
           = plan.title
+  %tbody
+    %tr
+      %td Tips reception
+      - @plan.each do |plan|
         %td
-          = plan.description
+          = plan.reception_delay.zero? ? 'Real time' : distance_of_time_in_words(plan.reception_delay)
+    %tr
+      %td Ability to pause your subscription
+      - @plan.each do |plan|
         %td
-          = plan.price
+          = plan.pause_ability
+    %tr
+      %td Ability to switch tipsters
+      - @plan.each do |plan|
         %td
-          = plan.number_tipster
+          = plan.switch_tipster_ability
+    %tr
+      %td Guaranteed Profit Subscription
+      - @plan.each do |plan|
         %td
+          = plan.profit_guaranteed
+    %tr
+      %td Discount
+      - @plan.each do |plan|
+        %td
+          = plan.discount
+    %tr
+      %td Ability to switch tipsters
+      - @plan.each do |plan|
+        %td
+          = '€' +  plan.price.to_s
+          %br
           = link_to 'Select', select_subscription_path(plan.id),class: 'btn btn-success'

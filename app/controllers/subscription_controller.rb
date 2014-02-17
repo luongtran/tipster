@@ -5,6 +5,7 @@ class SubscriptionController < ApplicationController
 
   def plan_select
     session[:plan_id] = params[:id]
-    render 'tipster/top_tipster'
+    @tipster = Tipster.all
+    render 'tipsters/top_tipster'
   end
 end
