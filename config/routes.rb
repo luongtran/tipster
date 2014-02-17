@@ -6,4 +6,7 @@ TipsterHero::Application.routes.draw do
       :registrations => "users/registrations",
       :sessions => "users/sessions",
   }
+
+  get '/pricing' => 'subscription#index'
+  get '/subscriptions/select/:id' => 'subscription#plan_select',:as => :select_subscription
 end

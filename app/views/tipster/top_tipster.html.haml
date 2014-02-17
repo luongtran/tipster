@@ -1,0 +1,25 @@
+%table.table.table-bordered
+  %caption Top Tipster Ranking on last 6 month
+  %thead
+    %tr
+      %th Full Name
+      %th Email
+      %th Created at
+      %td Action
+  %tbody
+    - if @tipster.nil?
+      %tr
+        %td
+          There are no any tipster found.
+        %td
+        %td
+        %td
+    - else
+      - @tipster.each do |tipster|
+        %tr
+          %td
+            = tipster.full_name
+          %td
+            = tipster.email
+          %td
+            = tipster.created_at.strftime("%m / %d / %Y")

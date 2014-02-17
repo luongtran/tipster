@@ -11,7 +11,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140217070038) do
+ActiveRecord::Schema.define(version: 20140217065043) do
+
+  create_table "plans", force: true do |t|
+    t.string   "name"
+    t.string   "title"
+    t.integer  "reception_delay",        default: 3600
+    t.text     "description"
+    t.boolean  "pause_ability",          default: true
+    t.boolean  "switch_tipster_ability", default: true
+    t.boolean  "profit_guaranteed",      default: true
+    t.float    "discount",               default: 0.0
+    t.float    "price"
+    t.integer  "number_tipster"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "subscriber_tipsters", force: true do |t|
+    t.integer  "tipster_id"
+    t.integer  "subscription_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "subscriptions", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "plan_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "authorizations", force: true do |t|
     t.integer  "user_id"
