@@ -1,0 +1,22 @@
+%table.table.table-bordered
+  %caption TipsterHero Subscription Plans
+  %thead
+    %tr
+      %th Title
+      %th Description
+      %th Price
+      %th Number tipster
+      %td Action
+  %tbody
+    - @plan.each do |plan|
+      %tr
+        %td
+          = plan.title
+        %td
+          = plan.description
+        %td
+          = plan.price
+        %td
+          = plan.number_tipster
+        %td
+          = link_to 'Select', select_subscription_path(plan.id),class: 'btn btn-success'

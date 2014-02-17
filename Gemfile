@@ -63,3 +63,6 @@ group :development do
   # Receive email from development
   gem 'mailcatcher'
 end
+
+#Paypal billing,payment,refund
+gem 'activemerchant'
