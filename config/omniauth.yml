@@ -3,8 +3,8 @@ development:
     app_id: "479388308748402"
     app_secret: "185fe85120c05103bbbe5520f1f2bf36"
   google:
-    app_id: "28634308733.apps.googleusercontent.com"
-    app_secret: "FdViCWB7X35Jsbl53AxZmQiw"
+    app_id: "721520450986.apps.googleusercontent.com"
+    app_secret: "9b8fVLbNGMDS3IVgxLyNKqGg"
 
 test:
   facebook:

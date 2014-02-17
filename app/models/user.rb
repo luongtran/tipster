@@ -9,10 +9,10 @@ class User < ActiveRecord::Base
 
   # VALIDATIONS
   validates :first_name, :last_name, :presence => true
-  validates_date :birthday
+  validates_date :birthday, :message => 'birthday is invalid'
 
   # CALLBACKS
-  before_create :init_default_birthday
+  before_validation :init_default_birthday
 
   # CLASS METHODS
   class << self
@@ -31,6 +31,6 @@ class User < ActiveRecord::Base
   private
 
   def init_default_birthday
-    self[:birthday] = DEFAULT_BIRTHDAY unless self.birthday
+    self[:birthday] ||= DEFAULT_BIRTHDAY
   end
 end
