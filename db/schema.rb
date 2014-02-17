@@ -11,7 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140217065043) do
+ActiveRecord::Schema.define(version: 20140217070038) do
+
+  create_table "authorizations", force: true do |t|
+    t.integer  "user_id"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "avatar_url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "authorizations", ["uid"], name: "index_authorizations_on_uid", using: :btree
+  add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id", using: :btree
 
   create_table "plans", force: true do |t|
     t.string   "name"
@@ -41,18 +53,6 @@ ActiveRecord::Schema.define(version: 20140217065043) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "authorizations", force: true do |t|
-    t.integer  "user_id"
-    t.string   "provider"
-    t.string   "uid"
-    t.string   "avatar_url"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "authorizations", ["uid"], name: "index_authorizations_on_uid", using: :btree
-  add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "first_name"
