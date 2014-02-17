@@ -1,6 +1,10 @@
 class Users::RegistrationsController < Devise::RegistrationsController
 
-  before_filter :configure_permitted_parameters, :only => [:create, :update]
+  before_action :configure_permitted_parameters, :only => [:create, :update]
+
+  def new
+    super
+  end
 
   # New subscriber
   def create
