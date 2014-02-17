@@ -21,7 +21,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-
   private
 
   def build_subscriber_sign_up_params
