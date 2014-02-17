@@ -1,4 +1,4 @@
-class TipsterController < ApplicationController
+class TipstersController < ApplicationController
   def top_tipster
     @tipster = Tipster.all # Just for test
   end

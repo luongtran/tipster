@@ -3,7 +3,7 @@
     %a.brand{href: root_path} HOME
     %ul.nav
       %li
-        %a{href: "#"} Link
+        %a{href: pricing_path} Pricing
     %ul.nav.pull-right
       - if current_user
         %li
@@ -14,4 +14,3 @@
         %li
           = link_to 'Sign In', new_user_session_path
         = render 'shared/social_connection_links'
-      = link_to 'Pricing','/pricing' , class: 'btn btn-small'
