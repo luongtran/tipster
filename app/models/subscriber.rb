@@ -4,7 +4,6 @@ class Subscriber < User
   # ASSOCIATIONS
   # ==============================================================================
   has_many :authorizations, :foreign_key => :user_id
-  has_one :profile, :foreign_key => :user_id
 
   # ==============================================================================
   # CALLBACKS
