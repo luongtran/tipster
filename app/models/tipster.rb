@@ -1,2 +1,3 @@
 class Tipster < User
+
 end
