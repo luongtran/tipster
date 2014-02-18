@@ -31,6 +31,10 @@ class Payment
       ActiveMerchant::Billing::PaypalExpressGateway.new PAYPAL_CONFIG
     end
 
+    # Return true/false
+    def refund(amount, trans_id, options ={})
+      gateway.refund amount, trans_id
+    end
   end
 
 end

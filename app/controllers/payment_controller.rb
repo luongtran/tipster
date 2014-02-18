@@ -28,8 +28,4 @@ class PaymentController < ApplicationController
     invoice.cancel
     redirect_to root_url, notice: 'Payment request canceled'
   end
-
-  def refund
-
-  end
 end
