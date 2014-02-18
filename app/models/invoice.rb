@@ -24,57 +24,38 @@ class Invoice < ActiveRecord::Base
   # INSTANCE METHODS
   # ==============================================================================
 
-  # Initial transaction & return redirect uri
-  def setup!(user, return_url, cancel_url, amount)
-    self.amount = amount
-    response = client.setup(
-        payment_request,
-        return_url,
-        cancel_url,
-        pay_on_paypal: true
-    )
+  def setup_purchase(amount, user, options = {})
+    response = gateway.setup_purchase(amount * 100, options)
     self.token = response.token
     self.user = user
+    self.amount = amount
     self.save!
-    response.redirect_uri
+    gateway.redirect_url_for response.token
+  end
+
+  def purchase(options = {})
+    response = gateway.purchase(self.amount * 100, options)
+    if response.success?
+      self.transaction_id = response.params['transaction_id']
+      self.completed = true
+      self.payer_id = options[:payer_id]
+    end
+  rescue Exception => e
+    self.completed = false
+  ensure
+    self.save!
+    self
   end
 
   def cancel
     self.canceled = true
     self.save!
-    self
   end
 
-  # Checkout process
-  def complete!(payer_id = nil)
-    response = client.checkout!(
-        self.token,
-        payer_id,
-        payment_request
-    )
-    self.payer_id = payer_id
-    self.transaction_id = response.payment_info.first.transaction_id
-    self.completed = true
-    self.save!
-    self
-  end
-
-  # ==============================================================================
-  # PRIVATE METHODS
-  # ==============================================================================
   private
 
-  # Create paypal client
-  def client
-    Paypal::Express::Request.new PAYPAL_CONFIG
+  def gateway
+    ActiveMerchant::Billing::PaypalExpressGateway.new PAYPAL_CONFIG
   end
 
-  # Generate a payment request
-  def payment_request
-    Paypal::Payment::Request.new(
-        :amount => self.amount,
-        # TODO, change the description
-        :description => 'Tipster Hero payment'
-    )
-  end
 end
