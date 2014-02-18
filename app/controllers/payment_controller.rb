@@ -4,11 +4,9 @@ class PaymentController < ApplicationController
   # Initialize invoice and redirect to Paypal payment page
   def create
     user = current_user
-    invoice = Invoice.new
-
-    # TODO, calculate the amount
+    # TODO, calculate the amount, coupon
     amount = 13
-    redirect_uri = invoice.setup_purchase(
+    redirect_uri = Payment.setup_purchase(
         amount,
         user,
         return_url: success_payment_url,
@@ -20,9 +18,7 @@ class PaymentController < ApplicationController
 
   # GET /payment/success
   def success
-    # Throw exception if the token param is non-exist
-    invoice = Invoice.find_by_token! params[:token]
-    invoice.purchase(:token => params[:token], :payer_id => params[:PayerID], :ip => request.remote_ip)
+    Payment.purchase(:token => params[:token], :payer_id => params[:PayerID], :ip => request.remote_ip)
     redirect_to root_url, notice: 'Thank you for payment'
   end
 
@@ -32,5 +28,4 @@ class PaymentController < ApplicationController
     invoice.cancel
     redirect_to root_url, notice: 'Payment request canceled'
   end
-
 end
