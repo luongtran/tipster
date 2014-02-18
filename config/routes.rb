@@ -27,7 +27,7 @@ TipsterHero::Application.routes.draw do
   #Step 1
   get '/subscriptions/show' => 'subscriptions#show', as: :subscriptions_show
   #Step 2
-  post '/subscriptions/identification' => 'subscriptions#identification', as: :subscriptions_identification
+  get '/subscriptions/identification' => 'subscriptions#identification', as: :subscriptions_identification
   #Step 3
   get '/subscriptions/payment' => 'subscriptions#payment', as: :subscriptions_payment
   #Step 4

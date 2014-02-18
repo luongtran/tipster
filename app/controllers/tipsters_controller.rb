@@ -1,5 +1,9 @@
 class TipstersController < ApplicationController
   def top_tipster
-    @tipsters = Tipster.all # Just for test
+    if params[:priod]
+      @tipsters = Tipster.order('name DESC').limit(30)
+    else
+      @tipsters = Tipster.order('id DESC').limit(50)
+    end
   end
 end

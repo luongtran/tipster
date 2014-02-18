@@ -1,4 +1,5 @@
 class SubscriptionsController < ApplicationController
+#  before_filter :authenticate_user! , except: [:plan_select,:show]
   def plan_select
     session[:plan_id] = params[:id]
     redirect_to top_tipster_url
@@ -15,9 +16,15 @@ class SubscriptionsController < ApplicationController
   #Step 2
   def identification
     if user_signed_in?
-      redirect_to subscriptions_payment_url
+      if session[:plan_id]
+        flash[:notice] = 'Select an payment method bellow !'
+        redirect_to subscriptions_payment_url
+      else
+        flash[:error] = 'Please choose an plan bellow !'
+        redirect_to pricing_url and return
+      end
     else
-      flash[:alert] = "Please login or register to continue!"
+      flash[:error] = "Please login or register to continue!"
     end
   end
   #Step 3
