@@ -6,6 +6,8 @@
         %a{href: pricing_path} Pricing
       %li
         %a{href: subscriptions_show_path}= "Cart(#{session[:cart].nil? ? 0 : session[:cart][:tipster_ids].count})"
+      %li
+        %a{href: top_tipster_path} Tipster
     %ul.nav.pull-right
       - if current_user
         %li

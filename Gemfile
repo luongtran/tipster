@@ -63,7 +63,7 @@ group :development do
   gem 'hirb'
   # For models annotation
   gem 'annotate', ">= 2.5.0"
-
+  gem 'debugger'
   # Receive email from development
   gem 'mailcatcher'
 end

@@ -12,7 +12,7 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def authorize(provider = '')
     identity = Authorization.find_from_oauth(request.env["omniauth.auth"])
-    subscriber = Subscriber.find_by!(email: email_from_omniauth)
+    subscriber = Subscriber.find_by(email: email_from_omniauth)
     subscriber = Subscriber.create_from_auth_info(request.env["omniauth.auth"]) unless subscriber
     # Add more authorization for subscriber
     subscriber.add_authorization(request.env["omniauth.auth"]) unless identity
