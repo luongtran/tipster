@@ -4,6 +4,11 @@ class Subscriber < User
   # ASSOCIATIONS
   # ==============================================================================
   has_many :authorizations, :foreign_key => :user_id
+  has_one :profile, :foreign_key => :user_id
+
+  # ==============================================================================
+  # CALLBACKS
+  # ==============================================================================
 
   # ==============================================================================
   # CLASS METHODS
@@ -21,7 +26,21 @@ class Subscriber < User
     end
   end
 
+  # ==============================================================================
+  # INSTANCE METHODS
+  # ==============================================================================
+  def profile_completed?
+    self.profile && self.profile.valid?
+  end
+
+  def find_or_initial_profile
+    Profile.new(:subscriber => self)
+  end
+
+  # Add Facebook, Google+ identify
   def add_authorization(auth)
     self.authorizations << Authorization.build_from_oauth(auth)
   end
+
+
 end
