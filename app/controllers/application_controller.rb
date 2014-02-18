@@ -4,6 +4,12 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   protected
+  #
+  #def fill_profile
+  #  if current_user && !current_user.profile
+  #    redirect_to new_profile_url
+  #  end
+  #end
 
   # Clear and create new cart
   def initial_cart_session

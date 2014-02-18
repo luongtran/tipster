@@ -6,6 +6,9 @@ TipsterHero::Application.routes.draw do
       :registrations => "users/registrations",
       :sessions => "users/sessions",
   }
+  resources :profiles, :except => [:index] do
+    # show, update
+  end
 
   get '/pricing' => 'home#pricing', as: :pricing
 

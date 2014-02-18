@@ -50,6 +50,10 @@ gem 'haml'
 # For view helpers
 gem "simple_form"
 
+# Country select
+gem 'countries'
+gem 'country_select'
+
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
