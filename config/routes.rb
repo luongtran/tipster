@@ -6,8 +6,17 @@ TipsterHero::Application.routes.draw do
       :registrations => "users/registrations",
       :sessions => "users/sessions",
   }
+
+  # TODO, the routes is just for testing
   resources :profiles, :except => [:index] do
     # show, update
+  end
+
+  resource :payment, controller: 'payment', only: [:create] do
+    collection do
+      get :success
+      get :cancel
+    end
   end
 
   get '/pricing' => 'home#pricing', as: :pricing
@@ -20,6 +29,8 @@ TipsterHero::Application.routes.draw do
   #Step 2
   post '/subscriptions/identification' => 'subscriptions#identification', as: :subscriptions_identification
   #Step 3
-  get '/subscriptions/payment' => 'subscriptions#payment',as: :subscriptions_payment
+  get '/subscriptions/payment' => 'subscriptions#payment', as: :subscriptions_payment
   #Step 4
+
+
 end

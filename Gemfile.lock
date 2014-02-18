@@ -41,6 +41,7 @@ GEM
       rake (>= 0.8.7)
     arel (4.0.2)
     atomic (1.1.14)
+    attr_required (1.0.0)
     bcrypt-ruby (3.1.2-x86-mingw32)
     better_errors (1.1.0)
       coderay (>= 1.0.0)
@@ -153,6 +154,10 @@ GEM
       oauth2 (~> 0.9.3)
       omniauth (~> 1.2)
     orm_adapter (0.5.0)
+    paypal-express (0.5.5)
+      activesupport (>= 2.3)
+      attr_required (>= 0.0.5)
+      restclient_with_cert
     polyglot (0.3.3)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
@@ -179,6 +184,10 @@ GEM
     rake (10.1.1)
     rdoc (4.1.1)
       json (~> 1.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
+    restclient_with_cert (0.0.8)
+      rest-client (>= 1.6)
     sass (3.2.14)
     sass-rails (4.0.1)
       railties (>= 4.0.0, < 5.0)
@@ -257,6 +266,7 @@ DEPENDENCIES
   omniauth
   omniauth-facebook
   omniauth-google-oauth2
+  paypal-express
   quiet_assets
   rails (= 4.0.0)
   sass-rails (~> 4.0.0)
