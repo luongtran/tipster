@@ -1,0 +1,9 @@
+.row-fluid
+  .well
+    %h3 Your select plan #{@plan.title}
+    .row
+      %h3
+        Your select tipster
+      - @tipsters.each do |tipster|
+        %p
+          = tipster.name

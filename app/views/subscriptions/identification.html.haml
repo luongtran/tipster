@@ -1,0 +1,36 @@
+-#panel_left sign_in
+.panel_left.span6
+  .row
+    %h3 I'm a Returning customer, login
+    = form_tag session_path(:user) do
+      %label Email
+      = text_field_tag 'user[email]'
+      %label Password
+      = password_field_tag 'user[password]'
+      %label Remember me
+      = check_box_tag 'user[remember_me]'
+      %button.btn.btn-primary Sign in
+    = link_to "Forgot your password?", new_password_path(:user)
+
+-#panel_righ sign_up
+.panel_right.span6
+  .row
+    %h3 I'm a New customer, register now
+    = form_tag registration_path(:user),:html => {class: 'form-horizontal'} do
+      .form-inputs
+        -# Required variables : f (form builder)
+        %label Email
+        = text_field_tag 'user[email]','',required: true, autofocus: true
+        %label First name
+        = text_field_tag 'user[first_name]','', :required => true
+        %label Last name
+        = text_field_tag 'user[last_name]','', :required => true
+        %label Birthday
+        = text_field_tag 'user[birthday]','', :required => true
+        %label Password
+        = text_field_tag 'user[password]','', :required => true
+        %label Password comfirmation
+        = text_field_tag 'user[password_confirmation]','', :required => true
+      .form-actions
+        %button.btn.btn-success Sign up
+
