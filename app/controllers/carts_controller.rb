@@ -14,15 +14,6 @@ class CartsController < ApplicationController
     tipster_id = params[:id]
     session[:cart][:tipster_ids].delete(tipster_id) if session[:cart][:tipster_ids].include? tipster_id
     flash[:notice] = "Tipster droped"
-    redirect_to cart_show_url
-  end
-
-  def show
-    if session[:cart] && session[:cart][:tipster_ids].present?
-      @tipsters = Tipster.where(id: session[:cart][:tipster_ids])
-    else
-      flash[:alert] = "Your cart is empty"
-      redirect_to top_tipster_url
-    end
+    redirect_to subscriptions_show_url
   end
 end
