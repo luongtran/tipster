@@ -17,7 +17,7 @@
   .span6
     .well
       %h3 I'm a New customer, register now
-      = simple_form_for :user, url: new_user_registration_path,:html => {class: 'form-horizontal'} do |f|
+      = simple_form_for :user, url: user_registration_path,:html => {class: 'form-horizontal'} do |f|
         .form-inputs
           = render 'shared/user_basic_fields' , f: f
           = f.simple_fields_for :profile do |f_pro|
