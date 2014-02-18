@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   # ASSOCIATIONS
   # ==============================================================================
   has_one :profile
+  has_many :invoices
   accepts_nested_attributes_for :profile
 
   # ==============================================================================

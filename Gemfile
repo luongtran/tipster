@@ -70,6 +70,7 @@ end
 
 #Paypal billing,payment,refund
 gem 'activemerchant'
+gem 'paypal-express'
 
 # DateTime validator
 gem 'validates_timeliness', '~> 3.0'

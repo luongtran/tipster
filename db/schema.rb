@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140218012558) do
+ActiveRecord::Schema.define(version: 20140218062014) do
 
   create_table "authorizations", force: true do |t|
     t.integer  "user_id"
@@ -29,6 +29,22 @@ ActiveRecord::Schema.define(version: 20140218012558) do
     t.integer "cart_id"
     t.integer "tipster_id"
   end
+
+  create_table "invoices", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "amount",         default: 1
+    t.string   "currency"
+    t.string   "token"
+    t.string   "transaction_id"
+    t.string   "payer_id"
+    t.boolean  "completed",      default: false
+    t.boolean  "canceled",       default: false
+    t.integer  "payment_type"
+    t.datetime "created_at"
+    t.datetime "completed_at"
+  end
+
+  add_index "invoices", ["user_id"], name: "index_invoices_on_user_id", using: :btree
 
   create_table "plans", force: true do |t|
     t.string   "name"

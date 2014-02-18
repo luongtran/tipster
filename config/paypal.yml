@@ -1,0 +1,14 @@
+development: &sandbox
+  username: htluan2605_api1.gmail.com
+  password: 1382519777
+  signature: An5ns1Kso7MWUdW4ErQKJJJ4qi4-AlFw0KidIM2sitAJn0cpxJ8hjGJK
+  sandbox: true
+
+test:
+  <<: *sandbox
+
+production: &production
+  username: SET_YOUR_OWN
+  password: SET_YOUR_OWN
+  signature: SET_YOUR_OWN
+  sandbox: false
