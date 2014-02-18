@@ -6,7 +6,7 @@ class PaymentController < ApplicationController
     user = current_user
     invoice = Invoice.new
 
-    # TODO, calculate the amount
+    # TODO, calculate the amount, coupon
     amount = 13
     redirect_uri = invoice.setup_purchase(
         amount,

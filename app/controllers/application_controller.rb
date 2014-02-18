@@ -6,13 +6,8 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     stored_location_for(resource) || root_url
   end
+
   protected
-  #
-  #def fill_profile
-  #  if current_user && !current_user.profile
-  #    redirect_to new_profile_url
-  #  end
-  #end
 
   # Clear and create new cart
   def initial_cart_session
