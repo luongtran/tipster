@@ -15,40 +15,31 @@ class Invoice < ActiveRecord::Base
   validates_uniqueness_of :transaction_id, if: Proc.new { |p| p.completed? }, on: :update
   validates :amount, :user, presence: true
   validates_numericality_of :amount, greater_than_or_equal_to: 1
+
   # ==============================================================================
   # SCOPE
   # ==============================================================================
   scope :completed, -> { where(completed: true) }
 
   # ==============================================================================
+  # CLASS METHODS
+  # ==============================================================================
+  class << self
+
+  end
+
+  # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
 
-  def setup_purchase(amount, user, options = {})
-    response = gateway.setup_purchase(amount * 100, options)
-    self.token = response.token
-    self.user = user
-    self.amount = amount
-    self.save!
-    gateway.redirect_url_for response.token
-  end
-
-  def purchase(options = {})
-    response = gateway.purchase(self.amount * 100, options)
-    if response.success?
-      self.transaction_id = response.params['transaction_id']
-      self.completed = true
-      self.payer_id = options[:payer_id]
-    end
-  rescue Exception => e
-    self.completed = false
-  ensure
-    self.save!
-    self
-  end
-
   def cancel
     self.canceled = true
+    self.save!
+  end
+
+  def complete(trans_id)
+    self.transaction_id = trans_id
+    self.completed = true
     self.save!
   end
 
