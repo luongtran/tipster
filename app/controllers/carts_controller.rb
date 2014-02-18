@@ -4,7 +4,7 @@ class CartsController < ApplicationController
     tipster_id = params[:id]
     if Tipster.exists?(tipster_id)
       initial_cart_session if session[:cart].nil?
-      (session[:cart][:tipster_ids].include? tipster_id)?  flash[:alert] = "Tipster already in cart": flash[:notice] = "Tipster added"
+      (session[:cart][:tipster_ids].include? tipster_id)?  flash[:alert] = "Tipster already added to cart": flash[:notice] = "Tipster added"
       session[:cart][:tipster_ids] << tipster_id unless session[:cart][:tipster_ids].include? tipster_id
     end
     redirect_to top_tipster_url

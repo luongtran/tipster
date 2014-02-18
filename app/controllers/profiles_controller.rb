@@ -17,4 +17,19 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def update
+    @profile = current_user.profile
+    @profile.update_attributes(profile_params)
+  end
+
+  def show
+    @profile = current_user.profile
+  end
+
+  private
+
+  def profile_params
+    params.require(:profile).permit!
+  end
+
 end

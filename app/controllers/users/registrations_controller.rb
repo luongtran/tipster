@@ -10,7 +10,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
     build_resource(build_subscriber_sign_up_params)
     if resource.save
-      if resource.active_for_authentication?
+        resource.build_profile(profile_params) if params[:user][:profile]
+        if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
         respond_with resource, :location => after_sign_up_path_for(resource)
@@ -34,12 +35,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) do |u|
       u.permit(:first_name, :last_name,
-               :email, :password, :password_confirmation, :profile)
+               :email, :password, :password_confirmation, profile_attributes: [:civility,:birthday,:address,:city,:country,:zip_code,:mobile_phone,:telephone,:favorite_betting_website,:know_website_from,:secret_question,:answer_secret_question])
     end
     devise_parameter_sanitizer.for(:account_update) do |u|
       u.permit(:first_name, :last_name,
                :password, :password_confirmation, :current_password)
     end
   end
-
+  def profile_params
+    params.require(:user).require(:profile).permit(:civility,:birthday,:address,:city,:country,:zip_code,:mobile_phone,:telephone,:favorite_betting_website,:know_website_from,:secret_question,:answer_secret_question)
+  end
 end
