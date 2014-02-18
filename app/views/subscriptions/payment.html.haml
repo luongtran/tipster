@@ -7,3 +7,4 @@
       - @tipsters.each do |tipster|
         %p
           = tipster.name
+    = link_to "Check out",init_payment_path,class: 'btn btn-warning',method: :post

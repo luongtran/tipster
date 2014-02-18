@@ -31,6 +31,6 @@ TipsterHero::Application.routes.draw do
   #Step 3
   get '/subscriptions/payment' => 'subscriptions#payment', as: :subscriptions_payment
   #Step 4
-
-
+  post '/subscriptions/payment_init' => 'subscriptions#payment_init',as: :init_payment
+  post '/subscriptions/ipn_notify' => 'subscriptions#ipn_notify' ,as: :ipn_notify
 end
