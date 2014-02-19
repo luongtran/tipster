@@ -7,4 +7,6 @@
       - @tipsters.each do |tipster|
         %p
           = tipster.name
-    = link_to "Check out",init_payment_path,class: 'btn btn-warning',method: :post
+    = form_tag payment_path ,remote: true do
+      %button.btn.btn-warning Paypal Check Out
+  #payment

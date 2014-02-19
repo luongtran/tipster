@@ -1,6 +1,7 @@
 class SubscriptionsController < ApplicationController
 #  before_filter :authenticate_user! , except: [:plan_select,:show]
-  skip_before_filter :verify_authenticity_token, :only => [:ipn_notify]
+
+
   def plan_select
     session[:plan_id] = params[:id]
     redirect_to top_tipster_url
@@ -38,41 +39,4 @@ class SubscriptionsController < ApplicationController
 
   #Payment
 
-  def payment_init
-    plan = Plan.find(session[:plan_id])
-    tipster_count = session[:cart][:tipster_ids].count
-    @last_price = plan.price + tipster_count * 9.9
-    @api = PayPal::SDK::Merchant.new
-    @do_direct_payment = @api.build_do_direct_payment({
-                                                          :DoDirectPaymentRequestDetails => {
-                                                              :PaymentAction => "Sale",
-                                                              :PaymentDetails => {
-                                                                  :OrderTotal => {
-                                                                      :currencyID => "EUR",
-                                                                      :value => "#{@last_price}" },
-                                                                  :NotifyURL => "http://1.53.233.90:3000/subscriptions/ipn_notify" },
-                                                              :CreditCard => {
-                                                                  :CreditCardType => "Visa",
-                                                                  :CreditCardNumber => "4904202183894535",
-                                                                  :ExpMonth => 12,
-                                                                  :ExpYear => 2022,
-                                                                  :CVV2 => "962" } } })
-
-
-    # Make API call & get response
-    @response = @api.do_direct_payment(@do_direct_payment)
-
-# Access Response
-    if @response.success?
-      @response.TransactionID
-    else
-      @response.Errors
-    end
-
-  end
-
-  def ipn_notify
-    # Doing something here
-    render nothing: true
-  end
 end

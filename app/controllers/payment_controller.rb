@@ -1,31 +1,45 @@
 class PaymentController < ApplicationController
-
+  include ActiveMerchant::Billing::Integrations
+  skip_before_filter :verify_authenticity_token, :only => [:notify,:return]
   # POST /payment
-  # Initialize invoice and redirect to Paypal payment page
+  # Initialize and redirect to Paypal payment page
   def create
-    user = current_user
-    # TODO, calculate the amount, coupon
-    amount = 13
-    redirect_uri = Payment.setup_purchase(
-        amount,
-        user,
-        return_url: success_payment_url,
-        cancel_return_url: cancel_payment_url,
-        description: 'Tipster Hero payment'
-    )
-    redirect_to redirect_uri
+    @plan = Plan.find session[:plan_id]
+    @paypal_obj = Hash.new
+    @paypal_obj[:amount] = "%05.2f" % (@plan.price)
+    @paypal_obj[:currency] = "EUR"
+    @paypal_obj[:item_number] = current_user.id
+    @paypal_obj[:item_name] = "TipsterHero Subscriptions"
+    current_user.build_subscription(plan_id: session[:plan_id])
+    render 'remote.js.haml'
   end
 
-  # GET /payment/success
-  def success
-    Payment.purchase(:token => params[:token], :payer_id => params[:PayerID], :ip => request.remote_ip)
-    redirect_to root_url, notice: 'Thank you for payment'
+  # GET /payment/return
+  def return
+    logger = Logger.new('log/paypal.log')
+    logger.info("================== PAYPAL RETURN ON #{Time.now} =====================")
+    logger.info(params)
+    if params[:pending_reason] != ''
+      flash[:alert] = PAYPAL_PENDINGS["#{params[:pending_reason]}"]
+    end
+    @params = params
   end
 
+  # POST /payment/notify
+  def notify
+    logger = Logger.new('log/paypal.log')
+    logger.info("================== PAYPAL IPN ON #{Time.now} ========================")
+    notify = Paypal::Notification.new(request.raw_post)
+    logger.info(notify)
+   # require 'debugger';debugger
+#    notify.params['payment_status']
+    user = User.find(notify.item_id)
+    subscription = user.build_subscription
+    # save payment data
+    render nothing: true
+  end
   # GET /payment/cancel
   def cancel
-    invoice = Invoice.find_by_token! params[:token]
-    invoice.cancel
-    redirect_to root_url, notice: 'Payment request canceled'
+    redirect_to subscriptions_payment_path
   end
 end
