@@ -1,0 +1,32 @@
+- if current_user
+  %h4 Your informations:
+  %ul
+    %li
+      Email:
+      = current_user.email
+    %li Show profile here
+
+  %a.btn.btn-warning{href: '#'} Use another account?
+- else
+  .span6
+    %h3 Login
+    = form_tag session_path(:user) do
+      %label Email
+      = text_field_tag 'user[email]'
+      %label Password
+      = password_field_tag 'user[password]'
+      %label Remember me
+      = check_box_tag 'user[remember_me]'
+      %button.btn.btn-primary Sign in
+    = link_to "Forgot your password?", new_password_path(:user)
+
+  -#panel_righ sign_up
+  .span6
+    %h3 I'm a New customer
+    = simple_form_for :user, url: user_registration_path,:html => {class: 'form-horizontal'} do |f|
+      .form-inputs
+        = render 'shared/user_basic_fields' , f: f
+        = f.simple_fields_for :profile do |f_pro|
+          = render 'profiles/form', f: f_pro
+      .form-actions
+        %button.btn.btn-success Sign up

@@ -11,6 +11,7 @@ class Users::SessionsController < Devise::SessionsController
       initial_cart_session if session[:cart].nil?
     end
     super # Default by super class or your own path
+
   end
 
 end

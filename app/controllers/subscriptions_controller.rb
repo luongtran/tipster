@@ -1,10 +1,12 @@
 class SubscriptionsController < ApplicationController
 #  before_filter :authenticate_user! , except: [:plan_select,:show]
   skip_before_filter :verify_authenticity_token, :only => [:ipn_notify]
+
   def plan_select
     session[:plan_id] = params[:id]
     redirect_to top_tipster_url
   end
+
   #Step 1
   def show
     if session[:cart] && session[:cart][:tipster_ids].present?
@@ -14,6 +16,7 @@ class SubscriptionsController < ApplicationController
       redirect_to top_tipster_url
     end
   end
+
   #Step 2
   def identification
     if user_signed_in?
@@ -28,13 +31,12 @@ class SubscriptionsController < ApplicationController
       flash[:error] = "Please login or register to continue!"
     end
   end
+
   #Step 3
   def payment
     @plan = Plan.find session[:plan_id]
     @tipsters = Tipster.where(id: session[:cart][:tipster_ids])
   end
-
-
 
   #Payment
 
@@ -49,14 +51,14 @@ class SubscriptionsController < ApplicationController
                                                               :PaymentDetails => {
                                                                   :OrderTotal => {
                                                                       :currencyID => "EUR",
-                                                                      :value => "#{@last_price}" },
-                                                                  :NotifyURL => "http://1.53.233.90:3000/subscriptions/ipn_notify" },
+                                                                      :value => "#{@last_price}"},
+                                                                  :NotifyURL => "http://1.53.233.90:3000/subscriptions/ipn_notify"},
                                                               :CreditCard => {
                                                                   :CreditCardType => "Visa",
                                                                   :CreditCardNumber => "4904202183894535",
                                                                   :ExpMonth => 12,
                                                                   :ExpYear => 2022,
-                                                                  :CVV2 => "962" } } })
+                                                                  :CVV2 => "962"}}})
 
 
     # Make API call & get response

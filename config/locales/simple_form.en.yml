@@ -7,11 +7,16 @@ en:
       mark: '*'
       # You can uncomment the line below if you need to overwrite the whole required html.
       # When using html, text and mark won't be used.
-      # html: '<abbr title="required">*</abbr>'
+      html: '<abbr class="required">*</abbr>'
     error_notification:
       default_message: "Please review the problems below:"
-    # Labels and hints examples
-    # labels:
+    labels:
+      user:
+        profile:
+          know_website_from: 'How did you know our website?'
+          favorite_betting_website: 'What is your favorite beeting website?'
+          answer_secret_question: 'Answer'
+          secret_question: 'Select your secret question'
     #   defaults:
     #     password: 'Password'
     #   user:

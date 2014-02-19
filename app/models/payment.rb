@@ -12,7 +12,7 @@ class Payment
     end
 
     def purchase(options = {})
-      # Throw exception if the token param is non-exist
+      # Throw exception if the token is non-exist
       invoice = Invoice.find_by! token: options[:token]
 
       # Checkout

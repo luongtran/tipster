@@ -19,18 +19,19 @@ TipsterHero::Application.routes.draw do
     end
   end
 
+  resource :cart, controller: 'cart', :only => [:show] do
+    post :add_tipster
+    post :drop_tipster
+  end
+
+  get '/registration' => 'home#register', as: :registration
+  post '/registration' => 'home#register', as: :registration_post
+
   get '/pricing' => 'home#pricing', as: :pricing
   get '/top_tipster' => 'tipsters#top_tipster', as: :top_tipster
   get '/subscriptions/select/:id' => 'subscriptions#plan_select', as: :select_subscription
-  post '/add_tipster_to_cart/:id' => 'carts#add_tipster', as: :add_tipster_to_cart
-  post '/drop_tipster_from_cart/:id' => 'carts#drop_tipster', as: :drop_tipster_from_cart
-  #Step 1
-  get '/subscriptions/show' => 'subscriptions#show', as: :subscriptions_show
-  #Step 2
-  get '/subscriptions/identification' => 'subscriptions#identification', as: :subscriptions_identification
-  #Step 3
-  get '/subscriptions/payment' => 'subscriptions#payment', as: :subscriptions_payment
-  #Step 4
-  post '/subscriptions/payment_init' => 'subscriptions#payment_init',as: :init_payment
-  post '/subscriptions/ipn_notify' => 'subscriptions#ipn_notify' ,as: :ipn_notify
+
+  post '/subscriptions/ipn_notify' => 'subscriptions#ipn_notify', as: :ipn_notify
+
+
 end

@@ -3,7 +3,7 @@
   .form-inputs
     = render 'shared/user_basic_fields', f: f
     = f.simple_fields_for :profile do |f_pro|
-      = render 'registrations/fill_profile', f: f_pro
+      = render 'profiles/form', f: f_pro
   .form-actions
     = f.button :submit, "Sign up"
 = render "devise/shared/links"
