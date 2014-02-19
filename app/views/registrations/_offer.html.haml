@@ -1,11 +1,14 @@
-%h3 Your selected plan:
-%ul
-  %li
-    Name:
-    %strong= selected_plan.title
+- if selected_plan
+  %h3 Your selected plan:
+  %ul
+    %li
+      Name:
+      %strong= selected_plan.title
+  %a.btn.btn-warning.btn-small{href: pricing_path} Select another?
+- else
 %i (Go to pricing page if user didn't select a plan)
 %br
-%a.btn.btn-warning.btn-small{href: pricing_path} Select another?
+
 
 %h3 Select Tipster:
 -# Required variables: tipsters_in_cart -> Array of tipster
