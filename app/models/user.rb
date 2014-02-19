@@ -3,11 +3,12 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
-  has_one :subscription
+
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  has_one :profile
+  has_one :subscription # Here it's has_many
+  has_one :profile, dependent: :destroy
   has_many :invoices
   accepts_nested_attributes_for :profile
 
@@ -32,6 +33,17 @@ class User < ActiveRecord::Base
   # ==============================================================================
   def name
     "#{self.first_name} #{self.last_name}".titleize
+  end
+
+  def find_or_initial_profile
+    self.profile || Profile.new(:user => self)
+  end
+
+  def update_profile(params)
+    profile self.find_or_initial_profile
+    profile.assign_attributes(params)
+    profile.save
+    profile
   end
 
   # ==============================================================================

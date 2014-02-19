@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
@@ -63,7 +63,6 @@ group :development do
   gem 'hirb'
   # For models annotation
   gem 'annotate', ">= 2.5.0"
-  gem 'debugger'
   # Receive email from development
   gem 'mailcatcher'
 end
@@ -76,3 +75,4 @@ gem 'paypal-sdk-merchant'
 
 # DateTime validator
 gem 'validates_timeliness', '~> 3.0'
+

@@ -3,7 +3,7 @@ class Subscriber < User
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  has_many :authorizations, :foreign_key => :user_id
+  has_many :authorizations, :foreign_key => :user_id, dependent: :destroy
 
   # ==============================================================================
   # CALLBACKS
@@ -30,10 +30,6 @@ class Subscriber < User
   # ==============================================================================
   def profile_completed?
     self.profile && self.profile.valid?
-  end
-
-  def find_or_initial_profile
-    Profile.new(:subscriber => self)
   end
 
   # Add Facebook, Google+ identify
