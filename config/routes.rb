@@ -24,6 +24,8 @@ TipsterHero::Application.routes.draw do
     post :add_tipster
     post :drop_tipster
   end
+  get '/register' => 'users/register#show', as: :register
+  post '/register/identification' => 'users/register#identification', as: :identification_register
 
   get '/registration' => 'home#register', as: :registration
   post '/registration' => 'home#register', as: :registration_post
