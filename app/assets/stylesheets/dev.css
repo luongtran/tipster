@@ -23,6 +23,6 @@ select {
 .container {
     width: 1128px;
 }
-abbr[title="required"] {
+abbr.required {
     color: #EE3933;
 }

@@ -12,6 +12,8 @@ TipsterHero::Application.routes.draw do
     # show, update
   end
 
+  get '/my_profile' => 'profiles#my_profile', as: :my_profile
+
   resource :payment, controller: 'payment', only: [:create] do
     collection do
       post :return
@@ -24,9 +26,17 @@ TipsterHero::Application.routes.draw do
     post :add_tipster
     post :drop_tipster
   end
-  get '/register' => 'users/register#show', as: :register
+
+
+  match '/register' => 'users/register#show', as: :register, via: [:get, :post]
+
   post '/register/identification' => 'users/register#identification', as: :identification_register
 
+  post '/register/payment' => 'users/register#payment', as: :payment_register
+
+  resource :subscriptions, controller: 'subscriptions', :only => [:show] do
+    post :update
+  end
   get '/registration' => 'home#register', as: :registration
   post '/registration' => 'home#register', as: :registration_post
 

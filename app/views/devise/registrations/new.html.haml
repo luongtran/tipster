@@ -1,9 +1,10 @@
 %h2 Sign up
-= simple_form_for :user, :url => user_registration_path, :html => {class: 'form-horizontal'} do |f|
-  .form-inputs
-    = render 'shared/user_basic_fields', f: f
-    = f.simple_fields_for :profile do |f_pro|
-      = render 'profiles/form', f: f_pro
+%br
+= simple_form_for resource, :url => user_registration_path, :html => {class: 'form-horizontal'} do |f|
+  = render 'shared/user_basic_fields', f: f
+  -#- resource.build_profile unless resource.profile
+  -#.span6
+  -#  = f.simple_fields_for :profile do |f_pro|
+  -#    = render 'profiles/form', f: f_pro
   .form-actions
-    = f.button :submit, "Sign up"
-= render "devise/shared/links"
+    = f.button :submit, "Sign up", class: 'btn btn-success'

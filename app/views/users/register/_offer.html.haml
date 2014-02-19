@@ -43,8 +43,5 @@
 
 .text-center
   Total : $1000
-  = form_tag payment_path , remote: true do
-    %button.btn.btn-warning CheckOut
-  #payment
-
-  %i
+  = form_tag payment_register_path do
+    %button.btn.btn-success{type: :submit} Checkout!

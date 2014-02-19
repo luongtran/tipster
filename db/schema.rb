@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140218062014) do
+ActiveRecord::Schema.define(version: 20140219043934) do
 
   create_table "authorizations", force: true do |t|
     t.integer  "user_id"
@@ -45,6 +45,30 @@ ActiveRecord::Schema.define(version: 20140218062014) do
   end
 
   add_index "invoices", ["user_id"], name: "index_invoices_on_user_id", using: :btree
+
+  create_table "payments", force: true do |t|
+    t.integer  "subscription_id"
+    t.datetime "payment_date"
+    t.string   "payer_first_name"
+    t.string   "payer_last_name"
+    t.string   "payer_email"
+    t.string   "residence_country"
+    t.string   "pending_reason"
+    t.string   "mc_currency"
+    t.string   "business_email"
+    t.string   "payment_type"
+    t.string   "payer_status"
+    t.boolean  "test_ipn"
+    t.float    "tax"
+    t.string   "txn_id"
+    t.string   "receiver_email"
+    t.string   "payer_id"
+    t.string   "receiver_id"
+    t.string   "payment_status"
+    t.float    "mc_gross"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "plans", force: true do |t|
     t.string   "name"

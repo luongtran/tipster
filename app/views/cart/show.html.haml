@@ -28,3 +28,5 @@
             = form_tag drop_tipster_cart_path do
               = hidden_field_tag :id, tipster.id
               %button.btn.btn-success{type: :submit} Remove from cart
+.text-center
+  %a.btn.btn-success{href: registration_path(step: 'offer')} Process to checkout

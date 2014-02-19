@@ -1,0 +1,38 @@
+- if current_user
+  %h4 Your informations:
+  %ul
+    %li
+      Email:
+      = current_user.email
+    %li Show profile here
+  %a.btn.btn-warning{href: '#'} Use another account?
+  - if current_profile.new_record?
+    %h3 You need to supply these informations
+    = simple_form_for current_profile, url: identification_register_path do |f|
+      = hidden_field_tag :act, 'update_profile'
+      = render 'profiles/form', f: f
+      = f.button :submit, 'Update profile'
+- else
+  .span6
+    %h3 I'm returning user
+    = simple_form_for resource, :as => resource_name, :url => session_path(resource_name) , :html => {class: 'form-horizontal'} do |f|
+      = hidden_field_tag :return_path, register_path(step: :identification)
+      .form-inputs
+        = f.input :email, :required => false, :autofocus => true
+        = f.input :password, :required => false
+        = f.input :remember_me, :as => :boolean if devise_mapping.rememberable?
+      .form-actions
+        = f.button :submit, "Sign in", class: 'btn btn-success'
+    = simple_form_for :nothing, url: identification_register_path do |f|
+      = hidden_field_tag :act, 'facebook'
+      %button.btn.btn-small.btn-primary{type: :submit} Facebook
+    = simple_form_for :nothing, url: identification_register_path do |f|
+      = hidden_field_tag :act, 'google'
+      %button.btn.btn-small{type: :submit} Google +
+  .span6
+    %h3 I'm a New customer
+    = simple_form_for resource, url: user_registration_path,:html => {class: 'form-horizontal'} do |f|
+      .form-inputs
+        = render 'shared/user_basic_fields', f: f
+      .form-actions
+        = f.button :submit, "Sign up", class: 'btn btn-primary'

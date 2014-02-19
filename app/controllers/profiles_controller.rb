@@ -18,12 +18,17 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    @profile = current_user.profile
+    @profile = current_user.find_or_initial_profile
     @profile.update_attributes(profile_params)
   end
 
   def show
-    @profile = current_user.profile
+    @profile = current_user.find_or_initial_profile
+    #redirect_to update profile if profile is not completed
+  end
+
+  def my_profile
+    @profile = current_user.find_or_initial_profile
   end
 
   private

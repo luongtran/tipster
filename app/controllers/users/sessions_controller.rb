@@ -10,8 +10,8 @@ class Users::SessionsController < Devise::SessionsController
     if resource.is_a?(Subscriber)
       initial_cart_session if session[:cart].nil?
     end
-    super # Default by super class or your own path
-
+    flash.clear
+    params[:return_path] || super
   end
 
 end
