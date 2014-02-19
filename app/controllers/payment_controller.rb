@@ -4,9 +4,14 @@ class PaymentController < ApplicationController
   # POST /payment
   # Initialize and redirect to Paypal payment page
   def create
-    subscription = current_user.build_subscription(plan_id: session[:plan_id])
+    unless current_user.subscription
+      subscription = current_user.build_subscription(plan_id: session[:plan_id])
+    else
+      subscription = current_user.subscription
+    end
     tipsters = Tipster.where(id: tipster_ids_in_cart)
-    subscription.tipsters << tipsters
+    #require 'debugger';debugger
+    subscription.tipsters = tipsters
     subscription.save
     @plan = Plan.find session[:plan_id]
     @paypal_obj = Hash.new
@@ -26,6 +31,7 @@ class PaymentController < ApplicationController
       flash[:alert] = PAYPAL_PENDINGS["#{params[:pending_reason]}"]
     end
     @message = PAYPAL_PENDINGS["#{params[:pending_reason]}"]
+    @payment = current_user.subscription.payments.last
   end
 
   # POST /payment/notify
@@ -36,7 +42,6 @@ class PaymentController < ApplicationController
     logger.info(notify)
    # require 'debugger';debugger
 #    notify.params['payment_status']
-    puts "ITEM ID #{notify.item_id}"
     user = User.find(notify.item_id)
     subscription = user.subscription
     payment = subscription.payments.build(payment_date: notify.params['payment_date'],payer_first_name: notify.params['first_name'],payer_last_name: notify.params['last_name'],payer_email: notify.params['payer_email'],residence_country: notify.params['residence_country'],pending_reason: notify.params['pending_reason'],mc_currency: notify.params['mc_currency'],business_email:  notify.params['business'],payment_type:  notify.params['payment_type'],payer_status:  notify.params['payer_status'],test_ipn:  notify.params['test_ipn'],tax:  notify.params['tax'],txn_id:  notify.params['txn_id'],receiver_email:  notify.params['receiver_email'],payer_id:  notify.params['payer_id'],receiver_id:  notify.params['receiver_id'],payment_status:  notify.params['payment_status'],mc_gross:  notify.params['mc_gross'])

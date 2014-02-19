@@ -4,4 +4,11 @@
       .text-danger
         = @message
   .well
-    .tooltip
+    %label Transaction id
+    %span= @payment.txn_id
+    %label Payer email
+    %span= @payment.payer_email
+    %label Payment status
+    %span= @payment.payment_status
+    %label Amount
+    %span= "€#{@payment.mc_gross}"
