@@ -1,7 +1,13 @@
 class CartController < ApplicationController
 
   def show
-   @tipsters = Tipster.where(id: tipster_ids_in_cart)
+    if tipster_ids_in_cart.empty?
+      flash[:alert] = "Your cart is empty"
+      redirect_to top_tipster_url
+    else
+      @tipsters = Tipster.where(id: tipster_ids_in_cart)
+    end
+
   end
 
   def add_tipster

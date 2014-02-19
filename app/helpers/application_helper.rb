@@ -1,4 +1,27 @@
 module ApplicationHelper
+  def my_devise_error_messages!
+    return "" if resource.errors.empty?
+
+    messages  = ""
+
+    if !resource.errors.empty?
+      messages = resource.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
+    end
+
+    messages = messages
+    sentence = I18n.t("errors.messages.not_saved",
+                      :count => resource.errors.count,
+                      :resource => resource.class.model_name.human.downcase)
+
+    html = <<-HTML
+    <div id="error_explanation" class="alert alert-danger">
+    <label>#{sentence}</label>
+    <ul>#{messages}</ul>
+    </div>
+    HTML
+
+    html.html_safe
+  end
   def bootstrap_class_for flash_type
     case flash_type
       when :success

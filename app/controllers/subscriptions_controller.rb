@@ -6,5 +6,9 @@ class SubscriptionsController < ApplicationController
   end
   def show
     @subscription = current_user.subscription
+    if @subscription.nil? || @subscription.payments.empty?
+      flash[:alert] = "Your need complete payment !"
+      redirect_to registration_path(step: 'offer')
+    end
   end
 end

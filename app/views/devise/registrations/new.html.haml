@@ -1,4 +1,6 @@
+
 %h2 Sign up
+= my_devise_error_messages!
 = simple_form_for :user, :url => user_registration_path, :html => {class: 'form-horizontal'} do |f|
   .form-inputs
     = render 'shared/user_basic_fields', f: f
