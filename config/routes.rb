@@ -24,7 +24,9 @@ TipsterHero::Application.routes.draw do
     post :add_tipster
     post :drop_tipster
   end
-
+  resource :subscriptions , controller: 'subscriptions',:only => [:show] do
+    post :update
+  end
   get '/registration' => 'home#register', as: :registration
   post '/registration' => 'home#register', as: :registration_post
 

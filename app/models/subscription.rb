@@ -5,6 +5,7 @@ class Subscription < ActiveRecord::Base
   belongs_to :user
   has_many :payments
   def calculator_price
-    return self.plan.price.to_f + self.tipsters.size * 9.9
+    puts "PLAN PRICE #{self.plan.price} TIPSTER OFFER #{(self.tipsters.size - 1) * 9.9}"
+    return self.plan.price.to_f + (self.tipsters.size - 1) * 9.9
   end
 end

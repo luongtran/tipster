@@ -12,6 +12,7 @@ class PaymentController < ApplicationController
     tipsters = Tipster.where(id: tipster_ids_in_cart)
     #require 'debugger';debugger
     subscription.tipsters = tipsters
+    subscription.plan_id = session[:plan_id]
     subscription.save
     @plan = Plan.find session[:plan_id]
     @paypal_obj = Hash.new
@@ -30,6 +31,8 @@ class PaymentController < ApplicationController
     if params[:pending_reason] != ''
       flash[:alert] = PAYPAL_PENDINGS["#{params[:pending_reason]}"]
     end
+    session.delete(:cart)
+    session.delete(:plan_id)
     @message = PAYPAL_PENDINGS["#{params[:pending_reason]}"]
     @payment = current_user.subscription.payments.last
   end

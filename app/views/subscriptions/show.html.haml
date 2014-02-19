@@ -1,0 +1,47 @@
+%h1.text-success Subscription Information
+.well
+  %ul
+    %li
+      %span
+        %strong Your plan is :
+      %span #{@subscription.plan.title}
+    %li
+      %span
+        %strong Subscription payment status :
+      %span #{@subscription.payments.last.payment_status}
+    - if @subscription.payments.last.payment_status != "Completed"
+      %li
+        %span
+          %strong Subscription pending reason :
+        %span #{PAYPAL_PENDINGS[@subscription.payments.last.pending_reason]}
+    %li
+      %span
+        %strong Subscription payment transaction id :
+      %span #{@subscription.payments.last.txn_id}
+
+  %table.table.table-bordered
+    %caption List Tipster on Your subscriptions
+    %thead
+      %tr
+        %th Full Name
+        %th Email
+        %th Created at
+        %td Action
+    %tbody
+      - if @subscription.tipsters.nil?
+        %tr
+          %td
+            There are no any tipster found.
+          %td
+          %td
+          %td
+      - else
+        - @subscription.tipsters.each do |tipster|
+          %tr
+            %td
+              = tipster.name
+            %td
+              = tipster.email
+            %td
+              = tipster.created_at.strftime("%m/%d/%Y")
+            %td
