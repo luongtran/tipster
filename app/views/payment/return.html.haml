@@ -1,3 +1,7 @@
 .row-fluid
   .well
-    = @params
+    - if @message
+      .text-danger
+        = @message
+  .well
+    .tooltip
