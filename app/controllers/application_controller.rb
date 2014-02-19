@@ -3,10 +3,6 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  def after_sign_in_path_for(resource)
-    subscriptions_identification_path
-  end
-
   protected
 
   # Clear and create new cart
@@ -22,6 +18,14 @@ class ApplicationController < ActionController::Base
   # Return an array of tipster's id in cart from session
   def tipster_ids_in_cart
     initial_cart_session if session[:cart].nil?
-    session[:cart][:tipster_ids]
+    session[:cart][:tipster_ids].uniq
+  end
+
+  def add_tipster_to_cart(tipster_id)
+    if Tipster.exists?(tipster_id)
+      initial_cart_session if session[:cart].nil?
+      (tipster_ids_in_cart.include? tipster_id) ? flash[:alert] = "Tipster already added to cart" : flash[:notice] = "Tipster added"
+      session[:cart][:tipster_ids] << tipster_id unless tipster_ids_in_cart.include? tipster_id
+    end
   end
 end

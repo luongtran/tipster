@@ -1,6 +1,6 @@
 %table.table.table-bordered
   %caption
-    %h1 Cart show
+    %h2 Your cart
   %thead
     %tr
       %th Full Name
@@ -25,6 +25,6 @@
           %td
             = tipster.created_at.strftime("%m/%d/%Y")
           %td
-            = link_to 'Remove from cart', drop_tipster_from_cart_path(tipster.id),class: 'btn btn-primary' ,method: 'post'
-%div.bottom
-  = link_to "Confirm order and process to identification",subscriptions_identification_url,class: 'btn btn-large btn-success'
+            = form_tag drop_tipster_cart_path do
+              = hidden_field_tag :id, tipster.id
+              %button.btn.btn-success{type: :submit} Remove from cart

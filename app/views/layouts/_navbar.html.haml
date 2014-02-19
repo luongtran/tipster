@@ -5,9 +5,11 @@
       %li
         %a{href: pricing_path} Pricing
       %li
-        %a{href: subscriptions_show_path}= "Cart(#{session[:cart].nil? ? 0 : session[:cart][:tipster_ids].count})"
+        %a{href: cart_path}= "Cart(#{tipster_ids_in_cart.size})"
       %li
         %a{href: top_tipster_path} Tipster
+      %li
+        %a{href: registration_path} Registration process
     %ul.nav.pull-right
       - if current_user
         %li
