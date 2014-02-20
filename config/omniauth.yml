@@ -5,7 +5,9 @@ development:
   google:
     app_id: "721520450986.apps.googleusercontent.com"
     app_secret: "9b8fVLbNGMDS3IVgxLyNKqGg"
-
+  twitter:
+    app_id: "oXw5sbzFyvG56T8mNA4bw"
+    app_secret: "iD2cOWcvC2lQaNWsszjMr6mIoM4iOF5luTPmEg8m0c"
 test:
   facebook:
     app_id: "429968693767890"

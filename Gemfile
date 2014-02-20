@@ -42,7 +42,8 @@ gem 'cancan'
 gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
-
+gem 'omniauth-twitter'
+gem 'twitter'
 # For views
 gem 'haml-rails'
 gem 'haml'
@@ -72,6 +73,8 @@ end
 gem 'activemerchant'
 gem 'paypal-express'
 gem 'paypal-recurring'
+gem 'paypal-sdk-rest'
+
 # DateTime validator
 gem 'validates_timeliness', '~> 3.0'
 

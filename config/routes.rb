@@ -36,6 +36,10 @@ TipsterHero::Application.routes.draw do
     end
   end
 
+  resource :twitter,controller: 'twitter' do
+    get :tweet
+  end
+
   resource :subscriptions, controller: 'subscriptions', :only => [:show] do
     post :update
   end

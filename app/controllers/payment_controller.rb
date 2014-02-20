@@ -60,5 +60,6 @@ class PaymentController < ApplicationController
   def cancel
     redirect_to registration_path(step: 'offer')
   end
+
 end
 
