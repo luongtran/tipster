@@ -65,11 +65,13 @@ group :development do
   gem 'annotate', ">= 2.5.0"
   # Receive email from development
   gem 'mailcatcher'
+  gem 'debugger'
 end
 
 #Paypal billing,payment,refund
 gem 'activemerchant'
 gem 'paypal-express'
+gem 'paypal-recurring'
 
 gem 'paypal-sdk-merchant'
 

@@ -18,6 +18,10 @@
       %span
         %strong Subscription payment transaction id :
       %span #{@subscription.payments.last.txn_id}
+    %li
+      %span
+        %strong Payment start on
+      %span #{@subscription.payments.last.payment_date.in_time_zone("Pacific Time (US & Canada)")}
 
   %table.table.table-bordered
     %caption List Tipster on Your subscriptions
