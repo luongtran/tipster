@@ -24,7 +24,7 @@ class PaymentController < ApplicationController
     @paypal_obj[:amount] = "%05.2f" % (subscription.calculator_price)
     @paypal_obj[:currency] = "EUR"
     @paypal_obj[:item_number] = current_user.id
-    @paypal_obj[:item_name] = "TipsterHero Subscriptions"
+    @paypal_obj[:item_name] = "TipsterHero Subscriptions #{subscription.plan.title}"
     render 'remote.js.haml'
   end
 

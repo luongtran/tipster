@@ -17,13 +17,12 @@
     - else
       - @tipsters.each do |tipster|
         %tr
-          %td
-            = tipster.name
-          %td
-            = tipster.email
-          %td
-            = tipster.created_at.strftime("%m/%d/%Y")
+          %td= tipster.name
+          %td= tipster.email
+          %td= tipster.created_at.strftime("%m/%d/%Y")
           %td
             = form_tag add_tipster_cart_path do
               = hidden_field_tag :id, tipster.id
               %button.btn.btn-success{type: :submit} Add to cart
+.center-block
+  %a.btn.btn-success.btn-large{href: registration_path(step: 'offer')} Continue to checkout page
