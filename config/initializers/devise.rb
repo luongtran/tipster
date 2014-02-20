@@ -13,6 +13,11 @@ goog = OMNIAUTH['google']
 GOOGLE_APP_ID = goog['app_id']
 GOOGLE_APP_SECRET = goog['app_secret']
 
+# Twitter
+twitter = OMNIAUTH['twitter']
+TWITTER_CONSUMER_KEY = twitter['app_id']
+TWITTER_CONSUMER_SECRET = twitter['app_secret']
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -44,7 +49,8 @@ Devise.setup do |config|
   require "omniauth-google-oauth2"
   config.omniauth :google_oauth2, GOOGLE_APP_ID, GOOGLE_APP_SECRET, {access_type: "offline", approval_prompt: ""}
 
-
+  require 'omniauth-twitter'
+  config.omniauth :twitter,TWITTER_CONSUMER_KEY,TWITTER_CONSUMER_SECRET
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating a user. The default is
   # just :email. You can configure it to use [:username, :subdomain], so for

@@ -8,6 +8,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     authorize('Google')
   end
 
+  def twitter
+    authorize('Twitter')
+  end
+
   protected
 
   def authorize(provider = '')

@@ -15,6 +15,9 @@ test:
   google:
     app_id: "920097647662.apps.googleusercontent.com"
     app_secret: "A_6A7lujArGVGhYn2HR7ci7R"
+  twitter:
+    app_id: "oXw5sbzFyvG56T8mNA4bw"
+    app_secret: "iD2cOWcvC2lQaNWsszjMr6mIoM4iOF5luTPmEg8m0c"
 
 # TODO: change this when the app go live.
 production:
