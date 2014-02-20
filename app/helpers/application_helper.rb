@@ -2,7 +2,7 @@ module ApplicationHelper
   def my_devise_error_messages!
     return "" if resource.errors.empty?
 
-    messages  = ""
+    messages = ""
 
     if !resource.errors.empty?
       messages = resource.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
@@ -22,6 +22,7 @@ module ApplicationHelper
 
     html.html_safe
   end
+
   def bootstrap_class_for flash_type
     case flash_type
       when :success
@@ -56,5 +57,13 @@ module ApplicationHelper
 
   def devise_mapping
     @devise_mapping ||= Devise.mappings[:user]
+  end
+
+  def payment_methods_for_select
+    options = []
+    Payment::PAYMENT_METHODS.each_with_index do |p_m, index|
+      options << [p_m.capitalize, key]
+    end
+    options
   end
 end

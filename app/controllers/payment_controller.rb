@@ -11,6 +11,7 @@ class PaymentController < ApplicationController
     else
       @plan = Plan.find session[:plan_id]
     end
+
     unless current_user.subscription
       subscription = current_user.build_subscription(plan_id: session[:plan_id])
     else
@@ -27,6 +28,7 @@ class PaymentController < ApplicationController
     @paypal_obj[:item_number] = current_user.id
     @paypal_obj[:item_name] = "TipsterHero Subscriptions #{subscription.plan.title}"
     render 'remote.js.haml'
+
   end
 
   # GET /payment/return

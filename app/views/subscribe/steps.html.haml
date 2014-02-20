@@ -20,13 +20,13 @@
         %a{href: "#"} Next &raquo;
   .tab-content
     #tab2.tab-pane{class: set_current_register_step('offer')}
-      = render 'users/register/offer' , {tipsters: @data[:tipsters_in_cart], :selected_plan => @data[:selected_plan]}
+      = render 'subscribe/offer' , {tipsters: @data[:tipsters_in_cart], :selected_plan => @data[:selected_plan]}
     #tab1.tab-pane{class: set_current_register_step('identification')}
-      = render 'users/register/identification', {current_profile: @data[:current_profile]}
+      = render 'subscribe/identification', {current_profile: @data[:current_profile]}
     #tab4.tab-pane{class: set_current_register_step('payment')}
-      = render 'users/register/payment'
+      = render 'subscribe/payment'
     #tab5.tab-pane{class: set_current_register_step('confirmation')}
-      = render 'users/register/confirmation'
+      = render 'subscribe/confirmation'
 
 :javascript
   $(document).ready(function() {

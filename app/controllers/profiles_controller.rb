@@ -16,9 +16,9 @@ class ProfilesController < ApplicationController
     @profile = current_user.find_or_initial_profile
     if request.post?
       if @profile.update_attributes(profile_params)
-        flash[:notice] = 'Profile updated successfully'
+        flash.now[:notice] = 'Profile updated successfully'
       else
-        flash[:alert] = 'Profile updated failed'
+        flash.now[:alert] = 'Profile updated failed'
       end
     end
   end

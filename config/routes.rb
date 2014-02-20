@@ -26,13 +26,14 @@ TipsterHero::Application.routes.draw do
     post :add_tipster
     post :drop_tipster
   end
-
-
-  match '/register' => 'users/register#show', as: :register, via: [:get, :post]
-
-  post '/register/identification' => 'users/register#identification', as: :identification_register
-
-  post '/register/payment' => 'users/register#payment', as: :payment_register
+  scope path: '/subscribe', as: :subscribe do
+    controller :subscribe do
+      get :choose_offer
+      match :identification, via: [:get, :post]
+      match :payment_method, via: [:get, :post]
+      match :payment, via: [:get, :post]
+    end
+  end
 
   resource :subscriptions, controller: 'subscriptions', :only => [:show] do
     post :update

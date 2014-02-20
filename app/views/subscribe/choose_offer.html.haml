@@ -1,0 +1,67 @@
+#rootwizard{'data-no-turbolink' => true}
+  .navbar
+    .navbar-inner
+      .container
+        %ul
+          %li.active
+            %a{"data-toggle" => "tab", href: "#tab1"} Choose Offer
+          - unless current_user && current_user.profile
+            %li
+              %a{"data-toggle" => "tab", href: "#tab2"} Identification
+          %li
+            %a{href: subscribe_payment_method_path} Payment Method
+          %li
+            %a{"data-toggle" => "tab", href: "#tab4"} Payment
+          %li
+            %a{"data-toggle" => "tab", href: "#tab5"} Confirmation
+  .tab-content
+    #tab1.tab-pane.active
+      - if @select_plan
+        %h3 Your selected plan:
+        %ul
+          %li
+            Name:
+            %strong= @select_plan.title
+      %hr
+        %h3 Display all plans here
+      %hr
+      %h3 Tipsters:
+      -# Required variables: tipsters_in_cart -> Array of tipster
+      %table.table.table-bordered
+        %thead
+          %tr
+            %th Full Name
+            %th Email
+            %th Created at
+            %td Action
+        %tbody
+          - if @tipsters_in_cart.blank?
+            %tr
+              %td
+                There are no any tipster found.
+              %td
+              %td
+              %td
+          - else
+            - @tipsters_in_cart.each do |tipster|
+              %tr
+                %td
+                  = tipster.name
+                %td
+                  = tipster.email
+                %td
+                  = tipster.created_at.strftime("%m/%d/%Y")
+                %td
+                  = form_tag drop_tipster_cart_path do
+                    = hidden_field_tag :id, tipster.id
+                    %button.btn.btn-small.btn-danger{type: :submit} Remove from Cart
+
+      .text-right
+        %h4
+          Total : $1000
+        %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
+
+:javascript
+  $(document).ready(function() {
+      $('#rootwizard').bootstrapWizard();
+  });

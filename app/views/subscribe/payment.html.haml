@@ -1,0 +1,55 @@
+#rootwizard{'data-no-turbolink' => true}
+  .navbar
+    .navbar-inner
+      .container
+        %ul
+          %li
+            %a{href: subscribe_choose_offer_path} Choose Offer
+          -# TODO, bad code -> query DB here
+          - unless current_user && current_user.profile
+            %li
+              %a{"data-toggle" => "tab", href: "#tab2"} Identification
+          %li
+            %a{ href: subscribe_payment_method_path} Payment Method
+          %li.active
+            %a{"data-toggle" => "tab", href: "#tab4"} Payment
+          %li
+            %a{"data-toggle" => "tab", href: "#tab5"} Confirmation
+  .tab-content
+    #tab4.tab-pane.active
+      %h3 Please review your selection
+      %ul
+        %li Plan : xyz
+        %li Tipsters: 1,2,3
+      %hr
+      %h3 Would you win a bonus? Help us
+      Here is like Fakebook or Twitter recommend
+      %h3 Coupon
+      %input{type: :text, placeholder: 'example'}
+      %hr
+        %ul
+          %li
+            %strong
+              Subtotal:
+              $
+              = @amount + 50
+          %li
+            %strong
+              Discount:
+              $
+              = 50
+          %li
+            \--------------
+          %li
+            %strong
+              Total:
+              $
+              = @amount
+
+        %form{url: subscribe_payment_path}
+          %h4 Paypal form here!
+          %button.btn.btn-large.btn-success{type: :submit} Pay now
+:javascript
+  $(document).ready(function() {
+      $('#rootwizard').bootstrapWizard();
+  });

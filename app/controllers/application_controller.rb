@@ -7,6 +7,11 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  # Render bad request(invalid params, etc ...)
+  def render_400
+    render nothing: true, status: 400
+  end
+
   def fill_profile
     if current_user && !current_user.profile
       redirect_to my_profile_url, notice: 'Please update your profile'

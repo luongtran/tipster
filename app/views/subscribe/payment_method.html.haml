@@ -1,0 +1,30 @@
+#rootwizard{'data-no-turbolink' => true}
+  .navbar
+    .navbar-inner
+      .container
+        %ul
+          %li
+            %a{ href: subscribe_choose_offer_path} Choose Offer
+          - unless current_user && current_user.profile
+            %li
+              %a{"data-toggle" => "tab", href: "#tab2"} Identification
+          %li.active
+            %a{"data-toggle" => "tab", href: "#tab3"} Payment Method
+          %li
+            %a{"data-toggle" => "tab", href: "#tab4"} Payment
+          %li
+            %a{"data-toggle" => "tab", href: "#tab5"} Confirmation
+  .tab-content
+    #tab3.tab-pane.active
+      %h3 Select a payment method
+      = simple_form_for :nothing, url: subscribe_payment_method_path do |f|
+        = hidden_field_tag :method, Payment::BY_PAYPAL
+        %button.btn.btn-primary.btn-large{type: :submit} With Paypal
+
+      = simple_form_for :nothing, url: subscribe_payment_method_path do |f|
+        = hidden_field_tag :method, Payment::BY_FRENCH_BANK
+        %button.btn.btn-warning.btn-large{type: :submit} French Bank
+:javascript
+  $(document).ready(function() {
+      $('#rootwizard').bootstrapWizard();
+  });
