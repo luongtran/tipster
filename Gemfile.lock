@@ -83,11 +83,12 @@ GEM
       warden (~> 1.2.3)
     equalizer (0.0.9)
     erubis (2.7.0)
-    eventmachine (1.0.3)
     eventmachine (1.0.3-x86-mingw32)
     execjs (2.0.2)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
+    fql (0.3.1)
+      multi_json
     haml (4.0.5)
       tilt
     haml-rails (0.5.1)
@@ -142,8 +143,6 @@ GEM
     multipart-post (2.0.0)
     mysql2 (0.3.13)
     naught (1.0.0)
-    nokogiri (1.6.1)
-      mini_portile (~> 0.5.0)
     nokogiri (1.6.1-x86-mingw32)
       mini_portile (~> 0.5.0)
     oauth (0.4.7)
@@ -184,7 +183,7 @@ GEM
     paypal-sdk-rest (0.6.0)
       paypal-sdk-core (~> 0.2.4)
       uuidtools (~> 2.1)
-    polyglot (0.3.3)
+    polyglot (0.3.4)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
@@ -233,7 +232,7 @@ GEM
     skinny (0.2.3)
       eventmachine (~> 1.0.0)
       thin (~> 1.5.0)
-    sprockets (2.10.1)
+    sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
@@ -295,6 +294,7 @@ DEPENDENCIES
   country_select
   debugger
   devise
+  fql
   haml
   haml-rails
   hirb

@@ -24,6 +24,8 @@
       %hr
       %h3 Would you win a bonus? Help us
       Here is like Fakebook or Twitter recommend
+      %iframe{allowtransparency: "true", frameborder: "0", scrolling: "no", src: "//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FBet-Advisor%2F136780313136037&width&layout=standard&action=like&show_faces=true&share=true&height=80", style: "border:none; overflow:hidden; height:80px;"}
+
       %h3 Coupon
       %input{type: :text, placeholder: 'example'}
       %hr
@@ -47,4 +49,11 @@
 :javascript
   $(document).ready(function() {
       $('#rootwizard').bootstrapWizard();
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
   });

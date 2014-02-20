@@ -78,3 +78,5 @@ gem 'paypal-sdk-rest'
 # DateTime validator
 gem 'validates_timeliness', '~> 3.0'
 
+# Facebook Query Language
+gem 'fql'
