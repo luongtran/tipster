@@ -1,22 +1,6 @@
 .row-fluid
-  .well
-    %h2.text-center My profile
-    %dl.dl-horizontal
-      %dt Civility
-      %dd= @profile.civility
-      %dt Birthday
-      %dd= @profile.birthday
-      %dt Address
-      %dd= @profile.address
-      %dt City
-      %dd= @profile.city
-      %dt Country
-      %dd= @profile.country
-      %dt Zip code
-      %dd= @profile.zip_code
-      %dt Mobile phone
-      %dd= @profile.mobile_phone
-      %dt Telephone
-      %dd= @profile.telephone
-      %dt Favorite Betting Site
-      %dd= @profile.favorite_betting_website
+  %h2.text-center My profile
+  = simple_form_for @profile, url: my_profile_path, method: 'POST' do |f|
+    = render 'form', f: f
+    .form-actions
+      = f.button :submit, "Save"

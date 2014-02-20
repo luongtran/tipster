@@ -1,21 +1,6 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
-
-  #This only example
-  def new
-    @profile = current_user.find_or_initial_profile
-  end
-
-  def create
-    @profile = current_user.find_or_initial_profile
-    params.permit!
-    @profile.assign_attributes(params[:profile])
-    if @profile.save
-      redirect_to root_url
-    else
-      render :action => :new
-    end
-  end
+  skip_before_action :fill_profile, only: [:my_profile, :update]
 
   def update
     @profile = current_user.find_or_initial_profile
@@ -29,6 +14,13 @@ class ProfilesController < ApplicationController
 
   def my_profile
     @profile = current_user.find_or_initial_profile
+    if request.post?
+      if @profile.update_attributes(profile_params)
+        flash[:notice] = 'Profile updated successfully'
+      else
+        flash[:alert] = 'Profile updated failed'
+      end
+    end
   end
 
   private

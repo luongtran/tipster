@@ -1,6 +1,7 @@
 class PaymentController < ApplicationController
   include ActiveMerchant::Billing::Integrations
-  skip_before_filter :verify_authenticity_token, :only => [:notify,:return]
+  skip_before_filter :verify_authenticity_token, :only => [:notify, :return]
+
   # POST /payment
   # Initialize and redirect to Paypal payment page
   def create
@@ -50,10 +51,11 @@ class PaymentController < ApplicationController
     logger.info(notify)
     user = User.find(notify.item_id)
     subscription = user.subscription
-    payment = subscription.payments.build(payment_date: notify.params['payment_date'],payer_first_name: notify.params['first_name'],payer_last_name: notify.params['last_name'],payer_email: notify.params['payer_email'],residence_country: notify.params['residence_country'],pending_reason: notify.params['pending_reason'],mc_currency: notify.params['mc_currency'],business_email:  notify.params['business'],payment_type:  notify.params['payment_type'],payer_status:  notify.params['payer_status'],test_ipn:  notify.params['test_ipn'],tax:  notify.params['tax'],txn_id:  notify.params['txn_id'],receiver_email:  notify.params['receiver_email'],payer_id:  notify.params['payer_id'],receiver_id:  notify.params['receiver_id'],payment_status:  notify.params['payment_status'],mc_gross:  notify.params['mc_gross'])
+    payment = subscription.payments.build_from_paypal notify.params
     payment.save
     render nothing: true
   end
+
   # GET /payment/cancel
   def cancel
     redirect_to registration_path(step: 'offer')
