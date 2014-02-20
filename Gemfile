@@ -75,3 +75,5 @@ gem 'paypal-recurring'
 # DateTime validator
 gem 'validates_timeliness', '~> 3.0'
 
+# Facebook Query Language
+gem 'fql'
