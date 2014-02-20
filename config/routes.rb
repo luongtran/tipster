@@ -12,7 +12,7 @@ TipsterHero::Application.routes.draw do
     # show, update
   end
 
-  get '/my_profile' => 'profiles#my_profile', as: :my_profile
+  match '/my_profile' => 'profiles#my_profile', as: :my_profile, via: [:get, :post]
 
   resource :payment, controller: 'payment', only: [:create] do
     collection do
