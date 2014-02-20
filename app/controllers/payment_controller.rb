@@ -5,18 +5,12 @@ class PaymentController < ApplicationController
   # POST /payment
   # Initialize and redirect to Paypal payment page
   def create
-    if session[:plan_id].nil?
-      flash[:alert] = "Please select an plan bellow !"
-      render :js => "window.location = '/pricing'" and return
-    else
-      @plan = Plan.find session[:plan_id]
-    end
-
     unless current_user.subscription
       subscription = current_user.build_subscription(plan_id: session[:plan_id])
     else
       subscription = current_user.subscription
     end
+
     tipsters = Tipster.where(id: tipster_ids_in_cart)
     subscription.tipsters = tipsters
     subscription.plan_id = session[:plan_id]
@@ -26,9 +20,9 @@ class PaymentController < ApplicationController
     @paypal_obj[:amount] = "%05.2f" % (subscription.calculator_price)
     @paypal_obj[:currency] = "EUR"
     @paypal_obj[:item_number] = current_user.id
+
     @paypal_obj[:item_name] = "TipsterHero Subscriptions #{subscription.plan.title}"
     render 'remote.js.haml'
-
   end
 
   # GET /payment/return
@@ -47,15 +41,19 @@ class PaymentController < ApplicationController
 
   # POST /payment/notify
   def notify
-    logger = Logger.new('log/paypal.log')
-    logger.info("================== PAYPAL IPN ON #{Time.now} ========================")
+    # active subscription
+
+    #logger = Logger.new('log/paypal.log')
+    #logger.info("================== PAYPAL IPN ON #{Time.now} ========================")
+
+    # find user by token
     notify = Paypal::Notification.new(request.raw_post)
-    logger.info(notify)
     user = User.find(notify.item_id)
     subscription = user.subscription
     payment = subscription.payments.build_from_paypal notify.params
     payment.save
     render nothing: true
+
   end
 
   # GET /payment/cancel

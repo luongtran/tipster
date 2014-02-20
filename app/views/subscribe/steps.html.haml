@@ -20,7 +20,7 @@
         %a{href: "#"} Next &raquo;
   .tab-content
     #tab2.tab-pane{class: set_current_register_step('offer')}
-      = render 'subscribe/offer' , {tipsters: @data[:tipsters_in_cart], :selected_plan => @data[:selected_plan]}
+      = render 'subscribe/choose_offer' , {tipsters: @data[:tipsters_in_cart], :selected_plan => @data[:selected_plan]}
     #tab1.tab-pane{class: set_current_register_step('identification')}
       = render 'subscribe/identification', {current_profile: @data[:current_profile]}
     #tab4.tab-pane{class: set_current_register_step('payment')}
