@@ -30,25 +30,20 @@
         %ul
           %li
             %strong
-              Subtotal:
-              $
-              = @amount + 50
-          %li
-            %strong
-              Discount:
-              $
-              = 50
-          %li
-            \--------------
-          %li
-            %strong
               Total:
               $
               = @amount
-
-        %form{url: subscribe_payment_path}
           %h4 Paypal form here!
-          %button.btn.btn-large.btn-success{type: :submit} Pay now
+        - payment_service_for  @pp_object[:item_number], PAYPAL_ACCOUNT, :amount => @pp_object[:amount],
+             :currency => @pp_object[:currency], :service => :paypal, :html => {:class=>"form-paypal"} do |service|
+        - service.tax "0.00"
+        - service.item_name @pp_object[:item_name]
+        - service.item_number @pp_object[:item_number]
+        - service.notify_url notify_payment_url
+        - service.return_url subscribe_success_url
+        - service.cancel_return_url cancel_payment_url
+        - hidden_field_tag :user_id, @pp_object[:user_id]
+          = image_submit_tag('https://www.paypal.com/en_US/i/btn/x-click-but03.gif', alt:'Make Payment with Paypal')
 :javascript
   $(document).ready(function() {
       $('#rootwizard').bootstrapWizard();

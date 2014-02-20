@@ -34,11 +34,9 @@ class ApplicationController < ActionController::Base
     session[:cart][:tipster_ids].uniq
   end
 
-  def add_tipster_to_cart(tipster_id)
-    if Tipster.exists?(tipster_id)
-      initial_cart_session if session[:cart].nil?
-      (tipster_ids_in_cart.include? tipster_id) ? flash[:alert] = "Tipster already added to cart" : flash[:notice] = "Tipster added"
-      session[:cart][:tipster_ids] << tipster_id unless tipster_ids_in_cart.include? tipster_id
-    end
+  def empty_subscribe_session
+    empty_cart_session
+    session[:plan_id] = nil
+    # Maybe clear more session vars: coupon code, payment info ...
   end
 end

@@ -1,8 +1,5 @@
 class SubscribeController < ApplicationController
-
-  #def show
-  #  render_step(params[:step] || 'identification')
-  #end
+  skip_before_filter :verify_authenticity_token, :only => [:success]
 
   def identification
     action = params[:act]
@@ -22,11 +19,31 @@ class SubscribeController < ApplicationController
   def payment
     if is_ready_to_payment?
       # Calculate amount and show the paypal form
-      @amount = Plan.calculate_amount(
-          :plan_id => session[:plan_id],
-          :tipster_count => tipster_ids_in_cart.size,
-          :discount_code => 'change-me'
-      )
+
+      unless current_user.subscription
+        subscription = current_user.build_subscription(plan_id: session[:plan_id])
+      else
+        subscription = current_user.subscription
+      end
+
+      tipsters = Tipster.where(id: tipster_ids_in_cart)
+      subscription.tipsters = tipsters
+      subscription.plan_id = session[:plan_id]
+      subscription.save
+
+      #@amount = Plan.calculate_amount(
+      #    :plan_id => session[:plan_id],
+      #    :tipster_count => tipster_ids_in_cart.size,
+      #    :discount_code => 'change-me'
+      #)
+      @amount = subscription.calculator_price
+      @pp_object = Hash.new
+      @pp_object[:amount] = "%05.2f" % @amount
+      @pp_object[:currency] = "EUR"
+      # Reply item_number by token of payment
+      @pp_object[:item_number] = current_user.id
+      @pp_object[:item_name] = "TipsterHero Subscriptions #{subscription.plan.title}"
+
     else
       # Check the payment conditions, display notice and redirect user back to the suite step
       redirect_to subscribe_identification_path
@@ -72,12 +89,21 @@ class SubscribeController < ApplicationController
     @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
   end
 
+  # TODO, shouldn 't skip_validate_csfr_token
+  # Return from paypal
+  def success
+    flash[:alert] = I18n.t("paypal_pending_reasons.#{'address'}") if params[:pending_reason].presence
+    empty_subscribe_session
+    @message = PAYPAL_PENDINGS["#{params[:pending_reason]}"]
+    @payment = current_user.subscription.payments.last
+  end
+
   private
 
   def render_step(current_step)
     prepare_registration_data
     @current_step = current_step
-    render 'users/register/steps'
+    render ' users/register/steps '
   end
 
   def prepare_registration_data
