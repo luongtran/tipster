@@ -72,9 +72,6 @@ end
 gem 'activemerchant'
 gem 'paypal-express'
 gem 'paypal-recurring'
-
-gem 'paypal-sdk-merchant'
-
 # DateTime validator
 gem 'validates_timeliness', '~> 3.0'
 
