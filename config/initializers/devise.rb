@@ -17,7 +17,7 @@ GOOGLE_APP_SECRET = goog['app_secret']
 twitter = OMNIAUTH['twitter']
 TWITTER_CONSUMER_KEY = twitter['app_id']
 TWITTER_CONSUMER_SECRET = twitter['app_secret']
-TWITTER_TWEET = 'Tipster Hero @tipsterhero @NgThanhQuang @luongtd @HtLuan'
+TWITTER_TWEET = 'Tipster Hero |  http://www.tipsterhero.com @tipsterhero @NgThanhQuang @luongtd @HtLuan'
 
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
