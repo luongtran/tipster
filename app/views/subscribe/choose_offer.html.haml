@@ -24,7 +24,7 @@
             %strong= @select_plan.title
           %li
             Price:
-            %strong= "€ #{@select_plan.price}"
+            %strong= "€ #{@select_plan.price} / Month"
         %a{href: pricing_path} Select another plan?
       - unless @select_plan && @select_plan.free?
         %h3 Would you win a bonus? Help us
@@ -64,9 +64,12 @@
                       = hidden_field_tag :id, tipster.id
                       = hidden_field_tag :return_url, subscribe_choose_offer_path
                       %button.btn.btn-small.btn-danger{type: :submit} Remove
-        .text-right
-          %h4 Total:
-          %span#total_price
+        - if @total_price
+          .text-right
+            %h4
+              Total:
+              %span#total_price
+                = "€#{@total_price.round(3)}"
           %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
 
       - if @select_plan && @select_plan.free?

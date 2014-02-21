@@ -45,6 +45,12 @@
       %td Ability to switch tipsters
       - @plans.each do |plan|
         %td
-          = '€' +  plan.price.to_s
+          = '€' +  plan.price.to_s + '/ month'
           %br
-          = link_to 'Subscribe', select_subscription_path(plan.id),class: 'btn btn-success'
+          - unless @selected_plan == plan.id
+            - if plan.id < @selected_plan
+              = link_to 'Downgrade', select_subscription_path(plan.id),class: 'btn btn-warning'
+            - else
+              = link_to 'Upgrade', select_subscription_path(plan.id),class: 'btn btn-success'
+          - else
+            %label.label.label-primary Current Plan

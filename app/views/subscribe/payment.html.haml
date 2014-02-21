@@ -43,18 +43,18 @@
         \- Plan price:
         %strong €#{@select_plan.price}
         %br
-        \- Tipster price bonus:
+        \- Adder tipster price:
         %strong €#{@select_tipsters.size > @select_plan.number_tipster ? (@select_tipsters.size - @select_plan.number_tipster) * 9.9 : 0}
-        %br
-        \- Subtotal:
-        %strong €#{@amount.round(3)}
         %br
         \- Discount:
         %strong €#{@discount.to_i}
         %br
-        - if session[:coupon_id]
-          \- Discount:
-          %strong - €3
+        \- Subtotal:
+        %strong €#{(@amount / @select_plan.period).round(3)}
+        %br
+        \_______________________
+        %br
+        \ *#{@select_plan.period} Month
         %br
         \_______________________
         %br
