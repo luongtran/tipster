@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_one :subscription # Here it's has_many
   has_one :profile, dependent: :destroy
   has_many :invoices
+  has_many :coupon_codes
   accepts_nested_attributes_for :profile
 
   # ==============================================================================

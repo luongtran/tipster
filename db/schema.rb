@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140220023051) do
+ActiveRecord::Schema.define(version: 20140221011747) do
 
   create_table "authorizations", force: true do |t|
     t.integer  "user_id"
@@ -29,6 +29,17 @@ ActiveRecord::Schema.define(version: 20140220023051) do
     t.integer "cart_id"
     t.integer "tipster_id"
   end
+
+  create_table "coupon_codes", force: true do |t|
+    t.integer  "user_id"
+    t.string   "code",                       null: false
+    t.string   "source"
+    t.boolean  "is_used",    default: false
+    t.datetime "used_at"
+    t.datetime "created_at",                 null: false
+  end
+
+  add_index "coupon_codes", ["user_id"], name: "index_coupon_codes_on_user_id", using: :btree
 
   create_table "invoices", force: true do |t|
     t.integer  "user_id"

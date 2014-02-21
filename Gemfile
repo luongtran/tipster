@@ -80,3 +80,5 @@ gem 'validates_timeliness', '~> 3.0'
 
 # Facebook Query Language
 gem 'fql'
+
+gem "social-buttons", '~> 0.3'
