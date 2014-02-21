@@ -12,7 +12,7 @@
         %li
           %span
             %strong Subscription pending reason :
-          %span #{PAYPAL_PENDINGS[last_payment.pending_reason]}
+          %span #{t("paypal_pending_reasons.#{params[:pending_reason]}")}
       - elsif last_payment
         %li
           %span

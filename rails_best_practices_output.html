@@ -57,23 +57,9 @@
       to see more useful Rails Best Practices.
     </p>
     <p>
-        Found 32 warnings.
+        Found 25 warnings.
     </p>
     <table>
-          <tr>
-              <td>
-                <input type="checkbox" class="error-type" id="AlwaysAddDbIndexReview" value="AlwaysAddDbIndexReview"
-                />&nbsp;<label for="AlwaysAddDbIndexReview">Always Add Db Index</label>
-              </td>
-              <td>
-                <input type="checkbox" class="error-type" id="RemoveUnusedMethodsInControllersReview" value="RemoveUnusedMethodsInControllersReview"
-                />&nbsp;<label for="RemoveUnusedMethodsInControllersReview">Remove Unused Methods In Controllers</label>
-              </td>
-              <td>
-                <input type="checkbox" class="error-type" id="UseModelAssociationReview" value="UseModelAssociationReview"
-                />&nbsp;<label for="UseModelAssociationReview">Use Model Association</label>
-              </td>
-          </tr>
           <tr>
               <td>
                 <input type="checkbox" class="error-type" id="MoveModelLogicIntoModelReview" value="MoveModelLogicIntoModelReview"
@@ -84,18 +70,22 @@
                 />&nbsp;<label for="RemoveUnusedMethodsInHelpersReview">Remove Unused Methods In Helpers</label>
               </td>
               <td>
-                <input type="checkbox" class="error-type" id="UseScopeAccessReview" value="UseScopeAccessReview"
-                />&nbsp;<label for="UseScopeAccessReview">Use Scope Access</label>
+                <input type="checkbox" class="error-type" id="UseModelAssociationReview" value="UseModelAssociationReview"
+                />&nbsp;<label for="UseModelAssociationReview">Use Model Association</label>
               </td>
           </tr>
           <tr>
               <td>
-                <input type="checkbox" class="error-type" id="RemoveEmptyHelpersReview" value="RemoveEmptyHelpersReview"
-                />&nbsp;<label for="RemoveEmptyHelpersReview">Remove Empty Helpers</label>
+                <input type="checkbox" class="error-type" id="RemoveUnusedMethodsInControllersReview" value="RemoveUnusedMethodsInControllersReview"
+                />&nbsp;<label for="RemoveUnusedMethodsInControllersReview">Remove Unused Methods In Controllers</label>
               </td>
               <td>
                 <input type="checkbox" class="error-type" id="RemoveUnusedMethodsInModelsReview" value="RemoveUnusedMethodsInModelsReview"
                 />&nbsp;<label for="RemoveUnusedMethodsInModelsReview">Remove Unused Methods In Models</label>
+              </td>
+              <td>
+                <input type="checkbox" class="error-type" id="UseScopeAccessReview" value="UseScopeAccessReview"
+                />&nbsp;<label for="UseScopeAccessReview">Use Scope Access</label>
               </td>
           </tr>
         <tr>
@@ -114,51 +104,6 @@
         </tr>
       </thead>
       <tbody>
-          <tr class="AlwaysAddDbIndexReview">
-            <td class='filename'>
-                db/schema.rb
-            </td>
-            <td class='line'>60</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/21-always-add-db-index' target='_blank'>always add db index (payments => [subscription_id])</a>
-            </td>
-          </tr>
-          <tr class="AlwaysAddDbIndexReview">
-            <td class='filename'>
-                db/schema.rb
-            </td>
-            <td class='line'>60</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/21-always-add-db-index' target='_blank'>always add db index (payments => [coupon_code_id])</a>
-            </td>
-          </tr>
-          <tr class="AlwaysAddDbIndexReview">
-            <td class='filename'>
-                db/schema.rb
-            </td>
-            <td class='line'>122</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/21-always-add-db-index' target='_blank'>always add db index (subscriber_tipsters => [subscription_id])</a>
-            </td>
-          </tr>
-          <tr class="AlwaysAddDbIndexReview">
-            <td class='filename'>
-                db/schema.rb
-            </td>
-            <td class='line'>129</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/21-always-add-db-index' target='_blank'>always add db index (subscriptions => [user_id])</a>
-            </td>
-          </tr>
-          <tr class="AlwaysAddDbIndexReview">
-            <td class='filename'>
-                db/schema.rb
-            </td>
-            <td class='line'>129</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/21-always-add-db-index' target='_blank'>always add db index (subscriptions => [plan_id])</a>
-            </td>
-          </tr>
           <tr class="MoveModelLogicIntoModelReview">
             <td class='filename'>
                 app/controllers/payment_controller.rb
@@ -184,15 +129,6 @@
             <td class='line'>18</td>
             <td class='message'>
               <a href='http://rails-bestpractices.com/posts/7-move-model-logic-into-the-model' target='_blank'>move model logic into model ( use_count > 4)</a>
-            </td>
-          </tr>
-          <tr class="RemoveEmptyHelpersReview">
-            <td class='filename'>
-                app/helpers/twitter_helper.rb
-            </td>
-            <td class='line'>1</td>
-            <td class='message'>
-              <a href='http://rails-bestpractices.com/posts/72-remove-empty-helpers' target='_blank'>remove empty helpers</a>
             </td>
           </tr>
           <tr class="RemoveUnusedMethodsInControllersReview">
@@ -323,15 +259,6 @@
           </tr>
           <tr class="RemoveUnusedMethodsInModelsReview">
             <td class='filename'>
-                app/models/plan.rb
-            </td>
-            <td class='line'>5</td>
-            <td class='message'>
-              <a href='' target='_blank'>remove unused methods (Plan#calculate_amount)</a>
-            </td>
-          </tr>
-          <tr class="RemoveUnusedMethodsInModelsReview">
-            <td class='filename'>
                 app/models/profile.rb
             </td>
             <td class='line'>49</td>
@@ -352,7 +279,7 @@
             <td class='filename'>
                 app/models/subscription.rb
             </td>
-            <td class='line'>21</td>
+            <td class='line'>28</td>
             <td class='message'>
               <a href='' target='_blank'>remove unused methods (Subscription#one_shoot_price)</a>
             </td>

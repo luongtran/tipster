@@ -17,7 +17,7 @@
         %li
           %span
             %strong Pending reason
-          %span= PAYPAL_PENDINGS["#{params[:pending_reason]}"]
+          %span= t("paypal_pending_reasons.#{params[:pending_reason]}")
       %li
         %span
           %strong Payer email

@@ -23,11 +23,10 @@ class SubscribeController < ApplicationController
     else
       subscription = current_user.subscription
     end
-
-    tipsters = Tipster.where(id: tipster_ids_in_cart)
-    subscription.tipsters = tipsters
+    @select_tipsters ||= Tipster.where(id: tipster_ids_in_cart)
+    subscription.tipsters = @select_tipsters
     subscription.plan_id = session[:plan_id]
-    # FIXME,  the subscription must be set to inactive till payment done
+    # FIXME,  the subscription must be set to inactive until user pay done
     subscription.save
 
     @amount = subscription.calculator_price
@@ -41,13 +40,10 @@ class SubscribeController < ApplicationController
 
   # GET|POST /register/payment_method
   def payment_method
-    if request.get?
-      # Re-calculate the amount
-    else
+    if request.post
       # Get the payment method selected
       method = params[:method]
       if method == Payment::BY_PAYPAL
-        # Redirect to 'payment' action
         redirect_to subscribe_payment_url
       elsif method == Payment::BY_FRENCH_BANK
         # Redirect to action paywith_french_bank
@@ -64,7 +60,7 @@ class SubscribeController < ApplicationController
     @select_plan = Plan.where(id: session[:plan_id]).first
     @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
     if @select_plan && !@tipsters_in_cart.blank?
-        @total_price = (@select_plan.price + (@tipsters_in_cart.size > @select_plan.number_tipster ? (@tipsters_in_cart.size - @select_plan.number_tipster )* 9.9 : 0))* @select_plan.period
+      @total_price = (@select_plan.price + (@tipsters_in_cart.size > @select_plan.number_tipster ? (@tipsters_in_cart.size - @select_plan.number_tipster)* 9.9 : 0))* @select_plan.period
     end
   end
 
@@ -73,7 +69,7 @@ class SubscribeController < ApplicationController
   def success
     flash[:alert] = I18n.t("paypal_pending_reasons.#{'address'}") if params[:pending_reason].presence
     empty_subscribe_session
-    @message = PAYPAL_PENDINGS["#{params[:pending_reason]}"]
+    @message = t("paypal_pending_reasons.#{params[:pending_reason]}")
     @payment = current_user.subscription.payments.last
   end
 
