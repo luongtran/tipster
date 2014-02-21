@@ -144,4 +144,8 @@ class SubscribeController < ApplicationController
   def profile_params
     params[:profile].permit!
   end
+
+  def already_has_subscription?
+    current_user && current_user.subscription && current_user.subscription.payments && current_user.subscription.payments.last
+  end
 end
