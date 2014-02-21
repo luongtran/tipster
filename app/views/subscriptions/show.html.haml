@@ -34,7 +34,7 @@
         %li
           %span
             %strong Your payment was not completed.
-
+  - if @subscription.payments.last
     %table.table.table-bordered
       %caption List Tipster on Your subscriptions
       %thead
