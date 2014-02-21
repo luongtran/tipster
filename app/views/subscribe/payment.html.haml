@@ -1,3 +1,5 @@
+-#= javascript_include_tag 'jquery.fbjlike'
+= javascript_include_tag 'jquery.twitterbutton'
 #rootwizard{'data-no-turbolink' => true}
   .navbar
     .navbar-inner
@@ -25,9 +27,10 @@
       %h3 Would you win a bonus? Help us
       .span12
         .span4{style: 'padding: 10px; border: 1px solid #dadada'}
-          = tweet_button
-        .span4{style: 'padding: 10px; border: 1px solid #dadada'}
           = like_button '548927411872156', href: 'https://www.facebook.com/BetAdvisor', layout: :standard, show_faces: true
+        .span4{style: 'padding: 10px; border: 1px solid #dadada'}
+          = tweet_button
+
       %br
       -#%iframe{allowtransparency: "true", frameborder: "0", scrolling: "no", src: "//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FBet-Advisor%2F136780313136037&width&layout=standard&action=like&show_faces=true&share=true&height=80", style: "border:none; overflow:hidden; height:80px;"}
       %div{style: 'clear:both'}
@@ -54,11 +57,31 @@
 :javascript
   $(document).ready(function() {
       $('#rootwizard').bootstrapWizard();
-        (function(d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js = d.createElement(s); js.id = id;
-          js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-          fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
+        // In your onload handler add this call
+        FB.Event.subscribe('edge.create', function(href, html_element) {
+           $.ajax({
+             type: 'POST',
+             url: '/subscribe/get_coupon_code',
+             dataType: 'json',
+             data: {source:' facebook', href: href},
+             success: function(response) {
+               alert('your coupon code:' + response.code);
+             }
+           });
+        });
+        FB.Event.subscribe('edge.remove', function(href, widget) {
+           alert('Unliked');
+         });
+
+         twttr.events.bind('tweet', function (event) {
+           $.ajax({
+             type: 'POST',
+             url: '/subscribe/get_coupon_code',
+             dataType: 'json',
+             data: {source:'twitter'},
+             success: function(response) {
+               alert('your coupon code:' + response.code);
+             }
+           });
+         });
   });

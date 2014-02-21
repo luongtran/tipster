@@ -1,3 +1,6 @@
 SocialButtons.config :tweet do |tweet|
-  tweet.default_options = {:via => "myself"}
+  social.tweet do |tweet|
+    tweet.default_options = {:via => "@tipsterhero"}
+  end
+  #social.like.default_options = {:via => "myself"}
 end

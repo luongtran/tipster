@@ -98,6 +98,13 @@ class SubscribeController < ApplicationController
     @payment = current_user.subscription.payments.last
   end
 
+
+  def get_coupon_code
+    cc = CouponCode.create_for_user(current_user)
+    # check if href param == fanpage url
+    render :json => {:code => cc.code}
+  end
+
   private
 
   def render_step(current_step)
