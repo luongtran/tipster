@@ -1,5 +1,3 @@
--#= javascript_include_tag 'jquery.fbjlike'
-= javascript_include_tag 'jquery.twitterbutton'
 #rootwizard{'data-no-turbolink' => true}
   .navbar
     .navbar-inner
@@ -28,10 +26,9 @@
       .span12
         .span4{style: 'padding: 10px; border: 1px solid #dadada'}
           = like_button '548927411872156', href: 'https://www.facebook.com/BetAdvisor', layout: :standard, show_faces: true
-        .span4{style: 'padding: 10px;border:1px solid #F24A21'}
-          %a{href: @twitter_url} Tweet
         .span4{style: 'padding: 10px; border: 1px solid #dadada'}
           = tweet_button
+
       %br
       -#%iframe{allowtransparency: "true", frameborder: "0", scrolling: "no", src: "//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FBet-Advisor%2F136780313136037&width&layout=standard&action=like&show_faces=true&share=true&height=80", style: "border:none; overflow:hidden; height:80px;"}
       %div{style: 'clear:both'}
@@ -59,15 +56,27 @@
   $(document).ready(function() {
       $('#rootwizard').bootstrapWizard();
         // In your onload handler add this call
-        FB.Event.subscribe('edge.create', function(href, html_element) {
-           $.ajax({
-             type: 'POST',
-             url: '/subscribe/get_coupon_code',
-             dataType: 'json',
-             data: {source:' facebook', href: href},
-             success: function(response) {
-               alert('your coupon code:' + response.code);
+
+        var make_request_coupon = function(data_request) {
+          $.ajax({
+           type: 'POST',
+           url: '/subscribe/get_coupon_code',
+           dataType: 'json',
+           data: data_request,
+           success: function(response) {
+             if(response.success) {
+               alert('Your coupon code is: ' + response.code);
+             } else {
+               alert('Your coupon code is: ' + response.message);
              }
+           }
+         });
+        };
+
+        FB.Event.subscribe('edge.create', function(href, html_element) {
+           make_request_coupon({
+             source:'facebook',
+             href: href
            });
         });
         FB.Event.subscribe('edge.remove', function(href, widget) {
@@ -75,14 +84,8 @@
          });
 
          twttr.events.bind('tweet', function (event) {
-           $.ajax({
-             type: 'POST',
-             url: '/subscribe/get_coupon_code',
-             dataType: 'json',
-             data: {source:'twitter'},
-             success: function(response) {
-               alert('your coupon code:' + response.code);
-             }
-           });
+          make_request_coupon({
+            source:'twitter'
+            });
          });
   });
