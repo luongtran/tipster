@@ -21,8 +21,14 @@
           %td= tipster.email
           %td= tipster.created_at.strftime("%m/%d/%Y")
           %td
-            = form_tag add_tipster_cart_path do
-              = hidden_field_tag :id, tipster.id
-              %button.btn.btn-success{type: :submit} Add to cart
+            - if @tipster_ids_in_cart.include? tipster.id.to_s
+              = form_tag drop_tipster_cart_path do
+                = hidden_field_tag :id, tipster.id
+                %button.btn.btn-danger{type: :submit} Remove from cart
+            - else
+              = form_tag add_tipster_cart_path do
+                = hidden_field_tag :id, tipster.id
+                %button.btn.btn-success{type: :submit} Add to cart
 .center-block
+
   %a.btn.btn-success.btn-large.pull-right{href: subscribe_choose_offer_path,'data-no-turbolink' => true} Proceed to checkout
