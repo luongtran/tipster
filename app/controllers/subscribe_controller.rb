@@ -1,19 +1,16 @@
 class SubscribeController < ApplicationController
   before_action :authenticate_user!, only: [:get_coupon_code, :payment]
   skip_before_filter :verify_authenticity_token, only: [:success]
-  before_filter :ready_to_payment, only: [:payment, :payment_method]
+  before_action :ready_to_payment, only: [:payment, :payment_method]
 
   def identification
     action = params[:act]
     case action
       when 'update_profile'
         @profile = current_user.create_profile(profile_params)
-      when 'facebook'
+      when 'facebook', 'google_oauth2'
         session[:return_url] = subscribe_payment_method_url
-        redirect_to user_omniauth_authorize_path(:facebook)
-      when 'google'
-        session[:return_url] = subscribe_payment_method_url
-        redirect_to user_omniauth_authorize_path(:google_oauth2)
+        redirect_to user_omniauth_authorize_path(action)
     end
   end
 

@@ -1,3 +1,4 @@
+= javascript_include_tag 'subscribe'
 #rootwizard{'data-no-turbolink' => true}
   .navbar
     .navbar-inner
@@ -5,11 +6,10 @@
         %ul.nav.nav-pills
           %li.active
             %a{"data-toggle" => "tab", href: "#tab1"} Choose Offer
-          -# unless current_user && current_user.profile
           %li
             %a{"data-toggle" => "tab", href: "#tab2"} Identification
           %li
-            %a{href: subscribe_payment_method_path} Payment Method
+            %a{"data-toggle" => "tab", href: "#tab3"}Payment Method
           %li
             %a{"data-toggle" => "tab", href: "#tab4"} Payment
           %li
@@ -25,6 +25,7 @@
           %li
             Price:
             %strong= "€ #{@select_plan.price}"
+        %a{href: pricing_path} Select another plan?
       - unless @select_plan && @select_plan.free?
         %h3 Would you win a bonus? Help us
         .span12
@@ -41,6 +42,7 @@
         .span8.offset1
           #message_return
         - unless @tipsters_in_cart.blank?
+          %h3 Tipsters in your cart
           %table.table.table-bordered
             %thead
               %tr
@@ -49,31 +51,21 @@
                 %th Created at
                 %td Action
             %tbody
-              %tr
-                %td
-                  There are no any tipster found.
-                %td
-                %td
-                %td
-                  = form_tag drop_tipster_cart_path do
-                    = hidden_field_tag :id, tipster.id
-                    = hidden_field_tag :return_url, subscribe_choose_offer_path
-                    %button.btn.btn-small.btn-danger{type: :submit} Remove from Cart
-                - @tipsters_in_cart.each do |tipster|
-                  %tr
-                    %td
-                      = tipster.name
-                    %td
-                      = tipster.email
-                    %td
-                      = tipster.created_at.strftime("%m/%d/%Y")
-                    %td
-                      = form_tag drop_tipster_cart_path do
-                        = hidden_field_tag :id, tipster.id
-                        = hidden_field_tag :return_url, subscribe_choose_offer_path
-                        %button.btn.btn-small.btn-danger{type: :submit} Remove from Cart
+              - @tipsters_in_cart.each do |tipster|
+                %tr
+                  %td
+                    = tipster.name
+                  %td
+                    = tipster.email
+                  %td
+                    = tipster.created_at.strftime("%m/%d/%Y")
+                  %td
+                    = form_tag drop_tipster_cart_path do
+                      = hidden_field_tag :id, tipster.id
+                      = hidden_field_tag :return_url, subscribe_choose_offer_path
+                      %button.btn.btn-small.btn-danger{type: :submit} Remove
         .text-right
-          %h4 Total :
+          %h4 Total:
           %span#total_price
           %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
 
@@ -82,86 +74,3 @@
         = simple_form_for :nothing, url: '/' do |f|
           %button.btn.btn-success{type: :submit} Yes, I'd like it
           %a.btn.btn-warning{href: pricing_path} No, Let me choose another
-:javascript
-  $(document).ready(function() {
-        // In your onload handler add this call
-        FB.init({
-          appId      : '548927411872156',
-          status     : true,
-          xfbml      : true
-        });
-        var make_request_coupon = function(data_request) {
-          $.ajax({
-           type: 'POST',
-           url: '/subscribe/get_coupon_code',
-           dataType: 'json',
-           data: data_request,
-           success: function(response) {
-             if(response.success) {
-               $('#coupon').show();
-               $('#message').val(response.message);
-               $('#code').val(response.code);
-             } else {
-
-             }
-           }
-         });
-        };
-
-        FB.Event.subscribe('edge.create', function(href, html_element) {
-           make_request_coupon({
-             source:'facebook',
-             href: href
-           });
-        });
-        //FB.Event.subscribe('edge.remove', function(href, widget) {
-        //   alert('Unliked');
-        // });
-        //FB.Event.subscribe('message.send', function(response){
-        //  alert('commented');
-        //});
-        FB.getLoginStatus(function(response) {
-        console.log(response);
-          if (response.status === 'connected') {
-            // the user is logged in and has authenticated your
-            // app, and response.authResponse supplies
-            // the user's ID, a valid access token, a signed
-            // request, and the time the access token
-            // and signed request each expire
-            var uid = response.authResponse.userID;
-            var accessToken = response.authResponse.accessToken;
-          } else if (response.status === 'not_authorized') {
-            // the user is logged in to Facebook,
-            // but has not authenticated your app
-          } else {
-             $('.fb-login-button').show();
-          }
-         });
-
-         twttr.events.bind('tweet', function (event) {
-          make_request_coupon({
-            source:'twitter'
-            });
-         });
-  });
-  $(document).on('click',"#apply_code",function(){
-    var coupon_code = $("#code").val();
-    $.ajax({
-       type: 'POST',
-       url: '/subscribe/apply_coupon_code',
-       dataType: 'json',
-       data: {code: coupon_code},
-       beforeSend: function(){},
-       success: function(response){
-       if(response.success){
-         $('#total_price').val(response);
-       }
-       else{
-         $("#message_return").val(response.message);
-       }
-       },
-       error: function(){
-         console.log("AJAX ERROR");
-       }
-       });
-  })

@@ -44,7 +44,7 @@
             = hidden_field_tag :act, 'facebook'
             %button.btn.btn-small.btn-primary{type: :submit} Facebook
           = simple_form_for :nothing, url: subscribe_identification_path do |f|
-            = hidden_field_tag :act, 'google'
+            = hidden_field_tag :act, 'google_oauth2'
             %button.btn.btn-small{type: :submit} Google +
         .span6
           %h3 I'm a New customer
@@ -53,8 +53,3 @@
               = render 'shared/user_basic_fields', f: f
             .form-actions
               = f.button :submit, "Sign up", class: 'btn btn-primary'
-
-:javascript
-  $(document).ready(function() {
-      $('#rootwizard').bootstrapWizard();
-  });
