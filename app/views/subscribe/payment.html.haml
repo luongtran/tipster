@@ -28,10 +28,10 @@
       .span12
         .span4{style: 'padding: 10px; border: 1px solid #dadada'}
           = like_button '548927411872156', href: 'https://www.facebook.com/BetAdvisor', layout: :standard, show_faces: true
-        .span4{style: 'padding: 10px;border:1px solid #F24A21'}
-          %a{href: @twitter_url} Tweet
         .span4{style: 'padding: 10px; border: 1px solid #dadada'}
           = tweet_button
+        .span4{style: 'padding: 10px;border:1px solid #F24A21'}
+          %a{href: @twitter_url} Tweet
       %br
       -#%iframe{allowtransparency: "true", frameborder: "0", scrolling: "no", src: "//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FBet-Advisor%2F136780313136037&width&layout=standard&action=like&show_faces=true&share=true&height=80", style: "border:none; overflow:hidden; height:80px;"}
       %div{style: 'clear:both'}
