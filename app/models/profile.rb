@@ -27,10 +27,10 @@ class Profile < ActiveRecord::Base
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-  validates_date :birthday, :message => 'birthday is invalid'
+
+  validates_date :birthday, :message => 'birthday is invalid' #TODO, move to locale
   validates :civility, :secret_question, :answer_secret_question, :mobile_phone, :presence => true
   validates_inclusion_of :know_website_from, :in => KNOW_WEBSITE_FROM_LIST
-
   validates_inclusion_of :secret_question, :in => SECRET_QUESTIONS_MAP.keys
 
   # ==============================================================================
@@ -40,7 +40,6 @@ class Profile < ActiveRecord::Base
   before_validation :init_default_birthday
 
   class << self
-
   end
 
   # ==============================================================================

@@ -1,6 +1,13 @@
 .row-fluid
-  %h2.text-center My profile
-  = simple_form_for @profile, url: my_profile_path, method: 'POST' do |f|
-    = render 'form', f: f
-    .form-actions
-      = f.button :submit, "Save"
+  .span5
+    %h2.text-center My profile
+    = simple_form_for @profile, url: my_profile_path, method: 'POST' do |f|
+      = render 'form', f: f
+      .form-actions
+        = f.button :submit, "Save"
+  .span5
+    %h2 Coupon codes
+    %ul
+      - @user.coupon_codes.each do |cc|
+        %li
+          = cc.code

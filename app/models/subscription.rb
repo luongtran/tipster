@@ -7,6 +7,8 @@ class Subscription < ActiveRecord::Base
   has_many :subscriber_tipsters
   has_many :payments
 
+  # TODO, I don't see any validations here ???
+
   def calculator_price
     self.plan.price.to_f + (self.tipsters.size - self.plan.number_tipster) * 9.9
   end

@@ -8,7 +8,7 @@ TipsterHero::Application.routes.draw do
   }
 
   # TODO, the routes is just for testing
-  resources :profiles, :except => [:index] do
+  resources :profiles, :only => [] do
     # show, update
   end
 
@@ -26,6 +26,7 @@ TipsterHero::Application.routes.draw do
     post :add_tipster
     post :drop_tipster
   end
+
   scope path: '/subscribe', as: :subscribe do
     controller :subscribe do
       get :choose_offer
@@ -36,7 +37,7 @@ TipsterHero::Application.routes.draw do
     end
   end
 
-  resource :twitter,controller: 'twitter' do
+  resource :twitter, controller: 'twitter' do
     get :tweet
   end
 

@@ -1,19 +1,10 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
-  skip_before_action :fill_profile, only: [:my_profile, :update]
-
-  def update
-    @profile = current_user.find_or_initial_profile
-    @profile.update_attributes(profile_params)
-  end
-
-  def show
-    @profile = current_user.find_or_initial_profile
-    #redirect_to update profile if profile is not completed
-  end
+  skip_before_action :fill_profile, only: [:my_profile]
 
   def my_profile
-    @profile = current_user.find_or_initial_profile
+    @user = User.includes(:coupon_codes).where(id: current_user.id).first
+    @profile = @user.find_or_initial_profile
     if request.post?
       if @profile.update_attributes(profile_params)
         flash.now[:notice] = 'Profile updated successfully'
