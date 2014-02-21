@@ -17,6 +17,7 @@ class SubscribeController < ApplicationController
 
   # GET|POST /subscribe/payment
   def payment
+
     if is_ready_to_payment?
       # Calculate amount and show the paypal form
       unless current_user.subscription
