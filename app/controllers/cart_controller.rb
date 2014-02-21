@@ -11,6 +11,12 @@ class CartController < ApplicationController
   end
 
   def add_tipster
+    unless session[:plan_id].nil?
+      select_plan = Plan.find_by_id(session[:plan_id])
+      if select_plan.price == 0
+        redirect_to pricing_path, alert: "You cannot follow any tipsters with Free plan, please select another!" and return
+      end
+    end
     tipster_id = params[:id]
     if Tipster.exists?(tipster_id)
       initial_cart_session if session[:cart].nil?

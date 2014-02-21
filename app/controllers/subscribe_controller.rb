@@ -90,7 +90,7 @@ class SubscribeController < ApplicationController
   def get_coupon_code
     cc = CouponCode.create_for_user(current_user, coupon_params[:source])
     if cc
-      render :json => {success: true, :code => cc.code,:message => 'Coupon create'}
+      render :json => {success: true, :code => cc.code, :message => 'Coupon create'}
     else
       # TODO, edit error message here
       render :json => {
@@ -105,11 +105,12 @@ class SubscribeController < ApplicationController
     cc = CouponCode.find_by_code(params[:code])
     if cc && cc.user_id == current_user.id
       session[:coupon_code_id] = cc.id
-      render :json => {success: true,:message => "Coupon using successfully !. Your has receiver 3 EUR"}
+      render :json => {success: true, :message => "Coupon using successfully !. Your has receiver 3 EUR"}
     else
       render :json => {success: false, :message => "Your counpon code is invalid !"}
     end
   end
+
   #POST
   def deny_coupon_code
     cc = CouponCode.find_by_code(params[:code])
@@ -150,7 +151,7 @@ class SubscribeController < ApplicationController
               else
                 nil
               end
-    redirect_to checker[:url], alert: checker[:message] if checker.present?
+    redirect_to checker[:url], alert: checker[:message] and return if checker.present?
   end
 
   def profile_params
