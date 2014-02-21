@@ -8,17 +8,6 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     authorize('Google')
   end
 
-  def twitter
-    @client = Twitter::REST::Client.new do |config|
-      config.consumer_key        = TWITTER_CONSUMER_KEY
-      config.consumer_secret     = TWITTER_CONSUMER_SECRET
-      config.access_token        = params[:oauth_token]
-      config.access_token_secret = params[:oauth_verifier]
-    end
-
-    redirect_to root_url
-  end
-
   protected
 
   def authorize(provider = '')

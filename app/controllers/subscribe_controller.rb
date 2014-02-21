@@ -44,6 +44,14 @@ class SubscribeController < ApplicationController
       @pp_object[:item_number] = current_user.id
       @pp_object[:item_name] = "TipsterHero Subscriptions #{subscription.plan.title}"
 
+      client = TwitterOAuth::Client.new(
+          :consumer_key => TWITTER_CONSUMER_KEY,
+          :consumer_secret => TWITTER_CONSUMER_SECRET
+      )
+      request_token = client.request_token(:oauth_callback => tweet_twitter_url)
+      session[:request_token] = request_token
+      @twitter_url = request_token.authorize_url
+
     else
       # Check the payment conditions, display notice and redirect user back to the suite step
       redirect_to subscribe_identification_path

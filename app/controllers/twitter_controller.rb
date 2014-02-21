@@ -1,16 +1,16 @@
 class TwitterController < ApplicationController
 
   def tweet
-    require "rubygems"
-    require "twitter"
-    Twitter.configure do |config|
-      config.consumer_key = ' << your consumer key >>'
-      config.consumer_secret =  ' << your consumer secret >>'
-      config.oauth_token = ' << your access token >> '
-      config.oauth_token_secret = '<< your access token secret >>'
-
-    end
-    client = Twitter::Client.new
+    client = TwitterOAuth::Client.new(
+        :consumer_key => TWITTER_CONSUMER_KEY,
+        :consumer_secret => TWITTER_CONSUMER_SECRET
+    )
+    access_token = client.authorize(
+        session[:request_token].token,
+        session[:request_token].secret,
+        :oauth_verifier => params[:oauth_verifier]
+    )
+    puts client.authorized?
+    client.update('@quang @luan @sfrteam Tweeter') # sends a twitter status update
   end
-
 end

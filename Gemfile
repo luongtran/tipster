@@ -44,6 +44,8 @@ gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'twitter'
+
+gem 'twitter_oauth'
 # For views
 gem 'haml-rails'
 gem 'haml'
