@@ -34,6 +34,7 @@ TipsterHero::Application.routes.draw do
       match :payment_method, via: [:get, :post]
       match :payment, via: [:get, :post]
       post :success
+      post :get_coupon_code
     end
   end
 

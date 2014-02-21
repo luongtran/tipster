@@ -17,6 +17,7 @@ class CouponCode < ActiveRecord::Base
           source: source
       )
       cc.save!
+      cc
     end
 
     def generate_unique_code(user)
