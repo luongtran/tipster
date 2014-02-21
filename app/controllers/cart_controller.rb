@@ -17,6 +17,7 @@ class CartController < ApplicationController
         redirect_to pricing_path, alert: "You cannot follow any tipsters with Free plan, please select another!" and return
       end
     end
+
     tipster_id = params[:id]
     if Tipster.exists?(tipster_id)
       initial_cart_session if session[:cart].nil?
