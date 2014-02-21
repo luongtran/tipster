@@ -100,6 +100,26 @@ class SubscribeController < ApplicationController
     end
   end
 
+  #POST
+  def apply_coupon_code
+    cc = CouponCode.find_by_code(params[:code])
+    if cc && cc.user_id == current_user.id
+      cc.update_attributes(is_used: true)
+      render :json => {success: true,:message => "Coupon using successfully !. Your has receiver 3 EUR"}
+    else
+      render :json => {success: false, :message => "Your counpon code is invalid !"}
+    end
+  end
+  #POST
+  def deny_coupon_code
+    cc = CouponCode.find_by_code(params[:code])
+    if cc
+      cc.update_attributes(is_deny: true)
+    else
+
+    end
+  end
+
   private
 
   def prepare_subscribe_info
@@ -112,7 +132,17 @@ class SubscribeController < ApplicationController
   end
 
   def ready_to_payment
-    # TODO, validate tipsters, plan_id here ....
+    # check user is signed in, offer and at least on tipster in cart
+    if !current_user
+      flash.now[:alert] =   "Login !"
+      redirect_to subscribe_identification_path
+    elsif tipster_ids_in_cart.empty?
+      flash.now[:alert]  =  "Please select tipster before checkout"
+      redirect_to top_tipster_path
+    elsif !session[:plan_id]
+      flash.now[:alert]  = "Please select an plan"
+      redirect_to  pricing_path
+    end
     checker = if !current_user
                 {
                     message: "Please login or signup !",
