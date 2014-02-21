@@ -5,9 +5,9 @@
         %ul
           %li.active
             %a{"data-toggle" => "tab", href: "#tab1"} Choose Offer
-          - unless current_user && current_user.profile
-            %li
-              %a{"data-toggle" => "tab", href: "#tab2"} Identification
+          -# unless current_user && current_user.profile
+          %li
+            %a{"data-toggle" => "tab", href: "#tab2"} Identification
           %li
             %a{href: subscribe_payment_method_path} Payment Method
           %li
@@ -63,6 +63,7 @@
                 %td
                   = form_tag drop_tipster_cart_path do
                     = hidden_field_tag :id, tipster.id
+                    = hidden_field_tag :return_url, subscribe_choose_offer_path
                     %button.btn.btn-small.btn-danger{type: :submit} Remove from Cart
 
       .text-right

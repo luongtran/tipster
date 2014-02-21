@@ -30,6 +30,6 @@ class CartController < ApplicationController
     tipster_id = params[:id]
     session[:cart][:tipster_ids].delete(tipster_id) if session[:cart][:tipster_ids].include? tipster_id
     flash[:notice] = "Tipster droped"
-    redirect_to registration_path(step: 'offer')
+    redirect_to params[:return_url].present? ? params[:return_url] : cart_path
   end
 end

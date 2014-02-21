@@ -1,7 +1,7 @@
 class SubscribeController < ApplicationController
   before_action :authenticate_user!, only: [:get_coupon_code, :payment]
   skip_before_filter :verify_authenticity_token, only: [:success]
-
+  before_filter :ready_to_payment,only: [:payment,:payment_method]
   def identification
     action = params[:act]
     case action
@@ -19,7 +19,6 @@ class SubscribeController < ApplicationController
   # GET|POST /subscribe/payment
   def payment
 
-    if is_ready_to_payment?
       # Calculate amount and show the paypal form
       unless current_user.subscription
         subscription = current_user.build_subscription(plan_id: session[:plan_id])
@@ -53,18 +52,12 @@ class SubscribeController < ApplicationController
       session[:request_token] = request_token
       @twitter_url = request_token.authorize_url
 
-    else
-      # Check the payment conditions, display notice and redirect user back to the suite step
-      redirect_to subscribe_identification_path
-    end
   end
 
   # GET|POST /register/payment_method
   # Hiển thị các cách thức thanh toán
   #
   def payment_method
-    #if is_ready_to_payment?
-    if is_ready_to_payment?
       if request.get?
         # Calculate price
       else
@@ -80,10 +73,7 @@ class SubscribeController < ApplicationController
           render_bad_request
         end
       end
-    else
-      flash[:alert] = "You cannot checkout for now!"
-      redirect_to subscribe_choose_offer_url
-    end
+
   end
 
   # GET /register/offer
@@ -138,9 +128,18 @@ class SubscribeController < ApplicationController
     @data[:current_profile] = (@profile || current_user.find_or_initial_profile) if current_user
   end
 
-  def is_ready_to_payment?
+  def ready_to_payment
     # check user is signed in, offer and at least on tipster in cart
-    !(!current_user || tipster_ids_in_cart.empty? || !session[:plan_id])
+    if !current_user
+      flash.now[:alert] =   "Login !"
+      redirect_to subscribe_identification_path
+    elsif tipster_ids_in_cart.empty?
+      flash.now[:alert]  =  "Please select tipster before checkout"
+      redirect_to top_tipster_path
+    elsif !session[:plan_id]
+      flash.now[:alert]  = "Please select an plan"
+      redirect_to  pricing_path
+    end
     # TODO, validate tipsters, plan_id here ....
   end
 

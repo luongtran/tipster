@@ -5,9 +5,9 @@
         %ul
           %li
             %a{ href: subscribe_choose_offer_path} Choose Offer
-          - unless current_user && current_user.profile
-            %li
-              %a{"data-toggle" => "tab", href: "#tab2"} Identification
+          -# unless current_user && current_user.profile
+          %li
+            %a{"data-toggle" => "tab", href: "#tab2"} Identification
           %li.active
             %a{"data-toggle" => "tab", href: "#tab3"} Payment Method
           %li
