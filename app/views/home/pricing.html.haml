@@ -47,10 +47,12 @@
         %td
           = '€' +  plan.price.to_s + '/ month'
           %br
-          - unless @selected_plan == plan.id
+          - unless @selected_plan.nil?
             - if plan.id < @selected_plan
-              = link_to 'Downgrade', select_subscription_path(plan.id),class: 'btn btn-warning'
+              = link_to 'Downgrade', select_plan_path(plan.id),class: 'btn btn-warning'
+            - elsif plan.id > @selected_plan
+              = link_to 'Upgrade', select_plan_path(plan.id),class: 'btn btn-success'
             - else
-              = link_to 'Upgrade', select_subscription_path(plan.id),class: 'btn btn-success'
+              %label.label.label-primary Current Plan
           - else
-            %label.label.label-primary Current Plan
+            = link_to 'Subscribe', select_plan_path(plan.id),class: 'btn btn-success'

@@ -5,7 +5,7 @@
       %li
         %span
           %strong Your plan is :
-        %span #{@subscription.plan.title}
+        %span #{@subscription.plan_title}
 
       - last_payment = @subscription.payments.last
       - if last_payment && last_payment.payment_status != "Completed"
