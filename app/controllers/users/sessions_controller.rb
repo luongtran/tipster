@@ -1,5 +1,6 @@
 class Users::SessionsController < Devise::SessionsController
   skip_before_action :fill_profile
+
   def new
     super
   end
