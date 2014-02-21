@@ -1,5 +1,6 @@
 class SubscribeController < ApplicationController
-  skip_before_filter :verify_authenticity_token, :only => [:success]
+  before_action :authenticate_user!, only: [:get_coupon_code, :payment]
+  skip_before_filter :verify_authenticity_token, only: [:success]
 
   def identification
     action = params[:act]

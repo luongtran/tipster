@@ -16,17 +16,26 @@
       %td Ability to pause your subscription
       - @plans.each do |plan|
         %td
-          = plan.pause_ability
+          - if plan.pause_ability?
+            &#x2714;
+          - else
+            &#x2718;
     %tr
       %td Ability to switch tipsters
       - @plans.each do |plan|
         %td
-          = plan.switch_tipster_ability
+          - if plan.switch_tipster_ability
+            &#x2714;
+          - else
+            &#x2718;
     %tr
       %td Guaranteed Profit Subscription
       - @plans.each do |plan|
         %td
-          = plan.profit_guaranteed
+          - if plan.profit_guaranteed
+            &#x2714;
+          - else
+            &#x2718;
     %tr
       %td Discount
       - @plans.each do |plan|
@@ -38,4 +47,4 @@
         %td
           = '€' +  plan.price.to_s
           %br
-          = link_to 'Select', select_subscription_path(plan.id),class: 'btn btn-success'
+          = link_to 'Subscribe', select_subscription_path(plan.id),class: 'btn btn-success'
