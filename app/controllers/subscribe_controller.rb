@@ -27,25 +27,16 @@ class SubscribeController < ApplicationController
     tipsters = Tipster.where(id: tipster_ids_in_cart)
     subscription.tipsters = tipsters
     subscription.plan_id = session[:plan_id]
+    # FIXME,  the subscription must be set to inactive till payment done
     subscription.save
 
     @amount = subscription.calculator_price
-    @pp_object = Hash.new
-    @pp_object[:amount] = "%05.2f" % @amount
-    @pp_object[:currency] = "EUR"
-
-    # Reply item_number by token of payment
-    @pp_object[:item_number] = current_user.id
-    @pp_object[:item_name] = "TipsterHero Subscriptions #{subscription.plan_title}"
-
-    client = TwitterOAuth::Client.new(
-        :consumer_key => TWITTER_CONSUMER_KEY,
-        :consumer_secret => TWITTER_CONSUMER_SECRET
-    )
-    request_token = client.request_token(:oauth_callback => tweet_twitter_url)
-    session[:request_token] = request_token
-    @twitter_url = request_token.authorize_url
-
+    @pp_object = {
+        amount: @amount.round(3),
+        currency: 'EUR',
+        item_number: current_user.id,
+        item_name: "TipsterHero Subscriptions #{subscription.plan_title}"
+    }
   end
 
   # GET|POST /register/payment_method
