@@ -32,6 +32,11 @@
         .span4{style: 'padding: 10px; border: 1px solid #ccc'}
           = tweet_button url: 'https://twitter.com/hellorelaxation', lang: 'en', text: 'Check out this site', via: 'hellorelaxation'
       %div{style:'clear:both'}
+      .span8.offset2
+        = text_field_tag :code
+        %button.btn.btn-success#apply_code Apply this coupon code
+        %button.btn.btn-warning#deny_code Deny this coupon code
+      %div{style:'clear:both'}
       %h3 Display all plans here
       %hr
       %h3 Tipsters:
@@ -67,8 +72,8 @@
                     %button.btn.btn-small.btn-danger{type: :submit} Remove from Cart
 
       .text-right
-        %h4
-          Total : $1000
+        %h4 Total :
+        %span#total_price
         %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
 
 :javascript
@@ -88,9 +93,9 @@
            data: data_request,
            success: function(response) {
              if(response.success) {
-               alert('Your coupon code is: ' + response.code);
+               $('#code').val(response.code);
              } else {
-               alert('Your coupon code is: ' + response.message);
+               
              }
            }
          });
@@ -132,3 +137,24 @@
             });
          });
   });
+  $(document).on('click',"#apply_code",function(){
+    var coupon_code = $("#code").val();
+    $.ajax({
+       type: 'POST',
+       url: '/subscribe/apply_coupon_code',
+       dataType: 'json',
+       data: {code: coupon_code},
+       beforeSend: function(){},
+       success: function(response){
+       if(response.success){
+         $('#total_price').val(response);
+       }
+       else{
+         console.log(response.message)
+       }
+       },
+       error: function(){
+         console.log("AJAX ERROR");
+       }
+       });
+  })

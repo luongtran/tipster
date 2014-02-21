@@ -108,6 +108,26 @@ class SubscribeController < ApplicationController
     end
   end
 
+  #POST
+  def apply_coupon_code
+    cc = CouponCode.find_by_code(params[:code])
+    if cc && cc.user_id == current_user.id
+      cc.update_attributes(is_used: true)
+      render :json => {success: true,:message => "Coupon using successfully !. Your has receiver 3 EUR"}
+    else
+      render :json => {success: false, :message => "Your counpon code is invalid !"}
+    end
+  end
+  #POST
+  def deny_coupon_code
+    cc = CouponCode.find_by_code(params[:code])
+    if cc
+      cc.update_attributes(is_deny: true)
+    else
+
+    end
+  end
+
   private
 
   def coupon_params
@@ -140,7 +160,6 @@ class SubscribeController < ApplicationController
       flash.now[:alert]  = "Please select an plan"
       redirect_to  pricing_path
     end
-    # TODO, validate tipsters, plan_id here ....
   end
 
   def profile_params
