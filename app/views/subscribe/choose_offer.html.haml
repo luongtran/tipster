@@ -2,7 +2,7 @@
   .navbar
     .navbar-inner
       .container
-        %ul
+        %ul.nav.nav-pills
           %li.active
             %a{"data-toggle" => "tab", href: "#tab1"} Choose Offer
           -# unless current_user && current_user.profile
@@ -78,7 +78,6 @@
 
 :javascript
   $(document).ready(function() {
-      $('#rootwizard').bootstrapWizard();
         // In your onload handler add this call
         FB.init({
           appId      : '548927411872156',

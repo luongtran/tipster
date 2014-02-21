@@ -2,7 +2,7 @@
   .navbar
     .navbar-inner
       .container
-        %ul
+        %ul.nav.nav-pills
           %li
             %a{href: subscribe_choose_offer_path} Choose Offer
           -# TODO, bad code -> query DB here
@@ -17,23 +17,41 @@
             %a{"data-toggle" => "tab", href: "#tab5"} Confirmation
   .tab-content
     #tab4.tab-pane.active
-      %h3 Please review your selection
-      %ul
-        %li Plan : xyz
-        %li Tipsters listing here
-      %hr
-      -#%iframe{allowtransparency: "true", frameborder: "0", scrolling: "no", src: "//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FBet-Advisor%2F136780313136037&width&layout=standard&action=like&show_faces=true&share=true&height=80", style: "border:none; overflow:hidden; height:80px;"}
-      %div{style: 'clear:both'}
-      %h3 Coupon
-      %input{type: :text, placeholder: 'example'}
-      %hr
-        %ul
-          %li
-            %strong
-              Total:
-              $
-              = @amount
-          %h4 Paypal form here!
+      .span8
+        %h3 Please review your selection
+        %h4
+          Plan:
+          %span.text-info= @select_plan.title
+        %h4 Tipsters:
+        .span6
+          %table.table.table-bordered
+            %thead
+              %tr
+                %th Full Name
+                %th Sport
+                %th Yield
+                %th Profil
+            %tbody
+              - @select_tipsters.each do |tipster|
+                %tr
+                  %td= tipster.name
+                  %td= ['Football','Hourse', 'Tennis', 'Baseball'].sample
+                  %td= "#{['12.15','20.14','10.3'].sample} %"
+                  %td= "+ #{(1000..5000).to_a.sample}"
+
+      .span4
+        %h3 Amount
+        \- Subtotal:
+        %strong $193
+        %br
+        \- Discount:
+        %strong - $3
+        %br
+        \_______________________
+        %br
+        \- Total:
+        %strong.text-info= "$#{@amount.round(3)}"
+
         - payment_service_for  @pp_object[:item_number], PAYPAL_ACCOUNT, :amount => @pp_object[:amount],
              :currency => @pp_object[:currency], :service => :paypal, :html => {:class=>"form-paypal"} do |service|
         - service.tax "0.00"
@@ -43,4 +61,4 @@
         - service.return_url subscribe_success_url
         - service.cancel_return_url cancel_payment_url
         - hidden_field_tag :user_id, @pp_object[:user_id]
-          = image_submit_tag('https://www.paypal.com/en_US/i/btn/x-click-but03.gif', alt:'Make Payment with Paypal')
+          = image_submit_tag('/assets/paypal-express-checkout-button.png', alt:'Make Payment with Paypal')

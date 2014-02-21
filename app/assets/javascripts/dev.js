@@ -4,3 +4,7 @@
  *= require 'jquery.bootstrap.wizard.min'
  *= require 'prettify'
  */
+
+$(function(){
+//    $('#rootwizard').bootstrapWizard();
+})
