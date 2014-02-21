@@ -17,6 +17,7 @@
         %li
           %span
             %strong Subscription payment status :
+          %span #{last_payment.payment_status}
         %li
           %span
             %strong Subscription payment transaction id :
@@ -40,8 +41,8 @@
         %tr
           %th Full Name
           %th Email
-          %th Created at
-          %td Action
+          %th Start at
+          %th Next time purchase
       %tbody
         - if @subscription.tipsters.nil?
           %tr
@@ -58,7 +59,8 @@
               %td
                 = tipster.email
               %td
-                = tipster.created_at.strftime("%m/%d/%Y")
+                = @subscription.payments.last.payment_date.strftime("%m/%d/%Y")
               %td
+                = (@subscription.payments.last.payment_date + 1.month).strftime("%m/%d/%Y")
 - else
   You are still not register any plan.

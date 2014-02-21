@@ -24,8 +24,8 @@
             %strong= @select_plan.title
           %li
             Price:
-            %strong= @select_plan.price
-      - unless @select_plan.free?
+            %strong= "€ #{@select_plan.price}"
+      - unless @select_plan && @select_plan.free?
         %h3 Would you win a bonus? Help us
         .span12
           .span4{style: 'padding: 10px; border: 1px solid #ccc'}
@@ -40,16 +40,15 @@
           %button.btn.btn-success#apply_code Apply Coupon
         .span8.offset1
           #message_return
-
-        %table.table.table-bordered
-          %thead
-            %tr
-              %th Full Name
-              %th Email
-              %th Created at
-              %td Action
-          %tbody
-            - if @tipsters_in_cart.blank?
+        - unless @tipsters_in_cart.blank?
+          %table.table.table-bordered
+            %thead
+              %tr
+                %th Full Name
+                %th Email
+                %th Created at
+                %td Action
+            %tbody
               %tr
                 %td
                   There are no any tipster found.
@@ -60,26 +59,25 @@
                     = hidden_field_tag :id, tipster.id
                     = hidden_field_tag :return_url, subscribe_choose_offer_path
                     %button.btn.btn-small.btn-danger{type: :submit} Remove from Cart
-            - else
-              - @tipsters_in_cart.each do |tipster|
-                %tr
-                  %td
-                    = tipster.name
-                  %td
-                    = tipster.email
-                  %td
-                    = tipster.created_at.strftime("%m/%d/%Y")
-                  %td
-                    = form_tag drop_tipster_cart_path do
-                      = hidden_field_tag :id, tipster.id
-                      = hidden_field_tag :return_url, subscribe_choose_offer_path
-                      %button.btn.btn-small.btn-danger{type: :submit} Remove from Cart
+                - @tipsters_in_cart.each do |tipster|
+                  %tr
+                    %td
+                      = tipster.name
+                    %td
+                      = tipster.email
+                    %td
+                      = tipster.created_at.strftime("%m/%d/%Y")
+                    %td
+                      = form_tag drop_tipster_cart_path do
+                        = hidden_field_tag :id, tipster.id
+                        = hidden_field_tag :return_url, subscribe_choose_offer_path
+                        %button.btn.btn-small.btn-danger{type: :submit} Remove from Cart
         .text-right
           %h4 Total :
           %span#total_price
           %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
 
-      - if @select_plan.free?
+      - if @select_plan && @select_plan.free?
         %h3 Are you sure want to choose the Free subscription?
         = simple_form_for :nothing, url: '/' do |f|
           %button.btn.btn-success{type: :submit} Yes, I'd like it
