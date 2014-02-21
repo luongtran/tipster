@@ -84,3 +84,4 @@ gem 'validates_timeliness', '~> 3.0'
 gem 'fql'
 
 gem "social-buttons", '~> 0.3'
+gem 'faker'
