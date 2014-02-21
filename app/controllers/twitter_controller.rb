@@ -11,6 +11,6 @@ class TwitterController < ApplicationController
         :oauth_verifier => params[:oauth_verifier]
     )
     puts client.authorized?
-    client.update('@quang @luan @sfrteam Tweeter') # sends a twitter status update
+    client.update(TWITTER_TWEET) # sends a twitter status update
   end
 end
