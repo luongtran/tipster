@@ -63,6 +63,9 @@ class SubscribeController < ApplicationController
     # Prepare shopping data
     @select_plan = Plan.where(id: session[:plan_id]).first
     @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
+    if @select_plan && !@tipsters_in_cart.blank?
+        @total_price = (@select_plan.price + (@tipsters_in_cart.size > @select_plan.number_tipster ? (@tipsters_in_cart.size - @select_plan.number_tipster )* 9.9 : 0))* @select_plan.period
+    end
   end
 
   # TODO, shouldn't skip_validate_csfr_token
