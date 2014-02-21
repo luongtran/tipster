@@ -23,59 +23,64 @@
             Name:
             %strong= @select_plan.title
       %hr
-      %h3 Would you win a bonus? Help us
-      .span12
-        .span4{style: 'padding: 10px; border: 1px solid #ccc'}
-          .fb-login-button{"data-auto-logout-link" => "false", "data-max-rows" => "1",
-             "data-show-faces" => "false", "data-size" => "medium", onlogin: 'window.location.reload()', style: 'display:none'}
-          = like_button '548927411872156', href: 'https://www.facebook.com/BetAdvisor', layout: :standard, show_faces: true
-        .span4{style: 'padding: 10px; border: 1px solid #ccc'}
-          = tweet_button url: 'https://twitter.com/hellorelaxation', lang: 'en', text: 'Check out this site', via: 'hellorelaxation'
-      %div{style:'clear:both'}
-      .span8.offset2
-        = text_field_tag :code
-        %button.btn.btn-success#apply_code Apply this coupon code
-        %button.btn.btn-warning#deny_code Deny this coupon code
-      %div{style:'clear:both'}
-      %h3 Display all plans here
-      %hr
-      %h3 Tipsters:
-      -# Required variables: tipsters_in_cart -> Array of tipster
-      %table.table.table-bordered
-        %thead
-          %tr
-            %th Full Name
-            %th Email
-            %th Created at
-            %td Action
-        %tbody
-          - if @tipsters_in_cart.blank?
+      - unless @select_plan.free?
+        %h3 Would you win a bonus? Help us
+        .span12
+          .span4{style: 'padding: 10px; border: 1px solid #ccc'}
+            .fb-login-button{"data-auto-logout-link" => "false", "data-max-rows" => "1",
+               "data-show-faces" => "false", "data-size" => "medium", onlogin: 'window.location.reload()', style: 'display:none'}
+            = like_button '548927411872156', href: 'https://www.facebook.com/BetAdvisor', layout: :standard, show_faces: true
+          .span4{style: 'padding: 10px; border: 1px solid #ccc'}
+            = tweet_button url: 'https://twitter.com/hellorelaxation', lang: 'en', text: 'Check out this site', via: 'hellorelaxation'
+        %div{style:'clear:both'}
+        .span8.offset2
+          = text_field_tag :code
+          %button.btn.btn-success#apply_code Apply this coupon code
+          %button.btn.btn-warning#deny_code Deny this coupon code
+        %div{style:'clear:both'}
+        %h3 Display all plans here
+        %hr
+        %h3 Tipsters:
+        -# Required variables: tipsters_in_cart -> Array of tipster
+        %table.table.table-bordered
+          %thead
             %tr
-              %td
-                There are no any tipster found.
-              %td
-              %td
-              %td
-          - else
-            - @tipsters_in_cart.each do |tipster|
+              %th Full Name
+              %th Email
+              %th Created at
+              %td Action
+          %tbody
+            - if @tipsters_in_cart.blank?
               %tr
                 %td
-                  = tipster.name
+                  There are no any tipster found.
                 %td
-                  = tipster.email
                 %td
-                  = tipster.created_at.strftime("%m/%d/%Y")
                 %td
-                  = form_tag drop_tipster_cart_path do
-                    = hidden_field_tag :id, tipster.id
-                    = hidden_field_tag :return_url, subscribe_choose_offer_path
-                    %button.btn.btn-small.btn-danger{type: :submit} Remove from Cart
+            - else
+              - @tipsters_in_cart.each do |tipster|
+                %tr
+                  %td
+                    = tipster.name
+                  %td
+                    = tipster.email
+                  %td
+                    = tipster.created_at.strftime("%m/%d/%Y")
+                  %td
+                    = form_tag drop_tipster_cart_path do
+                      = hidden_field_tag :id, tipster.id
+                      = hidden_field_tag :return_url, subscribe_choose_offer_path
+                      %button.btn.btn-small.btn-danger{type: :submit} Remove from Cart
 
-      .text-right
-        %h4 Total :
-        %span#total_price
-        %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
-
+        .text-right
+          %h4 Total :
+          %span#total_price
+          %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
+      - if @select_plan.free?
+        %h3 Are you sure want to choose the Free subscription?
+        = simple_form_for :nothing, url: '/' do |f|
+          %button.btn.btn-success{type: :submit} Yes, I'd like it
+          %a.btn.btn-warning{href: pricing_path} No, Let me choose another
 :javascript
   $(document).ready(function() {
         // In your onload handler add this call

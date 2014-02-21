@@ -2,8 +2,13 @@ class SubscriptionsController < ApplicationController
   before_filter :authenticate_user!, only: [:show]
 
   def plan_select
-    session[:plan_id] = params[:id] if Plan.exists?(params[:id])
-    redirect_to top_tipster_url
+    selected_plan = Plan.find(params[:id])
+    session[:plan_id] = selected_plan.id
+    if selected_plan.free?
+      redirect_to subscribe_choose_offer_url
+    else
+      redirect_to top_tipster_url
+    end
   end
 
   def show

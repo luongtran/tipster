@@ -6,4 +6,8 @@ class Plan < ActiveRecord::Base
       175
     end
   end
+
+  def free?
+    self.price.zero?
+  end
 end
