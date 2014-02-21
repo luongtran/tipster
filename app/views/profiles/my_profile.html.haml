@@ -5,9 +5,10 @@
       = render 'form', f: f
       .form-actions
         = f.button :submit, "Save"
-  .span5
-    %h2 Coupon codes
-    %ul
-      - @user.coupon_codes.each do |cc|
-        %li
-          = cc.code
+  - unless @user.coupon_codes.empty?
+    .span5
+      %h2 Coupon codes
+      %ul
+        - @user.coupon_codes.each do |cc|
+          %li
+            = cc.code

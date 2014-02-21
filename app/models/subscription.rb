@@ -10,7 +10,8 @@ class Subscription < ActiveRecord::Base
   # TODO, I don't see any validations here ???
 
   def calculator_price
-    self.plan.price.to_f + (self.tipsters.size - self.plan.number_tipster) * 9.9
+    self.tipsters.size > self.plan.number_tipster ? bonus = self.tipsters.size - self.plan.number_tipster : bonus = 0
+    self.plan.price.to_f + bonus * 9.9
   end
 
   def one_shoot_price

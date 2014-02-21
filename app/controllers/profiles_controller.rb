@@ -7,7 +7,8 @@ class ProfilesController < ApplicationController
     @profile = @user.find_or_initial_profile
     if request.post?
       if @profile.update_attributes(profile_params)
-        flash.now[:notice] = 'Profile updated successfully'
+        flash[:notice] = 'Please select a plan bellow to continue'
+        redirect_to pricing_path
       else
         flash.now[:alert] = 'Profile updated failed'
       end

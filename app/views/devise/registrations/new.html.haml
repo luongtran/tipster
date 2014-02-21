@@ -1,5 +1,5 @@
 %h2 Sign up
-= simple_form_for resource, :url => user_registration_path, :html => {class: 'form-horizontal'} do |f|
+= simple_form_for resource, as: :user, :url => user_registration_path, :html => {class: 'form-horizontal'} do |f|
   = render 'shared/user_basic_fields', f: f
   .form-actions
     = f.button :submit, "Sign up", class: 'btn btn-success'

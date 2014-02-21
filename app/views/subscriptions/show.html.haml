@@ -6,15 +6,17 @@
         %span
           %strong Your plan is :
         %span #{@subscription.plan.title}
-      %li
-        %span
-          %strong Subscription payment status :
+
       - last_payment = @subscription.payments.last
       - if last_payment && last_payment.payment_status != "Completed"
         %li
           %span
             %strong Subscription pending reason :
           %span #{PAYPAL_PENDINGS[last_payment.pending_reason]}
+      - elsif last_payment
+        %li
+          %span
+            %strong Subscription payment status :
         %li
           %span
             %strong Subscription payment transaction id :
@@ -27,6 +29,10 @@
           %span
             %strong Payment amount
           %span € #{last_payment.mc_gross}
+      - else
+        %li
+          %span
+            %strong Your payment was not completed.
 
     %table.table.table-bordered
       %caption List Tipster on Your subscriptions

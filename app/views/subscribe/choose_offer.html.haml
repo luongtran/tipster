@@ -22,6 +22,10 @@
           %li
             Name:
             %strong= @select_plan.title
+          %li
+            Price:
+            %strong= @select_plan.price
+
       %hr
       %h3 Would you win a bonus? Help us
       .span12
@@ -32,10 +36,11 @@
         .span4{style: 'padding: 10px; border: 1px solid #ccc'}
           = tweet_button url: 'https://twitter.com/hellorelaxation', lang: 'en', text: 'Check out this site', via: 'hellorelaxation'
       %div{style:'clear:both'}
-      .span8.offset2
+      .span8.offset1#coupon{style: 'display:none'}
         = text_field_tag :code
-        %button.btn.btn-success#apply_code Apply this coupon code
-        %button.btn.btn-warning#deny_code Deny this coupon code
+        %button.btn.btn-success#apply_code Apply Coupon
+      .span8.offset1
+        #message_return
       %div{style:'clear:both'}
       %h3 Display all plans here
       %hr
@@ -70,7 +75,6 @@
                     = hidden_field_tag :id, tipster.id
                     = hidden_field_tag :return_url, subscribe_choose_offer_path
                     %button.btn.btn-small.btn-danger{type: :submit} Remove from Cart
-
       .text-right
         %h4 Total :
         %span#total_price
@@ -92,9 +96,11 @@
            data: data_request,
            success: function(response) {
              if(response.success) {
+               $('#coupon').show();
+               $('#message').val(response.message);
                $('#code').val(response.code);
              } else {
-               
+
              }
            }
          });
@@ -149,7 +155,7 @@
          $('#total_price').val(response);
        }
        else{
-         console.log(response.message)
+         $("#message_return").val(response.message);
        }
        },
        error: function(){

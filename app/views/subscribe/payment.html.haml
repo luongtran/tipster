@@ -42,15 +42,16 @@
       .span4
         %h3 Amount
         \- Subtotal:
-        %strong $193
+        %strong €#{@amount.round(3)}
         %br
-        \- Discount:
-        %strong - $3
+        - if session[:coupon_id]
+          \- Discount:
+          %strong - €3
         %br
         \_______________________
         %br
         \- Total:
-        %strong.text-info= "$#{@amount.round(3)}"
+        %strong.text-info= "€#{@amount.round(3)}"
 
         - payment_service_for  @pp_object[:item_number], PAYPAL_ACCOUNT, :amount => @pp_object[:amount],
              :currency => @pp_object[:currency], :service => :paypal, :html => {:class=>"form-paypal"} do |service|
