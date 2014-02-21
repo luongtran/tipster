@@ -4,20 +4,24 @@ class CouponCode < ActiveRecord::Base
 
   belongs_to :user
 
-  validates :user, :code, presence: true
+  validates :user, :code, :source, presence: true
 
   # ==============================================================================
   # CLASS METHODS
   # ==============================================================================
   class << self
-    def create_for_user(user, source = nil)
-      cc = new(
-          user: user,
-          code: generate_unique_code(user),
-          source: source
-      )
-      cc.save!
-      cc
+    def create_for_user(user, source)
+      if user.coupon_codes.where(source: source).first
+        false
+      else
+        cc = new(
+            user: user,
+            code: generate_unique_code(user),
+            source: source
+        )
+        cc.save!
+        cc
+      end
     end
 
     def generate_unique_code(user)

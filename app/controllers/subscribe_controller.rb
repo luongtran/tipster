@@ -19,7 +19,6 @@ class SubscribeController < ApplicationController
   def payment
     if is_ready_to_payment?
       # Calculate amount and show the paypal form
-
       unless current_user.subscription
         subscription = current_user.build_subscription(plan_id: session[:plan_id])
       else
@@ -108,12 +107,20 @@ class SubscribeController < ApplicationController
 
 
   def get_coupon_code
-    cc = CouponCode.create_for_user(current_user)
-    # check if href param == fanpage url
-    render :json => {:code => cc.code}
+    cc = CouponCode.create_for_user(current_user, coupon_params[:source])
+    if cc
+      render :json => {success: true, :code => cc.code}
+    else
+      # TODO, edit error message here
+      render :json => {success: false, :message => 'You can get more coupon'}
+    end
   end
 
   private
+
+  def coupon_params
+    params.permit!
+  end
 
   def render_step(current_step)
     prepare_registration_data
