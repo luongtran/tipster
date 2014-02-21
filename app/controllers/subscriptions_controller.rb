@@ -1,7 +1,7 @@
 class SubscriptionsController < ApplicationController
   before_filter :authenticate_user!, only: [:show]
 
-  def plan_select
+  def select_plan
     selected_plan = Plan.find(params[:id])
     session[:plan_id] = selected_plan.id
     if selected_plan.free?

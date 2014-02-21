@@ -36,7 +36,7 @@ class SubscribeController < ApplicationController
 
     # Reply item_number by token of payment
     @pp_object[:item_number] = current_user.id
-    @pp_object[:item_name] = "TipsterHero Subscriptions #{subscription.plan.title}"
+    @pp_object[:item_name] = "TipsterHero Subscriptions #{subscription.plan_title}"
 
     client = TwitterOAuth::Client.new(
         :consumer_key => TWITTER_CONSUMER_KEY,

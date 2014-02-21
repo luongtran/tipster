@@ -1,0 +1,431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta charset='UTF-8' />
+    <title>Output of rails_best_practices</title>
+    <style type="text/css">
+      body {
+        color: #333;
+        background: #eee;
+        padding: 0 20px;
+      }
+      h1 {
+        color: ##4E4E4E;
+      }
+      p {
+        margin: 5px 0;
+      }
+      table {
+        background: white;
+        border: 1px solid #666;
+        border-collapse: collapse;
+        margin: 10px 0;
+        font-size: 14px;
+      }
+      table.result th, table.result td {
+        padding: 4px;
+        border: 1px solid #D0D0D0;
+      }
+      table.result th {
+        background-color: #DFC;
+        color: #337022;
+      }
+      table.result td.filename {
+        color: #ED1556;
+      }
+      table.result tr:hover {
+        background-color: #FFFFC0;
+      }
+      ul {
+        clear: both;
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+      }
+      ul li {
+       list-style: none;
+       display: none;
+       float: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>rails_best_practices output</h1>
+    <p>
+      Please go to
+      <a href='http://rails-bestpractices.com' target='_blank'>http://rails-bestpractices.com</a>
+      to see more useful Rails Best Practices.
+    </p>
+    <p>
+        Found 32 warnings.
+    </p>
+    <table>
+          <tr>
+              <td>
+                <input type="checkbox" class="error-type" id="AlwaysAddDbIndexReview" value="AlwaysAddDbIndexReview"
+                />&nbsp;<label for="AlwaysAddDbIndexReview">Always Add Db Index</label>
+              </td>
+              <td>
+                <input type="checkbox" class="error-type" id="RemoveUnusedMethodsInControllersReview" value="RemoveUnusedMethodsInControllersReview"
+                />&nbsp;<label for="RemoveUnusedMethodsInControllersReview">Remove Unused Methods In Controllers</label>
+              </td>
+              <td>
+                <input type="checkbox" class="error-type" id="UseModelAssociationReview" value="UseModelAssociationReview"
+                />&nbsp;<label for="UseModelAssociationReview">Use Model Association</label>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                <input type="checkbox" class="error-type" id="MoveModelLogicIntoModelReview" value="MoveModelLogicIntoModelReview"
+                />&nbsp;<label for="MoveModelLogicIntoModelReview">Move Model Logic Into Model</label>
+              </td>
+              <td>
+                <input type="checkbox" class="error-type" id="RemoveUnusedMethodsInHelpersReview" value="RemoveUnusedMethodsInHelpersReview"
+                />&nbsp;<label for="RemoveUnusedMethodsInHelpersReview">Remove Unused Methods In Helpers</label>
+              </td>
+              <td>
+                <input type="checkbox" class="error-type" id="UseScopeAccessReview" value="UseScopeAccessReview"
+                />&nbsp;<label for="UseScopeAccessReview">Use Scope Access</label>
+              </td>
+          </tr>
+          <tr>
+              <td>
+                <input type="checkbox" class="error-type" id="RemoveEmptyHelpersReview" value="RemoveEmptyHelpersReview"
+                />&nbsp;<label for="RemoveEmptyHelpersReview">Remove Empty Helpers</label>
+              </td>
+              <td>
+                <input type="checkbox" class="error-type" id="RemoveUnusedMethodsInModelsReview" value="RemoveUnusedMethodsInModelsReview"
+                />&nbsp;<label for="RemoveUnusedMethodsInModelsReview">Remove Unused Methods In Models</label>
+              </td>
+          </tr>
+        <tr>
+          <td colspan="3">
+            <button id="show-all">Check all</button>
+            <button id="show-none">Uncheck all</button>
+          </td>
+        </tr>
+    </table>
+    <table class="result">
+      <thead>
+        <tr>
+          <th>Filename</th>
+          <th>Line Number</th>
+          <th>Warning Message</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="AlwaysAddDbIndexReview">
+            <td class='filename'>
+                db/schema.rb
+            </td>
+            <td class='line'>60</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/21-always-add-db-index' target='_blank'>always add db index (payments => [subscription_id])</a>
+            </td>
+          </tr>
+          <tr class="AlwaysAddDbIndexReview">
+            <td class='filename'>
+                db/schema.rb
+            </td>
+            <td class='line'>60</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/21-always-add-db-index' target='_blank'>always add db index (payments => [coupon_code_id])</a>
+            </td>
+          </tr>
+          <tr class="AlwaysAddDbIndexReview">
+            <td class='filename'>
+                db/schema.rb
+            </td>
+            <td class='line'>122</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/21-always-add-db-index' target='_blank'>always add db index (subscriber_tipsters => [subscription_id])</a>
+            </td>
+          </tr>
+          <tr class="AlwaysAddDbIndexReview">
+            <td class='filename'>
+                db/schema.rb
+            </td>
+            <td class='line'>129</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/21-always-add-db-index' target='_blank'>always add db index (subscriptions => [user_id])</a>
+            </td>
+          </tr>
+          <tr class="AlwaysAddDbIndexReview">
+            <td class='filename'>
+                db/schema.rb
+            </td>
+            <td class='line'>129</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/21-always-add-db-index' target='_blank'>always add db index (subscriptions => [plan_id])</a>
+            </td>
+          </tr>
+          <tr class="MoveModelLogicIntoModelReview">
+            <td class='filename'>
+                app/controllers/payment_controller.rb
+            </td>
+            <td class='line'>7</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/7-move-model-logic-into-the-model' target='_blank'>move model logic into model (subscription use_count > 4)</a>
+            </td>
+          </tr>
+          <tr class="MoveModelLogicIntoModelReview">
+            <td class='filename'>
+                app/controllers/subscribe_controller.rb
+            </td>
+            <td class='line'>18</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/7-move-model-logic-into-the-model' target='_blank'>move model logic into model (subscription use_count > 4)</a>
+            </td>
+          </tr>
+          <tr class="MoveModelLogicIntoModelReview">
+            <td class='filename'>
+                app/controllers/subscribe_controller.rb
+            </td>
+            <td class='line'>18</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/7-move-model-logic-into-the-model' target='_blank'>move model logic into model ( use_count > 4)</a>
+            </td>
+          </tr>
+          <tr class="RemoveEmptyHelpersReview">
+            <td class='filename'>
+                app/helpers/twitter_helper.rb
+            </td>
+            <td class='line'>1</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/72-remove-empty-helpers' target='_blank'>remove empty helpers</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInControllersReview">
+            <td class='filename'>
+                app/controllers/application_controller.rb
+            </td>
+            <td class='line'>11</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (ApplicationController#render_400)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInControllersReview">
+            <td class='filename'>
+                app/controllers/home_controller.rb
+            </td>
+            <td class='line'>2</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (HomeController#index)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInControllersReview">
+            <td class='filename'>
+                app/controllers/subscribe_controller.rb
+            </td>
+            <td class='line'>6</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (SubscribeController#identification)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInControllersReview">
+            <td class='filename'>
+                app/controllers/subscribe_controller.rb
+            </td>
+            <td class='line'>71</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (SubscribeController#choose_offer)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInControllersReview">
+            <td class='filename'>
+                app/controllers/subscribe_controller.rb
+            </td>
+            <td class='line'>101</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (SubscribeController#apply_coupon_code)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInControllersReview">
+            <td class='filename'>
+                app/controllers/subscribe_controller.rb
+            </td>
+            <td class='line'>112</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (SubscribeController#deny_coupon_code)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInControllersReview">
+            <td class='filename'>
+                app/controllers/users/sessions_controller.rb
+            </td>
+            <td class='line'>9</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Users::SessionsController#after_sign_in_path_for)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInHelpersReview">
+            <td class='filename'>
+                app/helpers/application_helper.rb
+            </td>
+            <td class='line'>46</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (ApplicationHelper#set_current_register_step)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInHelpersReview">
+            <td class='filename'>
+                app/helpers/application_helper.rb
+            </td>
+            <td class='line'>62</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (ApplicationHelper#payment_methods_for_select)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/coupon_code.rb
+            </td>
+            <td class='line'>35</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (CouponCode#mark_used)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/invoice.rb
+            </td>
+            <td class='line'>22</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Invoice#completed)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/invoice.rb
+            </td>
+            <td class='line'>35</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Invoice#cancel)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/invoice.rb
+            </td>
+            <td class='line'>40</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Invoice#complete)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/invoice.rb
+            </td>
+            <td class='line'>48</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Invoice#gateway)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/plan.rb
+            </td>
+            <td class='line'>5</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Plan#calculate_amount)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/profile.rb
+            </td>
+            <td class='line'>49</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Profile#selected_secret_question)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/subscriber.rb
+            </td>
+            <td class='line'>31</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Subscriber#profile_completed?)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/subscription.rb
+            </td>
+            <td class='line'>21</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Subscription#one_shoot_price)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/tipster.rb
+            </td>
+            <td class='line'>4</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (Tipster#initial_some_tipsters)</a>
+            </td>
+          </tr>
+          <tr class="RemoveUnusedMethodsInModelsReview">
+            <td class='filename'>
+                app/models/user.rb
+            </td>
+            <td class='line'>43</td>
+            <td class='message'>
+              <a href='' target='_blank'>remove unused methods (User#update_profile)</a>
+            </td>
+          </tr>
+          <tr class="UseModelAssociationReview">
+            <td class='filename'>
+                app/controllers/payment_controller.rb
+            </td>
+            <td class='line'>7</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/2-use-model-association' target='_blank'>use model association (for subscription)</a>
+            </td>
+          </tr>
+          <tr class="UseModelAssociationReview">
+            <td class='filename'>
+                app/controllers/subscribe_controller.rb
+            </td>
+            <td class='line'>18</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/2-use-model-association' target='_blank'>use model association (for subscription)</a>
+            </td>
+          </tr>
+          <tr class="UseScopeAccessReview">
+            <td class='filename'>
+                app/controllers/subscribe_controller.rb
+            </td>
+            <td class='line'>103</td>
+            <td class='message'>
+              <a href='http://rails-bestpractices.com/posts/3-use-scope-access' target='_blank'>use scope access</a>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        $('ul li').show();
+        $('input.error-type[type=checkbox]').prop('checked', true).click(function() {
+          if ($(this).attr('checked')) {
+            $(this).prop('checked', true);
+            $('.'+$(this).val()).show();
+          } else {
+            $(this).prop('checked', false);
+            $('.'+$(this).val()).hide();
+          }
+        });
+        $('#show-all').click(function() {
+          $('input.error-type[type=checkbox]').prop('checked', true);
+          $('table.result tbody tr').show();
+        });
+        $('#show-none').click(function() {
+          $('input.error-type[type=checkbox]').prop('checked', false);
+          $('table.result tbody tr').hide();
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,7 +1,7 @@
 class Tipster < User
 
   class << self
-    def initial_some_tipsters
+    def initial_some_tipsters # Just for testing
       5.times do
         fn = Faker::Name.first_name
         tst = new(
