@@ -41,6 +41,7 @@
         %tr
           %th Full Name
           %th Email
+          %th Status
           %th Start at
           %th Next time purchase
       %tbody
@@ -53,26 +54,31 @@
             %td
         - else
           - if @subscription.active_tipsters.present?
-            %tr Active Tipsters
             - @subscription.active_tipsters.each do |tipster|
               %tr
                 %td
                   = tipster.name
                 %td
                   = tipster.email
+                %td
+                  %span.label.label-success Active
                 %td
                   = @subscription.payments.last.payment_date.strftime("%m/%d/%Y")
                 %td
                   = (@subscription.payments.last.payment_date + @subscription.plan.period.month).strftime("%m/%d/%Y")
-          - elsif @subscription.inactive_tipsters.present?
+          - if @subscription.inactive_tipsters.present?
             %tr Inactive Tipsters
-            - @subscription.active_tipsters.each do |tipster|
+            - @subscription.inactive_tipsters.each do |tipster|
               %tr
                 %td
                   = tipster.name
                 %td
                   = tipster.email
                 %td
+                  %span.label.label-warning Inactive
                 %td
+                %td
+                  = link_to "Remove", remove_inactive_tipster_path(tipster),method: 'delete',confirm: "Are your sure !",class: "btn btn-danger"
+
 - else
   You are still not register any plan.

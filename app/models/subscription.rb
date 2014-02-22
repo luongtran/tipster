@@ -40,4 +40,7 @@ class Subscription < ActiveRecord::Base
     self.plan.price.to_f
   end
 
+  def remove_tipster(id)
+    self.tipsters.delete(id)
+  end
 end

@@ -1,5 +1,5 @@
 class SubscriptionsController < ApplicationController
-  before_filter :authenticate_user!, only: [:show]
+  before_filter :authenticate_user!, only: [:show,:remove_inactive_tipster]
 
   def select_plan
     selected_plan = Plan.find(params[:id])
@@ -13,5 +13,11 @@ class SubscriptionsController < ApplicationController
 
   def show
     @subscription = current_user.subscription
+  end
+
+  def remove_inactive_tipster
+    @subscription = current_user.subscription
+    @subscription.remove_tipster(params[:id])
+    redirect_to action: 'show'
   end
 end
