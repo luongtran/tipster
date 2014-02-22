@@ -128,7 +128,7 @@ class SubscribeController < ApplicationController
               elsif tipster_ids_in_cart.empty?
                 {
                     message: "Please choose at least one tipster",
-                    url: top_tipster_url
+                    url: top_tipsters_url
                 }
               elsif !session[:plan_id]
                 {

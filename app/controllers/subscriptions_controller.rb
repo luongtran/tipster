@@ -7,7 +7,7 @@ class SubscriptionsController < ApplicationController
     if selected_plan.free?
       redirect_to subscribe_choose_offer_url
     else
-      redirect_to top_tipster_url
+      redirect_to top_tipsters_url
     end
   end
 

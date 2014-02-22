@@ -43,6 +43,12 @@ TipsterHero::Application.routes.draw do
     end
   end
 
+  resources :tipsters, only: [:index, :show] do
+    collection do
+      get :top
+    end
+  end
+
   resource :subscriptions, controller: 'subscriptions', :only => [:show] do
     post :update
   end
@@ -50,7 +56,6 @@ TipsterHero::Application.routes.draw do
   post '/registration' => 'home#register', as: :registration_post
 
   get '/pricing' => 'home#pricing', as: :pricing
-  get '/top_tipster' => 'tipsters#top_tipster', as: :top_tipster
 
   get '/subscriptions/select/:id' => 'subscriptions#select_plan', as: :select_plan
 

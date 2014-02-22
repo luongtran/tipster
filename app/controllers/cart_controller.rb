@@ -3,7 +3,7 @@ class CartController < ApplicationController
   def show
     if tipster_ids_in_cart.empty?
       flash[:alert] = "Your cart is empty"
-      redirect_to top_tipster_url
+      redirect_to top_tipsters_url
     else
       @tipsters = Tipster.where(id: tipster_ids_in_cart)
     end
@@ -30,7 +30,7 @@ class CartController < ApplicationController
     else
       flash[:alert] = "Request is invalid"
     end
-    redirect_to top_tipster_url
+    redirect_to top_tipsters_url
   end
 
   def drop_tipster
