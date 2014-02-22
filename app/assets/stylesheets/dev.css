@@ -17,12 +17,17 @@ textarea {
 select {
     height: 32px;
 }
+
 .btn {
- border-radius: 1px;
+    border-radius: 1px;
 }
+
 .container {
     width: 1128px;
 }
-abbr.required {
+
+span.required {
     color: #EE3933;
+    font-weight: bold;
+    font-size: 20px;
 }
