@@ -23,16 +23,16 @@ class SubscribeController < ApplicationController
       @select_plan = @current_subscription.plan
       @select_tipsters = Tipster.where(id: tipster_ids_in_cart)
 
-      limit = [@current_subscription.tipsters.size,@select_plan.number_tipster].max
+      limit = [@current_subscription.tipsters.size, @select_plan.number_tipster].max
       total = @select_tipsters.size + @current_subscription.tipsters.size
       @adding_tipster = (total - limit) > 0 ? total - limit : 0
-      @amount = @adding_tipster * ADDING_TIPSTER_PRICE *  @select_plan.period
-        @pp_object = {
-            amount: @amount.round(3),
-            currency: 'EUR',
-            item_number: current_user.id,
-            item_name: "TipsterHero Adding #{@select_tipsters.size} Tipster to Subscriptions #{@current_subscription.plan_title}"
-        }
+      @amount = @adding_tipster * ADDING_TIPSTER_PRICE * @select_plan.period
+      @pp_object = {
+          amount: @amount.round(3),
+          currency: 'EUR',
+          item_number: current_user.id,
+          item_name: "TipsterHero Adding #{@select_tipsters.size} Tipster to Subscriptions #{@current_subscription.plan_title}"
+      }
     else
       prepare_subscribe_info
       # Calculate amount and show the paypal form
@@ -79,7 +79,7 @@ class SubscribeController < ApplicationController
     @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
     if @select_plan && !@tipsters_in_cart.blank?
       adding = @tipsters_in_cart.size > @select_plan.number_tipster ? @tipsters_in_cart.size - @select_plan.number_tipster : 0
-      @total_price = (@select_plan.price + (adding * ADDING_TIPSTER_PRICE))  * @select_plan.period
+      @total_price = (@select_plan.price + (adding * ADDING_TIPSTER_PRICE)) * @select_plan.period
     end
   end
 
@@ -91,9 +91,9 @@ class SubscribeController < ApplicationController
     @current_plan = @current_subscription.plan
     session[:plan_id] = @current_plan.id
     if !@tipsters_in_cart.blank?
-      limit = [@current_subscription.tipsters.size,@current_plan.number_tipster].max
+      limit = [@current_subscription.tipsters.size, @current_plan.number_tipster].max
       total = @tipsters_in_cart.size + @current_subscription.tipsters.size
-      @total_price = (total > limit ? total - limit : 0) * ADDING_TIPSTER_PRICE *  @current_plan.period
+      @total_price = (total > limit ? total - limit : 0) * ADDING_TIPSTER_PRICE * @current_plan.period
     end
   end
 

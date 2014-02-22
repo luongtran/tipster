@@ -29,6 +29,7 @@ class Subscriber < User
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+
   def profile_completed?
     self.profile && self.profile.valid?
   end
