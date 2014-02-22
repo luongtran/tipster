@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :fill_profile
 
+  helper_method :tipster_ids_in_cart
   protected
 
   # Render bad request(invalid params, etc ...)

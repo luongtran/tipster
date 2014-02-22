@@ -38,11 +38,6 @@ module ApplicationHelper
     end
   end
 
-  def tipster_ids_in_cart
-    return [] if session[:cart].nil?
-    session[:cart][:tipster_ids]
-  end
-
   def set_current_register_step(step_name)
     @current_step == step_name ? 'active' : ''
   end
