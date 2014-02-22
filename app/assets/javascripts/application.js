@@ -13,4 +13,3 @@
 //= require jquery
 //= require jquery_ujs
 //= require dev
-//= require_tree .

@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20140222075548) do
+=======
+ActiveRecord::Schema.define(version: 20140222091431) do
+>>>>>>> 75796efc51e3ff750966667c1db84718368c48b8
 
   create_table "authorizations", force: true do |t|
     t.integer  "user_id"
@@ -117,6 +121,13 @@ ActiveRecord::Schema.define(version: 20140222075548) do
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
 
+<<<<<<< HEAD
+=======
+  create_table "sports", force: true do |t|
+    t.string "name", null: false
+  end
+
+>>>>>>> 75796efc51e3ff750966667c1db84718368c48b8
   create_table "subscription_tipsters", force: true do |t|
     t.integer  "tipster_id"
     t.integer  "subscription_id"
