@@ -13,7 +13,7 @@ class Subscription < ActiveRecord::Base
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-  validates :user, :plan, presence: true
+  validates :subscriber, :plan, presence: true
 
   delegate :title, :to => :plan, :prefix => true # Example using: self.plan_title
 

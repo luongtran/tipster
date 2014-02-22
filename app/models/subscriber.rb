@@ -3,7 +3,7 @@ class Subscriber < User
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  has_many :authorizations, :foreign_key => :user_id, dependent: :destroy
+  has_many :authorizations, foreign_key: :user_id, dependent: :destroy
   has_one :subscription, foreign_key: :user_id # Here it's has_many
 
   # ==============================================================================
