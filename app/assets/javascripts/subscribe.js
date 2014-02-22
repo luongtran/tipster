@@ -5,6 +5,7 @@ $(document).ready(function () {
         status: true,
         xfbml: true
     });
+
     var make_request_coupon = function (data_request) {
         $.ajax({
             type: 'POST',

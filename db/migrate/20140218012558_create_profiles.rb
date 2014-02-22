@@ -19,8 +19,5 @@ class CreateProfiles < ActiveRecord::Migration
       t.timestamps
     end
     add_index :profiles, :user_id
-
-    # Move birthday to profile
-    remove_column :users, :birthday if column_exists? :users, :birthday
   end
 end

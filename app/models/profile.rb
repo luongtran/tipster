@@ -50,6 +50,11 @@ class Profile < ActiveRecord::Base
     SECRET_QUESTIONS_MAP[self.secret_question]
   end
 
+  # recovery password by secret question
+  def valid_secret_question?(secret_question)
+    self.secret_question == secret_question
+  end
+
   private
 
   def init_default_birthday

@@ -14,6 +14,7 @@ class Payment < ActiveRecord::Base
           residence_country: params['residence_country'],
           pending_reason: params['pending_reason'],
           mc_currency: params['mc_currency'],
+          # FIXME, only a field is different !!!
           business_email: params['business'],
           payment_type: params['payment_type'],
           payer_status: params['payer_status'],

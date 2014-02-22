@@ -18,6 +18,11 @@ module TipsterHero
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+
+    # For automatically load subfolders in the models folder
+    config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**}')]
+
     # config.i18n.default_locale = :de
+    config.i18n.enforce_available_locales = true
   end
 end
