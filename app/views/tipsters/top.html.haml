@@ -21,7 +21,7 @@
           %td= tipster.email
           %td= tipster.created_at.strftime("%m/%d/%Y")
           %td
-            - if @tipster_in_subscription && @tipster_in_subscription.include?(tipster)
+            - if @tipster_in_subscription.present? && @tipster_in_subscription.include?(tipster)
               %label.label Already purchase
             - else
               - if @tipster_ids_in_cart.include? tipster.id.to_s
@@ -35,4 +35,7 @@
                   %button.btn.btn-success{type: :submit} Add to cart
 .center-block
   - unless @tipster_ids_in_cart.empty?
-    %a.btn.btn-success.btn-large.pull-right{href: subscribe_choose_offer_path,'data-no-turbolink' => true} Proceed to checkout
+    - if @tipster_in_subscription.present?
+      %a.btn.btn-success.btn-large.pull-right{href: subscribe_add_offer_path,'data-no-turbolink' => true} Proceed to checkout
+    - else
+      %a.btn.btn-success.btn-large.pull-right{href: subscribe_choose_offer_path,'data-no-turbolink' => true} Proceed to checkout

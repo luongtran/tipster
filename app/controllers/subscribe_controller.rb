@@ -16,31 +16,49 @@ class SubscribeController < ApplicationController
 
   # GET|POST /subscribe/payment
   def payment
-    prepare_subscribe_info
-    # Calculate amount and show the paypal form
-    unless current_user.subscription
-      subscription = current_user.build_subscription(plan_id: session[:plan_id])
-    else
-      subscription = current_user.subscription
-    end
-    @select_tipsters ||= Tipster.where(id: tipster_ids_in_cart)
-    subscription.tipsters = @select_tipsters
-    subscription.plan_id = session[:plan_id]
-    # FIXME,  the subscription must be set to inactive until user pay done
-    subscription.save
+    if already_has_subscription?
+      @already_has_subscription = true
 
-    @amount = subscription.calculator_price
-    @pp_object = {
-        amount: @amount.round(3),
-        currency: 'EUR',
-        item_number: current_user.id,
-        item_name: "TipsterHero Subscriptions #{subscription.plan_title}"
-    }
+      @current_subscription = current_user.subscription
+      @select_plan = @current_subscription.plan
+      @select_tipsters = Tipster.where(id: tipster_ids_in_cart)
+
+      limit = [@current_subscription.tipsters.size,@select_plan.number_tipster].max
+      total = @select_tipsters.size + @current_subscription.tipsters.size
+      @adding_tipster = (total - limit) > 0 ? total - limit : 0
+      @amount = @adding_tipster * ADDING_TIPSTER_PRICE *  @select_plan.period
+        @pp_object = {
+            amount: @amount.round(3),
+            currency: 'EUR',
+            item_number: current_user.id,
+            item_name: "TipsterHero Adding #{@select_tipsters.size} Tipster to Subscriptions #{@current_subscription.plan_title}"
+        }
+    else
+      prepare_subscribe_info
+      # Calculate amount and show the paypal form
+      unless current_user.subscription
+        subscription = current_user.build_subscription(plan_id: session[:plan_id])
+      else
+        subscription = current_user.subscription
+      end
+      @select_tipsters ||= Tipster.where(id: tipster_ids_in_cart)
+      subscription.tipsters = @select_tipsters
+      subscription.plan_id = session[:plan_id]
+      subscription.active = false
+      subscription.save
+      @amount = subscription.calculator_price
+      @pp_object = {
+          amount: @amount.round(3),
+          currency: 'EUR',
+          item_number: current_user.id,
+          item_name: "TipsterHero Subscriptions #{subscription.plan_title}"
+      }
+    end
   end
 
   # GET|POST /register/payment_method
   def payment_method
-    if request.post
+    if request.post?
       # Get the payment method selected
       method = params[:method]
       if method == Payment::BY_PAYPAL
@@ -60,7 +78,22 @@ class SubscribeController < ApplicationController
     @select_plan = Plan.where(id: session[:plan_id]).first
     @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
     if @select_plan && !@tipsters_in_cart.blank?
-      @total_price = (@select_plan.price + (@tipsters_in_cart.size > @select_plan.number_tipster ? (@tipsters_in_cart.size - @select_plan.number_tipster)* 9.9 : 0))* @select_plan.period
+      adding = @tipsters_in_cart.size > @select_plan.number_tipster ? @tipsters_in_cart.size - @select_plan.number_tipster : 0
+      @total_price = (@select_plan.price + (adding * ADDING_TIPSTER_PRICE))  * @select_plan.period
+    end
+  end
+
+  # GET /register/offer
+  def add_offer
+    # Prepare shopping data
+    @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
+    @current_subscription = current_user.subscription
+    @current_plan = @current_subscription.plan
+    session[:plan_id] = @current_plan.id
+    if !@tipsters_in_cart.blank?
+      limit = [@current_subscription.tipsters.size,@current_plan.number_tipster].max
+      total = @tipsters_in_cart.size + @current_subscription.tipsters.size
+      @total_price = (total > limit ? total - limit : 0) * ADDING_TIPSTER_PRICE *  @current_plan.period
     end
   end
 
@@ -146,6 +179,7 @@ class SubscribeController < ApplicationController
   end
 
   def already_has_subscription?
-    current_user && current_user.subscription && current_user.subscription.payments && current_user.subscription.payments.last
+    current_user && current_user.subscription && current_user.subscription.payments.present? && current_user.subscription.payments.last
   end
+
 end

@@ -1,6 +1,7 @@
 class CartController < ApplicationController
 
   def show
+    already_purchase
     if tipster_ids_in_cart.empty?
       flash[:alert] = "Your cart is empty"
       redirect_to top_tipsters_url
@@ -38,5 +39,14 @@ class CartController < ApplicationController
     session[:cart][:tipster_ids].delete(tipster_id) if session[:cart][:tipster_ids].include? tipster_id
     flash[:notice] = "Tipster droped"
     redirect_to params[:return_url].present? ? params[:return_url] : cart_path
+  end
+
+  private
+  def already_purchase
+    if current_user && current_user.subscription
+      if current_user.subscription.payments.present? && current_user.subscription.payments.last.payment_status == "Completed"
+        current_user.subscription.tipsters.each {|tipster| session[:cart][:tipster_ids].delete(tipster.id.to_s)}
+      end
+    end
   end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140221104030) do
+ActiveRecord::Schema.define(version: 20140222033818) do
 
   create_table "authorizations", force: true do |t|
     t.integer  "user_id"
@@ -131,6 +131,9 @@ ActiveRecord::Schema.define(version: 20140221104030) do
     t.integer  "plan_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active"
+    t.datetime "active_date"
+    t.datetime "expired_date"
   end
 
   add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id", using: :btree

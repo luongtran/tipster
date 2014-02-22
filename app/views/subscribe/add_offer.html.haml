@@ -5,9 +5,7 @@
       .container
         %ul.nav.nav-pills
           %li.active
-            %a{"data-toggle" => "tab", href: "#tab1"} Choose Offer
-          %li
-            %a{"data-toggle" => "tab", href: "#tab2"} Identification
+            %a{"data-toggle" => "tab", href: "#tab1"} Add Offer
           %li
             %a{"data-toggle" => "tab", href: "#tab3"}Payment Method
           %li
@@ -16,17 +14,17 @@
             %a{"data-toggle" => "tab", href: "#tab5"} Confirmation
   .tab-content
     #tab1.tab-pane.active
-      - if @select_plan
-        %h3 Your selected plan:
+      - if @current_plan
+        %h3 Your current plan:
         %ul
           %li
             Name:
-            %strong= @select_plan.title
+            %strong= @current_plan.title
           %li
             Price:
-            %strong= "€ #{@select_plan.price} / Month"
+            %strong= "€ #{@current_plan.price} / Month"
         %a{href: pricing_path} Select another plan?
-      - unless @select_plan && @select_plan.free?
+      - unless @current_plan && @current_plan.free?
         %h3 Would you win a bonus? Help us
         .span12
           .span4{style: 'padding: 10px; border: 1px solid #ccc'}
@@ -70,9 +68,9 @@
               Total:
               %span#total_price
                 = "€#{@total_price.round(3)}"
-        %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
+          %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
 
-      - if @select_plan && @select_plan.free?
+      - if @current_plan && @current_plan.free?
         %h3 Are you sure want to choose the Free subscription?
         = simple_form_for :nothing, url: '/' do |f|
           %button.btn.btn-success{type: :submit} Yes, I'd like it

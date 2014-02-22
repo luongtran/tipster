@@ -54,6 +54,11 @@ class PaymentController < ApplicationController
     user = User.find(notify.item_id)
     subscription = user.subscription
     payment = subscription.payments.build_from_paypal notify.params
+    if notify.params['payment_status'] == "Completed"
+      if !subscription.active
+        subscription.update_attributes({active: true,active_date: Time.now,expired_date: Time.now + subscription.plan.period.month})
+      end
+    end
     payment.save
     render nothing: true
 

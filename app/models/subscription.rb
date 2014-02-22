@@ -21,12 +21,11 @@ class Subscription < ActiveRecord::Base
   # INSTANCE METHODS
   # ==============================================================================
   def calculator_price
-    self.tipsters.size > self.plan.number_tipster ? adder = self.tipsters.size - self.plan.number_tipster : adder = 0
-    (self.plan.price.to_f + adder * 9.9) * self.plan.period
+    adder =  self.tipsters.size > self.plan.number_tipster ? self.tipsters.size - self.plan.number_tipster : 0
+    (self.plan.price.to_f + adder * ADDING_TIPSTER_PRICE) * self.plan.period
   end
 
   def one_shoot_price
     self.plan.price.to_f
   end
-
 end
