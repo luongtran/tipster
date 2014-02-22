@@ -52,15 +52,27 @@
             %td
             %td
         - else
-          - @subscription.tipsters.each do |tipster|
-            %tr
-              %td
-                = tipster.name
-              %td
-                = tipster.email
-              %td
-                = @subscription.payments.last.payment_date.strftime("%m/%d/%Y")
-              %td
-                = (@subscription.payments.last.payment_date + @subscription.plan.period.month).strftime("%m/%d/%Y")
+          - if @subscription.active_tipsters.present?
+            %tr Active Tipsters
+            - @subscription.active_tipsters.each do |tipster|
+              %tr
+                %td
+                  = tipster.name
+                %td
+                  = tipster.email
+                %td
+                  = @subscription.payments.last.payment_date.strftime("%m/%d/%Y")
+                %td
+                  = (@subscription.payments.last.payment_date + @subscription.plan.period.month).strftime("%m/%d/%Y")
+          - elsif @subscription.inactive_tipsters.present?
+            %tr Inactive Tipsters
+            - @subscription.active_tipsters.each do |tipster|
+              %tr
+                %td
+                  = tipster.name
+                %td
+                  = tipster.email
+                %td
+                %td
 - else
   You are still not register any plan.

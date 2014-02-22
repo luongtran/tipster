@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140222064851) do
+ActiveRecord::Schema.define(version: 20140221104030) do
 
   create_table "authorizations", force: true do |t|
     t.integer  "user_id"
@@ -24,11 +24,6 @@ ActiveRecord::Schema.define(version: 20140222064851) do
 
   add_index "authorizations", ["uid"], name: "index_authorizations_on_uid", using: :btree
   add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id", using: :btree
-
-  create_table "carts_tipsters", force: true do |t|
-    t.integer "cart_id"
-    t.integer "tipster_id"
-  end
 
   create_table "coupon_codes", force: true do |t|
     t.integer  "user_id"
@@ -66,7 +61,7 @@ ActiveRecord::Schema.define(version: 20140222064851) do
     t.string   "residence_country"
     t.string   "pending_reason"
     t.string   "mc_currency"
-    t.string   "business_email"
+    t.string   "business"
     t.string   "payment_type"
     t.string   "payer_status"
     t.boolean  "test_ipn"
@@ -77,9 +72,9 @@ ActiveRecord::Schema.define(version: 20140222064851) do
     t.string   "receiver_id"
     t.string   "payment_status"
     t.float    "mc_gross"
+    t.integer  "coupon_code_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "coupon_code_id"
   end
 
   add_index "payments", ["coupon_code_id"], name: "index_payments_on_coupon_code_id", using: :btree
@@ -96,9 +91,9 @@ ActiveRecord::Schema.define(version: 20140222064851) do
     t.float    "discount",               default: 0.0
     t.float    "price"
     t.integer  "number_tipster"
+    t.integer  "period"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "period"
   end
 
   create_table "profiles", force: true do |t|
@@ -122,24 +117,25 @@ ActiveRecord::Schema.define(version: 20140222064851) do
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
 
-  create_table "subscriber_tipsters", force: true do |t|
+  create_table "subscription_tipsters", force: true do |t|
     t.integer  "tipster_id"
     t.integer  "subscription_id"
+    t.boolean  "active",          default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status"
   end
 
-  add_index "subscriber_tipsters", ["subscription_id"], name: "index_subscriber_tipsters_on_subscription_id", using: :btree
+  add_index "subscription_tipsters", ["subscription_id"], name: "index_subscription_tipsters_on_subscription_id", using: :btree
+  add_index "subscription_tipsters", ["tipster_id"], name: "index_subscription_tipsters_on_tipster_id", using: :btree
 
   create_table "subscriptions", force: true do |t|
     t.integer  "user_id"
     t.integer  "plan_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "active"
+    t.boolean  "active",       default: false
     t.datetime "active_date"
     t.datetime "expired_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id", using: :btree

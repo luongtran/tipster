@@ -22,7 +22,8 @@ class SubscribeController < ApplicationController
       @current_subscription = current_user.subscription
       @select_plan = @current_subscription.plan
       @select_tipsters = Tipster.where(id: tipster_ids_in_cart)
-
+      @current_subscription.tipsters << @current_subscription
+      @current_subscription.save
       limit = [@current_subscription.tipsters.size, @select_plan.number_tipster].max
       total = @select_tipsters.size + @current_subscription.tipsters.size
       @adding_tipster = (total - limit) > 0 ? total - limit : 0
@@ -100,9 +101,8 @@ class SubscribeController < ApplicationController
   # TODO, shouldn't skip_validate_csfr_token
   # Return from paypal
   def success
-    flash[:alert] = I18n.t("paypal_pending_reasons.#{'address'}") if params[:pending_reason].presence
+    flash[:alert] = I18n.t("paypal_pending_reasons.#{params[:pending_reason]}") if params[:pending_reason]
     empty_subscribe_session
-    @message = t("paypal_pending_reasons.#{params[:pending_reason]}")
     @payment = current_user.subscription.payments.last
   end
 
@@ -179,7 +179,7 @@ class SubscribeController < ApplicationController
   end
 
   def already_has_subscription?
-    current_user && current_user.subscription && current_user.subscription.payments.present? && current_user.subscription.payments.last
+    current_user && current_user.subscription && current_user.subscription.active == true
   end
 
 end

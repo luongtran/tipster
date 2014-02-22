@@ -81,13 +81,13 @@
         \- Total:
         %strong.text-info= "€#{@amount.round(3)}"
 
-        - payment_service_for  @pp_object[:item_number], PAYPAL_ACCOUNT, :amount => @pp_object[:amount],
-             :currency => @pp_object[:currency], :service => :paypal, :html => {:class=>"form-paypal"} do |service|
-        - service.tax "0.00"
-        - service.item_name @pp_object[:item_name]
-        - service.item_number @pp_object[:item_number]
-        - service.notify_url notify_payment_url
-        - service.return_url subscribe_success_url
-        - service.cancel_return_url cancel_payment_url
-        - hidden_field_tag :user_id, @pp_object[:user_id]
-          = image_submit_tag('/assets/paypal-express-checkout-button.png', alt:'Make Payment with Paypal')
+      - payment_service_for  @pp_object[:item_number], PAYPAL_ACCOUNT, :amount => @pp_object[:amount],
+           :currency => @pp_object[:currency], :service => :paypal, :html => {:class=>"form-paypal"} do |service|
+      - service.tax "0.00"
+      - service.item_name @pp_object[:item_name]
+      - service.item_number @pp_object[:item_number]
+      - service.notify_url notify_payment_url
+      - service.return_url subscribe_success_url
+      - service.cancel_return_url cancel_payment_url
+      - hidden_field_tag :user_id, @pp_object[:user_id]
+        = image_submit_tag('/assets/paypal-express-checkout-button.png', alt:'Make Payment with Paypal')

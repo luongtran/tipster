@@ -55,6 +55,9 @@ class PaymentController < ApplicationController
     subscription = user.subscription
     payment = subscription.payments.build_from_paypal notify.params
     if notify.params['payment_status'] == "Completed"
+        subscription.subscription_tipsters.each do |t|
+          t.set_active
+        end
       if !subscription.active
         subscription.update_attributes({active: true,active_date: Time.now,expired_date: Time.now + subscription.plan.period.month})
       end
@@ -66,7 +69,7 @@ class PaymentController < ApplicationController
 
   # GET /payment/cancel
   def cancel
-    redirect_to registration_path(step: 'offer')
+    redirect_to subscribe_payment_path
   end
 
 end
