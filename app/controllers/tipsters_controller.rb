@@ -1,6 +1,11 @@
 class TipstersController < ApplicationController
-  def index
 
+  # GET /tipsters
+  def index
+    # params:
+    # sport ['football', ...]
+    # rank ['last |1|3|6|12| months']
+    @tipsters = Tipster.all
   end
 
   def show
