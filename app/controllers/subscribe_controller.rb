@@ -22,7 +22,10 @@ class SubscribeController < ApplicationController
       @current_subscription = current_user.subscription
       @select_plan = @current_subscription.plan
       @select_tipsters = Tipster.where(id: tipster_ids_in_cart)
+      begin
       @current_subscription.tipsters << @select_tipsters
+      rescue Exception => e
+      end
       @current_subscription.save
       limit = [@current_subscription.tipsters.size, @select_plan.number_tipster].max
       total = @select_tipsters.size + @current_subscription.tipsters.size
@@ -81,6 +84,9 @@ class SubscribeController < ApplicationController
     if @select_plan && !@tipsters_in_cart.blank?
       adding = @tipsters_in_cart.size > @select_plan.number_tipster ? @tipsters_in_cart.size - @select_plan.number_tipster : 0
       @total_price = (@select_plan.price + (adding * ADDING_TIPSTER_PRICE)) * @select_plan.period
+      if session[:coupon_code_id]
+        @total_price -= 3
+      end
     end
   end
 
@@ -125,6 +131,7 @@ class SubscribeController < ApplicationController
     cc = CouponCode.find_by_code(params[:code])
     if cc && cc.user_id == current_user.id
       session[:coupon_code_id] = cc.id
+      cc.update_attributes({is_used: true,used_at: Time.now})
       render :json => {success: true, :message => "Coupon using successfully !. Your has receiver 3 EUR"}
     else
       render :json => {success: false, :message => "Your counpon code is invalid !"}
@@ -180,6 +187,10 @@ class SubscribeController < ApplicationController
 
   def already_has_subscription?
     current_user && current_user.subscription && current_user.subscription.active == true
+  end
+
+  def using_coupon?
+    current_user
   end
 
 end

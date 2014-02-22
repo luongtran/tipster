@@ -39,6 +39,7 @@
         .span8.offset1#coupon{style: 'display:none'}
           = text_field_tag :code
           %button.btn.btn-success#apply_code Apply Coupon
+        %div{style:'clear:both'}
         .span8.offset1
           #message_return
         - unless @tipsters_in_cart.blank?
@@ -67,9 +68,9 @@
         - if @total_price
           .text-right
             %h4
-              Total:
+              Total:€
               %span#total_price
-                = "€#{@total_price.round(3)}"
+                = @total_price.round(3)
         %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
 
       - if @select_plan && @select_plan.free?

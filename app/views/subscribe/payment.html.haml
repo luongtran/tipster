@@ -70,7 +70,7 @@
         %strong= @select_tipsters.size
         %br
         \- Need to paid:
-        %strong €#{@adding_tipster * ADDING_TIPSTER_PRICE}
+        %strong €#{(@adding_tipster * ADDING_TIPSTER_PRICE).round(3)}
         %br
         \_______________________
         %br

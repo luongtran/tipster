@@ -15,10 +15,10 @@ $(document).ready(function () {
             success: function (response) {
                 if (response.success) {
                     $('#coupon').show();
-                    $('#message').val(response.message);
+                    $('#message_return').text(response.message);
                     $('#code').val(response.code);
                 } else {
-
+                    $('#message_return').text(response.message);
                 }
             }
         });
@@ -75,10 +75,12 @@ $(document).ready(function () {
             },
             success: function (response) {
                 if (response.success) {
-                    $('#total_price').val(response);
+                    $('#total_price').text(parseFloat($('#total_price').text()) - 3);
+                    alert(response.message);
                 }
                 else {
-                    $("#message_return").val(response.message);
+                    $("#message_return").text(response.message);
+                    alert(response.message);
                 }
             },
             error: function () {
