@@ -1,17 +1,10 @@
 namespace :db do
-  task :generate_tipsters => :environment do
-    10.times do
-      fn = Faker::Name.first_name
-      tst = Tipster.new(
-          first_name: fn,
-          last_name: Faker::Name.last_name,
-          email: "#{fn}@gmail.com",
-          password: "123456",
-          password_confirmation: "123456"
-      )
-      if tst.save
-        puts " -> Created tipster: #{tst.name}"
-      end
-    end
+  task :sample_tipster => :environment do
+    seed_file = File.join(Rails.root, 'db', 'sample_tipster.rb')
+    load(seed_file) if File.exist?(seed_file)
+  end
+  task :seed_plan => :environment do
+    seed_file = File.join(Rails.root, 'db', 'seeds_plan.rb')
+    load(seed_file) if File.exist?(seed_file)
   end
 end
