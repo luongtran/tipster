@@ -6,6 +6,7 @@ class TipstersController < ApplicationController
     # sport ['football', ...]
     # rank ['last |1|3|6|12| months']
     @tipsters = Tipster.all
+
   end
 
   def show

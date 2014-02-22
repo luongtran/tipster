@@ -1,10 +1,20 @@
 .row-fluid
   .span5
-    %h2.text-center My profile
+    %ul
+      %li
+        Email:
+        = current_user.email
+      %li
+        Full name:
+        = current_user.name
+  .span5
+    %h2 My profile
     = simple_form_for @profile, url: my_profile_path, method: 'POST' do |f|
       = render 'form', f: f
       .form-actions
         = f.button :submit, "Save"
+
+.row-fluid
   - unless @user.coupon_codes.empty?
     .span5
       %h2 Coupon codes
