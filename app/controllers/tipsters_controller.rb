@@ -6,7 +6,7 @@ class TipstersController < ApplicationController
     else
       @tipsters = Tipster.order('id DESC').limit(50)
     end
-    if current_user && current_user.subscription && current_user.subscription.payments && current_user.subscription.payments.last.payment_status == "Completed"
+    if current_user && current_user.subscription && current_user.subscription.payments.present? && current_user.subscription.payments.last.payment_status == "Completed"
       @tipster_in_subscription = current_user.subscription.tipsters
     end
   end

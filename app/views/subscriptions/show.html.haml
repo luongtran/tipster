@@ -61,6 +61,6 @@
               %td
                 = @subscription.payments.last.payment_date.strftime("%m/%d/%Y")
               %td
-                = (@subscription.payments.last.payment_date + 1.month).strftime("%m/%d/%Y")
+                = (@subscription.payments.last.payment_date + @subscription.plan.period.month).strftime("%m/%d/%Y")
 - else
   You are still not register any plan.

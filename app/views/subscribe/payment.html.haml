@@ -39,18 +39,38 @@
                   %td= "#{['12.15','20.14','10.3'].sample} %"
                   %td= "+ #{(1000..5000).to_a.sample}"
       .span4
+      - if !@already_has_subscription
         %h3 Amount
         \- Plan price:
         %strong €#{@select_plan.price}
         %br
         \- Adder tipster price:
-        %strong €#{@select_tipsters.size > @select_plan.number_tipster ? (@select_tipsters.size - @select_plan.number_tipster) * 9.9 : 0}
+        %strong €#{@select_tipsters.size > @select_plan.number_tipster ? (@select_tipsters.size - @select_plan.number_tipster) * ADDING_TIPSTER_PRICE : 0}
         %br
         \- Discount:
         %strong €#{@discount.to_i}
         %br
         \- Subtotal:
         %strong €#{(@amount / @select_plan.period).round(3)}
+        %br
+        \_______________________
+        %br
+        \ *#{@select_plan.period} Month
+        %br
+        \_______________________
+        %br
+        \- Total:
+        %strong.text-info= "€#{@amount.round(3)}"
+      - else
+        %h3 Amount
+        \- Number tipster on your current subscription:
+        %strong #{@current_subscription.tipsters.size}
+        %br
+        \- Number tipster on cart:
+        %strong= @select_tipsters.size
+        %br
+        \- Need to paid:
+        %strong €#{@adding_tipster * ADDING_TIPSTER_PRICE}
         %br
         \_______________________
         %br
