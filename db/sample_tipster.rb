@@ -4,7 +4,7 @@
   tst = Tipster.new(
       first_name: fn,
       last_name: Faker::Name.last_name,
-      email: "#{fn}@gmail.com",
+      email: "#{fn}@fakemail.com",
       password: "123456",
       password_confirmation: "123456"
   )

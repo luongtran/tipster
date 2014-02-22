@@ -2,12 +2,11 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :omniauthable, :omniauth_providers => [:facebook, :google_oauth2,:twitter]
+  devise :omniauthable, :omniauth_providers => [:facebook, :google_oauth2, :twitter]
 
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  has_one :subscription # Here it's has_many
   has_one :profile, dependent: :destroy
   has_many :invoices
   has_many :coupon_codes
