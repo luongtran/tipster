@@ -9,7 +9,7 @@ class CreatePayments < ActiveRecord::Migration
       t.string :residence_country
       t.string :pending_reason
       t.string :mc_currency
-      t.string :business_email
+      t.string :business
       t.string :payment_type
       t.string :payer_status
       t.boolean :test_ipn
@@ -20,6 +20,7 @@ class CreatePayments < ActiveRecord::Migration
       t.string :receiver_id
       t.string :payment_status
       t.float :mc_gross
+      t.integer :coupon_code_id
       t.timestamps
     end
   end

@@ -11,6 +11,7 @@ class CreatePlans < ActiveRecord::Migration
       t.float :discount                 , default: 0
       t.float :price
       t.integer :number_tipster
+      t.integer :period
       t.timestamps
     end
 
