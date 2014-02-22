@@ -26,4 +26,11 @@ class TipstersController < ApplicationController
     end
   end
 
+  def free
+    @tipsters = Tipster.order('id DESC').limit(50) #Where condition Free
+    if current_user && current_user.subscription && current_user.subscription.active?
+      @tipster_in_subscription = current_user.subscription.tipsters
+    end
+  end
+
 end

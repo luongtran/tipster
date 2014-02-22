@@ -35,7 +35,6 @@ class ApplicationController < ActionController::Base
     initial_cart_session if session[:cart].nil?
     session[:cart][:tipster_ids].uniq
   end
-
   def empty_subscribe_session
     empty_cart_session
     session[:plan_id] = nil

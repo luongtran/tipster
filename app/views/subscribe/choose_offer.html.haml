@@ -74,6 +74,6 @@
 
       - if @select_plan && @select_plan.free?
         %h3 Are you sure want to choose the Free subscription?
-        = simple_form_for :nothing, url: '/' do |f|
+        = form_tag select_free_plan_path do |f|
           %button.btn.btn-success{type: :submit} Yes, I'd like it
           %a.btn.btn-warning{href: pricing_path} No, Let me choose another

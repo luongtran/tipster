@@ -10,6 +10,10 @@ class SubscriptionsController < ApplicationController
       redirect_to top_tipsters_url
     end
   end
+  def select_free_plan
+    session[:free_plan] = true
+    redirect_to free_tipsters_path
+  end
 
   def show
     @subscription = current_user.subscription

@@ -43,10 +43,8 @@ class CartController < ApplicationController
 
   private
   def already_purchase
-    if current_user && current_user.subscription
-      if current_user.subscription.payments.present? && current_user.subscription.payments.last.payment_status == "Completed"
-        current_user.subscription.tipsters.each {|tipster| session[:cart][:tipster_ids].delete(tipster.id.to_s)}
-      end
+    if current_user && current_user.subscription && current_user.subscription.active
+        current_user.subscription.active_tipsters.each {|tipster| session[:cart][:tipster_ids].delete(tipster.id.to_s)}
     end
   end
 end
