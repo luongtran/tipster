@@ -22,7 +22,7 @@ class SubscribeController < ApplicationController
       @current_subscription = current_user.subscription
       @select_plan = @current_subscription.plan
       @select_tipsters = Tipster.where(id: tipster_ids_in_cart)
-      @current_subscription.tipsters << @current_subscription
+      @current_subscription.tipsters << @select_tipsters
       @current_subscription.save
       limit = [@current_subscription.tipsters.size, @select_plan.number_tipster].max
       total = @select_tipsters.size + @current_subscription.tipsters.size
@@ -163,7 +163,7 @@ class SubscribeController < ApplicationController
                     message: "Please choose at least one tipster",
                     url: top_tipsters_url
                 }
-              elsif !session[:plan_id]
+              elsif !session[:plan_id] && !current_user.subscription.active
                 {
                     message: "Please choose a plan",
                     url: pricing_url

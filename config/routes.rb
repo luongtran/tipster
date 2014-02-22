@@ -47,6 +47,7 @@ TipsterHero::Application.routes.draw do
   resources :tipsters, only: [:index, :show] do
     collection do
       get :top
+      get :free
     end
   end
 
@@ -59,5 +60,7 @@ TipsterHero::Application.routes.draw do
   get '/pricing' => 'home#pricing', as: :pricing
 
   get '/subscriptions/select/:id' => 'subscriptions#select_plan', as: :select_plan
+  delete 'subscriptions/tipster/:id' => 'subscriptions#remove_inactive_tipster',as: :remove_inactive_tipster
+  post 'subscriptions/select_free_plan' => 'subscriptions#select_free_plan',as: :select_free_plan
 
 end
