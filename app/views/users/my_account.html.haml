@@ -18,9 +18,9 @@
         %h2 Change password
         %hr
         = simple_form_for @user, as: :user, url: change_password_path, method: 'POST', html: {class: 'form-horizontal'} do |f|
-          = f.input :current_password
-          = f.input :password
-          = f.input :password_confirmation
+          = f.input :current_password, required: true
+          = f.input :password, required: true
+          = f.input :password_confirmation, required: true
           .control-group
             .controls
               = f.button :submit, t('user.change_password'), class: 'btn-primary'

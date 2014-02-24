@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
   end
 
   def update_profile(params)
-    profile self.find_or_initial_profile
+    profile = self.find_or_initial_profile
     profile.assign_attributes(params)
     profile.save
     profile
@@ -49,6 +49,7 @@ class User < ActiveRecord::Base
   def update_account(params)
     self.update_without_password(params)
   end
+
   # ==============================================================================
   # PROTECTED METHODS
   # ==============================================================================

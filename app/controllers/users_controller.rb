@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   def my_account
     @user ||= current_user
     if request.post?
-      if @user.update_attributes(user_params)
+      if @user.update_account(user_params)
         flash[:notice] = I18n.t('user.account_update_successully')
         redirect_to my_account_url
       else
@@ -21,8 +21,8 @@ class UsersController < ApplicationController
       redirect_to my_account_url
     else
       flash[:alert] = I18n.t('user.password_changed_failed')
+      render :my_account
     end
-    render :my_account
   end
 
   private

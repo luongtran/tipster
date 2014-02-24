@@ -30,7 +30,7 @@
         %td
     - else
       - @tipsters.each do |tipster|
-        %tr
+        %tr[tipster]
           %td= tipster.name
           %td= tipster.email
           %td= tipster.created_at.strftime("%m/%d/%Y")

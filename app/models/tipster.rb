@@ -19,7 +19,6 @@ class Tipster < User
   # CLASS METHODS
   # ==============================================================================
   class << self
-
     def load_data(params = {})
       relation = self.process_filter_params(params)
       relation.includes(:profile)
