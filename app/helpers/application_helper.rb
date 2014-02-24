@@ -61,4 +61,8 @@ module ApplicationHelper
     end
     options
   end
+
+  def query_params
+    request.query_parameters
+  end
 end
