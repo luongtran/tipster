@@ -55,11 +55,12 @@ class PaymentController < ApplicationController
     subscription = user.subscription
     payment = subscription.payments.build_from_paypal notify.params
     if notify.params['payment_status'] == "Completed"
-        subscription.subscription_tipsters.each do |t|
-          t.set_active
-        end
+      subscription.subscription_tipsters.each do |t|
+        t.set_active
+      end
       if !subscription.active
-        subscription.update_attributes({active: true,active_date: Time.now,expired_date: Time.now + subscription.plan.period.month})
+        # FIXME, do you want to copy the line if user pay with French bank?
+        subscription.update_attributes({active: true, active_date: Time.now, expired_date: Time.now + subscription.plan.period.month})
       end
     end
     payment.save

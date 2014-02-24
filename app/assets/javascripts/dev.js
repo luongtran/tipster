@@ -4,3 +4,14 @@
  *= require 'jquery.bootstrap.wizard.min'
  *= require 'prettify'
  */
+
+$(document).ready(function () {
+    /* Tipster filter statutes select box */
+    $('#tipster_statuses_filer').on('change', function () {
+        console.log('changed');
+        var $selected_em = $('#tipster_statuses_filer option:selected');
+        var url = $selected_em.attr('data-url');
+        window.location = url;
+        return false;
+    });
+});
