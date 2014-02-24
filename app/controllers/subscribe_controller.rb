@@ -110,12 +110,12 @@ class SubscribeController < ApplicationController
   def get_coupon_code
     cc = CouponCode.create_for_user(current_user, coupon_params[:source])
     if cc
-      render :json => {success: true, :code => cc.code, :message => 'Coupon create'}
+      render :json => {success: true, :code => cc.code, :message => I18n.t('coupon.created_successfully')}
     else
       # TODO, edit error message here
       render :json => {
           success: false,
-          :message => 'You can get more coupon'
+          message: I18n.t('coupon.request_denied')
       }
     end
   end
@@ -125,9 +125,9 @@ class SubscribeController < ApplicationController
     cc = CouponCode.find_by_code(params[:code])
     if cc && cc.user_id == current_user.id
       session[:coupon_code_id] = cc.id
-      render :json => {success: true, :message => "Coupon using successfully !. Your has receiver 3 EUR"}
+      render :json => {success: true, :message => I18n.t('coupon.applied_successfully')}
     else
-      render :json => {success: false, :message => "Your counpon code is invalid !"}
+      render :json => {success: false, :message => I18n.t('coupon.invalid')}
     end
   end
 
@@ -179,6 +179,7 @@ class SubscribeController < ApplicationController
   end
 
   def already_has_subscription?
+    # FIXME, move to Subscriber model. This function don't make any sence if you put it here
     current_user && current_user.subscription && current_user.subscription.active == true
   end
 

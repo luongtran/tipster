@@ -12,3 +12,9 @@ en:
     unilateral: "The payment is pending because it was made to an email address that is not yet registered or confirmed."
     verify: "The payment is pending because you are not yet verified. You must verify your account before you can accept this payment."
     other: "The payment is pending for a reason other than those listed above. For more information, contact PayPal customer service"
+  coupon:
+    invalid: 'Your counpon code is invalid !'
+    created_successfully: 'Coupon created successfully'
+    applied_successfully: 'Applied counpon successfully'
+    request_denied: 'You can get more coupon.'
+
