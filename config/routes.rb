@@ -9,6 +9,11 @@ TipsterHero::Application.routes.draw do
 
   match '/my_profile' => 'profiles#my_profile', as: :my_profile, via: [:get, :post]
 
+  controller 'users' do
+    match :my_account, via: [:get, :post]
+    post :change_password
+  end
+
   resource :payment, controller: 'payment', only: [:create] do
     collection do
       post :return

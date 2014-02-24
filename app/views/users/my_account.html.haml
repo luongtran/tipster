@@ -1,0 +1,30 @@
+.row-fluid
+  .span7
+    .well
+      %h2 Account informations
+      %hr
+      = simple_form_for @user, as: :user, url: my_account_path, method: 'POST', html: {class: 'form-horizontal'} do |f|
+        = f.input :email
+        = f.input :first_name
+        = f.input :last_name
+        = f.simple_fields_for :profile do |f_p|
+          = render 'profiles/form', f: f_p
+        .control-group
+          .controls
+            = f.button :submit, t('user.update_account'), class: 'btn-primary'
+  .span5
+    .span12
+      .well
+        %h2 Change password
+        %hr
+        = simple_form_for @user, as: :user, url: change_password_path, method: 'POST', html: {class: 'form-horizontal'} do |f|
+          = f.input :current_password
+          = f.input :password
+          = f.input :password_confirmation
+          .control-group
+            .controls
+              = f.button :submit, t('user.change_password'), class: 'btn-primary'
+    .span12
+      .well
+        %h2 Coupon codes
+        %hr

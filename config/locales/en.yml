@@ -17,5 +17,23 @@ en:
     created_successfully: 'Coupon created successfully'
     applied_successfully: 'Applied counpon successfully'
     request_denied: 'You can get more coupon.'
-
+  user:
+    email: "Email"
+    first_name: "First Name"
+    last_name: "Last Name"
+    birthday: "Birthday"
+    civility: "Civility"
+    country: "Country"
+    city: "City"
+    address: "Address"
+    zip_code: "Zip code"
+    change_password: "Change Password"
+    password_changed_successfully: "Your password was changed successfully."
+    password_changed_failed: "Change password failed."
+    change_password_fail: "Cannot change your password."
+    update_profile: "Update Profile"
+    last_sign_in: "Last sign in"
+    update_account: "Update account"
+    account_update_successully: "Your profile was updated successfully."
+    account_update_failed: "Update profile failed."
 

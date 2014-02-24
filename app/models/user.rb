@@ -46,6 +46,9 @@ class User < ActiveRecord::Base
     profile
   end
 
+  def update_account(params)
+    self.update_without_password(params)
+  end
   # ==============================================================================
   # PROTECTED METHODS
   # ==============================================================================
