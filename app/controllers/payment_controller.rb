@@ -44,27 +44,25 @@ class PaymentController < ApplicationController
 
   # POST /payment/notify
   def notify
-    # active subscription
-
-    #logger = Logger.new('log/paypal.log')
-    #logger.info("================== PAYPAL IPN ON #{Time.now} ========================")
-
     # find user by token
     notify = Paypal::Notification.new(request.raw_post)
     user = User.find(notify.item_id)
     subscription = user.subscription
     payment = subscription.payments.build_from_paypal notify.params
     if notify.params['payment_status'] == "Completed"
-        subscription.subscription_tipsters.each do |t|
+        subscription.inactive_tipsters.each do |t|
           t.set_active
         end
-      if !subscription.active
-        subscription.update_attributes({active: true,active_date: Time.now,expired_date: Time.now + subscription.plan.period.month})
+      unless subscription.active?
+        if subscription.calculator_price == notify.params['mc_gross']
+          subscription.update_attributes({active: true,active_date: Time.now,expired_date: Time.now + subscription.plan.period.month})
+        else
+          # If subscription not active && payment amount difference calculator amount
+        end
       end
     end
     payment.save
     render nothing: true
-
   end
 
   # GET /payment/cancel

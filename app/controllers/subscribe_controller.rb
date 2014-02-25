@@ -16,51 +16,93 @@ class SubscribeController < ApplicationController
 
   # GET|POST /subscribe/payment
   def payment
-    if already_has_subscription?
-      @already_has_subscription = true
+    if already_has_subscription? #Adding tipster to current subscription
+      current_subscription = current_user.subscription
+      select_plan = current_subscription.plan
+      select_tipsters = Tipster.where(id: tipster_ids_in_cart)
 
-      @current_subscription = current_user.subscription
-      @select_plan = @current_subscription.plan
-      @select_tipsters = Tipster.where(id: tipster_ids_in_cart)
       begin
-      @current_subscription.tipsters << @select_tipsters
+        current_subscription.inactive_tipsters.delete_all
+        current_subscription.tipsters << select_tipsters
+        current_subscription.save
       rescue Exception => e
+        logger = Logger.new('log/payment_errors.log')
+        logger.info(e.message)
+        logger.info(e.backtrace.first(5).join('/n'))
       end
-      @current_subscription.save
-      limit = [@current_subscription.tipsters.size, @select_plan.number_tipster].max
-      total = @select_tipsters.size + @current_subscription.tipsters.size
-      @adding_tipster = (total - limit) > 0 ? total - limit : 0
-      @amount = @adding_tipster * ADDING_TIPSTER_PRICE * @select_plan.period
+      adder_tipster = current_subscription.adder_tipster
+      subtotal = adder_tipster * ADDING_TIPSTER_PRICE
+      before_amount = subtotal * select_plan.period
+      if using_coupon?
+        using_coupon = true
+        amount = before_amount > 0 ? before_amount - 3 : before_amount
+      else
+        amount = before_amount
+        using_coupon = false
+      end
       @pp_object = {
-          amount: @amount.round(3),
+          amount: amount.round(3),
           currency: 'EUR',
           item_number: current_user.id,
-          item_name: "TipsterHero Adding #{@select_tipsters.size} Tipster to Subscriptions #{@current_subscription.plan_title}"
+          item_name: "TipsterHero Adding #{select_tipsters.size} Tipster to Subscriptions #{current_subscription.plan_title}"
       }
-    else
+
+      @return = {
+          has_subscription: true,
+          current_subscription: current_subscription,
+          select_plan: select_plan,
+          subtotal: subtotal,
+          select_tipsters: select_tipsters,
+          adder_tipster: adder_tipster,
+          amount: amount.round(3),
+          before_amount: before_amount.round(3),
+          using_coupon: using_coupon
+
+      }
+    else # If user not completed his payment for subscription
       prepare_subscribe_info
-      # Calculate amount and show the paypal form
       unless current_user.subscription
         subscription = current_user.build_subscription(plan_id: session[:plan_id])
       else
         subscription = current_user.subscription
       end
-      @select_tipsters ||= Tipster.where(id: tipster_ids_in_cart)
-      subscription.tipsters = @select_tipsters
+      select_plan = Plan.find session[:plan_id]
+      select_tipsters = Tipster.where(id: tipster_ids_in_cart)
+
+      subscription.tipsters = select_tipsters
       subscription.plan_id = session[:plan_id]
       subscription.active = false
       subscription.save
-      @amount = subscription.calculator_price
+      adder_tipster = subscription.adder_tipster
+      subtotal = select_plan.price + adder_tipster * ADDING_TIPSTER_PRICE
+      before_amount = subscription.calculator_price
+      if using_coupon?
+        using_coupon = true
+        amount = before_amount > 0 ? before_amount - 3 : before_amount
+      else
+        amount = before_amount
+        using_coupon = false
+      end
       @pp_object = {
-          amount: @amount.round(3),
+          amount: amount.round(3),
           currency: 'EUR',
           item_number: current_user.id,
           item_name: "TipsterHero Subscriptions #{subscription.plan_title}"
       }
+      @return = {
+          has_subscription: false,
+          select_plan: select_plan,
+          adder_tipster: adder_tipster,
+          select_tipsters: select_tipsters,
+          subtotal: subtotal,
+          amount: amount.round(3),
+          before_amount: before_amount.round(3),
+          using_coupon: using_coupon
+      }
     end
   end
 
-  # GET|POST /register/payment_method
+  # GET|POST /subscribe/payment_method
   def payment_method
     if request.post?
       # Get the payment method selected
@@ -76,35 +118,29 @@ class SubscribeController < ApplicationController
     end
   end
 
-  # GET /register/offer
+  # GET /subscribe/offer
   def choose_offer
-    # Prepare shopping data
-    @select_plan = Plan.where(id: session[:plan_id]).first
-    @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
-    if @select_plan && !@tipsters_in_cart.blank?
-      adding = @tipsters_in_cart.size > @select_plan.number_tipster ? @tipsters_in_cart.size - @select_plan.number_tipster : 0
-      @total_price = (@select_plan.price + (adding * ADDING_TIPSTER_PRICE)) * @select_plan.period
-      if session[:coupon_code_id]
-        @total_price -= 3
+    if already_has_subscription?
+      @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
+      @current_subscription = current_user.subscription
+      @select_plan = @current_subscription.plan
+      session[:plan_id] = @select_plan.id
+      if !@tipsters_in_cart.blank?
+        limit = @select_plan.number_tipster
+        total = @tipsters_in_cart.size + @current_subscription.active_tipsters.size
+        @total_price = (total > limit ? total - limit : 0) * ADDING_TIPSTER_PRICE * @select_plan.period
+      end
+    else
+      # Prepare shopping data
+      @select_plan = Plan.where(id: session[:plan_id]).first
+      @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
+      if @select_plan && !@tipsters_in_cart.blank?
+        adding = @tipsters_in_cart.size > @select_plan.number_tipster ? @tipsters_in_cart.size - @select_plan.number_tipster : 0
+        @total_price = (@select_plan.price + (adding * ADDING_TIPSTER_PRICE)) * @select_plan.period
       end
     end
   end
 
-  # GET /register/offer
-  def add_offer
-    # Prepare shopping data
-    @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
-    @current_subscription = current_user.subscription
-    @current_plan = @current_subscription.plan
-    session[:plan_id] = @current_plan.id
-    if !@tipsters_in_cart.blank?
-      limit = [@current_subscription.tipsters.size, @current_plan.number_tipster].max
-      total = @tipsters_in_cart.size + @current_subscription.tipsters.size
-      @total_price = (total > limit ? total - limit : 0) * ADDING_TIPSTER_PRICE * @current_plan.period
-    end
-  end
-
-  # TODO, shouldn't skip_validate_csfr_token
   # Return from paypal
   def success
     flash[:alert] = I18n.t("paypal_pending_reasons.#{params[:pending_reason]}") if params[:pending_reason]
@@ -130,21 +166,15 @@ class SubscribeController < ApplicationController
   def apply_coupon_code
     cc = CouponCode.find_by_code(params[:code])
     if cc && cc.user_id == current_user.id
-      session[:coupon_code_id] = cc.id
-      cc.update_attributes({is_used: true,used_at: Time.now})
-      render :json => {success: true, :message => "Coupon using successfully !. Your has receiver 3 EUR"}
+      unless cc.is_used
+        session[:using_coupon] = cc.id
+        cc.update_attributes({is_used: true, used_at: Time.now})
+        redirect_to subscribe_payment_url, :notice => I18n.t('coupon.success_using') and return
+      else
+        redirect_to subscribe_payment_url, :notice => I18n.t('coupon.is_using') and return
+      end
     else
-      render :json => {success: false, :message => "Your counpon code is invalid !"}
-    end
-  end
-
-  #POST
-  def deny_coupon_code
-    cc = CouponCode.find_by_code(params[:code])
-    if cc
-      cc.update_attributes(is_deny: true)
-    else
-
+      redirect_to subscribe_payment_url, :alert => I18n.t('coupon.invalid') and return
     end
   end
 
@@ -190,7 +220,11 @@ class SubscribeController < ApplicationController
   end
 
   def using_coupon?
-    current_user
+    if session[:using_coupon]
+      coupon = CouponCode.find(session[:using_coupon])
+      return current_user.coupon_codes.include? coupon
+    else
+      return false
+    end
   end
-
 end

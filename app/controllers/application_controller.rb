@@ -26,6 +26,17 @@ class ApplicationController < ActionController::Base
     session[:cart][:tipster_ids] = []
   end
 
+  def reset_cart_session
+    if current_user && current_user.subscription
+      current_user.subscription.inactive_tipsters.each do |tipster|
+        session[:cart][:tipster_ids] << tipster.id.to_s unless session[:cart][:tipster_ids].include? tipster.id.to_s
+      end
+      current_user.subscription.active_tipsters.each do |tipster|
+        session[:cart][:tipster_ids].delete(tipster.id.to_s) if session[:cart][:tipster_ids].include? tipster.id.to_s
+      end
+    end
+  end
+
   def empty_cart_session
     session[:cart] = nil
   end
@@ -35,9 +46,17 @@ class ApplicationController < ActionController::Base
     initial_cart_session if session[:cart].nil?
     session[:cart][:tipster_ids].uniq
   end
+  # Return an array of tipster's id in current user subscription
+  def tipster_ids_in_subscription
+    if current_user && current_user.subscription && current_user.subscription.active?
+      current_user.subscription.tipster_ids
+    end
+  end
+
   def empty_subscribe_session
     empty_cart_session
     session[:plan_id] = nil
+    session[:using_coupon] = nil
     # Maybe clear more session vars: coupon code, payment info ...
   end
 end

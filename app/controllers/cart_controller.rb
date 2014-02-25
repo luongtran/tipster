@@ -1,14 +1,16 @@
 class CartController < ApplicationController
 
   def show
-    already_purchase
+    reset_cart_session
     if tipster_ids_in_cart.empty?
       flash[:alert] = "Your cart is empty"
       redirect_to top_tipsters_url
     else
       @tipsters = Tipster.where(id: tipster_ids_in_cart)
+      if current_user && current_user.subscription && current_user.subscription.active?
+        @subscription_active = true
+      end
     end
-
   end
 
   def add_tipster
@@ -37,6 +39,10 @@ class CartController < ApplicationController
   def drop_tipster
     tipster_id = params[:id]
     session[:cart][:tipster_ids].delete(tipster_id) if session[:cart][:tipster_ids].include? tipster_id
+    if current_user && current_user.subscription
+      tipster = Tipster.find tipster_id
+      current_user.subscription.inactive_tipsters.delete(tipster) if current_user.subscription.inactive_tipsters.include? tipster
+    end
     flash[:notice] = "Tipster droped"
     redirect_to params[:return_url].present? ? params[:return_url] : cart_path
   end

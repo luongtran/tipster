@@ -1,7 +1,7 @@
 class Profile < ActiveRecord::Base
   # TODO, if birthday is required so do we need to validate the age of user ?
 
-  DEFAULT_BIRTHDAY = '1900-01-01'
+  DEFAULT_BIRTHDAY = '1990-01-01'
   KNOW_WEBSITE_FROM_LIST = %w(other sponsoring advertising social_network)
 
   # If we have more questions, please add them at the bottom of the list

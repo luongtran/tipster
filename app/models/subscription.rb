@@ -24,16 +24,16 @@ class Subscription < ActiveRecord::Base
   validates :subscriber, :plan, presence: true
 
   delegate :title, :to => :plan, :prefix => true # Example using: self.plan_title
-  def payment_completed?
-    self.payments.present?
-  end
 
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
   def calculator_price
-    adder = self.tipsters.size > self.plan.number_tipster ? self.tipsters.size - self.plan.number_tipster : 0
-    (self.plan.price.to_f + adder * ADDING_TIPSTER_PRICE) * self.plan.period
+    (self.plan.price.to_f + adder_tipster * ADDING_TIPSTER_PRICE) * self.plan.period
+  end
+
+  def adder_tipster
+    self.tipsters.size > self.plan.number_tipster ? self.tipsters.size - self.plan.number_tipster : 0
   end
 
   def one_shoot_price
