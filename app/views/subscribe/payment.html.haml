@@ -5,8 +5,6 @@
         %ul.nav.nav-pills
           %li
             %a{href: subscribe_choose_offer_path} Choose Offer
-          -# TODO, bad code -> query DB here
-          -# unless current_user && current_user.profile
           %li
             %a{"data-toggle" => "tab", href: "#tab2"} Identification
           %li
@@ -21,7 +19,7 @@
         %h3 Please review your selection
         %h4
           Plan:
-          %span.text-info= @select_plan.title
+          %span.text-info= @return[:select_plan].title
         %h4 Tipsters:
         .span6
           %table.table.table-bordered
@@ -32,55 +30,89 @@
                 %th Yield
                 %th Profil
             %tbody
-              - @select_tipsters.each do |tipster|
+              - @return[:select_tipsters].each do |tipster|
                 %tr
                   %td= tipster.name
                   %td= ['Football','Hourse', 'Tennis', 'Baseball'].sample
                   %td= "#{['12.15','20.14','10.3'].sample} %"
                   %td= "+ #{(1000..5000).to_a.sample}"
+        %div{style: 'clear:both'}
+        %h3 Would you win a bonus? Help us
+        .span3{style: 'padding: 10px; border: 1px solid #ccc'}
+          .fb-login-button{"data-auto-logout-link" => "false", "data-max-rows" => "1",
+              "data-show-faces" => "false", "data-size" => "medium", onlogin: 'window.location.reload()', style: 'display:none'}
+          = like_button '548927411872156', href: 'https://www.facebook.com/BetAdvisor', layout: :standard, show_faces: true
+        .span3{style: 'padding: 10px; border: 1px solid #ccc'}
+          = tweet_button url: 'https://twitter.com/hellorelaxation', lang: 'en', text: 'Check out this site', via: 'hellorelaxation'
+        %div{style:'clear:both'}
+        .span6#coupon{style: 'display:none'}
+          = form_tag subscribe_apply_coupon_code_path do
+            = text_field_tag :code
+            %button.btn.btn-success Apply Coupon
+        %div{style:'clear:both'}
+        .span8.offset1
+          #message_return
       .span4
-      - if !@already_has_subscription
-        %h3 Amount
-        \- Plan price:
-        %strong €#{@select_plan.price}
-        %br
-        \- Adder tipster price:
-        %strong €#{@select_tipsters.size > @select_plan.number_tipster ? (@select_tipsters.size - @select_plan.number_tipster) * ADDING_TIPSTER_PRICE : 0}
-        %br
-        \- Discount:
-        %strong €#{@discount.to_i}
-        %br
-        \- Subtotal:
-        %strong €#{(@amount / @select_plan.period).round(3)}
-        %br
-        \_______________________
-        %br
-        \ *#{@select_plan.period} Month
-        %br
-        \_______________________
-        %br
-        \- Total:
-        %strong.text-info= "€#{@amount.round(3)}"
-      - else
-        %h3 Amount
-        \- Number tipster on your current subscription:
-        %strong #{@current_subscription.tipsters.size}
-        %br
-        \- Number tipster on cart:
-        %strong= @select_tipsters.size
-        %br
-        \- Need to paid:
-        %strong €#{(@adding_tipster * ADDING_TIPSTER_PRICE).round(3)}
-        %br
-        \_______________________
-        %br
-        \ *#{@select_plan.period} Month
-        %br
-        \_______________________
-        %br
-        \- Total:
-        %strong.text-info= "€#{@amount.round(3)}"
+        - if !@return[:has_subscription]
+          %h3 Amount
+          \- Plan price:
+          %strong.text-info €#{@return[:select_plan].price}
+          %br
+          \- Plan limit number tipster:
+          %strong= @return[:select_plan].number_tipster
+          %br
+          \- Adder tipster price:
+          %strong €#{ADDING_TIPSTER_PRICE} * #{@return[:adder_tipster]} =
+          %strong.text-info €#{(ADDING_TIPSTER_PRICE * @return[:adder_tipster]).round(3)}
+          %br
 
+          \- Need to paid per month:
+          %strong.text-info €#{@return[:subtotal]}
+          %br
+          \_______________________
+          %br
+          \ * #{@return[:select_plan].period} Month
+          %br
+          \_______________________
+          %br
+          - if @return[:using_coupon]
+            \- Total before:
+            %strong.text-info= "€#{@return[:before_amount]}"
+            %br
+            \- Discount:
+            %strong - €3
+            %br
+          \- Total
+          %strong.text-info €#{@return[:amount]}
+        - else
+          %h3 Amount
+          \- Number tipster on your current subscription:
+          %strong #{@return[:current_subscription].tipsters.size}
+          %br
+          \- Number tipster on your current plan:
+          %strong #{@return[:select_plan].number_tipster}
+          %br
+          \- Number adder tipster on cart:
+          %strong #{@return[:adder_tipster]}
+          %br
+          \- Need to paid:
+          %strong €#{@return[:subtotal]}
+          %br
+          \_______________________
+          %br
+          \ * #{@return[:select_plan].period} Month
+          %br
+          - if @return[:using_coupon]
+            \- Total before:
+            %strong.text-info= "€#{@return[:before_amount]}"
+            %br
+            \- Discount:
+            %strong - 3
+            %br
+          \_______________________
+          %br
+          \- Total:
+          %strong.text-info= "€#{@return[:amount].round(3)}"
       - payment_service_for  @pp_object[:item_number], PAYPAL_ACCOUNT, :amount => @pp_object[:amount],
            :currency => @pp_object[:currency], :service => :paypal, :html => {:class=>"form-paypal"} do |service|
       - service.tax "0.00"

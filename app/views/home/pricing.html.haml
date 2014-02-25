@@ -53,6 +53,9 @@
             - elsif plan.id > @selected_plan
               = link_to 'Upgrade', select_plan_path(plan.id),class: 'btn btn-success'
             - else
-              %label.label.label-primary Current Plan
+              %label.label.label-important Current Plan
           - else
-            = link_to 'Subscribe', select_plan_path(plan.id),class: 'btn btn-success'
+            - if @choosed_plan == plan.id
+              %label.label.label-warning Selected Plan
+            - else
+              = link_to 'Subscribe', select_plan_path(plan.id),class: 'btn btn-success'

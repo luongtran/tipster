@@ -27,21 +27,6 @@
             %strong= "€ #{@select_plan.price} / Month"
         %a{href: pricing_path} Select another plan?
       - unless @select_plan && @select_plan.free?
-        %h3 Would you win a bonus? Help us
-        .span12
-          .span4{style: 'padding: 10px; border: 1px solid #ccc'}
-            .fb-login-button{"data-auto-logout-link" => "false", "data-max-rows" => "1",
-               "data-show-faces" => "false", "data-size" => "medium", onlogin: 'window.location.reload()', style: 'display:none'}
-            = like_button '548927411872156', href: 'https://www.facebook.com/BetAdvisor', layout: :standard, show_faces: true
-          .span4{style: 'padding: 10px; border: 1px solid #ccc'}
-            = tweet_button url: 'https://twitter.com/hellorelaxation', lang: 'en', text: 'Check out this site', via: 'hellorelaxation'
-        %div{style:'clear:both'}
-        .span8.offset1#coupon{style: 'display:none'}
-          = text_field_tag :code
-          %button.btn.btn-success#apply_code Apply Coupon
-        %div{style:'clear:both'}
-        .span8.offset1
-          #message_return
         - unless @tipsters_in_cart.blank?
           %h3 Tipsters in your cart
           %table.table.table-bordered

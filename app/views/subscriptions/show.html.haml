@@ -66,6 +66,7 @@
                   = @subscription.payments.last.payment_date.strftime("%m/%d/%Y")
                 %td
                   = (@subscription.payments.last.payment_date + @subscription.plan.period.month).strftime("%m/%d/%Y")
+                  = link_to "Unfollow", remove_inactive_tipster_path(tipster),method: 'delete',data:{confirm: "Are your sure !"} ,class: "btn btn-danger"
           - if @subscription.inactive_tipsters.present?
             %tr Inactive Tipsters
             - @subscription.inactive_tipsters.each do |tipster|
@@ -78,7 +79,7 @@
                   %span.label.label-warning Inactive
                 %td
                 %td
-                  = link_to "Remove", remove_inactive_tipster_path(tipster),method: 'delete',confirm: "Are your sure !",class: "btn btn-danger"
+                  = link_to "Remove", remove_inactive_tipster_path(tipster),method: 'delete',data:{confirm: "Are your sure !"},class: "btn btn-danger"
 
 - else
   You are still not register any plan.
