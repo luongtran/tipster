@@ -1,0 +1,16 @@
+@import "../lib/general";
+@import "page_header";
+
+
+// common
+a {
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+
+body {
+  background-color: $gray-light;
+}

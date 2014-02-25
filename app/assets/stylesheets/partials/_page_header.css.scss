@@ -1,0 +1,54 @@
+#page_header_top {
+  background-color: #ffffff;
+  #tipster-logo-main {
+    display: table;
+    a {
+      display: table-cell;
+      vertical-align: middle;
+      height: 80px;
+    }
+  }
+  #menu-main {
+
+    ul {
+      li {
+        float: left;
+        border-left: solid 1px $gray-light;
+        padding: 0;
+        @include transition(all 0.15s);
+        &:first-child {
+          border-left-color: white;
+        }
+        &:last-child {
+          border-right: solid 1px white;
+        }
+        a {
+          color: $gray-dark;
+          display: block;
+          font-size: 14px;
+          line-height: 80px;
+          padding: 0 20px;
+        }
+        &.active, &:hover {
+          a  {
+            background-color: tint($green-lighter, 70%);
+            color: $green-dark;
+          }
+          &:first-child {
+            border-left: solid 1px $gray-light;
+          }
+          &:last-child {
+            border-right: solid 1px $gray-light;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+
+#page_header_mid {
+  min-height: 500px;
+  background: url('/assets/header-bg.jpg') no-repeat center top;
+}

@@ -7,6 +7,7 @@ TipsterHero::Application.routes.draw do
       :sessions => "users/sessions",
   }
 
+
   match '/my_profile' => 'profiles#my_profile', as: :my_profile, via: [:get, :post]
 
   controller 'users' do
@@ -67,7 +68,9 @@ TipsterHero::Application.routes.draw do
 
   get '/subscriptions/select/:id' => 'subscriptions#select_plan', as: :select_plan
   delete '/subscriptions/tipster/:id' => 'subscriptions#remove_inactive_tipster',as: :remove_inactive_tipster
-  post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan',as: :select_free_plan
+  post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan',as: :select_free_pla
 
-
+  # Rueta set route here
+  get '/signup' , to: 'static#signup'
+  # END Rueta set route here
 end

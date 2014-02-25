@@ -1,0 +1,14 @@
+// contain header html of page
+#page_header_top
+  .container.clearfix
+    #tipster-logo-main.pull-left
+      %a{:href=>"/"}
+        =image_tag("tipster-logo-main.png", :alt=>"Tipster hero", :class=>"img-responsive")
+    #menu-main.pull-right
+      %ul.list-inline
+        - @items = ['Tipster', 'Features', 'Pricing', 'Sign In', 'Connect']
+        - @items.each do |node|
+          %li
+            %a{:href=>"javascript:;"}= node
+
+#page_header_mid
