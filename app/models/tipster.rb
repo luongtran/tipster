@@ -1,5 +1,12 @@
 class Tipster < User
 
+  RANGES_OF_RANKING = [
+      LAST_MONTH = 'last-month',
+      LAST_3_MONTHS = 'last-3-months',
+      LAST_6_MONTHS = 'last-6-months',
+      LAST_YEAR = 'last-year'
+  ]
+
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -20,27 +27,27 @@ class Tipster < User
   # ==============================================================================
   class << self
     def load_data(params = {})
-      relation = self.process_filter_params(params)
+      relation = self.perform_filter_params(params)
       relation.includes(:profile)
     end
 
-    def process_filter_params(params, relation = self)
+    def perform_filter_params(params, relation = self)
       unless params[:sport].blank?
-        relation = relation.process_sport_param(params[:sport])
+        relation = relation.perform_sport_param(params[:sport])
       end
       unless params[:status].blank?
-        relation = relation.process_status_param(params[:status])
+        relation = relation.perform_status_param(params[:status])
       end
       relation
     end
 
-    def process_sport_param(sport, relation = self)
+    def perform_sport_param(sport, relation = self)
       sport = Sport.find_by(name: sport)
       relation = relation.where(sport_id: sport.id) if sport
       relation
     end
-
-    def process_status_param(active, relation = self)
+      # perform
+    def perform_status_param(active, relation = self)
       return relation if active.blank?
       active = (active == 'active') ? true : false
       relation = relation.where(:active => active)

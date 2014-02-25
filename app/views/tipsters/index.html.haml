@@ -17,8 +17,10 @@
   %thead
     %tr
       %th Full Name
-      %th Email
-      %th Created at
+      %th Yield
+      %th Profil
+      %th Number of tips
+      %th Joined at
       %td Action
   %tbody
     - if @tipsters.empty?
@@ -32,7 +34,9 @@
       - @tipsters.each do |tipster|
         %tr[tipster]
           %td= tipster.name
-          %td= tipster.email
+          %td= "#{['12.15','20.14','10.3'].sample} %"
+          %td= "+ #{(1000..5000).to_a.sample}"
+          %td= "#{(50..200).to_a.sample}"
           %td= tipster.created_at.strftime("%m/%d/%Y")
           %td
             - if @tipster_in_subscription.present? && @tipster_in_subscription.include?(tipster)
