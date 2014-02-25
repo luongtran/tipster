@@ -15,7 +15,7 @@ textarea {
 }
 
 select {
-    height: 32px;
+    height: 30px;
 }
 
 .btn {
@@ -40,3 +40,6 @@ ul.sports-filter li {
     display: inline;
 }
 
+#tipster_statuses_filer {
+    vertical-align: inherit;
+}

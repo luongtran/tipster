@@ -46,7 +46,8 @@ class Tipster < User
       relation = relation.where(sport_id: sport.id) if sport
       relation
     end
-      # perform
+
+    # perform
     def perform_status_param(active, relation = self)
       return relation if active.blank?
       active = (active == 'active') ? true : false
@@ -73,6 +74,19 @@ class Tipster < User
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+
+
+  # Test
+  def tips
+    tips.done.each do |t|
+      if t.correct?
+
+      else
+
+
+      end
+    end
+  end
 
   # Substract tipster's bankroll after created new tip
   def subtract(amount)

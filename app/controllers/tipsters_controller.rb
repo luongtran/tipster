@@ -4,7 +4,7 @@ class TipstersController < ApplicationController
   def index
     # params:
     # sport ['football', ...]
-    # range ['last |1|3|6|12| months']
+    # range ['last |1|3|6|12| months']  default: last_month
     # status [active|inactive]
     @tipsters = Tipster.load_data(params)
     @sports = Sport.all
