@@ -16,7 +16,7 @@ class SubscribeController < ApplicationController
 
   # GET|POST /subscribe/payment
   def payment
-    if already_has_subscription? #Adding tipster to current subscription
+    if current_user.already_has_subscription? #Adding tipster to current subscription
       current_subscription = current_user.subscription
       select_plan = current_subscription.plan
       select_tipsters = Tipster.where(id: tipster_ids_in_cart)
@@ -67,7 +67,6 @@ class SubscribeController < ApplicationController
       end
       select_plan = Plan.find session[:plan_id]
       select_tipsters = Tipster.where(id: tipster_ids_in_cart)
-
       subscription.tipsters = select_tipsters
       subscription.plan_id = session[:plan_id]
       subscription.active = false
@@ -119,7 +118,7 @@ class SubscribeController < ApplicationController
 
   # GET /subscribe/offer
   def choose_offer
-    if already_has_subscription?
+    if current_user.already_has_subscription?
       @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
       @current_subscription = current_user.subscription
       @select_plan = @current_subscription.plan
@@ -225,10 +224,6 @@ class SubscribeController < ApplicationController
     params[:profile].permit!
   end
 
-  def already_has_subscription?
-    # FIXME, move to Subscriber model. This function don't make any sence if you put it here
-    current_user && current_user.subscription && current_user.subscription.active == true
-  end
 
   def using_coupon?
     if session[:using_coupon]

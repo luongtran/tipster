@@ -34,6 +34,10 @@ class Subscriber < User
     self.profile && self.profile.valid?
   end
 
+  def already_has_subscription?
+    self.subscription && self.subscription.active == true
+  end
+
   # Add Facebook, Google+ identify
   def add_authorization(auth)
     self.authorizations << Authorization.build_from_oauth(auth)

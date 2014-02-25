@@ -1,13 +1,5 @@
 .row-fluid
   .span4
-    %ul
-      %li
-        Email:
-        = current_user.email
-      %li
-        Full name:
-        = current_user.name
-  .span4
     %h2 My profile
     = simple_form_for @profile, url: my_profile_path, method: 'POST' do |f|
       = render 'form', f: f
