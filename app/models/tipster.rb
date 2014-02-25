@@ -46,6 +46,21 @@ class Tipster < User
       relation = relation.where(:active => active)
       relation
     end
+
+    def top_rank_in_range(range)
+      case range
+        when LAST_MONTH
+          # 30 days
+        when LAST_3_MONTHS
+          # 90 days
+        when LAST_6_MONTHS
+          # 180 days
+        when LAST_YEAR
+          # 365 days
+        else
+          # From begin?
+      end
+    end
   end
 
   # ==============================================================================
@@ -54,6 +69,14 @@ class Tipster < User
 
   # Substract tipster's bankroll after created new tip
   def subtract(amount)
+
+  end
+
+  def yield(range)
+
+  end
+
+  def profil(range)
 
   end
 end
