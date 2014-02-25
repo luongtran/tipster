@@ -31,3 +31,12 @@ span.required {
     font-weight: bold;
     font-size: 20px;
 }
+
+ul.sports-filter {
+    text-align: center;
+}
+
+ul.sports-filter li {
+    display: inline;
+}
+

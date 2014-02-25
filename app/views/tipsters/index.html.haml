@@ -1,11 +1,19 @@
 .center-block
+  %ul.sports-filter
+    %li
+      %a.btn{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter(nil)} All sports
+    - @sports.each do |sport|
+      %li
+        %a.btn{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
+    %li
+      = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'
+.center-block
   - unless tipster_ids_in_cart.empty?
     - if @tipster_in_subscription.present?
       %a.btn.btn-success.btn-large.pull-right{href: subscribe_add_offer_path,'data-no-turbolink' => true} Proceed to checkout
     - else
       %a.btn.btn-success.btn-large.pull-right{href: subscribe_choose_offer_path,'data-no-turbolink' => true} Proceed to checkout
 %table.table.table-bordered
-  %caption Top Tipster Ranking on last 6 month
   %thead
     %tr
       %th Full Name
@@ -22,7 +30,7 @@
         %td
     - else
       - @tipsters.each do |tipster|
-        %tr
+        %tr[tipster]
           %td= tipster.name
           %td= tipster.email
           %td= tipster.created_at.strftime("%m/%d/%Y")

@@ -50,7 +50,7 @@ class CartController < ApplicationController
   private
   def already_purchase
     if current_user && current_user.subscription && current_user.subscription.active
-        current_user.subscription.active_tipsters.each {|tipster| session[:cart][:tipster_ids].delete(tipster.id.to_s)}
+      current_user.subscription.active_tipsters.each { |tipster| session[:cart][:tipster_ids].delete(tipster.id.to_s) }
     end
   end
 end

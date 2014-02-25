@@ -1,7 +1,7 @@
 # Generate 10 tipsters
 sports = Sport.all.to_a
 if sports.empty?
-  puts "Error! There are no any sport!"
+  puts "Error! There are no any sports!"
 else
   10.times do
     fn = Faker::Name.first_name

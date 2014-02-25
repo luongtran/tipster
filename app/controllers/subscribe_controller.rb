@@ -20,7 +20,6 @@ class SubscribeController < ApplicationController
       current_subscription = current_user.subscription
       select_plan = current_subscription.plan
       select_tipsters = Tipster.where(id: tipster_ids_in_cart)
-
       begin
         current_subscription.inactive_tipsters.delete_all
         current_subscription.tipsters << select_tipsters
@@ -152,12 +151,12 @@ class SubscribeController < ApplicationController
   def get_coupon_code
     cc = CouponCode.create_for_user(current_user, coupon_params[:source])
     if cc
-      render :json => {success: true, :code => cc.code, :message => 'Coupon create'}
+      render :json => {success: true, :code => cc.code, :message => I18n.t('coupon.created_successfully')}
     else
       # TODO, edit error message here
       render :json => {
           success: false,
-          :message => 'You can get more coupon'
+          message: I18n.t('coupon.request_denied')
       }
     end
   end
@@ -169,10 +168,21 @@ class SubscribeController < ApplicationController
       unless cc.is_used
         session[:using_coupon] = cc.id
         cc.update_attributes({is_used: true, used_at: Time.now})
-        redirect_to subscribe_payment_url, :notice => I18n.t('coupon.success_using') and return
+        flash[:notice] = I18n.t('coupon.success_using')
       else
-        redirect_to subscribe_payment_url, :notice => I18n.t('coupon.is_using') and return
+        flash[:notice] = I18n.t('coupon.is_using')
       end
+    else
+      flash[:alert] = I18n.t('coupon.invalid')
+    end
+    redirect_to subscribe_payment_url
+  end
+
+  #POST
+  def deny_coupon_code
+    cc = CouponCode.find_by_code(params[:code])
+    if cc
+      cc.update_attributes(is_deny: true)
     else
       redirect_to subscribe_payment_url, :alert => I18n.t('coupon.invalid') and return
     end
@@ -216,6 +226,7 @@ class SubscribeController < ApplicationController
   end
 
   def already_has_subscription?
+    # FIXME, move to Subscriber model. This function don't make any sence if you put it here
     current_user && current_user.subscription && current_user.subscription.active == true
   end
 
