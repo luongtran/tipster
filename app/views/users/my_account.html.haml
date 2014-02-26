@@ -1,9 +1,9 @@
 .row-fluid
-  .span7
+  .col-lg-6
     .well
       %h2 Account informations
       %hr
-      = simple_form_for @user, as: :user, url: my_account_path, method: 'POST', html: {class: 'form-horizontal'} do |f|
+      = simple_form_for @user, as: :user, url: my_account_path, method: 'POST', html: {class: 'form-horizontal', novalidate: true} do |f|
         = f.input :email
         = f.input :first_name
         = f.input :last_name
@@ -12,19 +12,14 @@
         .control-group
           .controls
             = f.button :submit, t('user.update_account'), class: 'btn-primary'
-  .span5
-    .span12
-      .well
-        %h2 Change password
-        %hr
-        = simple_form_for @user, as: :user, url: change_password_path, method: 'POST', html: {class: 'form-horizontal'} do |f|
-          = f.input :current_password, required: true
-          = f.input :password, required: true
-          = f.input :password_confirmation, required: true
-          .control-group
-            .controls
-              = f.button :submit, t('user.change_password'), class: 'btn-primary'
-    .span12
-      .well
-        %h2 Coupon codes
-        %hr
+  .col-lg-6
+    .well
+      %h2 Change password
+      %hr
+      = simple_form_for @user, as: :user, url: change_password_path, method: 'POST', html: {class: 'form-horizontal'} do |f|
+        = f.input :current_password, required: true
+        = f.input :password, required: true
+        = f.input :password_confirmation, required: true
+        .control-group
+          .controls
+            = f.button :submit, t('user.change_password'), class: 'btn-primary'
