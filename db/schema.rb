@@ -149,14 +149,13 @@ ActiveRecord::Schema.define(version: 20140226065350) do
   create_table "tips", force: true do |t|
     t.integer  "tipster_id",                   null: false
     t.string   "event",                        null: false
-    t.integer  "platform",                     null: false
+    t.string   "platform",                     null: false
     t.integer  "bet_type",                     null: false
     t.float    "odds",                         null: false
     t.float    "line"
     t.integer  "selection",                    null: false
     t.text     "advice",                       null: false
     t.float    "stake",                        null: false
-    t.float    "liability",                    null: false
     t.integer  "amount",                       null: false
     t.boolean  "correct",      default: false
     t.integer  "status",                       null: false

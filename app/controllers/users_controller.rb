@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_subscriber!
 
   def my_account
-    @user ||= current_user
+    @user ||= current_subscriber
     if request.post?
       if @user.update_account(user_params)
         flash[:notice] = I18n.t('user.account_update_successully')
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
   end
 
   def change_password
-    @user = current_user
+    @user = current_subscriber
     if @user.update_with_password(change_password_params)
       flash[:notice] = I18n.t('user.password_changed_successfully')
       sign_in @user, :bypass => true
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(
+    params.require(:subscriber).permit(
         :first_name,
         :last_name,
         profile_attributes: [
@@ -39,6 +39,6 @@ class UsersController < ApplicationController
   end
 
   def change_password_params
-    params.require(:user).permit(:current_password, :password, :password_confirmation)
+    params.require(:subscriber).permit(:current_password, :password, :password_confirmation)
   end
 end

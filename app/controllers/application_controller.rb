@@ -1,11 +1,12 @@
 class ApplicationController < ActionController::Base
+  layout :find_layout
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
   before_action :fill_profile
 
-  helper_method :tipster_ids_in_cart
+  helper_method :tipster_ids_in_cart, :current_user
 
   protected
 
@@ -15,7 +16,7 @@ class ApplicationController < ActionController::Base
   end
 
   def fill_profile
-    if current_user && !current_user.profile
+    if current_subscriber && !current_subscriber.profile
       redirect_to my_profile_url, notice: 'Please update your profile'
     end
   end
@@ -46,6 +47,11 @@ class ApplicationController < ActionController::Base
     initial_cart_session if session[:cart].nil?
     session[:cart][:tipster_ids].uniq
   end
+
+  def current_user
+    current_subscriber || current_tipster #|| current_admin
+  end
+
   # Return an array of tipster's id in current user subscription
   def tipster_ids_in_subscription
     if current_user && current_user.subscription && current_user.subscription.active?
@@ -58,5 +64,10 @@ class ApplicationController < ActionController::Base
     session[:plan_id] = nil
     session[:using_coupon] = nil
     # Maybe clear more session vars: coupon code, payment info ...
+  end
+
+  private
+  def find_layout
+    'backoffice' if self.class.name.split("::").first == 'Backoffice'
   end
 end

@@ -11,7 +11,7 @@ class Tipster < User
   # ASSOCIATIONS
   # ==============================================================================
   belongs_to :sport
-
+  has_many :tips
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
@@ -93,16 +93,6 @@ class Tipster < User
   # INSTANCE METHODS
   # ==============================================================================
 
-  # Test
-  def tips
-    tips.done.each do |t|
-      if t.correct?
-
-      else
-
-      end
-    end
-  end
 
   # Substract tipster's bankroll after published a tip
   def subtract_bankroll(amount)

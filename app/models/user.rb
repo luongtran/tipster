@@ -30,9 +30,8 @@
 #
 
 class User < ActiveRecord::Base
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :omniauthable, :omniauth_providers => [:facebook, :google_oauth2, :twitter]
 
   # ==============================================================================
   # ASSOCIATIONS

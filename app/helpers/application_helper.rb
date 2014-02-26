@@ -42,22 +42,31 @@ module ApplicationHelper
     @current_step == step_name ? 'active' : ''
   end
 
-  def resource_name
-    :user
-  end
+  #
+  #def resource_name
+  #  :user
+  #end
+  #
+  #def resource
+  #  @resource ||= User.new
+  #end
 
-  def resource
-    @resource ||= User.new
-  end
-
-  def devise_mapping
-    @devise_mapping ||= Devise.mappings[:user]
-  end
+  #def devise_mapping
+  #  @devise_mapping ||= Devise.mappings[:user]
+  #end
 
   def payment_methods_for_select
     options = []
     Payment::PAYMENT_METHODS.each_with_index do |p_m, index|
-      options << [p_m.capitalize, key]
+      options << [p_m.capitalize, index]
+    end
+    options
+  end
+
+  def platforms_for_select
+    options = []
+    Tip::BET_BOOKMARKERS.each do |pf|
+      options << [pf.titleize, pf]
     end
     options
   end

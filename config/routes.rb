@@ -1,12 +1,10 @@
 TipsterHero::Application.routes.draw do
   root 'home#index'
 
-  devise_for :users, :controllers => {
-      :omniauth_callbacks => "users/omniauth_callbacks",
-      :registrations => "users/registrations",
-      :sessions => "users/sessions",
+  devise_for :subscribers, :controllers => {
+      :registrations => "subscribers/registrations",
+      :sessions => "subscribers/sessions"
   }
-
 
   match '/my_profile' => 'profiles#my_profile', as: :my_profile, via: [:get, :post]
 
@@ -42,6 +40,8 @@ TipsterHero::Application.routes.draw do
     end
   end
 
+  resources :tips, only: [:index, :show]
+
   # FIXME, there're many un-used routes
   resource :twitter, controller: 'twitter' do
     collection do
@@ -67,10 +67,21 @@ TipsterHero::Application.routes.draw do
   get '/pricing' => 'home#pricing', as: :pricing
 
   get '/subscriptions/select/:id' => 'subscriptions#select_plan', as: :select_plan
-  delete '/subscriptions/tipster/:id' => 'subscriptions#remove_inactive_tipster',as: :remove_inactive_tipster
-  post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan',as: :select_free_pla
+  delete '/subscriptions/tipster/:id' => 'subscriptions#remove_inactive_tipster', as: :remove_inactive_tipster
+  post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan', as: :select_free_pla
+
+  # Backoffice tipster routes
+  namespace :backoffice do
+    root 'home#index'
+    resources :tips
+  end
+
+  devise_for :tipsters, path: '/backoffice', :skip => :registrations, :controllers => {
+      :sessions => "backoffice/sessions"
+  }
+  # End Tipster routes
 
   # Rueta set route here
-  get '/signup' , to: 'static#signup'
+  get '/signup', to: 'static#signup'
   # END Rueta set route here
 end

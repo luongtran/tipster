@@ -1,5 +1,6 @@
 %h2 Sign up
-= simple_form_for resource, as: :user, :url => user_registration_path, :html => {class: 'form-horizontal'} do |f|
+= simple_form_for resource, :url => subscriber_registration_path, :html => {class: 'form-horizontal', novalidate: true} do |f|
   = render 'shared/user_basic_fields', f: f
-  .form-actions
-    = f.button :submit, "Sign up", class: 'btn btn-success'
+  .form-group
+    .col-sm-offset-3.col-sm-9
+      %button.btn.btn-primary{type: "submit"} Sign Up

@@ -1,0 +1,15 @@
+.well
+  %h2 Create new tip
+  = simple_form_for @tip, url: backoffice_tips_path, html: {class: 'form-horizontal'} do |f|
+    = f.input :event
+    = f.input :platform, as: :select, collection: platforms_for_select, include_blank: false
+    = f.input :bet_type
+    = f.input :odds
+    = f.input :selection
+    = f.input :stake
+    = f.input :amount
+    = f.input :advice
+    .form-group
+      .col-sm-offset-3.col-sm-9
+        %button.btn.btn-primary{type: :submit} Submit
+        %a.btn.btn-default{href: backoffice_tips_path } Cancel
