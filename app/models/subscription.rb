@@ -36,6 +36,10 @@ class Subscription < ActiveRecord::Base
     self.tipsters.size > self.plan.number_tipster ? self.tipsters.size - self.plan.number_tipster : 0
   end
 
+  def can_change_tipster?
+    self.active && self.active_date > 1.days.ago || self.expired_date < 30.days.from_now
+  end
+
   def one_shoot_price
     self.plan.price.to_f
   end
