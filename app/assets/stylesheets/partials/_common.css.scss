@@ -1,6 +1,4 @@
 @import "../lib/general";
-@import "page_header";
-
 
 // common
 a {
@@ -14,3 +12,15 @@ a {
 body {
   background-color: $gray-light;
 }
+
+.anchor-app {
+  padding: 8px 10px;
+  background-color: shade($gray-dark, 50%);
+  color: white;
+  font-size: 14px;
+}
+
+
+//-----------------------------
+@import "page_header";
+@import "page_footer.css.scss";
