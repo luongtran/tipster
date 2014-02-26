@@ -71,4 +71,13 @@ module ApplicationHelper
       my_account_path
     end
   end
+
+  # Detemine the change_password path for two resources: subscriber or tipster
+  def change_password_path_for(user)
+    if user.is_a? Tipster
+      backoffice_change_password_path
+    elsif user.is_a? Subscriber
+      change_password_path
+    end
+  end
 end
