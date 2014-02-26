@@ -67,7 +67,7 @@ group :development do
   gem 'meta_request'
   gem 'hirb'
   # For models annotation
-  gem 'annotate', ">= 2.5.0"
+  gem 'annotate', ">= 2.6.0"
   # Receive email from development
   gem 'mailcatcher'
   gem 'debugger'

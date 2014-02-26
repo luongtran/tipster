@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: subscriptions
+#
+#  id           :integer          not null, primary key
+#  user_id      :integer
+#  plan_id      :integer
+#  active       :boolean          default(FALSE)
+#  active_date  :datetime
+#  expired_date :datetime
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
 class Subscription < ActiveRecord::Base
 
   # ==============================================================================

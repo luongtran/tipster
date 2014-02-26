@@ -75,9 +75,15 @@ class Tipster < User
 
     protected
 
-    def parse_sort_params
-    end
+    # Return format
+    # "{field sort_direction}"
+    def parse_sort_params(params)
 
+    end
+    # Return PagingInfo object contains:
+    #  page_id
+    #  per_page
+    #
     def parse_paging_params(params)
       paging_info = PagingInfo.new
     end
