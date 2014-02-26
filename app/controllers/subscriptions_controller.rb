@@ -16,11 +16,11 @@ class SubscriptionsController < ApplicationController
   end
 
   def show
-    @subscription = current_user.subscription
+    @subscription = current_subscriber.subscription
   end
 
   def remove_inactive_tipster
-    @subscription = current_user.subscription
+    @subscription = current_subscriber.subscription
     if @subscription.can_change_tipster?
       @subscription.remove_tipster(params[:id])
       redirect_to subscription_path,:notice => "Tipster unfollow"

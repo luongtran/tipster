@@ -165,7 +165,7 @@ ActiveRecord::Schema.define(version: 20140226065350) do
     t.datetime "updated_at"
   end
 
-  add_index "tips", ["tipster_id"], name: "index_tips_on_tipster_id"
+  add_index "tips", ["tipster_id"], name: "index_tips_on_tipster_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "first_name"

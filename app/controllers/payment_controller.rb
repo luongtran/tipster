@@ -5,11 +5,11 @@ class PaymentController < ApplicationController
   # POST /payment
   # Initialize and redirect to Paypal payment page
   def create
-    unless current_user.subscription
+    unless current_subscriber.subscription
       # What if plan_id is non-exist ?
-      subscription = current_user.build_subscription(plan_id: session[:plan_id])
+      subscription = current_subscriber.build_subscription(plan_id: session[:plan_id])
     else
-      subscription = current_user.subscription
+      subscription = current_subscriber.subscription
     end
 
     # Move these lines bellow to model
@@ -22,7 +22,7 @@ class PaymentController < ApplicationController
     @paypal_obj = Hash.new
     @paypal_obj[:amount] = "%05.2f" % (subscription.calculator_price)
     @paypal_obj[:currency] = "EUR"
-    @paypal_obj[:item_number] = current_user.id
+    @paypal_obj[:item_number] = current_subscriber.id
 
     @paypal_obj[:item_name] = "TipsterHero Subscriptions #{subscription.plan_title}"
     render 'remote.js.haml'
@@ -39,7 +39,7 @@ class PaymentController < ApplicationController
     session.delete(:cart)
     session.delete(:plan_id)
     @message = I18n.t("paypal_pending_reasons.#{params[:pending_reason]}")
-    @payment = current_user.subscription.payments.last
+    @payment = current_subscriber.subscription.payments.last
   end
 
   # POST /payment/notify
@@ -55,11 +55,7 @@ class PaymentController < ApplicationController
           t.set_active
         end
       unless subscription.active?
-        if subscription.calculator_price == notify.params['mc_gross'] #using coupon????
           subscription.update_attributes({active: true,active_date: Time.now,expired_date: Time.now + subscription.plan.period.month})
-        else
-          # If subscription not active && payment amount difference calculator amount
-        end
       end
     end
     payment.save

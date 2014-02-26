@@ -3,7 +3,7 @@ class ProfilesController < ApplicationController
   skip_before_action :fill_profile, only: [:my_profile]
 
   def my_profile
-    @user = User.includes(:coupon_codes).where(id: current_user.id).first
+    @user = User.includes(:coupon_codes).where(id: current_subscriber.id).first
     @profile = @user.find_or_initial_profile
     if request.post?
       if @profile.update_attributes(profile_params)

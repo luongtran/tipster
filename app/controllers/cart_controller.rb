@@ -7,7 +7,7 @@ class CartController < ApplicationController
       redirect_to top_tipsters_url
     else
       @tipsters = Tipster.where(id: tipster_ids_in_cart)
-      if current_user && current_user.subscription && current_user.subscription.active?
+      if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active?
         @subscription_active = true
       end
     end
@@ -39,9 +39,9 @@ class CartController < ApplicationController
   def drop_tipster
     tipster_id = params[:id]
     session[:cart][:tipster_ids].delete(tipster_id) if session[:cart][:tipster_ids].include? tipster_id
-    if current_user && current_user.subscription
+    if current_subscriber && current_subscriber.subscription
       tipster = Tipster.find tipster_id
-      current_user.subscription.inactive_tipsters.delete(tipster) if current_user.subscription.inactive_tipsters.include? tipster
+      current_subscriber.subscription.inactive_tipsters.delete(tipster) if current_subscriber.subscription.inactive_tipsters.include? tipster
     end
     flash[:notice] = "Tipster droped"
     redirect_to params[:return_url].present? ? params[:return_url] : cart_path
@@ -49,8 +49,8 @@ class CartController < ApplicationController
 
   private
   def already_purchase
-    if current_user && current_user.subscription && current_user.subscription.active
-      current_user.subscription.active_tipsters.each { |tipster| session[:cart][:tipster_ids].delete(tipster.id.to_s) }
+    if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active
+      current_subscriber.subscription.active_tipsters.each { |tipster| session[:cart][:tipster_ids].delete(tipster.id.to_s) }
     end
   end
 end
