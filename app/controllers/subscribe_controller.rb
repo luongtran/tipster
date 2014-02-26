@@ -18,6 +18,9 @@ class SubscribeController < ApplicationController
   def payment
     if current_user.already_has_subscription? #Adding tipster to current subscription
       current_subscription = current_user.subscription
+      unless current_subscription.can_change_tipster?
+        redirect_to subscription_path,notice: "You can change your follow tipster on day #{current_subscription.active_date.strftime('%d')}  of the month" and return
+      end
       select_plan = current_subscription.plan
       select_tipsters = Tipster.where(id: tipster_ids_in_cart)
       begin
@@ -34,6 +37,7 @@ class SubscribeController < ApplicationController
       before_amount = subtotal * select_plan.period
       if using_coupon?
         using_coupon = true
+        current_subscription.update_attributes(using_coupon: true)
         amount = before_amount > 0 ? before_amount - 3 : before_amount
       else
         amount = before_amount
@@ -76,6 +80,7 @@ class SubscribeController < ApplicationController
       before_amount = subscription.calculator_price
       if using_coupon?
         using_coupon = true
+        subscription.update_attributes(using_coupon: true)
         amount = before_amount > 0 ? before_amount - 3 : before_amount
       else
         amount = before_amount
@@ -118,7 +123,7 @@ class SubscribeController < ApplicationController
 
   # GET /subscribe/offer
   def choose_offer
-    if current_user.already_has_subscription?
+    if current_user && current_user.already_has_subscription?
       @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
       @current_subscription = current_user.subscription
       @select_plan = @current_subscription.plan
@@ -166,7 +171,7 @@ class SubscribeController < ApplicationController
     if cc && cc.user_id == current_user.id
       unless cc.is_used
         session[:using_coupon] = cc.id
-        cc.update_attributes({is_used: true, used_at: Time.now})
+        cc.mark_used
         flash[:notice] = I18n.t('coupon.success_using')
       else
         flash[:notice] = I18n.t('coupon.is_using')
@@ -175,16 +180,6 @@ class SubscribeController < ApplicationController
       flash[:alert] = I18n.t('coupon.invalid')
     end
     redirect_to subscribe_payment_url
-  end
-
-  #POST
-  def deny_coupon_code
-    cc = CouponCode.find_by_code(params[:code])
-    if cc
-      cc.update_attributes(is_deny: true)
-    else
-      redirect_to subscribe_payment_url, :alert => I18n.t('coupon.invalid') and return
-    end
   end
 
   private
@@ -209,7 +204,7 @@ class SubscribeController < ApplicationController
                     message: "Please choose at least one tipster",
                     url: top_tipsters_url
                 }
-              elsif !session[:plan_id] && !current_user.subscription.active
+              elsif !session[:plan_id] && (!current_user.subscription || !current_user.subscription.active)
                 {
                     message: "Please choose a plan",
                     url: pricing_url
@@ -227,8 +222,10 @@ class SubscribeController < ApplicationController
 
   def using_coupon?
     if session[:using_coupon]
-      coupon = CouponCode.find(session[:using_coupon])
-      return current_user.coupon_codes.include? coupon
+      if CouponCode.exists?(session[:using_coupon])
+        cc = CouponCode.find session[:using_coupon]
+        return current_user.coupon_codes.include? cc
+      end
     else
       return false
     end

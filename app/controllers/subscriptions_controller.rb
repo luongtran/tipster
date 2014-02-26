@@ -21,7 +21,11 @@ class SubscriptionsController < ApplicationController
 
   def remove_inactive_tipster
     @subscription = current_user.subscription
-    @subscription.remove_tipster(params[:id])
-    redirect_to action: 'show'
+    if @subscription.can_change_tipster?
+      @subscription.remove_tipster(params[:id])
+      redirect_to subscription_path,:notice => "Tipster unfollow"
+    else
+      redirect_to subscription_path,notice: "You can change your follow tipster on day #{current_subscription.active_date.strftime('%d')}  of the month" and return
+    end
   end
 end

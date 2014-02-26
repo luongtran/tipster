@@ -7,8 +7,12 @@ class ProfilesController < ApplicationController
     @profile = @user.find_or_initial_profile
     if request.post?
       if @profile.update_attributes(profile_params)
-        flash[:notice] = 'Please select a plan bellow to continue'
-        redirect_to pricing_path
+        if session[:plan_id].nil?
+          flash[:notice] = 'Please select a plan bellow to continue'
+          redirect_to pricing_path
+        else
+          redirect_to subscribe_payment_method_path
+        end
       else
         flash.now[:alert] = 'Profile updated failed'
       end

@@ -49,12 +49,13 @@ class PaymentController < ApplicationController
     user = User.find(notify.item_id)
     subscription = user.subscription
     payment = subscription.payments.build_from_paypal notify.params
+    subscription.update_attributes(using_coupon: false)
     if notify.params['payment_status'] == "Completed"
-        subscription.inactive_tipsters.each do |t|
+        subscription.subscription_tipsters.each do |t|
           t.set_active
         end
       unless subscription.active?
-        if subscription.calculator_price == notify.params['mc_gross']
+        if subscription.calculator_price == notify.params['mc_gross'] #using coupon????
           subscription.update_attributes({active: true,active_date: Time.now,expired_date: Time.now + subscription.plan.period.month})
         else
           # If subscription not active && payment amount difference calculator amount
