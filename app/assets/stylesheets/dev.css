@@ -9,3 +9,9 @@ ul.sports-filter li {
 #tipster_statuses_filer {
     vertical-align: inherit;
 }
+#backoffice-navbar {
+    background-color: #F1FCBA;
+}
+body {
+    background: #fff;
+}

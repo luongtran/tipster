@@ -1,12 +1,12 @@
-%nav.navbar.navbar-default{role: "navigation"}
+%nav.navbar.navbar-default#backoffice-navbar{role: "navigation"}
   .navbar-header
     %button.navbar-toggle{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", type: "button"}
       %span.sr-only Toggle navigation
       %span.icon-bar
       %span.icon-bar
       %span.icon-bar
-    -#%a.navbar-brand{href: tipster_root_path} BACKOFFICE
     %a.navbar-brand{href: root_path} Subscriber-zone
+    %a.navbar-brand{href: backoffice_root_path} Backoffice
   #bs-example-navbar-collapse-1.collapse.navbar-collapse
     %ul.nav.navbar-nav
       %li
@@ -21,7 +21,7 @@
             %b.caret
           %ul.dropdown-menu
             %li
-              %a{href: my_account_path} My Account
+              %a{href: backoffice_my_account_path} My Account
             %li.divider
             %li
               %a{href: destroy_tipster_session_path} Sign Out

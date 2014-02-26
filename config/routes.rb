@@ -6,12 +6,13 @@ TipsterHero::Application.routes.draw do
       :omniauth_callbacks => "subscribers/omniauth_callbacks",
       :sessions => "subscribers/sessions"
   }
-
   match '/my_profile' => 'profiles#my_profile', as: :my_profile, via: [:get, :post]
 
-  controller 'users' do
-    match :my_account, via: [:get, :post]
-    post :change_password
+  # Routes for Subscriber module without prefix
+  scope module: :subscribers do
+    get '/my_account', to: 'accounts#show'
+    post '/my_account', to: 'accounts#update'
+    post '/change_password', to: 'accounts#change_password'
   end
 
   resource :payment, controller: 'payment', only: [:create] do
@@ -73,11 +74,12 @@ TipsterHero::Application.routes.draw do
   post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan', as: :select_free_pla
 
   # Backoffice Tipster routes ====================================================
+  # Prefix: 'backoffice'
   namespace :backoffice do
     root 'home#index'
-    controller :accounts do
-      match :my_account, via: [:get, :post]
-    end
+    get '/my_account', to: 'accounts#show'
+    post '/my_account', to: 'accounts#update'
+    post '/change_password', to: 'accounts#change_password'
 
     resources :tips
 
