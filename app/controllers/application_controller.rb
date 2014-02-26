@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
 
   before_action :fill_profile
 
-  helper_method :tipster_ids_in_cart, :current_user
+  helper_method :tipster_ids_in_cart
 
   protected
 
@@ -28,11 +28,11 @@ class ApplicationController < ActionController::Base
   end
 
   def reset_cart_session
-    if current_user && current_user.subscription
-      current_user.subscription.inactive_tipsters.each do |tipster|
+    if current_subscriber && current_subscriber.subscription
+      current_subscriber.subscription.inactive_tipsters.each do |tipster|
         session[:cart][:tipster_ids] << tipster.id.to_s unless session[:cart][:tipster_ids].include? tipster.id.to_s
       end
-      current_user.subscription.active_tipsters.each do |tipster|
+      current_subscriber.subscription.active_tipsters.each do |tipster|
         session[:cart][:tipster_ids].delete(tipster.id.to_s) if session[:cart][:tipster_ids].include? tipster.id.to_s
       end
     end
@@ -48,14 +48,11 @@ class ApplicationController < ActionController::Base
     session[:cart][:tipster_ids].uniq
   end
 
-  def current_user
-    current_subscriber || current_tipster #|| current_admin
-  end
 
   # Return an array of tipster's id in current user subscription
   def tipster_ids_in_subscription
-    if current_user && current_user.subscription && current_user.subscription.active?
-      current_user.subscription.tipster_ids
+    if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active?
+      current_subscriber.subscription.tipster_ids
     end
   end
 

@@ -1,5 +1,5 @@
 class SubscribeController < ApplicationController
-  before_action :authenticate_user!, only: [:get_coupon_code, :payment]
+  before_action :authenticate_subscriber!, only: [:get_coupon_code, :payment]
   skip_before_filter :verify_authenticity_token, only: [:success]
   before_action :ready_to_payment, only: [:payment, :payment_method]
 
@@ -7,7 +7,7 @@ class SubscribeController < ApplicationController
     action = params[:act]
     case action
       when 'update_profile'
-        @profile = current_user.create_profile(profile_params)
+        @profile = current_subscriber.create_profile(profile_params)
       when 'facebook', 'google_oauth2'
         session[:return_url] = subscribe_payment_method_url
         redirect_to user_omniauth_authorize_path(action)
@@ -16,8 +16,8 @@ class SubscribeController < ApplicationController
 
   # GET|POST /subscribe/payment
   def payment
-    if current_user.already_has_subscription? #Adding tipster to current subscription
-      current_subscription = current_user.subscription
+    if current_subscriber.already_has_subscription? #Adding tipster to current subscription
+      current_subscription = current_subscriber.subscription
       unless current_subscription.can_change_tipster?
         redirect_to subscription_path,notice: "You can change your follow tipster on day #{current_subscription.active_date.strftime('%d')}  of the month" and return
       end
@@ -46,7 +46,7 @@ class SubscribeController < ApplicationController
       @pp_object = {
           amount: amount.round(3),
           currency: 'EUR',
-          item_number: current_user.id,
+          item_number: current_subscriber.id,
           item_name: "TipsterHero Adding #{select_tipsters.size} Tipster to Subscriptions #{current_subscription.plan_title}"
       }
 
@@ -64,10 +64,10 @@ class SubscribeController < ApplicationController
       }
     else # If user not completed his payment for subscription
       prepare_subscribe_info
-      unless current_user.subscription
-        subscription = current_user.build_subscription(plan_id: session[:plan_id])
+      unless current_subscriber.subscription
+        subscription = current_subscriber.build_subscription(plan_id: session[:plan_id])
       else
-        subscription = current_user.subscription
+        subscription = current_subscriber.subscription
       end
       select_plan = Plan.find session[:plan_id]
       select_tipsters = Tipster.where(id: tipster_ids_in_cart)
@@ -89,7 +89,7 @@ class SubscribeController < ApplicationController
       @pp_object = {
           amount: amount.round(3),
           currency: 'EUR',
-          item_number: current_user.id,
+          item_number: current_subscriber.id,
           item_name: "TipsterHero Subscriptions #{subscription.plan_title}"
       }
       @return = {
@@ -123,9 +123,9 @@ class SubscribeController < ApplicationController
 
   # GET /subscribe/offer
   def choose_offer
-    if current_user && current_user.already_has_subscription?
+    if current_subscriber && current_subscriber.already_has_subscription?
       @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
-      @current_subscription = current_user.subscription
+      @current_subscription = current_subscriber.subscription
       @select_plan = @current_subscription.plan
       session[:plan_id] = @select_plan.id
       if !@tipsters_in_cart.blank?
@@ -148,12 +148,12 @@ class SubscribeController < ApplicationController
   def success
     flash[:alert] = I18n.t("paypal_pending_reasons.#{params[:pending_reason]}") if params[:pending_reason]
     empty_subscribe_session
-    @payment = current_user.subscription.payments.last
+    @payment = current_subscriber.subscription.payments.last
   end
 
 
   def get_coupon_code
-    cc = CouponCode.create_for_user(current_user, coupon_params[:source])
+    cc = CouponCode.create_for_user(current_subscriber, coupon_params[:source])
     if cc
       render :json => {success: true, :code => cc.code, :message => I18n.t('coupon.created_successfully')}
     else
@@ -168,7 +168,7 @@ class SubscribeController < ApplicationController
   #POST
   def apply_coupon_code
     cc = CouponCode.find_by_code(params[:code])
-    if cc && cc.user_id == current_user.id
+    if cc && cc.user_id == current_subscriber.id
       unless cc.is_used
         session[:using_coupon] = cc.id
         cc.mark_used
@@ -194,7 +194,7 @@ class SubscribeController < ApplicationController
   end
 
   def ready_to_payment
-    checker = if !current_user
+    checker = if !current_subscriber
                 {
                     message: "Please login or signup !",
                     url: subscribe_identification_url
@@ -204,7 +204,7 @@ class SubscribeController < ApplicationController
                     message: "Please choose at least one tipster",
                     url: top_tipsters_url
                 }
-              elsif !session[:plan_id] && (!current_user.subscription || !current_user.subscription.active)
+              elsif !session[:plan_id] && (!current_subscriber.subscription || !current_subscriber.subscription.active)
                 {
                     message: "Please choose a plan",
                     url: pricing_url
@@ -224,7 +224,7 @@ class SubscribeController < ApplicationController
     if session[:using_coupon]
       if CouponCode.exists?(session[:using_coupon])
         cc = CouponCode.find session[:using_coupon]
-        return current_user.coupon_codes.include? cc
+        return current_subscriber.coupon_codes.include? cc
       end
     else
       return false
