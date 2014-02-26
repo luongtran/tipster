@@ -61,6 +61,7 @@ TipsterHero::Application.routes.draw do
   resource :subscriptions, controller: 'subscriptions', :only => [:show] do
     post :update
   end
+
   get '/registration' => 'home#register', as: :registration
   post '/registration' => 'home#register', as: :registration_post
 
@@ -70,16 +71,22 @@ TipsterHero::Application.routes.draw do
   delete '/subscriptions/tipster/:id' => 'subscriptions#remove_inactive_tipster', as: :remove_inactive_tipster
   post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan', as: :select_free_pla
 
-  # Backoffice tipster routes
+  # Backoffice Tipster routes ====================================================
   namespace :backoffice do
     root 'home#index'
+    controller :accounts do
+      match :my_account, via: [:get, :post]
+    end
+
     resources :tips
+
   end
 
   devise_for :tipsters, path: '/backoffice', :skip => :registrations, :controllers => {
       :sessions => "backoffice/sessions"
   }
-  # End Tipster routes
+  # End Tipster routes ===========================================================
+
 
   # Rueta set route here
   get '/signup', to: 'static#signup'
