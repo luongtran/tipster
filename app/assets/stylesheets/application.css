@@ -11,4 +11,5 @@
  *= require_tree ../../../vendor/assets/stylesheets/framework/bootstrap
  *= require ../../../vendor/assets/stylesheets/framework/prettify
  *= require partials/_common
+ *= require dev
  */

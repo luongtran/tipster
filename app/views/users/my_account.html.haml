@@ -1,18 +1,17 @@
 .row-fluid
-  .col-lg-6
+  .col-lg-7
     .well
       %h2 Account informations
       %hr
       = simple_form_for @user, as: :user, url: my_account_path, method: 'POST', html: {class: 'form-horizontal', novalidate: true} do |f|
-        = f.input :email
         = f.input :first_name
         = f.input :last_name
         = f.simple_fields_for :profile do |f_p|
           = render 'profiles/form', f: f_p
-        .control-group
-          .controls
-            = f.button :submit, t('user.update_account'), class: 'btn-primary'
-  .col-lg-6
+        .form-group
+          .col-sm-offset-3.col-sm-9
+            %button.btn.btn-primary{type: "submit"}= t('user.update_account')
+  .col-lg-5
     .well
       %h2 Change password
       %hr
@@ -20,6 +19,6 @@
         = f.input :current_password, required: true
         = f.input :password, required: true
         = f.input :password_confirmation, required: true
-        .control-group
-          .controls
-            = f.button :submit, t('user.change_password'), class: 'btn-primary'
+        .form-group
+          .col-sm-offset-3.col-sm-9
+            %button.btn.btn-primary{type: "submit"}= t('user.change_password')
