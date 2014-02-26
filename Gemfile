@@ -89,3 +89,6 @@ gem 'faker'
 
 # For pagination
 gem "kaminari", ">= 0.14.1"
+
+# For more secure sessions
+gem 'activerecord-session_store', github: 'rails/activerecord-session_store'

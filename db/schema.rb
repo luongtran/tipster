@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140226065350) do
+ActiveRecord::Schema.define(version: 20140226090823) do
 
   create_table "authorizations", force: true do |t|
     t.integer  "user_id"
@@ -117,6 +117,16 @@ ActiveRecord::Schema.define(version: 20140226065350) do
 
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
 
+  create_table "sessions", force: true do |t|
+    t.string   "session_id", null: false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true
+  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
+
   create_table "sports", force: true do |t|
     t.string "name", null: false
   end
@@ -165,7 +175,7 @@ ActiveRecord::Schema.define(version: 20140226065350) do
     t.datetime "updated_at"
   end
 
-  add_index "tips", ["tipster_id"], name: "index_tips_on_tipster_id", using: :btree
+  add_index "tips", ["tipster_id"], name: "index_tips_on_tipster_id"
 
   create_table "users", force: true do |t|
     t.string   "first_name"
