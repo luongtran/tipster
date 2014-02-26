@@ -1,6 +1,6 @@
 class Tipster < User
 
-  RANGES_OF_RANKING = [
+  RANKING_RANGES = [
       LAST_MONTH = 'last-month',
       LAST_3_MONTHS = 'last-3-months',
       LAST_6_MONTHS = 'last-6-months',
@@ -15,7 +15,7 @@ class Tipster < User
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-  #validates :sport, presence: true
+  validates :sport, presence: true
 
   # ==============================================================================
   # SCOPE
@@ -28,7 +28,11 @@ class Tipster < User
   class << self
     def load_data(params = {})
       relation = self.perform_filter_params(params)
-      relation.includes(:profile)
+      #paging_info = parse_paging_params(params)
+      relation.includes([])
+      .order('id asc')
+      .page(1)
+      .per(10)
     end
 
     def perform_filter_params(params, relation = self)
@@ -47,7 +51,6 @@ class Tipster < User
       relation
     end
 
-    # perform
     def perform_status_param(active, relation = self)
       return relation if active.blank?
       active = (active == 'active') ? true : false
@@ -69,12 +72,20 @@ class Tipster < User
           # From begin?
       end
     end
+
+    protected
+
+    def parse_sort_params
+    end
+
+    def parse_paging_params(params)
+      paging_info = PagingInfo.new
+    end
   end
 
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
-
 
   # Test
   def tips
@@ -83,21 +94,34 @@ class Tipster < User
 
       else
 
-
       end
     end
   end
 
-  # Substract tipster's bankroll after created new tip
-  def subtract(amount)
+  # Substract tipster's bankroll after published a tip
+  def subtract_bankroll(amount)
 
   end
 
+  # Ratio between the profit during a given period & total stakes during this period.
+  # This is the yardstick for tipster's performance per bet
   def yield(range)
 
   end
 
+  # Final bank - Initial bank
   def profil(range)
+
+  end
+
+  # The average odds is calculated as the sum of the odds of every tip from an tipster,
+  # divided by the total number of tips from that tipster
+  def avg_odds
+
+  end
+
+  # The percentage of winning tips vs total number of tips
+  def win_rate
 
   end
 end
