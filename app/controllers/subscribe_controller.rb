@@ -104,17 +104,6 @@ class SubscribeController < ApplicationController
     end
   end
 
-  def atos_payment
-    @request = Atos.new.request(
-        :merchant_id            => '014295303911111',
-        :customer_id            => 'YOUR_CUSTOMER_ID',
-        :amount                 => '1500',
-        :automatic_response_url => 'http://localhost:3333/payment/atos_notify',
-        :normal_return_url      => 'http://localhost:3333',
-        :cancel_return_url      => 'http://localhost:3333'
-    )
-  end
-
   # GET|POST /subscribe/payment_method
   def payment_method
     if request.post?

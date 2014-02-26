@@ -80,7 +80,6 @@ gem 'paypal-recurring'
 gem 'paypal-sdk-rest'
 
 # SIPS/ATOS french online payments API
-gem 'atos'
 # DateTime validator
 gem 'validates_timeliness', '~> 3.0'
 
@@ -94,3 +93,6 @@ gem "kaminari", ">= 0.14.1"
 
 # For more secure sessions
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
+# Administrator
+
+gem 'actionpack'

@@ -20,7 +20,6 @@ TipsterHero::Application.routes.draw do
       post :return
       get :cancel
       post :notify
-      post :atos_notify
     end
   end
 
@@ -36,7 +35,6 @@ TipsterHero::Application.routes.draw do
       match :identification, via: [:get, :post]
       match :payment_method, via: [:get, :post]
       match :payment, via: [:get, :post]
-      match :atos_payment,via: [:get,:post]
       post :success
       post :get_coupon_code
       post :apply_coupon_code
@@ -73,7 +71,7 @@ TipsterHero::Application.routes.draw do
 
   get '/subscriptions/select/:id' => 'subscriptions#select_plan', as: :select_plan
   delete '/subscriptions/tipster/:id' => 'subscriptions#remove_inactive_tipster', as: :remove_inactive_tipster
-  post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan', as: :select_free_pla
+  post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan', as: :select_free_plan
 
   # Backoffice Tipster routes ====================================================
   # Prefix: 'backoffice'
