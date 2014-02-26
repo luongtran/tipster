@@ -1,3 +1,26 @@
+# == Schema Information
+#
+# Table name: profiles
+#
+#  id                                 :integer          not null, primary key
+#  user_id                            :integer          not null
+#  civility                           :string(255)
+#  birthday                           :date
+#  address                            :string(255)
+#  city                               :string(255)
+#  country                            :string(255)
+#  zip_code                           :string(255)
+#  mobile_phone                       :string(255)
+#  telephone                          :string(255)
+#  favorite_betting_website           :string(255)
+#  know_website_from                  :string(255)
+#  secret_question                    :integer
+#  answer_secret_question             :string(255)
+#  received_information_from_partners :boolean          default(FALSE)
+#  created_at                         :datetime
+#  updated_at                         :datetime
+#
+
 class Profile < ActiveRecord::Base
   # TODO, if birthday is required so do we need to validate the age of user ?
 

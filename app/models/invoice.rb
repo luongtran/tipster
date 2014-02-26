@@ -1,3 +1,21 @@
+# == Schema Information
+#
+# Table name: invoices
+#
+#  id             :integer          not null, primary key
+#  user_id        :integer
+#  amount         :integer          default(1)
+#  currency       :string(255)
+#  token          :string(255)
+#  transaction_id :string(255)
+#  payer_id       :string(255)
+#  completed      :boolean          default(FALSE)
+#  canceled       :boolean          default(FALSE)
+#  payment_type   :integer
+#  created_at     :datetime
+#  completed_at   :datetime
+#
+
 class Invoice < ActiveRecord::Base
 
   # TODO,

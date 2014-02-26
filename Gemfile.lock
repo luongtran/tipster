@@ -120,6 +120,9 @@ GEM
     json (1.8.1)
     jwt (0.1.11)
       multi_json (>= 1.5)
+    kaminari (0.15.1)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
@@ -303,7 +306,7 @@ PLATFORMS
 
 DEPENDENCIES
   activemerchant
-  annotate (>= 2.5.0)
+  annotate (>= 2.6.0)
   better_errors
   binding_of_caller
   cancan
@@ -319,6 +322,7 @@ DEPENDENCIES
   hirb
   jbuilder (~> 1.2)
   jquery-rails
+  kaminari (>= 0.14.1)
   mailcatcher
   meta_request
   mysql2 (= 0.3.13)
