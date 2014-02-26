@@ -1,26 +1,41 @@
-.navbar.navbar-default
-  .navbar-inner
-    %a.brand{href: root_path} HOME
-    %ul.nav
-      %li
+%nav.navbar.navbar-default{role: "navigation"}
+  .navbar-header
+    %button.navbar-toggle{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", type: "button"}
+      %span.sr-only Toggle navigation
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
+    %a.navbar-brand{href: root_path} HOME
+  / Collect the nav links, forms, and other content for toggling
+  #bs-example-navbar-collapse-1.collapse.navbar-collapse
+    %ul.nav.navbar-nav
+      %li.active
         %a{href: pricing_path} Pricing
       %li
-        %a{href: cart_path}= "Cart(#{tipster_ids_in_cart.size})"
+        %a{href: cart_path}
+          = "Cart(#{tipster_ids_in_cart.size})"
       %li
         %a{href: top_tipsters_path} TOP Tipsters
       %li
         %a{href: tipsters_path} Tipsters
-      %li
-        %a{href: subscriptions_path} My Subscription
-    %ul.nav.pull-right
+
+    %ul.nav.navbar-nav.navbar-right
       - if current_user
-        %li.text-info
-          = link_to "Hi #{current_user.name}", my_account_path
-        %li
-          = link_to "Sign Out", destroy_user_session_path
+        %li.dropdown
+          %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+            = current_user.name
+            %b.caret
+          %ul.dropdown-menu
+            %li
+              %a{href: my_account_path} My Account
+            %li
+              %a{href: subscriptions_path} My Subscription
+            %li.divider
+            %li
+              %a{href: destroy_user_session_path} Sign Out
       - else
         %li
-          = link_to 'Register', new_user_registration_path
+          %a{href: new_user_registration_path} Register
         %li
-          = link_to 'Sign In', new_user_session_path
+          %a{href: new_user_session_path} Sign In
         = render 'shared/social_connection_links'
