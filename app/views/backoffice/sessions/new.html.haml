@@ -1,0 +1,11 @@
+.well
+  %h2 Sign in Tipster
+  = my_devise_error_messages!
+  = simple_form_for resource, :as => resource_name, :url => tipster_session_path, :html => {class: 'form-horizontal', novalidate: true} do |f|
+    = f.input :email, :required => false, :autofocus => true
+    = f.input :password, :required => false
+    = f.input :remember_me, :as => :boolean if devise_mapping.rememberable?
+    .form-group
+      .col-sm-offset-3.col-sm-9
+        %button.btn.btn-primary{type: :submit} Submit
+  = render "backoffice/shared/links"

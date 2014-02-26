@@ -1,4 +1,4 @@
-class Users::RegistrationsController < Devise::RegistrationsController
+class Subscribers::RegistrationsController < Devise::RegistrationsController
   before_action :configure_permitted_parameters, :only => [:create, :update]
 
   def new
@@ -7,9 +7,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # New subscriber
   def create
-    build_resource(build_subscriber_sign_up_params)
+    build_resource(sign_up_params)
     if resource.save
-      resource.build_profile(profile_params) if params[:user][:profile]
+      resource.build_profile(profile_params) if params[:subscriber][:profile]
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
@@ -43,6 +43,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def profile_params
-    params.require(:user).require(:profile).permit(:civility, :birthday, :address, :city, :country, :zip_code, :mobile_phone, :telephone, :favorite_betting_website, :know_website_from, :secret_question, :answer_secret_question)
+    params.require(:subscriber).require(:profile).permit(:civility, :birthday, :address, :city, :country, :zip_code, :mobile_phone, :telephone, :favorite_betting_website, :know_website_from, :secret_question, :answer_secret_question)
   end
 end

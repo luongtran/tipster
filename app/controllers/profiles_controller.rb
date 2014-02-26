@@ -1,5 +1,5 @@
 class ProfilesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_subscriber!
   skip_before_action :fill_profile, only: [:my_profile]
 
   def my_profile
