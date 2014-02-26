@@ -79,6 +79,8 @@ gem 'paypal-express'
 gem 'paypal-recurring'
 gem 'paypal-sdk-rest'
 
+# SIPS/ATOS french online payments API
+gem 'atos'
 # DateTime validator
 gem 'validates_timeliness', '~> 3.0'
 

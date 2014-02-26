@@ -51,6 +51,8 @@ GEM
       rake (>= 0.8.7)
     arel (4.0.2)
     atomic (1.1.14)
+    atos (0.0.1)
+      rails
     attr_required (1.0.0)
     bcrypt (3.1.7)
     bcrypt (3.1.7-x86-mingw32)
@@ -317,6 +319,7 @@ DEPENDENCIES
   activemerchant
   activerecord-session_store!
   annotate (>= 2.6.0)
+  atos
   better_errors
   binding_of_caller
   cancan

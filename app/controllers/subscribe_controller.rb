@@ -30,7 +30,6 @@ class SubscribeController < ApplicationController
       rescue Exception => e
         logger = Logger.new('log/payment_errors.log')
         logger.info(e.message)
-        logger.info(e.backtrace.first(5).join('/n'))
       end
       adder_tipster = current_subscription.adder_tipster
       subtotal = adder_tipster * ADDING_TIPSTER_PRICE
@@ -103,6 +102,17 @@ class SubscribeController < ApplicationController
           using_coupon: using_coupon
       }
     end
+  end
+
+  def atos_payment
+    @request = Atos.new.request(
+        :merchant_id            => '014295303911111',
+        :customer_id            => 'YOUR_CUSTOMER_ID',
+        :amount                 => '1500',
+        :automatic_response_url => 'http://localhost:3333/payment/atos_notify',
+        :normal_return_url      => 'http://localhost:3333',
+        :cancel_return_url      => 'http://localhost:3333'
+    )
   end
 
   # GET|POST /subscribe/payment_method

@@ -22,8 +22,8 @@ ActiveRecord::Schema.define(version: 20140226090823) do
     t.datetime "updated_at"
   end
 
-  add_index "authorizations", ["uid"], name: "index_authorizations_on_uid"
-  add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id"
+  add_index "authorizations", ["uid"], name: "index_authorizations_on_uid", using: :btree
+  add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id", using: :btree
 
   create_table "coupon_codes", force: true do |t|
     t.integer  "user_id"
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 20140226090823) do
     t.datetime "created_at",                 null: false
   end
 
-  add_index "coupon_codes", ["user_id"], name: "index_coupon_codes_on_user_id"
+  add_index "coupon_codes", ["user_id"], name: "index_coupon_codes_on_user_id", using: :btree
 
   create_table "invoices", force: true do |t|
     t.integer  "user_id"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20140226090823) do
     t.datetime "completed_at"
   end
 
-  add_index "invoices", ["user_id"], name: "index_invoices_on_user_id"
+  add_index "invoices", ["user_id"], name: "index_invoices_on_user_id", using: :btree
 
   create_table "payments", force: true do |t|
     t.integer  "subscription_id"
@@ -77,8 +77,8 @@ ActiveRecord::Schema.define(version: 20140226090823) do
     t.datetime "updated_at"
   end
 
-  add_index "payments", ["coupon_code_id"], name: "index_payments_on_coupon_code_id"
-  add_index "payments", ["subscription_id"], name: "index_payments_on_subscription_id"
+  add_index "payments", ["coupon_code_id"], name: "index_payments_on_coupon_code_id", using: :btree
+  add_index "payments", ["subscription_id"], name: "index_payments_on_subscription_id", using: :btree
 
   create_table "plans", force: true do |t|
     t.string   "name"
@@ -115,7 +115,7 @@ ActiveRecord::Schema.define(version: 20140226090823) do
     t.datetime "updated_at"
   end
 
-  add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
+  add_index "profiles", ["user_id"], name: "index_profiles_on_user_id", using: :btree
 
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
@@ -124,8 +124,8 @@ ActiveRecord::Schema.define(version: 20140226090823) do
     t.datetime "updated_at"
   end
 
-  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true
-  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
+  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
+  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
 
   create_table "sports", force: true do |t|
     t.string "name", null: false
@@ -139,8 +139,8 @@ ActiveRecord::Schema.define(version: 20140226090823) do
     t.datetime "updated_at"
   end
 
-  add_index "subscription_tipsters", ["subscription_id"], name: "index_subscription_tipsters_on_subscription_id"
-  add_index "subscription_tipsters", ["tipster_id"], name: "index_subscription_tipsters_on_tipster_id"
+  add_index "subscription_tipsters", ["subscription_id"], name: "index_subscription_tipsters_on_subscription_id", using: :btree
+  add_index "subscription_tipsters", ["tipster_id"], name: "index_subscription_tipsters_on_tipster_id", using: :btree
 
   create_table "subscriptions", force: true do |t|
     t.integer  "user_id"
@@ -153,8 +153,8 @@ ActiveRecord::Schema.define(version: 20140226090823) do
     t.boolean  "using_coupon", default: false
   end
 
-  add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id"
-  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id"
+  add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id", using: :btree
+  add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id", using: :btree
 
   create_table "tips", force: true do |t|
     t.integer  "tipster_id",                   null: false
@@ -175,7 +175,7 @@ ActiveRecord::Schema.define(version: 20140226090823) do
     t.datetime "updated_at"
   end
 
-  add_index "tips", ["tipster_id"], name: "index_tips_on_tipster_id"
+  add_index "tips", ["tipster_id"], name: "index_tips_on_tipster_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "first_name"
@@ -197,17 +197,17 @@ ActiveRecord::Schema.define(version: 20140226090823) do
     t.integer  "failed_attempts",        default: 0,    null: false
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.boolean  "active",                 default: true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
-    t.boolean  "active",                 default: true
     t.integer  "sport_id"
   end
 
-  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-  add_index "users", ["sport_id"], name: "index_users_on_sport_id"
-  add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true
+  add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["sport_id"], name: "index_users_on_sport_id", using: :btree
+  add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
 end
