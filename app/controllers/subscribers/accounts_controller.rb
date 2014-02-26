@@ -1,7 +1,10 @@
 class Subscribers::AccountsController < AccountsController
   before_action :authenticate_subscriber!
 
+  # Inherited all super actions
+
   protected
+
   def current_user
     current_subscriber
   end

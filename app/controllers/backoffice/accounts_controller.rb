@@ -1,6 +1,8 @@
 class Backoffice::AccountsController < AccountsController
   before_action :authenticate_tipster!
 
+  # Inherited all super actions
+
   protected
 
   def current_user
