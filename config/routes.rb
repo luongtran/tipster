@@ -44,15 +44,6 @@ TipsterHero::Application.routes.draw do
 
   resources :tips, only: [:index, :show]
 
-  # FIXME, there're many un-used routes
-  resource :twitter, controller: 'twitter' do
-    collection do
-      get :tweet
-      get :make
-      post :return
-    end
-  end
-
   resources :tipsters, only: [:index, :show] do
     collection do
       get :top

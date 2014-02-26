@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
 
   def show
-    @user ||= current_user
+    @user = current_user
   end
 
   def update
@@ -28,6 +28,7 @@ class AccountsController < ApplicationController
   end
 
   protected
+
   def current_user
     # Need to override in the subclass
     raise 'This method should be overriden and return the current subscriber or tipster'

@@ -45,3 +45,7 @@ en:
     update_account: "Update account"
     account_update_successully: "Your profile was updated successfully."
     account_update_failed: "Update profile failed."
+  tipster_statuses:
+    all: 'All'
+    active: 'Active'
+    inactive: 'Inactive'
