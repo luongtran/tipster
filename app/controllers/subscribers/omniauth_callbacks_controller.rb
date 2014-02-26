@@ -17,7 +17,7 @@ class Subscribers::OmniauthCallbacksController < Devise::OmniauthCallbacksContro
     # Add more authorization for subscriber
     subscriber.add_authorization(request.env["omniauth.auth"]) unless identity
     set_flash_message(:notice, :success, :kind => provider) if is_navigational_format?
-    sign_in :user, subscriber
+    sign_in :subscriber, subscriber
     redirect_to session[:return_url] || root_url
   end
 

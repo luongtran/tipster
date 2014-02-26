@@ -48,7 +48,6 @@ class ApplicationController < ActionController::Base
     session[:cart][:tipster_ids].uniq
   end
 
-
   # Return an array of tipster's id in current user subscription
   def tipster_ids_in_subscription
     if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active?

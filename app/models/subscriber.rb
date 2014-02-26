@@ -1,5 +1,6 @@
 class Subscriber < User
   devise :registerable
+  devise :omniauthable, :omniauth_providers => [:facebook, :google_oauth2, :twitter]
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================

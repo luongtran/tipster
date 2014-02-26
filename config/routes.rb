@@ -3,6 +3,7 @@ TipsterHero::Application.routes.draw do
 
   devise_for :subscribers, :controllers => {
       :registrations => "subscribers/registrations",
+      :omniauth_callbacks => "subscribers/omniauth_callbacks",
       :sessions => "subscribers/sessions"
   }
 
@@ -86,7 +87,6 @@ TipsterHero::Application.routes.draw do
       :sessions => "backoffice/sessions"
   }
   # End Tipster routes ===========================================================
-
 
   # Rueta set route here
   get '/signup', to: 'static#signup'
