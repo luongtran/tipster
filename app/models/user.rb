@@ -79,14 +79,27 @@ class User < ActiveRecord::Base
     self.update_without_password(params)
   end
 
+  def admin?
+    self.is_a? Admin
+  end
+
+  def tipster?
+    self.is_a? Tipster
+  end
+
+  def subscriber?
+    self.is_a? Subscriber
+  end
+
   # ==============================================================================
   # PROTECTED METHODS
   # ==============================================================================
   #protected
 
+
   # ==============================================================================
   # PRIVATE METHODS
   # ==============================================================================
-  #private
+  private
 
 end
