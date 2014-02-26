@@ -1,9 +1,7 @@
 module ApplicationHelper
   def my_devise_error_messages!
     return "" if resource.errors.empty?
-
     messages = ""
-
     if !resource.errors.empty?
       messages = resource.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
     end
@@ -61,7 +59,6 @@ module ApplicationHelper
   def query_params
     request.query_parameters
   end
-
 
   # Detemine the my_account path for two resources: subscriber or tipster
   def my_account_path_for(user)
