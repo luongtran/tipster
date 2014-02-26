@@ -42,19 +42,6 @@ module ApplicationHelper
     @current_step == step_name ? 'active' : ''
   end
 
-  #
-  #def resource_name
-  #  :user
-  #end
-  #
-  #def resource
-  #  @resource ||= User.new
-  #end
-
-  #def devise_mapping
-  #  @devise_mapping ||= Devise.mappings[:user]
-  #end
-
   def payment_methods_for_select
     options = []
     Payment::PAYMENT_METHODS.each_with_index do |p_m, index|
@@ -73,5 +60,15 @@ module ApplicationHelper
 
   def query_params
     request.query_parameters
+  end
+
+
+  # Detemine the my_account path for two resources: subscriber or tipster
+  def my_account_path_for(user)
+    if user.is_a? Tipster
+      backoffice_my_account_path
+    elsif user.is_a? Subscriber
+      my_account_path
+    end
   end
 end
