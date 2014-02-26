@@ -26,7 +26,7 @@ class Subscription < ActiveRecord::Base
            :class_name => "Tipster",
            :source => :tipster,
            :conditions => ['subscription_tipsters.active = ?', true]
-  has_many :inactive_tipsters, :through => :subscription_tipsters,
+           has_many :inactive_tipsters, :through => :subscription_tipsters,
            :class_name => "Tipster",
            :source => :tipster,
            :conditions => ['subscription_tipsters.active = ?', false]
@@ -43,11 +43,27 @@ class Subscription < ActiveRecord::Base
   # INSTANCE METHODS
   # ==============================================================================
   def calculator_price
-    (self.plan.price.to_f + adder_tipster * ADDING_TIPSTER_PRICE) * self.plan.period
+    price = (self.plan.price.to_f + adder_tipster * ADDING_TIPSTER_PRICE) * self.plan.period
+    if self.using_coupon
+      price -= 3
+    end
+    return price
+  end
+
+  def adder_price
+    price = self.adder_tipster *  ADDING_TIPSTER_PRICE * self.plan.period
+    if self.using_coupon
+      price -= 3
+    end
+    return price
   end
 
   def adder_tipster
     self.tipsters.size > self.plan.number_tipster ? self.tipsters.size - self.plan.number_tipster : 0
+  end
+
+  def can_change_tipster?
+    self.active && self.active_date > 1.days.ago || (self.active_date.strftime('%d').to_i == Time.now.strftime('%d')  && self.expired_date > Time.now)
   end
 
   def one_shoot_price

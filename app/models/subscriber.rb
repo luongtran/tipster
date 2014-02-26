@@ -43,5 +43,9 @@ class Subscriber < User
     self.authorizations << Authorization.build_from_oauth(auth)
   end
 
+  #Check user using coupon code
 
+  def using_coupon?
+    self.coupon_codes.present? && self.subscription
+  end
 end
