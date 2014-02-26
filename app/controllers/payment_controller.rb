@@ -55,11 +55,7 @@ class PaymentController < ApplicationController
           t.set_active
         end
       unless subscription.active?
-        if subscription.calculator_price == notify.params['mc_gross'] #using coupon????
           subscription.update_attributes({active: true,active_date: Time.now,expired_date: Time.now + subscription.plan.period.month})
-        else
-          # If subscription not active && payment amount difference calculator amount
-        end
       end
     end
     payment.save

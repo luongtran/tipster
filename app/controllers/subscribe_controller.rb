@@ -172,7 +172,7 @@ class SubscribeController < ApplicationController
       unless cc.is_used
         session[:using_coupon] = cc.id
         cc.mark_used
-        flash[:notice] = I18n.t('coupon.success_using')
+        flash[:notice] = I18n.t('coupon.success_using',discount: "3 EURO")
       else
         flash[:notice] = I18n.t('coupon.is_using')
       end
