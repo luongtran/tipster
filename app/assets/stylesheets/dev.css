@@ -1,33 +1,3 @@
-/*
- * This is a temporally file because we currently don't have template yet
- */
-select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-    height: 26px;
-    border-radius: 1px;
-}
-
-textarea {
-    border-radius: 1px;
-}
-
-select {
-    height: 30px;
-}
-
-.btn {
-    border-radius: 1px;
-}
-
-.container {
-    width: 1128px;
-}
-
-span.required {
-    color: #EE3933;
-    font-weight: bold;
-    font-size: 20px;
-}
-
 ul.sports-filter {
     text-align: center;
 }

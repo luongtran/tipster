@@ -12,6 +12,7 @@
 
  = require jquery
  = require jquery_ujs
+ = require dev
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
  */
 
