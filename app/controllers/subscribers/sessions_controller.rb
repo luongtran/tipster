@@ -1,10 +1,6 @@
 class Subscribers::SessionsController < Devise::SessionsController
   skip_before_action :fill_profile
 
-  def new
-    super
-  end
-
   protected
 
   def after_sign_in_path_for(resource)

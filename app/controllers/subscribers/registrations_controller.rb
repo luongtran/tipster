@@ -27,10 +27,6 @@ class Subscribers::RegistrationsController < Devise::RegistrationsController
 
   private
 
-  def build_subscriber_sign_up_params
-    sign_up_params.merge(:type => Subscriber.name)
-  end
-
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) do |u|
       u.permit(:first_name, :last_name,

@@ -10,7 +10,15 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  # Render bad request(invalid params, etc ...)
+  def current_ability
+    @current_ability ||= Ability.new(logged_in_user)
+  end
+
+  def logged_in_user
+    current_subscriber || current_tipster || current_admin
+  end
+
+  # Render bad request(if: invalid params, etc ...)
   def render_400
     render nothing: true, status: 400
   end

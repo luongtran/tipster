@@ -2,9 +2,9 @@ module TipstersHelper
   def tipster_statuses_for_select
     selected_status = query_params[:status]
     options = []
-    options << ['All', 'all', {data: {url: tipsters_path(query_params.merge(status: nil))}}]
-    options << ['Active', 'active', {data: {url: tipsters_path(query_params.merge(status: 'active'))}, selected: selected_status == 'active'}]
-    options << ['Inactive', 'inactive', {data: {url: tipsters_path(query_params.merge(status: 'inactive'))}, selected: selected_status == 'inactive'}]
+    options << [I18n.t('tipster_statuses.all'), 'all', {data: {url: tipsters_path(query_params.merge(status: nil))}}]
+    options << [I18n.t('tipster_statuses.active'), 'active', {data: {url: tipsters_path(query_params.merge(status: 'active'))}, selected: selected_status == 'active'}]
+    options << [I18n.t('tipster_statuses.inactive'), 'inactive', {data: {url: tipsters_path(query_params.merge(status: 'inactive'))}, selected: selected_status == 'inactive'}]
     options
   end
 

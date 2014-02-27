@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
 
   def show
-    @user ||= current_user
+    @user = current_user
   end
 
   def update
@@ -23,17 +23,20 @@ class AccountsController < ApplicationController
       redirect_to after_update_account_path
     else
       flash[:alert] = I18n.t('user.password_changed_failed')
-      render :my_account
+      render :show
     end
   end
 
   protected
+
   def current_user
     # Need to override in the subclass
+    raise 'This method should be overriden and return the current subscriber or tipster'
   end
 
   def after_update_account_path
     # Need to override in the subclass
+    raise 'This method should be overriden and return the path after update account'
   end
 
   def user_params

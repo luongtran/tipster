@@ -1,0 +1,58 @@
+#page-footer-values {
+  #footer-values {
+    .row {
+      > div {
+        * {
+          text-align: center;
+        }
+      }
+      .icon {
+        width: 101px;
+        height: 101px;
+        margin: 0 auto;
+        background: url('/assets/values-icon.png') no-repeat;
+      }
+      span {
+        font-size: 12px;
+        display: block;
+        padding-top: 10px;
+        width: 50%;
+        margin: 0 auto;
+      }
+      .cont {
+        background: url('/assets/values-bg.jpg') no-repeat top center;
+      }
+      .value1 {
+        .icon {
+          background-position: left top;
+        }
+      }
+      .value2 {
+        .icon {
+          background-position: left -101px;
+        }
+      }
+      .value3 {
+        .icon {
+          background-position: left (101px * 2 * -1);
+        }
+      }
+    }
+  }
+}
+
+
+#page-footer-board {
+  background-color: $green-site;
+  padding-top: 10px;
+  font-size: 12px;
+  * {
+    color: #ffffff;
+  }
+}
+
+#page-footer-bottom {
+  background-color: shade($gray-dark, 50%);
+  padding: 10px;
+  color: #ffffff;
+}
