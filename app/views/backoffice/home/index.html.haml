@@ -1,2 +1,4 @@
 .center-block
   %h1 Backoffice Tipster Homepage
+  - if can? :create, Tip
+    Yes I can create new tip

@@ -95,6 +95,9 @@ GEM
       railties (>= 3.2.6, < 5)
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    devise_security_extension (0.8.0)
+      devise (>= 2.0.0)
+      rails (>= 3.1.1)
     equalizer (0.0.9)
     erubis (2.7.0)
     eventmachine (1.0.3)
@@ -324,6 +327,7 @@ DEPENDENCIES
   country_select
   debugger
   devise
+  devise_security_extension
   faker
   fql
   haml

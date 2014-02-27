@@ -77,4 +77,18 @@ module ApplicationHelper
       change_password_path
     end
   end
+
+  def sort_params_for(field)
+    current_sort_param = params[:sort]
+    sort_direction = ''
+
+    if current_sort_param.present?
+      sort_direction = current_sort_param.split(':').second
+      sort_direction = (sort_direction == 'desc') ? 'asc' : 'desc'
+    else
+      sort_direction = Tipster::DEFAULT_SORT_DIRECTION
+    end
+
+    query_params.merge(sort: "#{field}_#{sort_direction}")
+  end
 end

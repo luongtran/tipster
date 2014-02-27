@@ -2,7 +2,6 @@ class Backoffice::TipsController < ApplicationController
   before_filter :authenticate_tipster!
 
   def index
-
   end
 
   def new
@@ -12,7 +11,7 @@ class Backoffice::TipsController < ApplicationController
   def create
     @tip = current_tipster.tips.new(tip_params)
     if @tip.save
-      redirect_to backoffice_tip_url(@tip), notice: 'Tip created successfully!'
+      redirect_to backoffice_tip_url(@tip), notice: I18n.t('tip.created_successfully')
     else
       render :new
     end

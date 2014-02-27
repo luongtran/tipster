@@ -1,4 +1,5 @@
 class Tipster < User
+  DEFAULT_SORT_DIRECTION = 'desc'
 
   RANKING_RANGES = [
       LAST_MONTH = 'last-month',
@@ -12,6 +13,7 @@ class Tipster < User
   # ==============================================================================
   belongs_to :sport
   has_many :tips
+
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
@@ -28,9 +30,9 @@ class Tipster < User
   class << self
     def load_data(params = {})
       relation = self.perform_filter_params(params)
-      #paging_info = parse_paging_params(params)
+      sort_string = parse_sort_params(params)
       relation.includes([])
-      .order('id asc')
+      .order(sort_string)
       .page(1)
       .per(10)
     end
@@ -76,23 +78,47 @@ class Tipster < User
     protected
 
     # Return format
-    # "{field sort_direction}"
+    # "field direction"
     def parse_sort_params(params)
+      sort_string = params[:sort]
 
+      sort_direction = ''
+      sort_field = 'id'
+      if sort_string.present?
+        sort_direction = sort_string.split('_').second
+        sort_field = sort_string.split('_').first
+        sort_direction = (sort_direction == 'desc') ? 'asc' : 'desc'
+      else
+        sort_direction = DEFAULT_SORT_DIRECTION
+      end
+      if self.column_names.include? sort_field
+        "#{sort_field} #{sort_direction} "
+      else
+        nil
+      end
     end
+
     # Return PagingInfo object contains:
     #  page_id
     #  per_page
     #
     def parse_paging_params(params)
-      paging_info = PagingInfo.new
+
     end
   end
 
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+  def create_new_tip(params)
+    klass = self.class.name
+    # FootballTipster
+    # FootballTip
 
+    tip_klass = klass.gsub('Tipster', 'Tip')
+    tip = tip_klass.constantize.new(params)
+    tip
+  end
 
   # Substract tipster's bankroll after published a tip
   def subtract_bankroll(amount)

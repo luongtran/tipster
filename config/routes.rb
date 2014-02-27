@@ -73,11 +73,13 @@ TipsterHero::Application.routes.draw do
     post '/change_password', to: 'accounts#change_password'
 
     resources :tips
-
   end
 
   devise_for :tipsters, path: '/backoffice', :skip => :registrations, :controllers => {
       :sessions => "backoffice/sessions"
+  }
+  devise_for :admins, path: '/admin', :skip => :registrations, :controllers => {
+      :sessions => "admin/sessions"
   }
   # End Tipster routes ===========================================================
 

@@ -11,7 +11,16 @@ class ApplicationController < ActionController::Base
   protected
 
   def current_ability
-    @current_ability ||= Ability.new(logged_in_user)
+    @current_ability ||= case
+                           when current_subscriber
+                             SubscriberAbility.new(current_subscriber)
+                           when current_tipster
+                             TipsterAbility.new(current_tipster)
+                           when current_admin
+                             AdminAbility.new(current_admin)
+                           else
+                             GuestAbility.new(nil)
+                         end
   end
 
   def logged_in_user
