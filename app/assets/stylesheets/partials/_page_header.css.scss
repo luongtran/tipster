@@ -41,6 +41,30 @@
             border-right: solid 1px $gray-light;
           }
         }
+        &.dropdown,
+        &.dropdown.active,
+        &.dropdown:hover {
+          .dropdown-menu {
+            li {
+              float: none;
+              display: block;
+              a {
+                color: $text-color-base;
+                line-height: 1.4;
+                font-size: 12px;
+                width: 100%;
+                padding: 0 10px;
+                background-color: #ffffff;
+              }
+              &:hover {
+                a {
+                  color: $green-dark;
+                  background-color: tint($green-lighter, 70%);
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

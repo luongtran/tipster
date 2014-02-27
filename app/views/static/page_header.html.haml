@@ -6,10 +6,36 @@
         =image_tag("tipster-logo-main.png", :alt=>"Tipster hero", :class=>"img-responsive")
     #menu-main.pull-right
       %ul.list-inline
-        - @items = ['Tipster', 'Features', 'Pricing', 'Sign In', 'Connect']
-        - @items.each do |node|
-          %li
-            %a{:href=>"javascript:;"}= node
+        %li
+          %a{href: pricing_path} Pricing
+        %li
+          %a{href: tipsters_path} Tipsters
+        %li
+          %a{href: tips_path} Tips
+        - if current_subscriber
+          %li.dropdown
+            %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+              = current_subscriber.name
+              %b.caret
+            %ul.dropdown-menu
+              %li
+                %a{href: my_account_path} My Account
+              %li
+                %a{href: subscriptions_path} My Subscription
+              %li.divider
+              %li
+                %a{href: destroy_subscriber_session_path} Sign Out
+        - else
+          %li.dropdown
+            %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+              Connect
+              %b.caret
+            %ul.dropdown-menu
+              %li
+                %a{href: new_subscriber_registration_path} Register
+              %li
+                %a{href: new_subscriber_session_path} Sign In
+              = render 'shared/social_connection_links'
 
 #page_header_mid
 
