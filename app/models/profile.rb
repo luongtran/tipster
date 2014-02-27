@@ -51,11 +51,12 @@ class Profile < ActiveRecord::Base
   # VALIDATIONS
   # ==============================================================================
 
-  validates_date :birthday, :before => lambda { 16.years.ago } , allow_blank: true
+  validates_date :birthday, :before => lambda { 16.years.ago }, allow_blank: true
   validates :civility, :secret_question, :answer_secret_question, :mobile_phone, :birthday, :presence => true
   validates_inclusion_of :know_website_from, :in => KNOW_WEBSITE_FROM_LIST
   validates_inclusion_of :secret_question, :in => SECRET_QUESTIONS_MAP.keys
 
+  validates_format_of :mobile_phone, :telephone, with: /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/, allow_blank: true
   # ==============================================================================
   # CALLBACKS
   # ==============================================================================
