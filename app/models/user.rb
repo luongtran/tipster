@@ -48,9 +48,7 @@ class User < ActiveRecord::Base
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-  validates :first_name, :last_name, :presence => true
-  validates_length_of :first_name, :last_name, minimum: 2
-  validates_format_of :first_name, :last_name, with: /\A([a-z]|[A-Z])/
+  validates :first_name, :last_name, presence: true, format: {with: /\A([a-z]|[A-Z])/}, length: {minimum: 2}
 
   # ==============================================================================
   # CALLBACKS
