@@ -29,9 +29,13 @@
 #  sport_id               :integer
 #
 
+# Tipster
+# Single Table Inherit
+
 class User < ActiveRecord::Base
   devise :database_authenticatable,
-         :recoverable, :rememberable, :trackable, :validatable # :confirmable, :lockable, :timeoutable and :omniauthable
+         :recoverable, :rememberable, :trackable, :validatable
+  # :confirmable, :lockable, :timeoutable and :omniauthable , :session_limitable
 
   # ==============================================================================
   # ASSOCIATIONS
@@ -45,6 +49,7 @@ class User < ActiveRecord::Base
   # VALIDATIONS
   # ==============================================================================
   validates :first_name, :last_name, :presence => true
+  validates_length_of :first_name, :last_name, minimum: 2
 
   # ==============================================================================
   # CALLBACKS
