@@ -42,7 +42,8 @@
                   = @subscription.active_date.strftime("%m/%d/%Y")
                 %td
                   = @subscription.expired_date.strftime("%m/%d/%Y")
-                  = link_to "Unfollow", remove_inactive_tipster_path(tipster),method: 'delete',data:{confirm: "Are your sure !"} ,class: "btn btn-danger"
+                  - if @subscription.can_change_tipster?
+                    = link_to "Unfollow", remove_inactive_tipster_path(tipster),method: 'delete',data:{confirm: "Are your sure !"} ,class: "btn btn-sm btn-danger"
     %table.table.table-bordered
       %caption
         %strong Your payment history

@@ -96,3 +96,4 @@ gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 # Administrator
 
 gem 'actionpack'
+gem 'nokogiri'

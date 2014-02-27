@@ -7,12 +7,12 @@ class SubscriptionsController < ApplicationController
     if selected_plan.free?
       redirect_to subscribe_choose_offer_url
     else
-      redirect_to top_tipsters_url
+      redirect_to tipsters_url
     end
   end
   def select_free_plan
     session[:free_plan] = true
-    redirect_to free_tipsters_path
+    redirect_to tipsters_path
   end
 
   def show
@@ -23,9 +23,9 @@ class SubscriptionsController < ApplicationController
     @subscription = current_subscriber.subscription
     if @subscription.can_change_tipster?
       @subscription.remove_tipster(params[:id])
-      redirect_to subscription_path,:notice => "Tipster unfollow"
+      redirect_to action: 'show',:notice => "Tipster unfollow"
     else
-      redirect_to subscription_path,notice: "You can change your follow tipster on day #{current_subscription.active_date.strftime('%d')}  of the month" and return
+      redirect_to action: 'show',notice: "You can change your follow tipster on day #{current_subscription.active_date.strftime('%d')}  of the month" and return
     end
   end
 end

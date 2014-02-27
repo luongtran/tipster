@@ -337,6 +337,7 @@ DEPENDENCIES
   mailcatcher
   meta_request
   mysql2 (= 0.3.13)
+  nokogiri
   omniauth
   omniauth-facebook
   omniauth-google-oauth2

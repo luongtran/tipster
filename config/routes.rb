@@ -44,13 +44,7 @@ TipsterHero::Application.routes.draw do
 
   resources :tips, only: [:index, :show]
 
-  resources :tipsters, only: [:index, :show] do
-    collection do
-      get :top
-      get :free
-    end
-  end
-
+  resources :tipsters, only: [:index, :show]
   resource :subscriptions, controller: 'subscriptions', :only => [:show] do
     post :update
   end
@@ -84,4 +78,6 @@ TipsterHero::Application.routes.draw do
   # Rueta set route here
   get '/signup', to: 'static#signup'
   # END Rueta set route here
+
+  get '/test_', to: 'home#xml_view'
 end
