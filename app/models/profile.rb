@@ -51,16 +51,14 @@ class Profile < ActiveRecord::Base
   # VALIDATIONS
   # ==============================================================================
 
-  validates_date :birthday, :message => 'birthday is invalid' #TODO, move to locale
-  validates :civility, :secret_question, :answer_secret_question, :mobile_phone, :presence => true
+  validates_date :birthday, :before => lambda { 16.years.ago } , allow_blank: true
+  validates :civility, :secret_question, :answer_secret_question, :mobile_phone, :birthday, :presence => true
   validates_inclusion_of :know_website_from, :in => KNOW_WEBSITE_FROM_LIST
   validates_inclusion_of :secret_question, :in => SECRET_QUESTIONS_MAP.keys
 
   # ==============================================================================
   # CALLBACKS
   # ==============================================================================
-
-  before_validation :init_default_birthday
 
   class << self
   end
@@ -80,7 +78,4 @@ class Profile < ActiveRecord::Base
 
   private
 
-  def init_default_birthday
-    self[:birthday] ||= DEFAULT_BIRTHDAY
-  end
 end

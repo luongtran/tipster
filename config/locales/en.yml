@@ -49,3 +49,9 @@ en:
     all: 'All'
     active: 'Active'
     inactive: 'Inactive'
+  tip:
+    created_successfully: 'A tip created successfully!'
+  errors:
+    messages:
+      invalid_date: "is not a valid date"
+      before: "must be before %{restriction}"
