@@ -4,8 +4,8 @@ source 'http://rubygems.org'
 gem 'rails', '4.0.0'
 
 # Use mysql2 as the database for Active Record
- # gem 'mysql2', '0.3.13'
- gem 'sqlite3'
+gem 'mysql2', '0.3.13'
+#gem 'sqlite3'
 
 # Use SCSS for stylesheets
 gem 'sass-rails'
@@ -93,4 +93,8 @@ gem "kaminari", ">= 0.14.1"
 # For more secure sessions
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 # More secure for devise
+
 gem 'devise_security_extension'
+
+gem 'actionpack'
+gem 'nokogiri'

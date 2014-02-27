@@ -30,7 +30,6 @@ class SubscribeController < ApplicationController
       rescue Exception => e
         logger = Logger.new('log/payment_errors.log')
         logger.info(e.message)
-        logger.info(e.backtrace.first(5).join('/n'))
       end
       adder_tipster = current_subscription.adder_tipster
       subtotal = adder_tipster * ADDING_TIPSTER_PRICE
@@ -202,7 +201,7 @@ class SubscribeController < ApplicationController
               elsif tipster_ids_in_cart.empty?
                 {
                     message: "Please choose at least one tipster",
-                    url: top_tipsters_url
+                    url: tipsters_url
                 }
               elsif !session[:plan_id] && (!current_subscriber.subscription || !current_subscriber.subscription.active)
                 {

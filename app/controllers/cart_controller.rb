@@ -4,7 +4,7 @@ class CartController < ApplicationController
     reset_cart_session
     if tipster_ids_in_cart.empty?
       flash[:alert] = "Your cart is empty"
-      redirect_to top_tipsters_url
+      redirect_to tipsters_url
     else
       @tipsters = Tipster.where(id: tipster_ids_in_cart)
       if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active?
@@ -33,7 +33,7 @@ class CartController < ApplicationController
     else
       flash[:alert] = "Request is invalid"
     end
-    redirect_to top_tipsters_url
+    redirect_to tipsters_url
   end
 
   def drop_tipster

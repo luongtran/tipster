@@ -6,6 +6,7 @@ class Backoffice::TipsController < ApplicationController
 
   def new
     @tip = Tip.new
+    #Need get information about live match here
   end
 
   def create

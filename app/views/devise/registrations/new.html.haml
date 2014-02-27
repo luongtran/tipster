@@ -1,3 +1,4 @@
+= content_for(:title, "Registration")
 %h2 Sign up
 = simple_form_for resource, :url => subscriber_registration_path, :html => {class: 'form-horizontal', novalidate: true} do |f|
   = render 'shared/user_basic_fields', f: f

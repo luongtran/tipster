@@ -44,13 +44,7 @@ TipsterHero::Application.routes.draw do
 
   resources :tips, only: [:index, :show]
 
-  resources :tipsters, only: [:index, :show] do
-    collection do
-      get :top
-      get :free
-    end
-  end
-
+  resources :tipsters, only: [:index, :show]
   resource :subscriptions, controller: 'subscriptions', :only => [:show] do
     post :update
   end
@@ -62,7 +56,7 @@ TipsterHero::Application.routes.draw do
 
   get '/subscriptions/select/:id' => 'subscriptions#select_plan', as: :select_plan
   delete '/subscriptions/tipster/:id' => 'subscriptions#remove_inactive_tipster', as: :remove_inactive_tipster
-  post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan', as: :select_free_pla
+  post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan', as: :select_free_plan
 
   # Backoffice Tipster routes ====================================================
   # Prefix: 'backoffice'
@@ -86,4 +80,6 @@ TipsterHero::Application.routes.draw do
   # Rueta set route here
   get '/signup', to: 'static#signup'
   # END Rueta set route here
+
+  get '/test_', to: 'home#xml_view'
 end

@@ -21,6 +21,7 @@ module TipsterHero
 
     # For automatically load subfolders in the models folder
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**}')]
+    config.assets.paths << Rails.root.join("app", "assets", "fonts")
 
     # config.i18n.default_locale = :de
     config.i18n.enforce_available_locales = true

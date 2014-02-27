@@ -9,9 +9,9 @@
   = favicon_link_tag 'demo.png'
   = csrf_meta_tags
   %body.subscriber-zone
+    = render 'layouts/navbar'
     .container
       .row.clearfix
-        = render 'layouts/navbar'
         #flash
           - if notice
             %div{:class => "alert alert-info fade in", 'data-alert' => "alert"}
@@ -23,3 +23,4 @@
               %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
               = alert
         = yield
+    = render 'layouts/page_footer'

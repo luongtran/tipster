@@ -1,4 +1,7 @@
-.text-center
-  %h4 I'm Homepage
-  - if can? :create, Tip
-    Yes i Can
+= content_for(:title, "TipsterHero")
+%h2 Sign up
+= simple_form_for :subscriber, :url => subscriber_registration_path, :html => {class: 'form-horizontal', novalidate: true} do |f|
+  = render 'shared/user_basic_fields', f: f
+  .form-group
+    .col-sm-offset-3.col-sm-9
+      %button.btn.btn-primary{type: "submit"} Sign Up

@@ -1,0 +1,17 @@
+%table.table.table-bordered
+  %caption Listing Football Match
+  %thead
+    %tr
+      %th League
+      %th Date
+      %th Live
+      %th Home
+      %th Visiting
+  %tbody
+    - @results.each do |result|
+      %tr
+        %td= result["league"]
+        %td= result["datetime"]
+        %td= result["islive"]
+        %td= result["participiant_name_0"]
+        %td= result["participiant_name_1"]

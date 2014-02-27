@@ -6,35 +6,11 @@
         %span
           %strong Your plan is :
         %span #{@subscription.plan_title}
-
-      - last_payment = @subscription.payments.last
-      - if last_payment && last_payment.payment_status != "Completed"
-        %li
-          %span
-            %strong Subscription pending reason :
-          %span #{t("paypal_pending_reasons.#{params[:pending_reason]}")}
-      - elsif last_payment
-        %li
-          %span
-            %strong Subscription payment status :
-          %span #{last_payment.payment_status}
-        %li
-          %span
-            %strong Subscription payment transaction id :
-          %span #{last_payment.txn_id}
-        %li
-          %span
-            %strong Payment start on
-          %span #{last_payment.payment_date.in_time_zone("Pacific Time (US & Canada)")}
-        %li
-          %span
-            %strong Payment amount
-          %span € #{last_payment.mc_gross}
-      - else
-        %li
-          %span
-            %strong Your payment was not completed.
-  - if @subscription.payments.last
+      %li
+        %span
+          %strong Subscription status :
+        %span #{@subscription.active? ? "Active" : "Not Active"}
+  - if @subscription.active
     %table.table.table-bordered
       %caption List Tipster on Your subscriptions
       %thead
@@ -66,6 +42,27 @@
                   = @subscription.active_date.strftime("%m/%d/%Y")
                 %td
                   = @subscription.expired_date.strftime("%m/%d/%Y")
-                  = link_to "Unfollow", remove_inactive_tipster_path(tipster),method: 'delete',data:{confirm: "Are your sure !"} ,class: "btn btn-danger"
+                  - if @subscription.can_change_tipster?
+                    = link_to "Unfollow", remove_inactive_tipster_path(tipster),method: 'delete',data:{confirm: "Are your sure !"} ,class: "btn btn-sm btn-danger"
+    %table.table.table-bordered
+      %caption
+        %strong Your payment history
+      %thead
+        %tr
+          %th #
+          %th Transaction ID
+          %th Payment amount
+          %th Payment date
+          %th Payment status
+          %th Payment description
+      %tbody
+        - @subscription.payments.each_with_index do |payment,index|
+          %tr
+            %td= index
+            %td= payment.txn_id
+            %td= "€#{payment.mc_gross}"
+            %td= payment.payment_date
+            %td= payment.payment_status
+            %td N/A
 - else
   You are still not register any plan.

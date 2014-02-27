@@ -1,43 +1,61 @@
-%nav.navbar.navbar-default{role: "navigation"}
-  .navbar-header
-    %button.navbar-toggle{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", type: "button"}
-      %span.sr-only Toggle navigation
-      %span.icon-bar
-      %span.icon-bar
-      %span.icon-bar
-    %a.navbar-brand{href: backoffice_root_path} Backoffice
-    %a.navbar-brand{href: root_path} HOME
-  / Collect the nav links, forms, and other content for toggling
-  #bs-example-navbar-collapse-1.collapse.navbar-collapse
-    %ul.nav.navbar-nav
-      %li
-        %a{href: pricing_path} Pricing
-      %li
-        %a{href: cart_path}
-          = "Cart(#{tipster_ids_in_cart.size})"
-      %li
-        %a{href: top_tipsters_path} TOP Tipsters
-      %li
-        %a{href: tipsters_path} Tipsters
-      %li
-        %a.btn.btn-default{href: tips_path} Tips
-    %ul.nav.navbar-nav.navbar-right
-      - if current_subscriber
-        %li.dropdown
-          %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
-            = current_subscriber.name
-            %b.caret
-          %ul.dropdown-menu
-            %li
-              %a{href: my_account_path} My Account
-            %li
-              %a{href: subscriptions_path} My Subscription
-            %li.divider
-            %li
-              %a{href: destroy_subscriber_session_path} Sign Out
-      - else
+#page_header_top
+  .container.clearfix
+    #tipster-logo-main.pull-left
+      %a{:href=>"/"}
+        =image_tag("tipster-logo-main.png", :alt=>"Tipster hero", :class=>"img-responsive")
+    #menu-main.pull-right
+      %ul.list-inline
         %li
-          %a{href: new_subscriber_registration_path} Register
+          %a{href: pricing_path} Pricing
         %li
-          %a{href: new_subscriber_session_path} Sign In
-        = render 'shared/social_connection_links'
+          %a{href: tipsters_path} Tipsters
+        %li
+          %a.btn.btn-default{href: tips_path} Tips
+        - if current_subscriber
+          %li.dropdown
+            %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+              = current_subscriber.name
+              %b.caret
+            %ul.dropdown-menu
+              %li
+                %a{href: my_account_path} My Account
+              %li
+                %a{href: subscriptions_path} My Subscription
+              %li.divider
+              %li
+                %a{href: destroy_subscriber_session_path} Sign Out
+        - else
+          %li
+            %a{href: new_subscriber_registration_path} Register
+          %li
+            %a{href: new_subscriber_session_path} Sign In
+          = render 'shared/social_connection_links'
+#page_header_mid
+
+  // this is container header box for sub-page (signup - steps etc)
+  #sub-page-header
+    .container.clearfix
+      .pull-left
+        #sub-page-title.clearfix
+          %span(class="icon typcn typcn-location pull-left man")
+          .pull-right
+            #sub-page-navi
+              %ul.list-inline.man.text-slim
+                - @items = ['Home', 'Tipsters']
+                - @items.each do |node|
+                  %li
+                    %a{:href=>"javascript:;"}= node
+            %h1#sub-page-h1.man.text-slim= yield(:title)
+      .pull-right
+        #sub-page-quickpanel.clearfix
+          .quickpanel-left
+          .quickpanel-mid
+            %ul.list-inline.man
+              %li
+                %a{href: cart_path}= "Cart box(#{tipster_ids_in_cart.size})"
+              %li
+                %a{:href=>"javascript:;"} Languages
+              %li
+                %a{:href=>"javascript:;"}
+                  %i(class="typcn typcn-cog")
+          .quickpanel-right
