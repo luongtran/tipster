@@ -40,32 +40,51 @@
 #page_header_mid
 
   // this is container header box for sub-page (signup - steps etc)
-  #sub-page-header
-    .container.clearfix
-      .pull-left
-        #sub-page-title.clearfix
-          %span(class="icon typcn typcn-location pull-left man")
-          .pull-right
-            #sub-page-navi
-              %ul.list-inline.man.text-slim
-                - @items = ['Home', 'Tipsters']
-                - @items.each do |node|
-                  %li
-                    %a{:href=>"javascript:;"}= node
-            %h1#sub-page-h1.man.text-slim Registration
-      .pull-right
-        #sub-page-quickpanel.clearfix
-          .quickpanel-left
-          .quickpanel-mid
-            %ul.list-inline.man
-              %li
-                %a{:href=>"javascript:;"} Cart Box (2)
-              %li
-                %a{:href=>"javascript:;"} Languages
-              %li
-                %a{:href=>"javascript:;"}
-                  %i(class="typcn typcn-cog")
-          .quickpanel-right
+  - if @page=='home'
+    #page-header
+      #feature-profiles
+        .container
+          %div(id="feature-carousel" class="carousel slide" data-ride="carousel")
+            %ol(class="carousel-indicators")
+              %li(data-target="#feature-carousel" data-slide-to="0" class="active")
+              %li(data-target="#feature-carousel" data-slide-to="1")
+              %li(data-target="#feature-carousel" data-slide-to="2")
+            .carousel-inner
+              .item.active test1
+              .item test2
+              .item test3
+            %a(class="left carousel-control" href="#feature-carousel" data-slide="prev")
+              %span(class="glyphicon glyphicon-chevron-left")
+            %a(class="right carousel-control" href="#feature-carousel" data-slide="next")
+              %span(class="glyphicon glyphicon-chevron-right")
+
+  -else
+    #sub-page-header
+      .container.clearfix
+        .pull-left
+          #sub-page-title.clearfix
+            %span(class="icon typcn typcn-location pull-left man")
+            .pull-right
+              #sub-page-navi
+                %ul.list-inline.man.text-slim
+                  - @items = ['Home', 'Tipsters']
+                  - @items.each do |node|
+                    %li
+                      %a{:href=>"javascript:;"}= node
+              %h1#sub-page-h1.man.text-slim Registration
+        .pull-right
+          #sub-page-quickpanel.clearfix
+            .quickpanel-left
+            .quickpanel-mid
+              %ul.list-inline.man
+                %li
+                  %a{:href=>"javascript:;"} Cart Box (2)
+                %li
+                  %a{:href=>"javascript:;"} Languages
+                %li
+                  %a{:href=>"javascript:;"}
+                    %i(class="typcn typcn-cog")
+            .quickpanel-right
 
   #board-gray
     .board-gray-inner.container.relative

@@ -79,6 +79,7 @@ TipsterHero::Application.routes.draw do
 
   # Rueta set route here
   get '/signup', to: 'static#signup'
+  get '/homepage', to: 'static#homepage'
   # END Rueta set route here
 
   get '/test', to: 'home#xml_view',as: :list_match
