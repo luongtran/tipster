@@ -10,7 +10,7 @@
         %li
           %a{href: tipsters_path} Tipsters
         %li
-          %a.btn.btn-default{href: tips_path} Tips
+          %a{href: tips_path} Tips
         - if current_subscriber
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
@@ -25,11 +25,16 @@
               %li
                 %a{href: destroy_subscriber_session_path} Sign Out
         - else
-          %li
-            %a{href: new_subscriber_registration_path} Register
-          %li
-            %a{href: new_subscriber_session_path} Sign In
-          = render 'shared/social_connection_links'
+          %li.dropdown
+            %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+              Connect
+              %b.caret
+            %ul.dropdown-menu
+              %li
+                %a{href: new_subscriber_registration_path} Register
+              %li
+                %a{href: new_subscriber_session_path} Sign In
+              = render 'shared/social_connection_links'
 #page_header_mid
 
   // this is container header box for sub-page (signup - steps etc)
