@@ -23,7 +23,8 @@
         %a{href: tipsters_path(sort_params_for('yield'))} Yield
       %th
         %a{href: tipsters_path(sort_params_for('profil'))} Profil
-      %th Number of tips
+      %th
+        %a{href: tipsters_path(sort_params_for('tips_count'))} Number of tips
       %th Joined at
       %td Action
   %tbody
@@ -41,7 +42,7 @@
           %td= tipster.name
           %td= tipster.yield
           %td= tipster.profil
-          %td= "#{(50..200).to_a.sample}"
+          %td= tipster.tips_count
           %td= tipster.created_at.strftime("%m/%d/%Y")
           %td
             - if @tipster_in_subscription.present? && @tipster_in_subscription.include?(tipster)

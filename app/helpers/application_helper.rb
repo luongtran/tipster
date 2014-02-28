@@ -59,10 +59,11 @@ module ApplicationHelper
   def event_for_select
     options = []
     require 'open-uri'
+    # FIXME: The parsing codes can put here, but the query result should be pass from the controller
     doc = Nokogiri::XML(open("http://xml.pinnaclesports.com/pinnacleFeed.aspx?sportType=#{params[:sport] || 'soccer'}"))
     events = doc.xpath("//event")
 
-    events.each_with_index do |evt,i|
+    events.each_with_index do |evt, i|
       eve = {}
       eve["datetime"] = evt.xpath("event_datetimeGMT").text
       eve["league"] = evt.xpath("league").text
@@ -71,14 +72,13 @@ module ApplicationHelper
         eve["participiant_name_#{index}"] = part.xpath("participant_name").text
         eve["visit_#{index}"] = part.xpath("visiting_home_draw").text
       end
-      options << ["#{eve["participiant_name_0"]} - #{eve["participiant_name_1"]}","#{eve["participiant_name_0"]} - #{eve["participiant_name_1"]}"]
+      options << ["#{eve["participiant_name_0"]} - #{eve["participiant_name_1"]}", "#{eve["participiant_name_0"]} - #{eve["participiant_name_1"]}"]
     end
     options
   end
 
-  def bettype_for_select
-    options = []
-
+  def bet_types_for_select
+    #options = []
   end
 
   def query_params
@@ -108,10 +108,10 @@ module ApplicationHelper
     sort_direction = ''
 
     if current_sort_param.present?
-      sort_direction = current_sort_param.split('_').second
+      sort_direction = current_sort_param.split('_').last
       sort_direction = (sort_direction == 'desc') ? 'asc' : 'desc'
     else
-      sort_direction = Tipster::DEFAULT_SORT_DIRECTION
+      sort_direction = SortingInfo::INCREASE
     end
     query_params.merge(sort: "#{field}_#{sort_direction}")
   end
