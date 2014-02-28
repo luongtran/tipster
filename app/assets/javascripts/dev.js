@@ -15,3 +15,17 @@ $(document).ready(function () {
         return false;
     });
 });
+function select_lang(lang){
+    $.ajax({
+        type: "POST",
+        url: '/home/select_language',
+        data: {locale: lang},
+        success: function(response){
+            console.log(response);
+        },
+        error: function(){
+            console.log("Error on change language! ")
+
+        }
+    });
+}

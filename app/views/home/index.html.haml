@@ -1,9 +1,8 @@
 = content_for(:title, "TipsterHero")
-%h2 I'm homepage
 - unless current_subscriber
-  %h2 Sign up
+  %h2= I18n.t('user.sign_up')
   = simple_form_for :subscriber, :url => subscriber_registration_path, :html => {class: 'form-horizontal', novalidate: true} do |f|
     = render 'shared/user_basic_fields', f: f
     .form-group
       .col-sm-offset-3.col-sm-9
-        %button.btn.btn-primary{type: "submit"} Sign Up
+        %button.btn.btn-primary{type: "submit"}= I18n.t('user.sign_up')

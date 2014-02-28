@@ -23,17 +23,17 @@
                 %a{href: subscriptions_path} My Subscription
               %li.divider
               %li
-                %a{href: destroy_subscriber_session_path} Sign Out
+                %a{href: destroy_subscriber_session_path}= I18n.t('user.sign_out')
         - else
           %li
-            %a{href: new_subscriber_session_path} Sign In
+            %a{href: new_subscriber_session_path}= I18n.t('user.sign_in')
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
               Connect
               %b.caret
             %ul.dropdown-menu
               %li
-                %a{href: new_subscriber_registration_path} Register
+                %a{href: new_subscriber_registration_path}= I18n.t('user.sign_up')
 
               = render 'shared/social_connection_links'
 #page_header_mid
@@ -59,8 +59,19 @@
             %ul.list-inline.man
               %li
                 %a{href: cart_path}= "Cart box(#{tipster_ids_in_cart.size})"
-              %li
-                %a{:href=>"javascript:;"} Languages
+              %li.dropdown
+                %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+                  = I18n.t('lang')
+                  %b.caret
+                %ul.dropdown-menu
+                  %li
+                    %a{href: 'javascript:;',onclick: 'select_lang("en");'} English
+                  %li
+                    %a{href: 'javascript:;',onclick: 'select_lang("fr");'} French
+                  %li
+                    %a{href: 'javascript:;',onclick: 'select_lang("vi");'} Việt Nam
+                  %li
+                    %a{href: 'javascript:;',onclick: 'select_lang("zh");'} Chinese
               %li
                 %a{:href=>"javascript:;"}
                   %i(class="typcn typcn-cog")

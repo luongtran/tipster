@@ -31,4 +31,9 @@ class HomeController < ApplicationController
     end
   end
 
+  def select_language
+    session[:locale] = params[:locale]
+    render js: 'window.location = "/"'
+  end
+
 end

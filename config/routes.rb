@@ -43,7 +43,6 @@ TipsterHero::Application.routes.draw do
   end
 
   resources :tips, only: [:index, :show]
-
   resources :tipsters, only: [:index, :show]
   resource :subscriptions, controller: 'subscriptions', :only => [:show] do
     post :update
@@ -53,7 +52,7 @@ TipsterHero::Application.routes.draw do
   post '/registration' => 'home#register', as: :registration_post
 
   get '/pricing' => 'home#pricing', as: :pricing
-
+  post '/home/select_language' => 'home#select_language'
   get '/subscriptions/select/:id' => 'subscriptions#select_plan', as: :select_plan
   delete '/subscriptions/tipster/:id' => 'subscriptions#remove_inactive_tipster', as: :remove_inactive_tipster
   post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan', as: :select_free_plan

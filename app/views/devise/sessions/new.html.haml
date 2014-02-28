@@ -1,5 +1,5 @@
-= content_for(:title, "Sign In")
-%h2 Sign in
+= content_for(:title, I18n.t("user.sign_in"))
+%h2 #{I18n.t('user.sign_in')}
 = my_devise_error_messages!
 = simple_form_for resource, :as => resource_name, :url => session_path(resource_name) , :html => {class: 'form-horizontal'} do |f|
   = f.input :email, :required => false, :autofocus => true
@@ -7,5 +7,5 @@
   = f.input :remember_me, :as => :boolean if devise_mapping.rememberable?
   .form-group
     .col-sm-offset-3.col-sm-9
-      %button.btn.btn-primary{type: :submit} Sign In
+      %button.btn.btn-primary{type: :submit}= I18n.t('user.sign_in')
 = render "devise/shared/links"
