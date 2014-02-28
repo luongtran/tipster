@@ -83,16 +83,11 @@ class User < ActiveRecord::Base
     self.update_without_password(params)
   end
 
-  def admin?
-    self.is_a? Admin
-  end
-
-  def tipster?
-    self.is_a? Tipster
-  end
-
-  def subscriber?
-    self.is_a? Subscriber
+  # Define 3 instance methods: admin?, subscriber? and tipster?
+  %w(Admin Tipster Subscriber).each do |klass|
+    define_method "#{klass.downcase}?" do
+      self.is_a? klass.constantize
+    end
   end
 
   # ==============================================================================

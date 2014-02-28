@@ -17,11 +17,14 @@
 %table.table.table-bordered
   %thead
     %tr
+      %th #
       %th Full Name
       %th
         %a{href: tipsters_path(sort_params_for('yield'))} Yield
-      %th Profil
-      %th Number of tips
+      %th
+        %a{href: tipsters_path(sort_params_for('profil'))} Profil
+      %th
+        %a{href: tipsters_path(sort_params_for('tips_count'))} Number of tips
       %th Joined at
       %td Action
   %tbody
@@ -33,12 +36,13 @@
         %td
         %td
     - else
-      - @tipsters.each do |tipster|
+      - @tipsters.each_with_index do |tipster,index|
         %tr[tipster]
+          %td= index + 1
           %td= tipster.name
-          %td= "#{['12.15','20.14','10.3'].sample} %"
-          %td= "+ #{(1000..5000).to_a.sample}"
-          %td= "#{(50..200).to_a.sample}"
+          %td= tipster.yield
+          %td= tipster.profil
+          %td= tipster.tips_count
           %td= tipster.created_at.strftime("%m/%d/%Y")
           %td
             - if @tipster_in_subscription.present? && @tipster_in_subscription.include?(tipster)

@@ -2,7 +2,7 @@
   .container.clearfix
     #tipster-logo-main.pull-left
       %a{:href=>"/"}
-        =image_tag("tipster-logo-main.png", :alt=>"Tipster hero", :class=>"img-responsive")
+        = image_tag("tipster-logo-main.png", :alt=>"Tipster hero", :class=>"img-responsive")
     #menu-main.pull-right
       %ul.list-inline
         %li
@@ -34,11 +34,10 @@
             %ul.dropdown-menu
               %li
                 %a{href: new_subscriber_registration_path}= I18n.t('user.sign_up')
-
               = render 'shared/social_connection_links'
 #page_header_mid
 
-  // this is container header box for sub-page (signup - steps etc)
+  / this is container header box for sub-page (signup - steps etc)
   #sub-page-header
     .container.clearfix
       .pull-left
@@ -47,8 +46,7 @@
           .pull-right
             #sub-page-navi
               %ul.list-inline.man.text-slim
-                - @items = ['Home', 'Tipsters']
-                - @items.each do |node|
+                - %w(Home Tipsters).each do |node|
                   %li
                     %a{:href=>"javascript:;"}= node
             %h1#sub-page-h1.man.text-slim= yield(:title)

@@ -31,14 +31,21 @@ class Tipster < User
   class << self
     def load_data(params = {})
       relation = self.perform_filter_params(params)
-      sort_string = parse_sort_params(params)
-      paging_info = parse_paging_params(params)
+      sorting_info = parse_sort_params(params)
 
+      # paging_info = parse_paging_params(params)
       # Paginate with Kaminari
-      relation.includes([])
-      .order(sort_string)
-      .page(paging_info.page)
-      .per(paging_info.page_size)
+      #relation.includes([])
+      #.order(sort_string)
+      #.page(paging_info.page)
+      #.per(paging_info.page_size)
+
+      result = relation.includes([:profile])
+      if sorting_info.increase?
+        result.sort_by { |tipster| tipster.send("#{sorting_info.sort_by}") }
+      else
+        result.sort_by { |tipster| -tipster.send("#{sorting_info.sort_by}") }
+      end
     end
 
     def perform_filter_params(params, relation = self)
@@ -79,34 +86,35 @@ class Tipster < User
       end
     end
 
+    # ==============================================================================
+    # PROTECTED METHODS
+    # ==============================================================================
     protected
 
-    # Return format
-    # "field direction"
+    # Return SortingInfo object contains:
+    #  sort_by: the name of column|field
+    #  direction: asc | desc
     def parse_sort_params(params)
       sort_string = params[:sort]
-
       sort_direction = ''
       sort_field = 'id'
+
       if sort_string.present?
-        sort_direction = sort_string.split('_').second
-        sort_field = sort_string.split('_').first
-        sort_direction = (sort_direction == 'desc') ? 'asc' : 'desc'
+        sort_direction = sort_string.split('_').last
+        sort_field = sort_string.gsub(/(_desc|_asc)/, '')
       else
         sort_direction = DEFAULT_SORT_DIRECTION
       end
-      if self.column_names.include? sort_field
-        "#{sort_field} #{sort_direction} "
-      else
-        nil
-      end
+
+      SortingInfo.new(
+          sort_by: sort_field,
+          direction: sort_direction
+      )
     end
 
-    ###
     # Return PagingInfo object contains:
     #  page: the page number requested, default = 1
     #  per_page: the number of results per page
-    ###
     def parse_paging_params(params)
       p_id = params[:page].presence
       p_id ||= 1
@@ -117,6 +125,7 @@ class Tipster < User
           :page_size => p_size
       )
     end
+
   end
 
   # ==============================================================================
@@ -124,8 +133,6 @@ class Tipster < User
   # ==============================================================================
   def create_new_tip(params)
     klass = self.class.name
-    # FootballTipster
-    # FootballTip
     tip_klass = klass.gsub('Tipster', 'Tip')
     tip = tip_klass.constantize.new(params)
     tip
@@ -133,28 +140,44 @@ class Tipster < User
 
   # Substract tipster's bankroll after published a tip
   def subtract_bankroll(amount)
-
   end
 
   # Ratio between the profit during a given period & total stakes during this period.
   # This is the yardstick for tipster's performance per bet
-  def yield(range)
-
+  def yield(range = nil)
+    self.id * [1, -1].sample
   end
 
   # Final bank - Initial bank
-  def profil(range)
-
+  def profil(range = nil)
+    self.id * 1000
   end
 
   # The average odds is calculated as the sum of the odds of every tip from an tipster,
   # divided by the total number of tips from that tipster
-  def avg_odds
-
+  def avg_odds(range = nil)
   end
 
   # The percentage of winning tips vs total number of tips
-  def win_rate
+  def win_rate(range = nil)
+  end
 
+  # The ratio between the number of profil months per active months
+  # Return example:
+  # 3/6
+  def profitable_months
+  end
+
+  # Return lastest tips limit by the given quantity
+  def recent_tips(quantity = nil)
+  end
+
+  # Return the tips on the given date
+  def tips_on_the_date(date)
+  end
+
+  # Return the number of tips on the given range
+  def tips_count(range = nil)
+    self.id * (5..15).to_a.sample
   end
 end
