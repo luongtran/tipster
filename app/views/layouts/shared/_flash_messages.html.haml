@@ -1,0 +1,10 @@
+#flash
+  - if notice
+    %div{:class => "alert alert-info fade in", 'data-alert' => "alert"}
+      %a{:class => "close", 'data-dismiss' => 'alert', :href => "#"} &times;
+      = notice
+
+  - if alert
+    %div{:class => "alert alert-danger fade in", 'data-alert' => "alert"}
+      %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+      = alert
