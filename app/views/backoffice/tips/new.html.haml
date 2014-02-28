@@ -1,7 +1,7 @@
 .well
   %h2 Create new tip
   = simple_form_for @tip, url: backoffice_tips_path, html: {class: 'form-horizontal'} do |f|
-    = f.input :event
+    = f.input :event,as: :select,collection: event_for_select, include_blank: false
     = f.input :platform, as: :select, collection: platforms_for_select, include_blank: false
     = f.input :bet_type
     = f.input :odds
