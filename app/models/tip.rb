@@ -33,7 +33,6 @@ class Tip < ActiveRecord::Base
 
   before_create :initial_status
 
-
   def free?
     [false, true].sample
   end

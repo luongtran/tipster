@@ -1,5 +1,5 @@
 = content_for(:title, "TipsterHero")
-%h2 Hello
+%h2 I'm homepage
 - unless current_subscriber
   %h2 Sign up
   = simple_form_for :subscriber, :url => subscriber_registration_path, :html => {class: 'form-horizontal', novalidate: true} do |f|

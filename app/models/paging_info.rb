@@ -1,6 +1,6 @@
 # Include information for pagination.
 class PagingInfo
-  attr_accessor :page_id, :page_size, :sort_string, :sort_criteria
+  attr_accessor :page, :page_size
 
   def initialize(attrs = {})
     attrs ||= {}

@@ -1,4 +1,5 @@
 class Tipster < User
+  DEFAULT_PAGE_SIZE = 20
   DEFAULT_SORT_DIRECTION = 'desc'
 
   RANKING_RANGES = [
@@ -31,10 +32,13 @@ class Tipster < User
     def load_data(params = {})
       relation = self.perform_filter_params(params)
       sort_string = parse_sort_params(params)
+      paging_info = parse_paging_params(params)
+
+      # Paginate with Kaminari
       relation.includes([])
       .order(sort_string)
-      .page(1)
-      .per(10)
+      .page(paging_info.page)
+      .per(paging_info.page_size)
     end
 
     def perform_filter_params(params, relation = self)
@@ -98,12 +102,20 @@ class Tipster < User
       end
     end
 
+    ###
     # Return PagingInfo object contains:
-    #  page_id
-    #  per_page
-    #
+    #  page: the page number requested, default = 1
+    #  per_page: the number of results per page
+    ###
     def parse_paging_params(params)
-
+      p_id = params[:page].presence
+      p_id ||= 1
+      p_size = params[:page_size].presence
+      p_size ||= DEFAULT_PAGE_SIZE
+      PagingInfo.new(
+          :page => p_id,
+          :page_size => p_size
+      )
     end
   end
 
@@ -114,7 +126,6 @@ class Tipster < User
     klass = self.class.name
     # FootballTipster
     # FootballTip
-
     tip_klass = klass.gsub('Tipster', 'Tip')
     tip = tip_klass.constantize.new(params)
     tip
