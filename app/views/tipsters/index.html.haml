@@ -50,7 +50,7 @@
               - if tipster_ids_in_cart.include? tipster.id.to_s
                 = form_tag drop_tipster_cart_path do
                   = hidden_field_tag :id, tipster.id
-                  = hidden_field_tag :return_url, top_tipsters_url
+                  = hidden_field_tag :return_url, tipsters_url
                   %button.btn.btn-danger{type: :submit} Remove from cart
               - else
                 = form_tag add_tipster_cart_path do

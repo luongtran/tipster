@@ -2,12 +2,16 @@ class Backoffice::TipsController < ApplicationController
   before_filter :authenticate_tipster!
 
   def index
+    @tips = Tip.where(tipster_id: current_tipster.id)
   end
 
   def new
     @tip = Tip.new
     #Need get information about live match here
+
   end
+
+
 
   def create
     @tip = current_tipster.tips.new(tip_params)
