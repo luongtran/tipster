@@ -31,14 +31,25 @@ class Tipster < User
   class << self
     def load_data(params = {})
       relation = self.perform_filter_params(params)
-      sort_string = parse_sort_params(params)
-      paging_info = parse_paging_params(params)
+      sorting_info = parse_sort_params(params)
 
+      # paging_info = parse_paging_params(params)
       # Paginate with Kaminari
-      relation.includes([])
-      .order(sort_string)
-      .page(paging_info.page)
-      .per(paging_info.page_size)
+      #relation.includes([])
+      #.order(sort_string)
+      #.page(paging_info.page)
+      #.per(paging_info.page_size)
+
+      result = relation.includes([:profile])
+      if sorting_info.increase?
+        result.sort_by do |tipster|
+          tipster.send("#{sorting_info.sort_by}")
+        end
+      else
+        result.sort_by do |tipster|
+          -tipster.send("#{sorting_info.sort_by}")
+        end
+      end
     end
 
     def perform_filter_params(params, relation = self)
@@ -81,32 +92,34 @@ class Tipster < User
 
     protected
 
-    # Return format
-    # "field direction"
+###
+# Return SortingInfo object contains:
+#  sort_by: the name of column|field
+#  direction: asc | desc
+###
     def parse_sort_params(params)
       sort_string = params[:sort]
-
       sort_direction = ''
       sort_field = 'id'
+
       if sort_string.present?
         sort_direction = sort_string.split('_').second
         sort_field = sort_string.split('_').first
-        sort_direction = (sort_direction == 'desc') ? 'asc' : 'desc'
       else
         sort_direction = DEFAULT_SORT_DIRECTION
       end
-      if self.column_names.include? sort_field
-        "#{sort_field} #{sort_direction} "
-      else
-        nil
-      end
+
+      SortingInfo.new(
+          sort_by: sort_field,
+          direction: sort_direction
+      )
     end
 
-    ###
-    # Return PagingInfo object contains:
-    #  page: the page number requested, default = 1
-    #  per_page: the number of results per page
-    ###
+###
+# Return PagingInfo object contains:
+#  page: the page number requested, default = 1
+#  per_page: the number of results per page
+###
     def parse_paging_params(params)
       p_id = params[:page].presence
       p_id ||= 1
@@ -117,11 +130,12 @@ class Tipster < User
           :page_size => p_size
       )
     end
+
   end
 
-  # ==============================================================================
-  # INSTANCE METHODS
-  # ==============================================================================
+# ==============================================================================
+# INSTANCE METHODS
+# ==============================================================================
   def create_new_tip(params)
     klass = self.class.name
     # FootballTipster
@@ -131,30 +145,31 @@ class Tipster < User
     tip
   end
 
-  # Substract tipster's bankroll after published a tip
+# Substract tipster's bankroll after published a tip
   def subtract_bankroll(amount)
 
   end
 
-  # Ratio between the profit during a given period & total stakes during this period.
-  # This is the yardstick for tipster's performance per bet
-  def yield(range)
-
+# Ratio between the profit during a given period & total stakes during this period.
+# This is the yardstick for tipster's performance per bet
+  def yield(range = nil)
+   self.id * [1,-1].sample
   end
 
-  # Final bank - Initial bank
-  def profil(range)
-
+# Final bank - Initial bank
+  def profil(range = nil)
+    self.id * 1000
   end
 
-  # The average odds is calculated as the sum of the odds of every tip from an tipster,
-  # divided by the total number of tips from that tipster
+# The average odds is calculated as the sum of the odds of every tip from an tipster,
+# divided by the total number of tips from that tipster
   def avg_odds
 
   end
 
-  # The percentage of winning tips vs total number of tips
+# The percentage of winning tips vs total number of tips
   def win_rate
 
   end
+
 end
