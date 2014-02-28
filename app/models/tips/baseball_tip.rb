@@ -1,0 +1,3 @@
+class BaseballTip < Tip
+
+end

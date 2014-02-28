@@ -1,0 +1,3 @@
+class BasketballTip < Tip
+
+end

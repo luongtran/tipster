@@ -1,0 +1,3 @@
+class FootballTip < Tip
+
+end

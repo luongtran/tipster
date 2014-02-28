@@ -1,0 +1,3 @@
+class FootballUSTip < Tip
+
+end

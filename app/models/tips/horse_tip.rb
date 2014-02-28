@@ -1,0 +1,3 @@
+class HorseTip < Tip
+
+end
