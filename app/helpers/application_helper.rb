@@ -66,8 +66,8 @@ module ApplicationHelper
 
   def bet_types_for_select
     options = []
-    ['Over/Under', 'Asian Handicap', 'Match Odds'].each do |type|
-      options << [type, type]
+    Tip::BET_TYPES_MAP.each do |type_key, type_name|
+      options << [type_name, type_key]
     end
     options
   end
@@ -105,5 +105,25 @@ module ApplicationHelper
       sort_direction = SortingInfo::INCREASE
     end
     query_params.merge(sort: "#{field}_#{sort_direction}")
+  end
+
+  def profit_img_chart_url_for(data)
+    require 'gchart'
+    Gchart.line(
+        data: data, :encoding => 'text',
+        grid_lines: '16,32,4,0,0,0',
+        range_markers: 'B,99999970,0,0,0',
+        bg: {
+            color: '00000000',
+            type: 'gradient'
+        },
+        graph_bg: {
+            type: 'gradient',
+            color: '454545,0,121212,1',
+            angle: '270'
+        },
+        line_colors: '7AB5DA',
+        :size => '80x40',
+    )
   end
 end

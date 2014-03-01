@@ -6,8 +6,8 @@ class Backoffice::TipsController < ApplicationController
   end
 
   def new
-    @tip = current_tipster.tips.new
     prepare_events
+    @tip = current_tipster.tips.new
     #Need get information about live match here
   end
 

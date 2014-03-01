@@ -56,14 +56,24 @@ class Tip < ActiveRecord::Base
 
   BET_BOOKMARKERS = ["betclic", "bwin", "unibet", "fdj", "netbet", "france_paris"]
 
+  OVER_UNDER = 0
+  ASIAN_HANDICAP = 1
+  MATCH_ODDS = 2
+
+  BET_TYPES_MAP = {
+      OVER_UNDER => 'Over/Under',
+      ASIAN_HANDICAP => 'Asian Handicap',
+      MATCH_ODDS => 'Match Odds'
+  }
+
   belongs_to :author, polymorphic: true
 
   validates :author, :event, :platform, :bet_type, :odds, :selection, :advice, :stake, :amount, presence: true
-  validates_length_of :event, :advice, minimum: 15
+  validates_length_of :event, :advice, minimum: 10
   validates_inclusion_of :platform, in: BET_BOOKMARKERS
+  validates_inclusion_of :bet_type, in: BET_TYPES_MAP.keys
 
-  before_create :initial_status
-
+  before_validation :init_status, :init_amount, on: :create
 
   # ==============================================================================
   # INSTANCE METHODS
@@ -77,8 +87,16 @@ class Tip < ActiveRecord::Base
     # Bet on: {Selection} [Line] {Bet type}
   end
 
+  def bet_type_in_string
+    BET_TYPES_MAP[self.bet_type]
+  end
+
   private
-  def initial_status
+  def init_status
     self.status = 0
+  end
+
+  def init_amount
+    self.amount = 2000*self.stake/100 if self.stake
   end
 end

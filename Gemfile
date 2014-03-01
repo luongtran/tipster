@@ -98,3 +98,6 @@ gem 'devise_security_extension'
 
 gem 'actionpack'
 gem 'nokogiri'
+
+# For get google image chart
+gem 'googlecharts', git: 'git@github.com:luanht/googlecharts.git'

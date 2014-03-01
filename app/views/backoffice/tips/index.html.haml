@@ -1,4 +1,15 @@
-.well
-  %h2 My tips
-  - @tips.each do |tip|
-    %p= tip
+%h2 My tips
+%table.table.table-bordered
+  %thead
+    %tr
+      %th Event
+      %th Bet type
+      %th Bet on
+  %tbody
+    - @tips.each do |tip|
+      %tr
+        %td= tip.event
+        %td= "#{tip.bet_type_in_string}"
+        %td= "#{tip.bet_type}"
+
+

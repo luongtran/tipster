@@ -188,7 +188,7 @@ class Tipster < User
   end
 
   # Final bank - Initial bank
-  def profil(range = nil)
+  def profit(range = nil)
     self.id * 1000
   end
 
@@ -201,7 +201,7 @@ class Tipster < User
   def win_rate(range = nil)
   end
 
-  # The ratio between the number of profil months per active months
+  # The ratio between the number of profit months per active months
   # Return example:
   # 3/6
   def profitable_months
@@ -219,4 +219,9 @@ class Tipster < User
   def tips_count(range = nil)
     self.id * (5..15).to_a.sample
   end
+
+  def profit_per_months(range = nil)
+    (10..100).to_a.sample(15)
+  end
+
 end
