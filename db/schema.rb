@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20140301031657) do
   add_index "authorizations", ["uid"], name: "index_authorizations_on_uid", using: :btree
   add_index "authorizations", ["user_id"], name: "index_authorizations_on_user_id", using: :btree
 
+
   create_table "coupon_codes", force: true do |t|
     t.integer  "user_id"
     t.string   "code",                       null: false
@@ -158,6 +159,8 @@ ActiveRecord::Schema.define(version: 20140301031657) do
 
   create_table "tips", force: true do |t|
     t.integer  "tipster_id",                   null: false
+    t.integer  "author_id"
+    t.string   "author_type"
     t.string   "event",                        null: false
     t.string   "platform",                     null: false
     t.integer  "bet_type",                     null: false
@@ -169,11 +172,13 @@ ActiveRecord::Schema.define(version: 20140301031657) do
     t.integer  "amount",                       null: false
     t.boolean  "correct",      default: false
     t.integer  "status",                       null: false
+    t.boolean  "free",         default: false
     t.integer  "published_by"
     t.datetime "published_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
 
   add_index "tips", ["tipster_id"], name: "index_tips_on_tipster_id", using: :btree
 
@@ -210,5 +215,7 @@ ActiveRecord::Schema.define(version: 20140301031657) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["sport_id"], name: "index_users_on_sport_id", using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
+
+  add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type"
 
 end

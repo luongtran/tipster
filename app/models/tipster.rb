@@ -1,4 +1,39 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id                     :integer          not null, primary key
+#  first_name             :string(255)
+#  last_name              :string(255)
+#  email                  :string(255)      default(""), not null
+#  encrypted_password     :string(255)      default(""), not null
+#  reset_password_token   :string(255)
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  sign_in_count          :integer          default(0), not null
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :string(255)
+#  last_sign_in_ip        :string(255)
+#  confirmation_token     :string(255)
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  unconfirmed_email      :string(255)
+#  failed_attempts        :integer          default(0), not null
+#  unlock_token           :string(255)
+#  locked_at              :datetime
+#  created_at             :datetime
+#  updated_at             :datetime
+#  type                   :string(255)
+#  active                 :boolean          default(TRUE)
+#  sport_id               :integer
+#  string                 :unique_session_i
+#  unique_session_id      :string(20)
+#
+
 class Tipster < User
+  include TipCreatable
+
   DEFAULT_PAGE_SIZE = 20
   DEFAULT_SORT_DIRECTION = 'desc'
 
@@ -13,7 +48,6 @@ class Tipster < User
   # ASSOCIATIONS
   # ==============================================================================
   belongs_to :sport
-  has_many :tips
 
   # ==============================================================================
   # VALIDATIONS
@@ -131,11 +165,16 @@ class Tipster < User
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+
+  def to_param
+    "#{self.id}-#{self.name}".parameterize
+  end
+
   def create_new_tip(params)
-    klass = self.class.name
-    tip_klass = klass.gsub('Tipster', 'Tip')
-    tip = tip_klass.constantize.new(params)
-    tip
+    #klass = self.class.name
+    #tip_klass = klass.gsub('Tipster', 'Tip')
+    #tip = tip_klass.constantize.new(params)
+    #tip
   end
 
   # Substract tipster's bankroll after published a tip
@@ -149,7 +188,7 @@ class Tipster < User
   end
 
   # Final bank - Initial bank
-  def profil(range = nil)
+  def profit(range = nil)
     self.id * 1000
   end
 
@@ -162,7 +201,7 @@ class Tipster < User
   def win_rate(range = nil)
   end
 
-  # The ratio between the number of profil months per active months
+  # The ratio between the number of profit months per active months
   # Return example:
   # 3/6
   def profitable_months
@@ -180,4 +219,9 @@ class Tipster < User
   def tips_count(range = nil)
     self.id * (5..15).to_a.sample
   end
+
+  def profit_per_months(range = nil)
+    (10..100).to_a.sample(15)
+  end
+
 end

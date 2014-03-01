@@ -9,13 +9,19 @@ ul.sports-filter li {
 #tipster_statuses_filer {
     vertical-align: inherit;
 }
+
 #backoffice-navbar {
     background-color: #F1FCBA;
 }
+
 body {
     background: #fff;
 }
-.dropdown-menu li a{
+
+.dropdown-menu li a {
     line-height: 40px !important;
 }
 .user_avatar{max-width: 140px;}
+.tipster-profit-chart {
+    float: right;
+}

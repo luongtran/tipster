@@ -10,6 +10,7 @@
 #  expired_date :datetime
 #  created_at   :datetime
 #  updated_at   :datetime
+#  using_coupon :boolean          default(FALSE)
 #
 
 class Subscription < ActiveRecord::Base

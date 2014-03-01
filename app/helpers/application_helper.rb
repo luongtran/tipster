@@ -56,29 +56,20 @@ module ApplicationHelper
     options
   end
 
-  def event_for_select
+  def events_for_select(events)
     options = []
-    require 'open-uri'
-    # FIXME: The parsing codes can put here, but the query result should be pass from the controller
-    doc = Nokogiri::XML(open("http://xml.pinnaclesports.com/pinnacleFeed.aspx?sportType=#{params[:sport] || 'soccer'}"))
-    events = doc.xpath("//event")
-
-    events.each_with_index do |evt, i|
-      eve = {}
-      eve["datetime"] = evt.xpath("event_datetimeGMT").text
-      eve["league"] = evt.xpath("league").text
-      eve["islive"] = evt.xpath("IsLive").text
-      evt.xpath("participants//participant").each_with_index do |part, index|
-        eve["participiant_name_#{index}"] = part.xpath("participant_name").text
-        eve["visit_#{index}"] = part.xpath("visiting_home_draw").text
-      end
-      options << ["#{eve["participiant_name_0"]} - #{eve["participiant_name_1"]}", "#{eve["participiant_name_0"]} - #{eve["participiant_name_1"]}"]
+    events.each do |event|
+      options << [event.name, event.name]
     end
     options
   end
 
   def bet_types_for_select
-    #options = []
+    options = []
+    Tip::BET_TYPES_MAP.each do |type_key, type_name|
+      options << [type_name, type_key]
+    end
+    options
   end
 
   def query_params
@@ -123,5 +114,25 @@ module ApplicationHelper
       sort_direction = SortingInfo::INCREASE
     end
     query_params.merge(sort: "#{field}_#{sort_direction}")
+  end
+
+  def profit_img_chart_url_for(data)
+    require 'gchart'
+    Gchart.line(
+        data: data, :encoding => 'text',
+        grid_lines: '16,32,4,0,0,0',
+        range_markers: 'B,99999970,0,0,0',
+        bg: {
+            color: '00000000',
+            type: 'gradient'
+        },
+        graph_bg: {
+            type: 'gradient',
+            color: '454545,0,121212,1',
+            angle: '270'
+        },
+        line_colors: '7AB5DA',
+        :size => '80x40',
+    )
   end
 end

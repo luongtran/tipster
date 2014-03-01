@@ -7,6 +7,12 @@ GIT
       activerecord (>= 4.0.0, < 5)
       railties (>= 4.0.0, < 5)
 
+GIT
+  remote: git@github.com:luanht/googlecharts.git
+  revision: fe0944b778e584b0e0bdd7982eaad9a530df9382
+  specs:
+    googlecharts (1.6.8)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -337,6 +343,7 @@ DEPENDENCIES
   devise_security_extension
   faker
   fql
+  googlecharts!
   haml
   haml-rails
   hirb

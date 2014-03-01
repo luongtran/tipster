@@ -27,6 +27,8 @@
 #  type                   :string(255)
 #  active                 :boolean          default(TRUE)
 #  sport_id               :integer
+#  string                 :unique_session_i
+#  unique_session_id      :string(20)
 #
 
 # Tipster

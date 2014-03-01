@@ -11,6 +11,6 @@ class TipstersController < ApplicationController
   end
 
   def show
-    @tipster = Tipster.find params[:id]
+    @tipster = Tipster.find(params[:id])
   end
 end

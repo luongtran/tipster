@@ -3,7 +3,8 @@
 # Table name: tips
 #
 #  id           :integer          not null, primary key
-#  tipster_id   :integer          not null
+#  author_id    :integer
+#  author_type  :string(255)
 #  event        :string(255)      not null
 #  platform     :string(255)      not null
 #  bet_type     :integer          not null
@@ -15,6 +16,7 @@
 #  amount       :integer          not null
 #  correct      :boolean          default(FALSE)
 #  status       :integer          not null
+#  free         :boolean          default(FALSE)
 #  published_by :integer
 #  published_at :datetime
 #  created_at   :datetime
@@ -54,14 +56,24 @@ class Tip < ActiveRecord::Base
 
   BET_BOOKMARKERS = ["betclic", "bwin", "unibet", "fdj", "netbet", "france_paris"]
 
-  belongs_to :tipster
+  OVER_UNDER = 0
+  ASIAN_HANDICAP = 1
+  MATCH_ODDS = 2
 
-  validates :tipster, :event, :platform, :bet_type, :odds, :selection, :advice, :stake, :amount, presence: true
-  validates_length_of :event, :advice, minimum: 15
+  BET_TYPES_MAP = {
+      OVER_UNDER => 'Over/Under',
+      ASIAN_HANDICAP => 'Asian Handicap',
+      MATCH_ODDS => 'Match Odds'
+  }
+
+  belongs_to :author, polymorphic: true
+
+  validates :author, :event, :platform, :bet_type, :odds, :selection, :advice, :stake, :amount, presence: true
+  validates_length_of :event, :advice, minimum: 10
   validates_inclusion_of :platform, in: BET_BOOKMARKERS
+  validates_inclusion_of :bet_type, in: BET_TYPES_MAP.keys
 
-  before_create :initial_status
-
+  before_validation :init_status, :init_amount, on: :create
 
   # ==============================================================================
   # INSTANCE METHODS
@@ -75,8 +87,16 @@ class Tip < ActiveRecord::Base
     # Bet on: {Selection} [Line] {Bet type}
   end
 
+  def bet_type_in_string
+    BET_TYPES_MAP[self.bet_type]
+  end
+
   private
-  def initial_status
+  def init_status
     self.status = 0
+  end
+
+  def init_amount
+    self.amount = 2000*self.stake/100 if self.stake
   end
 end
