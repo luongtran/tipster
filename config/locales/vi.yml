@@ -192,6 +192,24 @@ vi:
       create: Tạo %{model}
       submit: Lưu %{model}
       update: Cập nhật %{model}
+  activerecord:
+    attributes:
+      subscriber:
+        email: "Thư điện tử:"
+        password: "Mật khẩu:"
+        current_password: "Mật khẩu hiện tại:"
+        password_confirmation: "Xác nhận mật khẩu:"
+        remember_me: "Ghi nhớ:"
+        first_name: "Họ và tên đệm:"
+        last_name: "Tên:"
+      profile:
+        birthday: "Ngày sinh:"
+        address: "Địa chỉ:"
+        city: "Thành phố:"
+        country: "Quốc gia:"
+        zip_code: "Mã bưu chính:"
+        mobile_phone: "Di động:"
+        telephone: "Điện thoại cố định:"
   number:
     currency:
       format:

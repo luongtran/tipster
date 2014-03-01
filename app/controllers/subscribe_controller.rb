@@ -10,7 +10,7 @@ class SubscribeController < ApplicationController
         @profile = current_subscriber.create_profile(profile_params)
       when 'facebook', 'google_oauth2'
         session[:return_url] = subscribe_payment_method_url
-        redirect_to user_omniauth_authorize_path(action)
+        redirect_to subscriber_omniauth_authorize_path(action)
     end
   end
 
