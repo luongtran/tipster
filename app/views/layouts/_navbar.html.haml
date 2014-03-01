@@ -63,13 +63,13 @@
                   %b.caret
                 %ul.dropdown-menu
                   %li
-                    %a{href: 'javascript:;',onclick: 'select_lang("en");'} English
+                    %a.lk-change-lang{href: 'javascript:;',data: {lang: 'en', url: select_language_path}} English
                   %li
-                    %a{href: 'javascript:;',onclick: 'select_lang("fr");'} French
+                    %a.lk-change-lang{href: 'javascript:;', data: {lang: 'fr', url: select_language_path}} French
                   %li
-                    %a{href: 'javascript:;',onclick: 'select_lang("vi");'} Việt Nam
+                    %a.lk-change-lang{href: 'javascript:;', data: {lang: 'vi', url: select_language_path}} Việt Nam
                   %li
-                    %a{href: 'javascript:;',onclick: 'select_lang("zh");'} Chinese
+                    %a.lk-change-lang{href: 'javascript:;', data: {lang: 'cn', url: select_language_path}} Chinese
               %li
                 %a{:href=>"javascript:;"}
                   %i(class="typcn typcn-cog")

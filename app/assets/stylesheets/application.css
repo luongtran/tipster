@@ -9,7 +9,6 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_tree ../../../vendor/assets/stylesheets/framework/bootstrap
- *= require ../../../vendor/assets/stylesheets/framework/prettify
  *= require partials/_common
  *= require dev
  */

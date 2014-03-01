@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_action :fill_profile ,:set_locale
+  before_action :fill_profile, :set_locale
 
 
   helper_method :tipster_ids_in_cart
@@ -42,6 +42,8 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = session[:locale] || I18n.default_locale
+  rescue I18n::InvalidLocale => e
+    I18n.locale = I18n.default_locale
   end
 
   # Clear and create new cart
