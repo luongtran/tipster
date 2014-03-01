@@ -44,7 +44,7 @@ class User < ActiveRecord::Base
   has_many :invoices
   has_many :coupon_codes
   accepts_nested_attributes_for :profile
-
+  mount_uploader :avatar, AvatarUploader
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================

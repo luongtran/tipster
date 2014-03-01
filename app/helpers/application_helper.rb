@@ -103,6 +103,15 @@ module ApplicationHelper
     end
   end
 
+  # Detemine the change_avatar path for two resources: subscriber or tipster
+  def change_avatar_path_for(user)
+    if user.is_a? Tipster
+      backoffice_change_avatar_path
+    elsif user.is_a? Subscriber
+      change_avatar_path
+    end
+  end
+
   def sort_params_for(field)
     current_sort_param = params[:sort]
     sort_direction = ''

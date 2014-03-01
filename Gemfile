@@ -98,3 +98,4 @@ gem 'devise_security_extension'
 
 gem 'actionpack'
 gem 'nokogiri'
+gem 'carrierwave'

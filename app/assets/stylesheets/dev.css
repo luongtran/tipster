@@ -18,3 +18,4 @@ body {
 .dropdown-menu li a{
     line-height: 40px !important;
 }
+.user_avatar{max-width: 140px;}

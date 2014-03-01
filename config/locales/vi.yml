@@ -44,8 +44,10 @@ vi:
     update_profile: "Cập nhật thông tin cá nhân"
     last_sign_in: "Lần truy cập cuối cùng "
     update_account: "Cập nhật tài khoản"
+    update_avatar: "Cập nhật hình đại diện"
     account_update_successully: "Cập nhật thông tin thành công."
     account_update_failed: "Cập nhật thông tin thất bại."
+    avatar_update_successully: "Cập nhật hình đại diện thành công."
     sign_in: "Đăng nhập"
     sign_up: "Đăng ký"
     sign_out: "Đăng xuất"
@@ -195,7 +197,7 @@ vi:
   activerecord:
     attributes:
       subscriber:
-        email: "Thư điện tử:"
+        email: "Email:"
         password: "Mật khẩu:"
         current_password: "Mật khẩu hiện tại:"
         password_confirmation: "Xác nhận mật khẩu:"

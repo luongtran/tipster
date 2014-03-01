@@ -13,6 +13,7 @@ TipsterHero::Application.routes.draw do
     get '/my_account', to: 'accounts#show'
     post '/my_account', to: 'accounts#update'
     post '/change_password', to: 'accounts#change_password'
+    post '/change_avatar', to: 'accounts#change_avatar'
   end
 
   resource :payment, controller: 'payment', only: [:create] do
@@ -64,7 +65,7 @@ TipsterHero::Application.routes.draw do
     get '/my_account', to: 'accounts#show'
     post '/my_account', to: 'accounts#update'
     post '/change_password', to: 'accounts#change_password'
-
+    post '/change_avatar',to: 'accounts#change_avatar'
     resources :tips
   end
 

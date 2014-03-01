@@ -27,6 +27,17 @@ class AccountsController < ApplicationController
     end
   end
 
+  def change_avatar
+    @user = current_user
+    if @user.update_attribute(:avatar, params.require(:user).permit(:avatar,:avatar_cache)[:avatar])
+      flash[:notice] = I18n.t('user.avatar_update_successully')
+      redirect_to after_update_account_path
+    else
+      flash[:alert] = I18n.t('user.account_update_failed')
+      render :show
+    end
+  end
+
   protected
 
   def current_user
@@ -43,6 +54,8 @@ class AccountsController < ApplicationController
     params.require(:user).permit(
         :first_name,
         :last_name,
+        :avatar,
+        :avatar_cache,
         profile_attributes: [
             :civility, :birthday, :address, :city, :country, :zip_code, :mobile_phone, :telephone,
             :favorite_betting_website, :know_website_from, :secret_question, :answer_secret_question
