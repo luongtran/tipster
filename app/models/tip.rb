@@ -3,7 +3,8 @@
 # Table name: tips
 #
 #  id           :integer          not null, primary key
-#  tipster_id   :integer          not null
+#  author_id    :integer
+#  author_type  :string(255)
 #  event        :string(255)      not null
 #  platform     :string(255)      not null
 #  bet_type     :integer          not null
@@ -15,6 +16,7 @@
 #  amount       :integer          not null
 #  correct      :boolean          default(FALSE)
 #  status       :integer          not null
+#  free         :boolean          default(FALSE)
 #  published_by :integer
 #  published_at :datetime
 #  created_at   :datetime
@@ -56,7 +58,7 @@ class Tip < ActiveRecord::Base
 
   belongs_to :author, polymorphic: true
 
-  validates :tipster, :event, :platform, :bet_type, :odds, :selection, :advice, :stake, :amount, presence: true
+  validates :author, :event, :platform, :bet_type, :odds, :selection, :advice, :stake, :amount, presence: true
   validates_length_of :event, :advice, minimum: 15
   validates_inclusion_of :platform, in: BET_BOOKMARKERS
 
