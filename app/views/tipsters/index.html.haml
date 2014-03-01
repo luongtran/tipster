@@ -39,7 +39,9 @@
       - @tipsters.each_with_index do |tipster,index|
         %tr[tipster]
           %td= index + 1
-          %td= tipster.name
+          %td
+            %a{href: tipster_path(tipster)}
+              = tipster.name
           %td= tipster.yield
           %td= tipster.profil
           %td= tipster.tips_count

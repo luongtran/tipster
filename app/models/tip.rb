@@ -54,7 +54,7 @@ class Tip < ActiveRecord::Base
 
   BET_BOOKMARKERS = ["betclic", "bwin", "unibet", "fdj", "netbet", "france_paris"]
 
-  belongs_to :tipster
+  belongs_to :author, polymorphic: true
 
   validates :tipster, :event, :platform, :bet_type, :odds, :selection, :advice, :stake, :amount, presence: true
   validates_length_of :event, :advice, minimum: 15

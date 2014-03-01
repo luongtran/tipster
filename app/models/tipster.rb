@@ -1,4 +1,6 @@
 class Tipster < User
+  include TipCreatable
+
   DEFAULT_PAGE_SIZE = 20
   DEFAULT_SORT_DIRECTION = 'desc'
 
@@ -13,7 +15,6 @@ class Tipster < User
   # ASSOCIATIONS
   # ==============================================================================
   belongs_to :sport
-  has_many :tips
 
   # ==============================================================================
   # VALIDATIONS
@@ -131,11 +132,16 @@ class Tipster < User
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+
+  def to_param
+    "#{self.id}-#{self.name}".parameterize
+  end
+
   def create_new_tip(params)
-    klass = self.class.name
-    tip_klass = klass.gsub('Tipster', 'Tip')
-    tip = tip_klass.constantize.new(params)
-    tip
+    #klass = self.class.name
+    #tip_klass = klass.gsub('Tipster', 'Tip')
+    #tip = tip_klass.constantize.new(params)
+    #tip
   end
 
   # Substract tipster's bankroll after published a tip

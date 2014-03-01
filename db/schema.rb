@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140226090823) do
+ActiveRecord::Schema.define(version: 20140301022011) do
 
   create_table "authorizations", force: true do |t|
     t.integer  "user_id"
@@ -155,27 +155,6 @@ ActiveRecord::Schema.define(version: 20140226090823) do
 
   add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id"
   add_index "subscriptions", ["user_id"], name: "index_subscriptions_on_user_id"
-
-  create_table "tips", force: true do |t|
-    t.integer  "tipster_id",                   null: false
-    t.string   "event",                        null: false
-    t.string   "platform",                     null: false
-    t.integer  "bet_type",                     null: false
-    t.float    "odds",                         null: false
-    t.float    "line"
-    t.integer  "selection",                    null: false
-    t.text     "advice",                       null: false
-    t.float    "stake",                        null: false
-    t.integer  "amount",                       null: false
-    t.boolean  "correct",      default: false
-    t.integer  "status",                       null: false
-    t.integer  "published_by"
-    t.datetime "published_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "tips", ["tipster_id"], name: "index_tips_on_tipster_id"
 
 # Could not dump table "users" because of following NoMethodError
 #   undefined method `[]' for nil:NilClass

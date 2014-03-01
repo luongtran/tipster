@@ -1,11 +1,12 @@
 TipsterHero::Application.routes.draw do
   root 'home#index'
 
-  devise_for :subscribers, :controllers => {
-      :registrations => "subscribers/registrations",
-      :omniauth_callbacks => "subscribers/omniauth_callbacks",
-      :sessions => "subscribers/sessions"
+  devise_for :subscribers, controllers: {
+      registrations: 'subscribers/registrations',
+      omniauth_callbacks: 'subscribers/omniauth_callbacks',
+      sessions: 'subscribers/sessions'
   }
+
   match '/my_profile' => 'profiles#my_profile', as: :my_profile, via: [:get, :post]
 
   # Routes for Subscriber module without prefix
@@ -44,15 +45,12 @@ TipsterHero::Application.routes.draw do
 
   resources :tips, only: [:index, :show]
   resources :tipsters, only: [:index, :show]
-  resource :subscriptions, controller: 'subscriptions', :only => [:show] do
+  resource :subscriptions, controller: 'subscriptions', only: [:show] do
     post :update
   end
 
-  get '/registration' => 'home#register', as: :registration
-  post '/registration' => 'home#register', as: :registration_post
-
   get '/pricing' => 'home#pricing', as: :pricing
-  post '/home/select_language' => 'home#select_language' , as: :select_language
+  post '/home/select_language' => 'home#select_language', as: :select_language
   get '/subscriptions/select/:id' => 'subscriptions#select_plan', as: :select_plan
   delete '/subscriptions/tipster/:id' => 'subscriptions#remove_inactive_tipster', as: :remove_inactive_tipster
   post '/subscriptions/select_free_plan' => 'subscriptions#select_free_plan', as: :select_free_plan
@@ -68,11 +66,11 @@ TipsterHero::Application.routes.draw do
     resources :tips
   end
 
-  devise_for :tipsters, path: '/backoffice', :skip => :registrations, :controllers => {
-      :sessions => "backoffice/sessions"
+  devise_for :tipsters, path: '/backoffice', skip: :registrations, controllers: {
+      sessions: "backoffice/sessions"
   }
-  devise_for :admins, path: '/admin', :skip => :registrations, :controllers => {
-      :sessions => "admin/sessions"
+  devise_for :admins, path: '/admin', skip: :registrations, controllers: {
+      sessions: "admin/sessions"
   }
   # End Tipster routes ===========================================================
 
@@ -81,5 +79,5 @@ TipsterHero::Application.routes.draw do
   get '/homepage', to: 'static#homepage'
   # END Rueta set route here
 
-  get '/test', to: 'home#xml_view',as: :list_match
+  get '/test', to: 'home#xml_view', as: :list_match
 end

@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
 
   before_action :fill_profile, :set_locale
 
-
   helper_method :tipster_ids_in_cart
 
   protected
