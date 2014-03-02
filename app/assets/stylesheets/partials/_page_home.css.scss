@@ -33,6 +33,13 @@
       padding-left: 10px;
       padding-right: 10px;
     }
+    .abon-head {
+      position: relative;
+      .absolute {
+        top: -25px;
+        right: -7px;
+      }
+    }
     .abon-mid-1 {
       background: url(/assets/abon-mid-1-bg.png) repeat-x left top;
       height: 130px;
