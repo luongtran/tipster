@@ -1,0 +1,84 @@
+@import "../lib/general";
+
+#values-intro {
+  background: url(/assets/granit.jpg) repeat;
+  padding-top: 70px;
+  padding-bottom: 70px;
+  .value-intro-1 {
+    span {
+      font-size: 18px;
+    }
+  }
+  .value-intro-2 {
+    background: url('/assets/dash-arrow.png') no-repeat left center;
+    padding-left: 30px;
+    .value-intro-text {
+      text-transform: uppercase;
+      color: black;
+      text-align: center;
+      font-weight: bold;
+      line-height: 1.4;
+      padding-top: 15px;
+    }
+  }
+}
+
+#Nos-abonnaments {
+  padding: 20px 0 40px;
+  background-color: shade($gray-dark, 50%);
+  .abonnaments {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    > div {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .abon-mid-1 {
+      background: url(/assets/abon-mid-1-bg.png) repeat-x left top;
+      height: 130px;
+      h1 {
+        color: shade($gray-dark, 50%);
+        text-align: center;
+        line-height: 130px;
+        font-size: 70px;
+        text-transform: uppercase;
+        span {
+          font-size: 12px;
+          position: relative;
+          line-height: 1;
+          top: -40px;
+        }
+      }
+    }
+    .abon-mid-2 {
+      padding: 20px 10px 0 30px;
+      min-height: 240px;
+      ul {
+        padding-left: 0;
+        margin-left: 0;
+        magin-bottom: 0;
+        li {
+          margin-bottom: 5px;
+          padding-left: 35px;
+          background: url(/assets/donut.png) no-repeat left 0px;
+          font-size: 17px;
+          line-height: 1.8;
+        }
+      }
+    }
+    &.basic {
+      border-radius: 20px;
+      background-color: #bdbdbd;
+    }
+    &.super {
+      border-radius: 20px;
+      background-color: white;
+    }
+  }
+}
+
+.box-title {
+  font-weight: bold;
+  color: $green-site;
+  margin-bottom: 40px;
+}

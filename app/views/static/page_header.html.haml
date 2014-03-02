@@ -45,14 +45,46 @@
       #feature-profiles
         .container
           %div(id="feature-carousel" class="carousel slide" data-ride="carousel")
-            %ol(class="carousel-indicators")
-              %li(data-target="#feature-carousel" data-slide-to="0" class="active")
-              %li(data-target="#feature-carousel" data-slide-to="1")
-              %li(data-target="#feature-carousel" data-slide-to="2")
             .carousel-inner
-              .item.active test1
-              .item test2
-              .item test3
+              .item.active
+                - @hotTipsters = ['1', '2', '3', '4', '5']
+                - @hotTipsters.each do |node|
+                  .hotTipster-unit
+                    .hotTipster-head
+                      %span.proofed No. Proofed Tips: 190
+                      %span.yield Yield: 19.95%
+                    .hotTipster-body
+                      =image_tag('demo.jpg')
+                    .hotTipster-foot
+                      .chart-mini
+                        =image_tag('chart-mini.jpg')
+                      %a(href="javascript:;" class="see-profile-link" ) See Profile
+              .item
+                - @hotTipsters = ['1', '2', '3', '4', '5']
+                - @hotTipsters.each do |node|
+                  .hotTipster-unit
+                    .hotTipster-head
+                      %span.proofed No. Proofed Tips: 190
+                      %span.yield Yield: 19.95%
+                    .hotTipster-body
+                      =image_tag('demo.jpg')
+                    .hotTipster-foot
+                      .chart-mini
+                        =image_tag('chart-mini.jpg')
+                      %a(href="javascript:;" class="see-profile-link" ) See Profile
+              .item
+                - @hotTipsters = ['1', '2', '3', '4', '5']
+                - @hotTipsters.each do |node|
+                  .hotTipster-unit
+                    .hotTipster-head
+                      %span.proofed No. Proofed Tips: 190
+                      %span.yield Yield: 19.95%
+                    .hotTipster-body
+                      =image_tag('demo.jpg')
+                    .hotTipster-foot
+                      .chart-mini
+                        =image_tag('chart-mini.jpg')
+                      %a(href="javascript:;" class="see-profile-link" ) See Profile
             %a(class="left carousel-control" href="#feature-carousel" data-slide="prev")
               %span(class="glyphicon glyphicon-chevron-left")
             %a(class="right carousel-control" href="#feature-carousel" data-slide="next")
