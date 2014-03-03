@@ -103,6 +103,14 @@ module ApplicationHelper
     end
   end
 
+  def crop_avatar_path_for(user)
+    if user.is_a? Tipster
+      backoffice_crop_avatar_path
+    elsif user.is_a? Subscriber
+      crop_avatar_path
+    end
+  end
+
   def sort_params_for(field)
     current_sort_param = params[:sort]
     sort_direction = ''

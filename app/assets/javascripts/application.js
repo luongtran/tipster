@@ -12,7 +12,11 @@
 
  = require jquery
  = require jquery_ujs
+ = require jquery.Jcrop
+ = require user.js
+ = require flash_message.js
  = require dev
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
+ = require jquery.migrate
  */
 

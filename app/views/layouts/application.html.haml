@@ -9,9 +9,7 @@
   = favicon_link_tag 'demo.png'
   = csrf_meta_tags
   %body.subscriber-zone
+    = render 'layouts/shared/flash_messages'
     = render 'layouts/navbar'
-    .container
-      .row.clearfix
-        = render 'layouts/shared/flash_messages'
-        = yield
+    = yield
     = render 'layouts/page_footer'

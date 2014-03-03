@@ -15,6 +15,7 @@ TipsterHero::Application.routes.draw do
     post '/my_account', to: 'accounts#update'
     post '/change_password', to: 'accounts#change_password'
     post '/change_avatar', to: 'accounts#change_avatar'
+    post '/crop_avatar',to: 'accounts#crop_avatar'
   end
 
   resource :payment, controller: 'payment', only: [:create] do
@@ -64,6 +65,7 @@ TipsterHero::Application.routes.draw do
     post '/my_account', to: 'accounts#update'
     post '/change_password', to: 'accounts#change_password'
     post '/change_avatar',to: 'accounts#change_avatar'
+    post '/crop_avatar',to: 'accounts#crop_avatar'
     resources :tips
   end
 

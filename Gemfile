@@ -99,6 +99,7 @@ gem 'devise_security_extension'
 gem 'actionpack'
 gem 'nokogiri'
 gem 'carrierwave'
+gem 'rmagick'
 gem 'fog'
 # For get google image chart
 gem 'googlecharts', git: 'git@github.com:luanht/googlecharts.git'
