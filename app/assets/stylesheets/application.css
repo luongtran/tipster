@@ -10,6 +10,7 @@
  *
  *= require_tree ../../../vendor/assets/stylesheets/framework/bootstrap
  *= require partials/_common
+ *= require jquery.Jcrop
  *= require partials/_page_home
  *= require dev
  */

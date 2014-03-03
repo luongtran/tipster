@@ -38,6 +38,17 @@ class AccountsController < ApplicationController
     end
   end
 
+  def crop_avatar
+    @user = current_user
+    if @user.update_attributes(params.require(:user).permit(:crop_x,:crop_y,:crop_h,:crop_w))
+      flash[:notice] = I18n.t('user.update_avatar')
+      redirect_to after_update_account_path
+    else
+      flash[:alert] = @user.errors.messages #I18n.t('user.account_update_failed')
+      redirect_to after_update_account_path
+    end
+  end
+
   protected
 
   def current_user
