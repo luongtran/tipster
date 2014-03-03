@@ -19,7 +19,7 @@ class SubscribeController < ApplicationController
     if current_subscriber.already_has_subscription? #Adding tipster to current subscription
       current_subscription = current_subscriber.subscription
       unless current_subscription.can_change_tipster?
-        redirect_to subscriptions_path,notice: "You can change your follow tipster on day #{current_subscription.active_date.strftime('%d')}  of the month" and return
+        redirect_to subscriptions_path,notice: "You can change your follow tipster on day #{current_subscription.active_at.strftime('%d')}  of the month" and return
       end
       select_plan = current_subscription.plan
       select_tipsters = Tipster.where(id: tipster_ids_in_cart)

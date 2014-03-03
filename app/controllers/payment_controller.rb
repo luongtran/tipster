@@ -51,11 +51,11 @@ class PaymentController < ApplicationController
     payment = subscription.payments.build_from_paypal notify.params
     subscription.update_attributes(using_coupon: false)
     if notify.params['payment_status'] == "Completed"
-        subscription.subscription_tipsters.each do |t|
-          t.set_active
-        end
+      subscription.subscription_tipsters.each do |t|
+        t.set_active
+      end
       unless subscription.active?
-          subscription.update_attributes({active: true,active_date: Time.now,expired_date: Time.now + subscription.plan.period.month})
+        subscription.update_attributes({active: true, active_at: Time.now, expired_at: Time.now + subscription.plan.period.month})
       end
     end
     payment.save

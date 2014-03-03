@@ -6,8 +6,8 @@
 #  user_id      :integer
 #  plan_id      :integer
 #  active       :boolean          default(FALSE)
-#  active_date  :datetime
-#  expired_date :datetime
+#  active_at    :datetime
+#  expired_at   :datetime
 #  created_at   :datetime
 #  updated_at   :datetime
 #  using_coupon :boolean          default(FALSE)
@@ -64,7 +64,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def can_change_tipster?
-    self.active && self.active_date > 1.days.ago || (self.active_date.strftime('%d').to_i == Time.now.strftime('%d')  && self.expired_date > Time.now)
+    self.active && self.active_at > 1.days.ago || (self.active_date.strftime('%d').to_i == Time.now.strftime('%d')  && self.expired_at > Time.now)
   end
 
   def one_shoot_price
