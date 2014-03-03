@@ -1,14 +1,14 @@
 development:
   facebook:
-#      app_id: "548927411872156"
-#      app_secret: "0ec2a1378c630d0e62574f7321aa914b"
-      app_id: "594797970595793"
-      app_secret: "abf2bf2b5bc1dcc27543a04d17369c70"
+      app_id: "548927411872156"
+      app_secret: "0ec2a1378c630d0e62574f7321aa914b"
+#      app_id: "594797970595793"
+#      app_secret: "abf2bf2b5bc1dcc27543a04d17369c70"
   google:
-#      app_id: "721520450986.apps.googleusercontent.com"
-#      app_secret: "9b8fVLbNGMDS3IVgxLyNKqGg"
-      app_id: "149719785720.apps.googleusercontent.com"
-      app_secret: "fHUag_3CFAfSeSrKAENm0rbI"
+      app_id: "721520450986.apps.googleusercontent.com"
+      app_secret: "9b8fVLbNGMDS3IVgxLyNKqGg"
+#      app_id: "149719785720.apps.googleusercontent.com"
+#      app_secret: "fHUag_3CFAfSeSrKAENm0rbI"
   twitter:
     app_id: "oXw5sbzFyvG56T8mNA4bw"
     app_secret: "iD2cOWcvC2lQaNWsszjMr6mIoM4iOF5luTPmEg8m0c"

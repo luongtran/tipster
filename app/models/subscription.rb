@@ -17,7 +17,6 @@ class Subscription < ActiveRecord::Base
            :source => :tipster,
            :conditions => ['subscription_tipsters.active = ?', false]
 
-
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================

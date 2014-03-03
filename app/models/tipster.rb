@@ -9,15 +9,16 @@ class Tipster < ActiveRecord::Base
       LAST_YEAR = 'last-year'
   ]
 
+  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
   has_one :account, as: :rolable
   has_and_belongs_to_many :sports
+  accepts_nested_attributes_for :account
 
   mount_uploader :avatar, AvatarUploader
-
-  accepts_nested_attributes_for :account
 
   # ==============================================================================
   # VALIDATIONS
@@ -27,6 +28,13 @@ class Tipster < ActiveRecord::Base
   # SCOPE
   # ==============================================================================
   scope :active, -> { where(active: true) }
+
+  # ==============================================================================
+  # CALLBACKS
+  # ==============================================================================
+  after_update :crop_avatar
+
+  delegate :email, to: :account, :prefix => false
 
   # ==============================================================================
   # CLASS METHODS
@@ -181,6 +189,11 @@ class Tipster < ActiveRecord::Base
 
   def profit_per_months(range = nil)
     (10..100).to_a.sample(15)
+  end
+
+  protected
+  def crop_avatar
+    avatar.recreate_versions! if crop_x.present?
   end
 
 end

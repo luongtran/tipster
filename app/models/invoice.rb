@@ -24,14 +24,14 @@ class Invoice < ActiveRecord::Base
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  belongs_to :user
+  belongs_to :subscriber
 
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
   validates_uniqueness_of :token
   validates_uniqueness_of :transaction_id, if: Proc.new { |p| p.completed? }, on: :update
-  validates :amount, :user, presence: true
+  validates :amount, :subscriber, presence: true
   validates_numericality_of :amount, greater_than_or_equal_to: 1
 
   # ==============================================================================

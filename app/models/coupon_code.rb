@@ -2,9 +2,9 @@ class CouponCode < ActiveRecord::Base
 
   SOURCES = [FACEBOOK = 'facebook', TWITTER = 'twitter']
 
-  belongs_to :user
+  belongs_to :subscriber
 
-  validates :user, :code, :source, presence: true
+  validates :subscriber, :code, :source, presence: true
 
   # ==============================================================================
   # CLASS METHODS
@@ -15,7 +15,7 @@ class CouponCode < ActiveRecord::Base
         false
       else
         cc = new(
-            user: user,
+            subscriber: user,
             code: generate_unique_code(user),
             source: source
         )

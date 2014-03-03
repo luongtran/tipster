@@ -1,5 +1,5 @@
 class SubscriptionsController < ApplicationController
-  before_filter :authenticate_subscriber!, only: [:show,:remove_inactive_tipster]
+  before_filter :authenticate_account!, only: [:show, :remove_inactive_tipster]
 
   def select_plan
     selected_plan = Plan.find(params[:id])
@@ -10,6 +10,7 @@ class SubscriptionsController < ApplicationController
       redirect_to tipsters_url
     end
   end
+
   def select_free_plan
     session[:free_plan] = true
     redirect_to tipsters_path
@@ -23,9 +24,9 @@ class SubscriptionsController < ApplicationController
     @subscription = current_subscriber.subscription
     if @subscription.can_change_tipster?
       @subscription.remove_tipster(params[:id])
-      redirect_to action: 'show',:notice => "Tipster unfollow"
+      redirect_to action: 'show', :notice => "Tipster unfollow"
     else
-      redirect_to action: 'show',notice: "You can change your follow tipster on day #{current_subscription.active_at.strftime('%d')}  of the month" and return
+      redirect_to action: 'show', notice: "You can change your follow tipster on day #{current_subscription.active_at.strftime('%d')}  of the month"
     end
   end
 end

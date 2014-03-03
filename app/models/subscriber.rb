@@ -16,18 +16,22 @@ class Subscriber < ActiveRecord::Base
       SQ_FAVORITE_ACTOR_OR_SINGER => 'What is your actor or favorite singer?',
       SQ_MOTHER_MAIDEN_NAME => 'What is the maiden name of your mother?'
   }
+
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
   has_one :account, as: :rolable
-  has_many :authorizations, dependent: :destroy
   has_one :subscription
+  has_many :authorizations, dependent: :destroy
+  has_many :coupon_codes
+  accepts_nested_attributes_for :account
 
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
   validates :first_name, :last_name, presence: true, format: {with: /\A([a-z]|[A-Z])/}, length: {minimum: 2}
   validates_presence_of :birthday, :civility, :mobile_phone, :secret_question, :answer_secret_question, on: :update
+
   # ==============================================================================
   # CALLBACKS
   # ==============================================================================
@@ -38,10 +42,12 @@ class Subscriber < ActiveRecord::Base
   class << self
     def create_from_auth_info(auth)
       subscriber = new(
-          :email => auth[:info][:email],
           :first_name => auth[:info][:first_name],
           :last_name => auth[:info][:last_name],
-          :password => Devise.friendly_token[0, 20]
+          :account_attributes => {
+              :email => auth[:info][:email],
+              :password => Devise.friendly_token[0, 20]
+          }
       )
       subscriber.save!
       subscriber

@@ -1,5 +1,5 @@
 class SubscribeController < ApplicationController
-  before_action :authenticate_subscriber!, only: [:get_coupon_code, :payment]
+  before_action :authenticate_account!, only: [:get_coupon_code, :payment]
   skip_before_filter :verify_authenticity_token, only: [:success]
   before_action :ready_to_payment, only: [:payment, :payment_method]
 

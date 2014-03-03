@@ -1,44 +1,46 @@
 = content_for(:title, "My Account")
-.row-fluid
-  .col-lg-7
-    .well
-      %h2= I18n.t('user.account_info')
-      -#%span
-      -#  = render 'avatar_crop'
-      -#%hr
-      -#  = image_tag @user.avatar.url(:thumb)
-      -#%span
-      -#  = simple_form_for @user, as: :user, url: change_avatar_path_for(@user), method: 'POST', html: {class: 'form-inline',novalidate: true} do |f|
-      -#    = f.file_field :avatar
-      -#    -#= f.hidden_field :avatar_cache
-      -#    = submit_tag t("user.update_avatar")
-      -#%hr
-      = simple_form_for @user, as: :user, url: update_profile_path_for(@user), method: 'POST', html: {class: 'form-horizontal', novalidate: true} do |f|
-        = f.input :first_name
-        = f.input :last_name
-        = f.input :civility
-        = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy/mm/dd'}
-        = f.input :address, :required => false, input_html: {placeholder: '123 Main Street'}
-        = f.input :city, :required => false
-        = f.input :country, as: :country, :required => false, include_blank: false, input_html: {class: 'form-control'}
-        = f.input :zip_code
-        = f.input :mobile_phone
-        = f.input :telephone, :required => false
-        = f.input :favorite_beting_website, :required => false
-        = f.input :know_website_from, as: :select, collection: know_website_from_for_select, include_blank: false
-        = f.input :secret_question, as: :select, collection: secret_questions_for_select, include_blank: false
-        = f.input :answer_secret_question
-        .form-group
-          .col-sm-offset-3.col-sm-9
-            %button.btn.btn-primary{type: "submit"}= t('user.update_account')
-  .col-lg-5
-    .well
-      %h2= I18n.t('user.change_password')
-      %hr
-      = simple_form_for @account, as: :account, url: change_password_path_for(@user), method: 'POST', html: {class: 'form-horizontal'} do |f|
-        = f.input :current_password, required: true
-        = f.input :password, required: true
-        = f.input :password_confirmation, required: true
-        .form-group
-          .col-sm-offset-3.col-sm-9
-            %button.btn.btn-primary{type: "submit"}= t('user.change_password')
+.row
+  .col-lg-12
+    .col-lg-7
+      .well
+        %h2= I18n.t('user.account_info')
+        %hr
+        -#%span
+        -#  = render 'avatar_crop'
+        -#%hr
+        -#  = image_tag @user.avatar.url(:thumb)
+        -#%span
+        -#  = simple_form_for @user, as: :user, url: change_avatar_path_for(@user), method: 'POST', html: {class: 'form-inline',novalidate: true} do |f|
+        -#    = f.file_field :avatar
+        -#    -#= f.hidden_field :avatar_cache
+        -#    = submit_tag t("user.update_avatar")
+        -#%hr
+        = simple_form_for @user, as: :user, url: update_profile_path_for(@user), method: 'POST', html: {class: 'form-horizontal', novalidate: true} do |f|
+          = f.input :first_name
+          = f.input :last_name
+          = f.input :civility
+          = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy/mm/dd'}
+          = f.input :address, :required => false, input_html: {placeholder: '123 Main Street'}
+          = f.input :city, :required => false
+          = f.input :country, as: :country, :required => false, include_blank: false, input_html: {class: 'form-control'}
+          = f.input :zip_code
+          = f.input :mobile_phone
+          = f.input :telephone, :required => false
+          = f.input :favorite_beting_website, :required => false
+          = f.input :know_website_from, as: :select, collection: know_website_from_for_select, include_blank: false
+          = f.input :secret_question, as: :select, collection: secret_questions_for_select, include_blank: false
+          = f.input :answer_secret_question
+          .form-group
+            .col-sm-offset-3.col-sm-9
+              %button.btn.btn-primary{type: "submit"}= t('user.update_account')
+    .col-lg-5
+      .well
+        %h2= I18n.t('user.change_password')
+        %hr
+        = simple_form_for @account, as: :account, url: change_password_path_for(@user), method: 'POST', html: {class: 'form-horizontal'} do |f|
+          = f.input :current_password, required: true
+          = f.input :password, required: true
+          = f.input :password_confirmation, required: true
+          .form-group
+            .col-sm-offset-3.col-sm-9
+              %button.btn.btn-primary{type: "submit"}= t('user.change_password')

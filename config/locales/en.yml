@@ -50,7 +50,7 @@ en:
     sign_in: "Sign in"
     sign_up: "Sign up"
     sign_out: "Sign out"
-    account_info: "Informations du compte"
+    account_info: "Account informations"
   tipster_statuses:
     all: 'All'
     active: 'Active'
