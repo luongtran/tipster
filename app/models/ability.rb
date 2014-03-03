@@ -1,11 +1,11 @@
-class UserAbility
+class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(account)
     # Only allow user to change his/her own password.
-    user ||= User.new
-    can [:change_password, :update, :show], User do |a_user|
-      (user.id == a_user.id)
+    account ||= Account.new
+    can [:change_password, :update, :show], Account do |an_account|
+      (account.id == an_account.id)
     end
 
     # Define abilities for the passed in user here. For example:

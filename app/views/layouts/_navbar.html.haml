@@ -11,10 +11,10 @@
           %a{href: tipsters_path} Tipsters
         %li
           %a{href: tips_path} Tips
-        - if current_subscriber
+        - if current_account
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
-              = current_subscriber.name
+              = current_user.full_name
               %b.caret
             %ul.dropdown-menu
               %li
@@ -23,17 +23,17 @@
                 %a{href: subscriptions_path} My Subscription
               %li.divider
               %li
-                %a{href: destroy_subscriber_session_path}= I18n.t('user.sign_out')
+                %a{href: destroy_account_session_path}= I18n.t('user.sign_out')
         - else
           %li
-            %a{href: new_subscriber_session_path}= I18n.t('user.sign_in')
+            %a{href: new_account_session_path}= I18n.t('user.sign_in')
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
               Connect
               %b.caret
             %ul.dropdown-menu
               %li
-                %a{href: new_subscriber_registration_path}= I18n.t('user.sign_up')
+                %a{href: new_account_registration_path}= I18n.t('user.sign_up')
               = render 'shared/social_connection_links'
 #page_header_mid
 

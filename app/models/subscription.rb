@@ -1,25 +1,10 @@
-# == Schema Information
-#
-# Table name: subscriptions
-#
-#  id           :integer          not null, primary key
-#  user_id      :integer
-#  plan_id      :integer
-#  active       :boolean          default(FALSE)
-#  active_at    :datetime
-#  expired_at   :datetime
-#  created_at   :datetime
-#  updated_at   :datetime
-#  using_coupon :boolean          default(FALSE)
-#
-
 class Subscription < ActiveRecord::Base
 
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
   belongs_to :plan
-  belongs_to :subscriber, foreign_key: :user_id, class_name: 'Subscriber'
+  belongs_to :subscriber
   has_many :payments
   has_many :subscription_tipsters
   has_many :tipsters, :through => :subscription_tipsters

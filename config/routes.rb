@@ -1,7 +1,7 @@
 TipsterHero::Application.routes.draw do
   root 'home#index'
 
-  devise_for :subscribers, controllers: {
+  devise_for :accounts, controllers: {
       registrations: 'subscribers/registrations',
       omniauth_callbacks: 'subscribers/omniauth_callbacks',
       sessions: 'subscribers/sessions'
@@ -15,7 +15,7 @@ TipsterHero::Application.routes.draw do
     post '/my_account', to: 'accounts#update'
     post '/change_password', to: 'accounts#change_password'
     post '/change_avatar', to: 'accounts#change_avatar'
-    post '/crop_avatar',to: 'accounts#crop_avatar'
+    post '/crop_avatar', to: 'accounts#crop_avatar'
   end
 
   resource :payment, controller: 'payment', only: [:create] do
@@ -64,8 +64,8 @@ TipsterHero::Application.routes.draw do
     get '/my_account', to: 'accounts#show'
     post '/my_account', to: 'accounts#update'
     post '/change_password', to: 'accounts#change_password'
-    post '/change_avatar',to: 'accounts#change_avatar'
-    post '/crop_avatar',to: 'accounts#crop_avatar'
+    post '/change_avatar', to: 'accounts#change_avatar'
+    post '/crop_avatar', to: 'accounts#crop_avatar'
     resources :tips
   end
 

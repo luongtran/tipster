@@ -1,45 +1,33 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id                     :integer          not null, primary key
-#  first_name             :string(255)
-#  last_name              :string(255)
-#  email                  :string(255)      default(""), not null
-#  encrypted_password     :string(255)      default(""), not null
-#  reset_password_token   :string(255)
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :string(255)
-#  last_sign_in_ip        :string(255)
-#  confirmation_token     :string(255)
-#  confirmed_at           :datetime
-#  confirmation_sent_at   :datetime
-#  unconfirmed_email      :string(255)
-#  failed_attempts        :integer          default(0), not null
-#  unlock_token           :string(255)
-#  locked_at              :datetime
-#  created_at             :datetime
-#  updated_at             :datetime
-#  type                   :string(255)
-#  active                 :boolean          default(TRUE)
-#  sport_id               :integer
-#  string                 :unique_session_i
-#  unique_session_id      :string(20)
-#
+class Subscriber < ActiveRecord::Base
+  DEFAULT_BIRTHDAY = '1990-01-01'
+  KNOW_WEBSITE_FROM_LIST = %w(other sponsoring advertising social_network)
 
-class Subscriber < User
-  devise :registerable
-  devise :omniauthable, :omniauth_providers => [:facebook, :google_oauth2, :twitter]
+  # If we have more questions, please add them at the bottom of the list
+  SQ_BORN_CITY = 0
+  SQ_COLOR_PREFER = 1
+  SQ_PET_NAME = 2
+  SQ_FAVORITE_ACTOR_OR_SINGER = 3
+  SQ_MOTHER_MAIDEN_NAME = 4
+
+  SECRET_QUESTIONS_MAP = {
+      SQ_BORN_CITY => 'What is your born city?',
+      SQ_COLOR_PREFER => 'What is your color preferred?',
+      SQ_PET_NAME => 'What is the name of your pet?',
+      SQ_FAVORITE_ACTOR_OR_SINGER => 'What is your actor or favorite singer?',
+      SQ_MOTHER_MAIDEN_NAME => 'What is the maiden name of your mother?'
+  }
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  has_many :authorizations, foreign_key: :user_id, dependent: :destroy
-  has_one :subscription, foreign_key: :user_id
+  has_one :account, as: :rolable
+  has_many :authorizations, dependent: :destroy
+  has_one :subscription
 
+  # ==============================================================================
+  # VALIDATIONS
+  # ==============================================================================
+  validates :first_name, :last_name, presence: true, format: {with: /\A([a-z]|[A-Z])/}, length: {minimum: 2}
+  validates_presence_of :birthday, :civility, :mobile_phone, :secret_question, :answer_secret_question, on: :update
   # ==============================================================================
   # CALLBACKS
   # ==============================================================================
@@ -63,6 +51,10 @@ class Subscriber < User
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+
+  def full_name
+    "#{self.first_name} #{self.last_name}".titleize
+  end
 
   def profile_completed?
     self.profile && self.profile.valid?

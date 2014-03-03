@@ -41,7 +41,7 @@
           %td= index + 1
           %td
             %a{href: tipster_path(tipster)}
-              = tipster.name
+              = tipster.full_name
             .tipster-profit-chart
               = image_tag profit_img_chart_url_for(tipster.profit_per_months)
           %td= tipster.yield

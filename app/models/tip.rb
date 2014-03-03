@@ -1,28 +1,3 @@
-# == Schema Information
-#
-# Table name: tips
-#
-#  id           :integer          not null, primary key
-#  author_id    :integer
-#  author_type  :string(255)
-#  event        :string(255)      not null
-#  platform     :string(255)      not null
-#  bet_type     :integer          not null
-#  odds         :float            not null
-#  line         :float
-#  selection    :integer          not null
-#  advice       :text             not null
-#  stake        :float            not null
-#  amount       :integer          not null
-#  correct      :boolean          default(FALSE)
-#  status       :integer          not null
-#  free         :boolean          default(FALSE)
-#  published_by :integer
-#  published_at :datetime
-#  created_at   :datetime
-#  updated_at   :datetime
-#
-
 =begin
   bet_type: "Asian handicap"
   bookmaker: "Bet365"

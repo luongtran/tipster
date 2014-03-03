@@ -1,16 +1,3 @@
-# == Schema Information
-#
-# Table name: coupon_codes
-#
-#  id         :integer          not null, primary key
-#  user_id    :integer
-#  code       :string(255)      not null
-#  source     :string(255)
-#  is_used    :boolean          default(FALSE)
-#  used_at    :datetime
-#  created_at :datetime         not null
-#
-
 class CouponCode < ActiveRecord::Base
 
   SOURCES = [FACEBOOK = 'facebook', TWITTER = 'twitter']

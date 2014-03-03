@@ -4,36 +4,39 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_action :fill_profile, :set_locale
+  before_action :set_locale
 
-  helper_method :tipster_ids_in_cart
+  helper_method :tipster_ids_in_cart, :current_user
+
+  [Tipster, Admin, Subscriber].each do |klass|
+    klass_string = klass.name.downcase
+    define_method "current_#{klass_string}" do
+      if current_account && current_account.rolable.is_a?(klass)
+        current_account.rolable
+      else
+        nil
+      end
+    end
+  end
 
   protected
 
-  def current_ability
-    @current_ability ||= case
-                           when current_subscriber
-                             SubscriberAbility.new(current_subscriber)
-                           when current_tipster
-                             TipsterAbility.new(current_tipster)
-                           when current_admin
-                             AdminAbility.new(current_admin)
-                           else
-                             GuestAbility.new(nil)
-                         end
+  def current_user
+    current_account.rolable
   end
 
-  def logged_in_user
-    current_subscriber || current_tipster || current_admin
+  def current_ability
+    @current_ability ||= Ability.new(current_account)
   end
+
 
   # Render bad request(if: invalid params, etc ...)
   def render_400
     render nothing: true, status: 400
   end
 
-  def fill_profile
-    if current_subscriber && !current_subscriber.profile
+  def fill_up_profile
+    if current_account && !current_account.rolable.valid?
       redirect_to my_profile_url, notice: 'Please update your profile'
     end
   end

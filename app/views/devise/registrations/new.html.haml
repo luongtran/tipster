@@ -1,7 +1,10 @@
 = content_for(:title, I18n.t('user.sign_up'))
 %h2 #{I18n.t('user.sign_up')}
-= simple_form_for resource, :url => subscriber_registration_path, :html => {class: 'form-horizontal', novalidate: true} do |f|
-  = render 'shared/user_basic_fields', f: f
+= simple_form_for resource, :url => registration_path(resource_name), :html => {class: 'form-horizontal', novalidate: true} do |f|
+  = f.simple_fields_for resource.rolable do |fl|
+    = fl.input :first_name
+    = fl.input :last_name
+  = render 'shared/account_fields', f: f
   .form-group
     .col-sm-offset-3.col-sm-9
       %button.btn.btn-primary{type: "submit"}= I18n.t('user.sign_up')

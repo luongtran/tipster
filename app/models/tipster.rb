@@ -1,39 +1,4 @@
-# == Schema Information
-#
-# Table name: users
-#
-#  id                     :integer          not null, primary key
-#  first_name             :string(255)
-#  last_name              :string(255)
-#  email                  :string(255)      default(""), not null
-#  encrypted_password     :string(255)      default(""), not null
-#  reset_password_token   :string(255)
-#  reset_password_sent_at :datetime
-#  remember_created_at    :datetime
-#  sign_in_count          :integer          default(0), not null
-#  current_sign_in_at     :datetime
-#  last_sign_in_at        :datetime
-#  current_sign_in_ip     :string(255)
-#  last_sign_in_ip        :string(255)
-#  confirmation_token     :string(255)
-#  confirmed_at           :datetime
-#  confirmation_sent_at   :datetime
-#  unconfirmed_email      :string(255)
-#  failed_attempts        :integer          default(0), not null
-#  unlock_token           :string(255)
-#  locked_at              :datetime
-#  created_at             :datetime
-#  updated_at             :datetime
-#  type                   :string(255)
-#  active                 :boolean          default(TRUE)
-#  sport_id               :integer
-#  string                 :unique_session_i
-#  unique_session_id      :string(20)
-#
-
-class Tipster < User
-  include TipCreatable
-
+class Tipster < ActiveRecord::Base
   DEFAULT_PAGE_SIZE = 20
   DEFAULT_SORT_FIELD = 'profit'
 
@@ -47,12 +12,16 @@ class Tipster < User
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  has_and_belongs_to_many :sports, foreign_key: :user_id, association_foreign_key: :sport_id, join_table: "sports_users"
+  has_one :account, as: :rolable
+  has_and_belongs_to_many :sports
+
+  mount_uploader :avatar, AvatarUploader
+
+  accepts_nested_attributes_for :account
 
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-  validates :sport, presence: true
 
   # ==============================================================================
   # SCOPE
@@ -74,7 +43,7 @@ class Tipster < User
       #.page(paging_info.page)
       #.per(paging_info.page_size)
 
-      result = relation.includes([:profile])
+      result = relation.includes([:account])
       if sorting_info.increase?
         result.sort_by { |tipster| tipster.send("#{sorting_info.sort_by}") }
       else
@@ -157,7 +126,7 @@ class Tipster < User
   # ==============================================================================
 
   def to_param
-    "#{self.id}-#{self.name}".parameterize
+    "#{self.id}-#{self.display_name}".parameterize
   end
 
   def create_new_tip(params)

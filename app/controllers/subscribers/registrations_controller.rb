@@ -1,15 +1,21 @@
 class Subscribers::RegistrationsController < Devise::RegistrationsController
-  before_action :configure_permitted_parameters, :only => [:create, :update]
+  #before_action :configure_permitted_parameters, :only => [:create, :update]
 
   def new
-    super
+    build_resource({})
+    resource.rolable = Subscriber.new
+    respond_with self.resource
   end
 
   # New subscriber
   def create
     build_resource(sign_up_params)
-    if resource.save
-      resource.build_profile(profile_params) if params[:subscriber][:profile]
+    resource.rolable = Subscriber.new(subscriber_params)
+
+    valid = resource.valid?
+    valid = resource.rolable.valid? && valid
+
+    if valid && resource.save
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
@@ -29,16 +35,21 @@ class Subscribers::RegistrationsController < Devise::RegistrationsController
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.for(:sign_up) do |u|
-      u.permit(:first_name, :last_name,
-               :email, :password, :password_confirmation, profile_attributes: [:civility, :birthday, :address, :city, :country, :zip_code, :mobile_phone, :telephone, :favorite_betting_website, :know_website_from, :secret_question, :answer_secret_question])
+      u.permit(:email, :password, :password_confirmation, :subscriber => [:first_name, :last_name])
     end
+
     devise_parameter_sanitizer.for(:account_update) do |u|
       u.permit(:first_name, :last_name,
                :password, :password_confirmation, :current_password)
     end
   end
 
-  def profile_params
-    params.require(:subscriber).require(:profile).permit(:civility, :birthday, :address, :city, :country, :zip_code, :mobile_phone, :telephone, :favorite_betting_website, :know_website_from, :secret_question, :answer_secret_question)
+  #
+  #def account_params
+  #  params.require(:account).permit(:email, :password, :password_confirmation, :subscriber => [:first_name, :last_name])
+  #end
+
+  def subscriber_params
+    params.require(:account).require(:subscriber).permit(:first_name, :last_name)
   end
 end
