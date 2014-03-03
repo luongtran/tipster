@@ -47,7 +47,7 @@ class Tipster < User
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  belongs_to :sport
+  has_and_belongs_to_many :sports, foreign_key: :user_id, association_foreign_key: :sport_id, join_table: "sports_users"
 
   # ==============================================================================
   # VALIDATIONS

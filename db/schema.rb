@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140301031657) do
+ActiveRecord::Schema.define(version: 20140303075507) do
 
   create_table "authorizations", force: true do |t|
     t.integer  "user_id"
@@ -131,6 +131,13 @@ ActiveRecord::Schema.define(version: 20140301031657) do
     t.string "name", null: false
   end
 
+  create_table "sports_users", id: false, force: true do |t|
+    t.integer "sport_id", null: false
+    t.integer "user_id",  null: false
+  end
+
+  add_index "sports_users", ["sport_id", "user_id"], name: "index_sports_users_on_sport_id_and_user_id"
+
   create_table "subscription_tipsters", force: true do |t|
     t.integer  "tipster_id"
     t.integer  "subscription_id"
@@ -178,8 +185,5 @@ ActiveRecord::Schema.define(version: 20140301031657) do
   end
 
   add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type"
-
-# Could not dump table "users" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
 
 end
