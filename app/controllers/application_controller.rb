@@ -38,7 +38,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   def set_locale
     I18n.locale = session[:locale] || I18n.default_locale
   rescue I18n::InvalidLocale => e
