@@ -154,3 +154,58 @@
     }
   }
 }
+
+
+.hotTipster-unit {
+  width: 210px;
+  float: left;
+  margin: 0 8px;
+  .hotTipster-head {
+    background-color: shade($gray-dark, 50%);
+    color: #ffffff;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    .yield {
+      color: red;
+      font-weight: bold;
+    }
+  }
+  .hotTipster-body {
+    margin-bottom: 5px;
+  }
+  .hotTipster-foot {
+    .chart-mini {
+      margin-bottom: 5px;
+    }
+    .see-profile-link {
+      display: block;
+      text-align: center;
+      color: #ffffff;
+      font-size: 14px;
+      text-transform: uppercase;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color: shade($gray-dark, 50%);
+      &:hover {
+        background-color: shade($gray-dark, 20%);
+      }
+    }
+  }
+}
+
+#feature-profiles {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  .carousel-control {
+    background: none;
+    &.left span {
+      left: -10%;
+    }
+    &.right span {
+      right: -10%;
+    }
+  }
+}

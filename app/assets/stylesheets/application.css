@@ -10,5 +10,6 @@
  *
  *= require_tree ../../../vendor/assets/stylesheets/framework/bootstrap
  *= require partials/_common
+ *= require partials/_page_home
  *= require dev
  */
