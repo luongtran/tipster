@@ -11,14 +11,14 @@
           %a{href: tipsters_path} Tipsters
         %li
           %a{href: tips_path} Tips
-        - if current_account
+        - if account_signed_in?
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
-              = current_user.full_name
+              = current_subscriber.full_name
               %b.caret
             %ul.dropdown-menu
               %li
-                %a{href: my_account_path} My Account
+                %a{href: my_profile_path} My Profile
               %li
                 %a{href: subscriptions_path} My Subscription
               %li.divider

@@ -7,15 +7,15 @@ TipsterHero::Application.routes.draw do
       sessions: 'subscribers/sessions'
   }
 
-  match '/my_profile' => 'profiles#my_profile', as: :my_profile, via: [:get, :post]
-
   # Routes for Subscriber module without prefix
   scope module: :subscribers do
-    get '/my_account', to: 'accounts#show'
-    post '/my_account', to: 'accounts#update'
-    post '/change_password', to: 'accounts#change_password'
-    post '/change_avatar', to: 'accounts#change_avatar'
-    post '/crop_avatar', to: 'accounts#crop_avatar'
+    controller :profile do
+      get :my_profile, to: :show
+      post :update_profile, to: :update
+      post :change_password
+      post :change_avatar
+      post :crop_avatar
+    end
   end
 
   resource :payment, controller: 'payment', only: [:create] do
@@ -61,11 +61,11 @@ TipsterHero::Application.routes.draw do
   # Prefix: 'backoffice'
   namespace :backoffice do
     root 'home#index'
-    get '/my_account', to: 'accounts#show'
-    post '/my_account', to: 'accounts#update'
-    post '/change_password', to: 'accounts#change_password'
-    post '/change_avatar', to: 'accounts#change_avatar'
-    post '/crop_avatar', to: 'accounts#crop_avatar'
+    get '/my_account', to: 'profile#show'
+    post '/my_account', to: 'profile#update'
+    post '/change_password', to: 'profile#change_password'
+    post '/change_avatar', to: 'profile#change_avatar'
+    post '/crop_avatar', to: 'profile#crop_avatar'
     resources :tips
   end
 

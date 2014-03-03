@@ -6,24 +6,23 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
 
-  helper_method :tipster_ids_in_cart, :current_user
+  helper_method :tipster_ids_in_cart
 
+  # Define 3 helper methods: current_{subscriber|tipster|admin}
   [Tipster, Admin, Subscriber].each do |klass|
     klass_string = klass.name.downcase
-    define_method "current_#{klass_string}" do
+    method_name = "current_#{klass_string}"
+    define_method method_name do
       if current_account && current_account.rolable.is_a?(klass)
         current_account.rolable
       else
         nil
       end
     end
+    helper_method method_name
   end
 
   protected
-
-  def current_user
-    current_account.rolable
-  end
 
   def current_ability
     @current_ability ||= Ability.new(current_account)

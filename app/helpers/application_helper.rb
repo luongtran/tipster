@@ -77,11 +77,11 @@ module ApplicationHelper
   end
 
   # Detemine the my_account path for two resources: subscriber or tipster
-  def my_account_path_for(user)
+  def update_profile_path_for(user)
     if user.is_a? Tipster
-      backoffice_my_account_path
+      backoffice_my_profile_path
     elsif user.is_a? Subscriber
-      my_account_path
+      update_profile_path
     end
   end
 
