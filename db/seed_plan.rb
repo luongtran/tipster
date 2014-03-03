@@ -9,7 +9,7 @@ p1 = Plan.create!(
     :profit_guaranteed => false,
     :period => 0
 )
-puts "Created plan: #{p1.title}"
+puts " -> Created plan: #{p1.title}"
 
 p2 = Plan.create!(
     :name => 'ONE',
@@ -18,7 +18,7 @@ p2 = Plan.create!(
     :number_tipster => 1,
     :period => 1
 )
-puts "Created plan: #{p2.title}"
+puts " -> Created plan: #{p2.title}"
 
 p3 = Plan.create!(
     :name => 'TWO',
@@ -27,7 +27,7 @@ p3 = Plan.create!(
     :number_tipster => 1,
     :period => 3
 )
-puts "Created plan: #{p3.title}"
+puts " -> Created plan: #{p3.title}"
 
 p4 = Plan.create!(
     :name => 'THREE',
@@ -36,7 +36,7 @@ p4 = Plan.create!(
     :number_tipster => 1,
     :period => 12
 )
-puts "Created plan: #{p4.title}"
+puts " -> Created plan: #{p4.title}"
 
 p5 = Plan.create!(
     :name => 'FOUR',
@@ -45,5 +45,5 @@ p5 = Plan.create!(
     :number_tipster => 5,
     :period => 1
 )
-puts "Created plan: #{p5.title}"
+puts " -> Created plan: #{p5.title}"
 puts "Seed plans completed!"
