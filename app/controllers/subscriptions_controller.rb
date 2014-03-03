@@ -25,7 +25,7 @@ class SubscriptionsController < ApplicationController
       @subscription.remove_tipster(params[:id])
       redirect_to action: 'show',:notice => "Tipster unfollow"
     else
-      redirect_to action: 'show',notice: "You can change your follow tipster on day #{current_subscription.active_date.strftime('%d')}  of the month" and return
+      redirect_to action: 'show',notice: "You can change your follow tipster on day #{current_subscription.active_at.strftime('%d')}  of the month" and return
     end
   end
 end
