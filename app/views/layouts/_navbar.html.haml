@@ -74,3 +74,4 @@
                 %a{:href=>"javascript:;"}
                   %i(class="typcn typcn-cog")
           .quickpanel-right
+  = render 'top_tipster' if controller_name == 'home' && action_name == 'index'

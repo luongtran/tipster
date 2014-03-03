@@ -1,0 +1,27 @@
+#page-header
+  #feature-profiles
+    .container
+      %div(id="feature-carousel" class="carousel slide" data-ride="carousel")
+        .carousel-inner
+          - 3.times do |i|
+            .item{class: i == 1 ? "active" : "" }
+              - @tipsters.page(i).per(5).each do |tipster|
+                .hotTipster-unit
+                  .hotTipster-head
+                    %span.proofed= " No. Proofed Tips: #{rand(100..900)}"
+                    %span.yield="Yield: #{rand(0..100)}%"
+                  .hotTipster-body
+                    = image_tag(tipster.avatar_url || 'demo.jpg',width: '210')
+                  .hotTipster-foot
+                    .chart-mini
+                      =image_tag('chart-mini.jpg')
+                    %a{href: "#{tipster_path(tipster)}",class: "see-profile-link" } See Profile
+        %a(class="left carousel-control" href="#feature-carousel" data-slide="prev")
+          %span(class="glyphicon glyphicon-chevron-left")
+        %a(class="right carousel-control" href="#feature-carousel" data-slide="next")
+          %span(class="glyphicon glyphicon-chevron-right")
+  #board-gray
+    .board-gray-inner.container.relative
+      %h3.text-slim.man Stop gambling, invest...  get tips from <br>proven proffesional tipsters
+      .absolute.guranteen
+        =image_tag 'guaran.png'

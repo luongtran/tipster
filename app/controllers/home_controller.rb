@@ -1,6 +1,8 @@
 class HomeController < ApplicationController
   def index
-
+    params[:q] ||= {}
+    q = Tipster.search(params[:q])
+    @tipsters = q.result
   end
 
   def xml_view

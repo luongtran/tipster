@@ -10,6 +10,14 @@
         %span
           %strong Subscription status :
         %span #{@subscription.active? ? "Active" : "Not Active"}
+      %li
+        %span
+          %strong Plan active day:
+        %span #{@subscription.active_date.strftime("%m/%d/%Y")}
+      %li
+        %span
+          %strong Plan expired day:
+        %span #{@subscription.expired_date.strftime("%m/%d/%Y")}
   - if @subscription.active
     %table.table.table-bordered
       %caption List Tipster on Your subscriptions

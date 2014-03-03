@@ -43,7 +43,8 @@ en:
     change_password_fail: "Cannot change your password."
     update_profile: "Update Profile"
     last_sign_in: "Last sign in"
-    update_account: "Update account"
+    update_account: "Update your account"
+    update_avatar: "Update your avatar"
     account_update_successully: "Your profile was updated successfully."
     account_update_failed: "Update profile failed."
     sign_in: "Sign in"
@@ -60,3 +61,21 @@ en:
     messages:
       invalid_date: "is not a valid date"
       before: "must be before %{restriction}"
+  activerecord:
+    attributes:
+      subscriber:
+        email: "Email:"
+        password: "Password:"
+        current_password: "Current password:"
+        password_confirmation: "Password confirmation:"
+        remember_me: "Remember me:"
+        first_name: "First name:"
+        last_name: "Last name:"
+      profile:
+        birthday: "Birthday:"
+        address: "Address:"
+        city: "City:"
+        country: "Country:"
+        zip_code: "Zip code:"
+        mobile_phone: "Mobile phone:"
+        telephone: "Telephone:"
