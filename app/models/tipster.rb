@@ -35,7 +35,7 @@ class Tipster < User
   include TipCreatable
 
   DEFAULT_PAGE_SIZE = 20
-  DEFAULT_SORT_DIRECTION = 'desc'
+  DEFAULT_SORT_FIELD = 'profit'
 
   RANKING_RANGES = [
       LAST_MONTH = 'last-month',
@@ -47,7 +47,7 @@ class Tipster < User
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  belongs_to :sport
+  has_and_belongs_to_many :sports, foreign_key: :user_id, association_foreign_key: :sport_id, join_table: "sports_users"
 
   # ==============================================================================
   # VALIDATIONS
@@ -116,7 +116,7 @@ class Tipster < User
         when LAST_YEAR
           # 365 days
         else
-          # From begin?
+          # Overall ?
       end
     end
 
@@ -126,23 +126,13 @@ class Tipster < User
     protected
 
     # Return SortingInfo object contains:
-    #  sort_by: the name of column|field
+    #  sort_by: the name of column or field
     #  direction: asc | desc
     def parse_sort_params(params)
-      sort_string = params[:sort]
-      sort_direction = ''
-      sort_field = 'id'
-
-      if sort_string.present?
-        sort_direction = sort_string.split('_').last
-        sort_field = sort_string.gsub(/(_desc|_asc)/, '')
-      else
-        sort_direction = DEFAULT_SORT_DIRECTION
-      end
-
       SortingInfo.new(
-          sort_by: sort_field,
-          direction: sort_direction
+          params[:sort],
+          default_sort_by: DEFAULT_SORT_FIELD,
+          default_sort_direction: SortingInfo::DECREASE
       )
     end
 
@@ -217,7 +207,7 @@ class Tipster < User
 
   # Return the number of tips on the given range
   def tips_count(range = nil)
-    self.id * (5..15).to_a.sample
+    self.id * 5
   end
 
   def profit_per_months(range = nil)

@@ -101,6 +101,7 @@ gem 'nokogiri'
 gem 'carrierwave'
 gem 'rmagick'
 gem 'fog'
+
 # For get google image chart
 gem 'googlecharts', git: 'git@github.com:luanht/googlecharts.git'
 gem "ransack", github: "activerecord-hackery/ransack", branch: "rails-4"
