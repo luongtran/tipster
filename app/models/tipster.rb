@@ -35,7 +35,7 @@ class Tipster < User
   include TipCreatable
 
   DEFAULT_PAGE_SIZE = 20
-
+  DEFAULT_SORT_FIELD = 'profit'
 
   RANKING_RANGES = [
       LAST_MONTH = 'last-month',
@@ -131,7 +131,7 @@ class Tipster < User
     def parse_sort_params(params)
       SortingInfo.new(
           params[:sort],
-          default_sort_by: 'profit',
+          default_sort_by: DEFAULT_SORT_FIELD,
           default_sort_direction: SortingInfo::DECREASE
       )
     end

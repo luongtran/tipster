@@ -4,6 +4,7 @@ class SortingInfo
   DECREASE = 'desc'
   DEFAULT_SORT_DIRECTION = DECREASE
   DEFAULT_SORT_FIELD = 'id'
+
   attr_accessor :sort_by, :direction
 
   def initialize(attrs = {})
