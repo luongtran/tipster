@@ -28,7 +28,6 @@ class CartController < ApplicationController
         flash[:alert] = "Tipster already added to cart"
       else
         session[:cart][:tipster_ids] << tipster_id
-        flash[:notice] = "Tipster added"
       end
     else
       flash[:alert] = "Request is invalid"

@@ -60,9 +60,11 @@ TipsterHero::Application.routes.draw do
   # Prefix: 'backoffice'
   devise_scope :account do
     namespace :backoffice do
-      get '/sign_in', to: 'sessions#new', as: :backoffice_sign_in
+      get '/sign_in', to: 'sessions#new', as: :sign_in
       post '/sign_in', to: 'sessions#create'
       get '/sign_out', to: 'sessions#destroy'
+      get '/forgot_password', to: 'passwords#new', as: :forgot_password
+      post '/forgot_password', to: 'passwords#new'
     end
   end
 

@@ -1,0 +1,3 @@
+class PasswordsController < ApplicationController
+
+end

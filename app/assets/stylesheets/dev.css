@@ -21,7 +21,18 @@ body {
 .dropdown-menu li a {
     line-height: 40px !important;
 }
-.user_avatar{max-width: 140px;}
+
+.user_avatar {
+    max-width: 140px;
+}
+
 .tipster-profit-chart {
     float: right;
+}
+
+ul.inline {
+    list-style: none;
+}
+ul.inline > li {
+   display: inline-block;
 }

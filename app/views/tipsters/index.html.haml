@@ -1,4 +1,4 @@
-= content_for(:title, "All tipsters")
+= content_for(:title, "Tipster listing")
 .container
   .center-block
     %ul.sports-filter
@@ -64,10 +64,12 @@
         .modal-content
           .modal-header
             %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
-            %h4.modal-title The item has been added to your Cart
+            %h4.modal-title The tipster has been added to your cart
           .modal-body
             .text-center.text-info
               Do you want to choose an another tipster for only?
               = "€9,90"
               %button.btn.btn-success.btn-large{"data-dismiss" => "modal", type: "button"} + Add more tipster
+          .modal-footer
+            .text-center
               %a.btn.btn-primary{href: subscribe_choose_offer_path} Process to checkout

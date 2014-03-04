@@ -70,8 +70,9 @@
                 Total:€
                 %span#total_price
                   = @total_price.round(3)
-          %a.btn.btn-success{href: tipsters_path} + Add more tipster
-          %a.btn.btn-primary{href: subscribe_payment_method_path} Process to Checkout
+          .text-center
+            %a.btn.btn-success{href: tipsters_path} + Add more tipster
+            %a.btn.btn-primary{href: subscribe_payment_method_path} Process to Checkout
 
         - if @select_plan && @select_plan.free?
           %h3 Are you sure want to choose the Free subscription?
