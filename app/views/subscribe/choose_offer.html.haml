@@ -19,14 +19,27 @@
       #tab1.tab-pane.active
         - if @select_plan
           %h3 Your selected plan:
-          %ul
-            %li
-              Name:
-              %strong= @select_plan.title
-            %li
-              Price:
-              %strong= "€ #{@select_plan.price} / Month"
-          %a{href: pricing_path} Select another plan?
+          .col-lg-offset-1
+
+            %ul
+              %li
+                Name:
+                %strong= @select_plan.title
+              %li
+                Price:
+                %strong= "€ #{@select_plan.price} / Month"
+            %a{href: pricing_path} Select another plan?
+        %hr
+        %h3
+          How do you want to receive your tips?
+        .col-lg-offset-1
+          .checkbox
+            %label
+              %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_email'} By Email
+          .checkbox
+            %label
+              %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_message'} By Message
+        %hr
         - unless @select_plan && @select_plan.free?
           - unless @tipsters_in_cart.blank?
             %h3 Tipsters in your cart

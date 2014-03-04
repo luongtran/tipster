@@ -128,6 +128,7 @@ class SubscribeController < ApplicationController
   end
 
   # GET /subscribe/offer
+  # Require choosen a plan
   def choose_offer
     if current_subscriber && current_subscriber.already_has_subscription?
       @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)

@@ -8,7 +8,7 @@
           %li.active
             %a{"data-toggle" => "tab", href: "#tab2"} Identification
           %li
-            %a{"data-toggle" => "tab", href: "#tab3"}Payment Method
+            %a{"data-toggle" => "tab", href: "#tab3"} Payment Method
           %li
             %a{"data-toggle" => "tab", href: "#tab4"} Payment
           %li
@@ -56,5 +56,7 @@
             = simple_form_for :account, url: account_registration_path,:html => {class: 'form-horizontal'} do |f|
               .form-inputs
                 = render 'shared/account_fields', f: f
+                = f.simple_fields_for :subscriber do |fr|
+                  = render 'shared/subscribe_fields',f: fr
               .form-actions
                 = f.button :submit, "Sign up", class: 'btn btn-primary'

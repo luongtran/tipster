@@ -46,7 +46,8 @@
         %td Ability to switch tipsters
         - @plans.each do |plan|
           %td
-            = '€' +  plan.price.to_s + '/ month'
+            - unless plan.free?
+              = '€' +  plan.price.to_s + '/ month'
             %br
             - unless @selected_plan.nil?
               - if plan.id < @selected_plan
