@@ -10,7 +10,7 @@ class Subscribers::SessionsController < Devise::SessionsController
       end
     end
     flash.clear
-    params[:return_path] || super
+    params[:return_path] || root_path
   end
 
 end
