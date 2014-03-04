@@ -46,8 +46,8 @@ class PaymentController < ApplicationController
   def notify
     # find user by token
     notify = Paypal::Notification.new(request.raw_post)
-    user = User.find(notify.item_id)
-    subscription = user.subscription
+    subscriber = Subscriber.find(notify.item_id)
+    subscription = subscriber.subscription
     payment = subscription.payments.build_from_paypal notify.params
     subscription.update_attributes(using_coupon: false)
     if notify.params['payment_status'] == "Completed"

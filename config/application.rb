@@ -20,7 +20,8 @@ module TipsterHero
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
 
     # For automatically load subfolders in the models folder
-    config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**}')]
+    config.autoload_paths = %W(#{config.root}/lib)
+    config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**}','lib')]
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
 
     # config.i18n.default_locale = :de

@@ -15,16 +15,16 @@
         - if current_subscriber
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
-              = current_subscriber.name
+              = current_subscriber.full_name
               %b.caret
             %ul.dropdown-menu
               %li
-                %a{href: my_account_path} My Account
+                %a{href: my_profile_path} My Profile
               %li
                 %a{href: subscriptions_path} My Subscription
               %li.divider
               %li
-                %a{href: destroy_subscriber_session_path} Sign Out
+                %a{href: destroy_account_session_path} Sign Out
         - else
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}

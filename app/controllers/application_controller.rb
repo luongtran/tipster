@@ -23,6 +23,11 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+  def sign_in_account(account)
+    acc = Account.find_by_email(account[:email])
+    acc.valid_password?(account[:password])
+    sign_in acc
+  end
 
   def current_ability
     @current_ability ||= Ability.new(current_account)
