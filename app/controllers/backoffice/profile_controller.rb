@@ -1,7 +1,13 @@
 class Backoffice::AccountsController < AccountsController
   before_action :authenticate_tipster!
 
-  # Inherited all super actions
+  def change_avatar
+
+  end
+
+  def crop_avatar
+
+  end
 
   protected
 

@@ -13,8 +13,6 @@ TipsterHero::Application.routes.draw do
       get :my_profile, to: :show
       post :update_profile, to: :update
       post :change_password
-      post :change_avatar
-      post :crop_avatar
     end
   end
 
@@ -61,20 +59,16 @@ TipsterHero::Application.routes.draw do
   # Prefix: 'backoffice'
   namespace :backoffice do
     root 'home#index'
-    get '/my_account', to: 'profile#show'
-    post '/my_account', to: 'profile#update'
-    post '/change_password', to: 'profile#change_password'
-    post '/change_avatar', to: 'profile#change_avatar'
-    post '/crop_avatar', to: 'profile#crop_avatar'
+    controller :profile do
+      get :my_profile, to: :show
+      post :update_profile, to: :update
+      post :change_password
+      post :change_avatar
+      post :crop_avatar
+    end
     resources :tips
   end
 
-  devise_for :tipsters, path: '/backoffice', skip: :registrations, controllers: {
-      sessions: "backoffice/sessions"
-  }
-  devise_for :admins, path: '/admin', skip: :registrations, controllers: {
-      sessions: "admin/sessions"
-  }
   # End Tipster routes ===========================================================
 
   # Rueta set route here
