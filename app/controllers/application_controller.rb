@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_action :set_locale
+  before_action :set_locale, :fill_up_profile
 
   helper_method :tipster_ids_in_cart
 
@@ -22,11 +22,6 @@ class ApplicationController < ActionController::Base
   end
 
   protected
-  def sign_in_account(account)
-    acc = Account.find_by_email(account[:email])
-    acc.valid_password?(account[:password])
-    sign_in acc
-  end
 
   def current_ability
     @current_ability ||= Ability.new(current_account)
@@ -50,7 +45,9 @@ class ApplicationController < ActionController::Base
   end
 
   def fill_up_profile
-    if current_account && !current_account.rolable.valid?
+    user = current_subscriber
+    if user && !user.valid?
+
       redirect_to my_profile_url, notice: 'Please update your profile'
     end
   end

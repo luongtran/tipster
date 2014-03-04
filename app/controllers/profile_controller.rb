@@ -1,6 +1,6 @@
 class ProfileController < ApplicationController
   before_action :authenticate_account!
-
+  skip_before_action :fill_up_profile
   def show
     prepare_user_data
   end
