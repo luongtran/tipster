@@ -56,6 +56,7 @@
               Total:€
               %span#total_price
                 = @total_price.round(3)
+        %a.btn.btn-success.btn-large{href: tipsters_path} Add more tipster
         %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
 
       - if @select_plan && @select_plan.free?

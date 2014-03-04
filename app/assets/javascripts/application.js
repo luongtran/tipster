@@ -15,6 +15,7 @@
  = require jquery.Jcrop
  = require user.js
  = require flash_message.js
+ = require bootstrap-dialog.min
  = require dev
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
  = require jquery.migrate

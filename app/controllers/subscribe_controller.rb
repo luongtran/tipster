@@ -4,10 +4,17 @@ class SubscribeController < ApplicationController
   before_action :ready_to_payment, only: [:payment, :payment_method]
 
   def identification
+    request.get?
     action = params[:act]
     case action
+      when 'sign_in'
+        @account = Account.find_by(:email => params[:account][:email])
+        if @account && @account.valid_password?(params[:account][:password])
+          sign_in @account
+          redirect_to subscribe_payment_method_url
+        end
       when 'update_profile'
-        @profile = current_subscriber.create_profile(profile_params)
+        #@profile = current_subscriber.create_profile(profile_params)
       when 'facebook', 'google_oauth2'
         session[:return_url] = subscribe_payment_method_url
         redirect_to subscriber_omniauth_authorize_path(action)
@@ -19,7 +26,7 @@ class SubscribeController < ApplicationController
     if current_subscriber.already_has_subscription? #Adding tipster to current subscription
       current_subscription = current_subscriber.subscription
       unless current_subscription.can_change_tipster?
-        redirect_to subscriptions_path,notice: "You can change your follow tipster on day #{current_subscription.active_at.strftime('%d')}  of the month" and return
+        redirect_to subscriptions_path, notice: "You can change your follow tipster on day #{current_subscription.active_at.strftime('%d')}  of the month" and return
       end
       select_plan = current_subscription.plan
       select_tipsters = Tipster.where(id: tipster_ids_in_cart)
@@ -167,11 +174,11 @@ class SubscribeController < ApplicationController
   #POST
   def apply_coupon_code
     cc = CouponCode.find_by_code(params[:code])
-    if cc && cc.user_id == current_subscriber.id
+    if cc && cc.subscriber_id == current_subscriber.id
       unless cc.is_used
         session[:using_coupon] = cc.id
         cc.mark_used
-        flash[:notice] = I18n.t('coupon.success_using',discount: "3 EURO")
+        flash[:notice] = I18n.t('coupon.success_using', discount: "3 EURO")
       else
         flash[:notice] = I18n.t('coupon.is_using')
       end
