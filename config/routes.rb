@@ -27,7 +27,7 @@ TipsterHero::Application.routes.draw do
   resource :cart, controller: 'cart', :only => [:show] do
     post :add_tipster
     post :drop_tipster
-    post :empty
+    get :empty
   end
 
   scope path: '/subscribe', as: :subscribe do

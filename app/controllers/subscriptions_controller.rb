@@ -44,4 +44,9 @@ class SubscriptionsController < ApplicationController
       redirect_to action: 'show', notice: "You can change your follow tipster on day #{current_subscription.active_at.strftime('%d')}  of the month"
     end
   end
+
+  def add_tipster_to_current_subscription
+
+  end
+
 end

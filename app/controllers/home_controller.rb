@@ -2,7 +2,6 @@ class HomeController < ApplicationController
   before_action :subscriber_required
 
   def index
-    empty_subscribe_session
     params[:q] ||= {}
     q = Tipster.search(params[:q])
     @tipsters = q.result

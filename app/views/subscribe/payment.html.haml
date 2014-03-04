@@ -78,13 +78,13 @@
           %br
           - if @return[:using_coupon]
             \- Total before:
-            %strong.text-info= "€#{@return[:before_amount]}"
+            %strong.text-info= "€#{@return[:before_amount].round(3)}"
             %br
             \- Discount:
             %strong - €3
             %br
           \- Total
-          %strong.text-info €#{@return[:amount]}
+          %strong.text-info €#{@return[:amount].round(3)}
         - else
           %h3 Amount
           \- Number tipster on your current subscription:
@@ -97,7 +97,7 @@
           %strong #{@return[:adder_tipster]}
           %br
           \- Need to paid:
-          %strong €#{@return[:subtotal]}
+          %strong €#{@return[:subtotal].round(3)}
           %br
           \_______________________
           %br
@@ -105,7 +105,7 @@
           %br
           - if @return[:using_coupon]
             \- Total before:
-            %strong.text-info= "€#{@return[:before_amount]}"
+            %strong.text-info= "€#{@return[:before_amount].round(3)}"
             %br
             \- Discount:
             %strong - 3

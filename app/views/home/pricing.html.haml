@@ -54,7 +54,7 @@
             - elsif plan.id > @selected_plan
               = link_to 'Upgrade', select_plan_path(plan.id),class: 'btn btn-success'
             - else
-              %label.label.label-important Current Plan
+              %span.btn.btn-info Current
           - else
             - if @choosed_plan == plan.id
               %label.label.label-warning Selected Plan
