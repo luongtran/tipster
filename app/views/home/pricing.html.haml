@@ -20,12 +20,6 @@
             - if plan.pause_ability?
               &#x2714;
             - else
-<<<<<<< HEAD
-              %span.btn.btn-info Current
-          - else
-            - if @choosed_plan == plan.id
-              %label.label.label-warning Selected Plan
-=======
               &#x2718;
       %tr
         %td Ability to switch tipsters
@@ -33,7 +27,6 @@
           %td
             - if plan.switch_tipster_ability
               &#x2714;
->>>>>>> 6dc86129c33548b0897d5f751a6e724d24dea2f1
             - else
               &#x2718;
       %tr
@@ -53,8 +46,7 @@
         %td Ability to switch tipsters
         - @plans.each do |plan|
           %td
-            - unless plan.free?
-              = '€' +  plan.price.to_s + '/ month'
+            = '€' +  plan.price.to_s + '/ month'
             %br
             - unless @selected_plan.nil?
               - if plan.id < @selected_plan
@@ -62,9 +54,9 @@
               - elsif plan.id > @selected_plan
                 = link_to 'Upgrade', select_plan_path(plan.id),class: 'btn btn-success'
               - else
-                %label.label.label-important Current Plan
+                %a.btn.btn-danger Current
             - else
               - if @choosed_plan == plan.id
-                %label.label.label-warning Selected Plan
+                %a.btn.btn-warning Selected
               - else
                 = link_to 'Subscribe', select_plan_path(plan.id),class: 'btn btn-success'
