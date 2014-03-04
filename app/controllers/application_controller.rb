@@ -10,8 +10,7 @@ class ApplicationController < ActionController::Base
 
   # Define 3 helper methods: current_{subscriber|tipster|admin}
   [Tipster, Admin, Subscriber].each do |klass|
-    klass_string = klass.name.downcase
-    method_name = "current_#{klass_string}"
+    method_name = "current_#{klass.name.downcase}"
     define_method method_name do
       if current_account && current_account.rolable.is_a?(klass)
         current_account.rolable
@@ -33,8 +32,19 @@ class ApplicationController < ActionController::Base
     @current_ability ||= Ability.new(current_account)
   end
 
+  def tipster_required
+    unless current_tipster
+      sign_out current_account
+    end
+  end
 
-  # Render bad request(if: invalid params, etc ...)
+  def subscriber_required
+    unless current_subscriber
+      sign_out current_account
+    end
+  end
+
+# Render bad request(if: invalid params, etc ...)
   def render_400
     render nothing: true, status: 400
   end
@@ -51,7 +61,7 @@ class ApplicationController < ActionController::Base
     I18n.locale = I18n.default_locale
   end
 
-  # Clear and create new cart
+# Clear and create new cart
   def initial_cart_session
     session[:cart] = {}
     session[:cart][:tipster_ids] = []
@@ -72,13 +82,13 @@ class ApplicationController < ActionController::Base
     session[:cart] = nil
   end
 
-  # Return an array of tipster's id in cart from session
+# Return an array of tipster's id in cart from session
   def tipster_ids_in_cart
     initial_cart_session if session[:cart].nil?
     session[:cart][:tipster_ids].uniq
   end
 
-  # Return an array of tipster's id in current user subscription
+# Return an array of tipster's id in current user subscription
   def tipster_ids_in_subscription
     if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active?
       current_subscriber.subscription.tipster_ids
@@ -96,4 +106,5 @@ class ApplicationController < ActionController::Base
   def find_layout
     'backoffice' if self.class.name.split("::").first == 'Backoffice'
   end
+
 end

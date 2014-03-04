@@ -57,13 +57,6 @@ class ProfileController < ApplicationController
     @user = @account.rolable
   end
 
-  def user_params
-    params.require(:user).permit(
-        :first_name, :last_name, :civility, :birthday, :address, :city, :country, :zip_code, :mobile_phone,
-        :telephone, :favorite_beting_website, :know_website_from, :secret_question, :answer_secret_question
-    )
-  end
-
   def change_password_params
     params.require(:account).permit(:current_password, :password, :password_confirmation)
   end

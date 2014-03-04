@@ -1,14 +1,8 @@
-class Subscribers::SessionsController < Devise::SessionsController
-  def create
-    if params[:return_path].present?
-
-    end
-    super
-  end
+class Subscribers::SessionsController < SessionsController
   protected
-
+  
   def after_sign_in_path_for(resource)
-    if resource.is_a?(Subscriber)
+    if resource.rolable.is_a?(Subscriber)
       if session[:cart].nil?
         initial_cart_session
       else
@@ -16,7 +10,11 @@ class Subscribers::SessionsController < Devise::SessionsController
       end
     end
     flash.clear
-    params[:return_path] || super
+    params[:return_path] || root_path
+  end
+
+  def after_sign_out_path_for(resource)
+    root_path
   end
 
 end

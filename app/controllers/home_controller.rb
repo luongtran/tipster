@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+
   def index
     params[:q] ||= {}
     q = Tipster.search(params[:q])

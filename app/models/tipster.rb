@@ -15,6 +15,7 @@ class Tipster < ActiveRecord::Base
   # ASSOCIATIONS
   # ==============================================================================
   has_one :account, as: :rolable
+  has_many :tips, as: :author
   has_and_belongs_to_many :sports
   accepts_nested_attributes_for :account
 

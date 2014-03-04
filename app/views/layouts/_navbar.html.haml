@@ -11,7 +11,7 @@
           %a{href: tipsters_path} Tipsters
         %li
           %a{href: tips_path} Tips
-        - if account_signed_in?
+        - if current_subscriber
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
               = current_subscriber.full_name
