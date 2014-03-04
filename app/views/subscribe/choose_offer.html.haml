@@ -1,66 +1,80 @@
 = javascript_include_tag 'subscribe'
-#rootwizard{'data-no-turbolink' => true}
-  .navbar
-    .navbar-inner
-      .container
-        %ul.nav.nav-pills
-          %li.active
-            %a{"data-toggle" => "tab", href: "#tab1"} Choose Offer
-          %li
-            %a{"data-toggle" => "tab", href: "#tab2"} Identification
-          %li
-            %a{"data-toggle" => "tab", href: "#tab3"}Payment Method
-          %li
-            %a{"data-toggle" => "tab", href: "#tab4"} Payment
-          %li
-            %a{"data-toggle" => "tab", href: "#tab5"} Confirmation
-  .tab-content
-    #tab1.tab-pane.active
-      - if @select_plan
-        %h3 Your selected plan:
-        %ul
-          %li
-            Name:
-            %strong= @select_plan.title
-          %li
-            Price:
-            %strong= "€ #{@select_plan.price} / Month"
-        %a{href: pricing_path} Select another plan?
-      - unless @select_plan && @select_plan.free?
-        - unless @tipsters_in_cart.blank?
-          %h3 Tipsters in your cart
-          %table.table.table-bordered
-            %thead
-              %tr
-                %th Full Name
-                %th Email
-                %th Created at
-                %td Action
-            %tbody
-              - @tipsters_in_cart.each do |tipster|
-                %tr
-                  %td
-                    = tipster.full_name
-                  %td
-                    = tipster.email
-                  %td
-                    = tipster.created_at.strftime("%m/%d/%Y")
-                  %td
-                    = form_tag drop_tipster_cart_path do
-                      = hidden_field_tag :id, tipster.id
-                      = hidden_field_tag :return_url, subscribe_choose_offer_path
-                      %button.btn.btn-small.btn-danger{type: :submit} Remove
-        - if @total_price
-          .text-right
-            %h4
-              Total:€
-              %span#total_price
-                = @total_price.round(3)
-        %a.btn.btn-success.btn-large{href: tipsters_path} Add more tipster
-        %a.btn.btn-success.btn-large{href: subscribe_payment_method_path} Process to Checkout
+.container
+  #rootwizard{'data-no-turbolink' => true}
+    .navbar
+      .navbar-inner
+        .container
+          %ul.nav.nav-pills
+            %li.active
+              %a{"data-toggle" => "tab", href: "#tab1"} Choose Offer
+            %li
+              %a{"data-toggle" => "tab", href: "#tab2"} Identification
+            %li
+              %a{"data-toggle" => "tab", href: "#tab3"}Payment Method
+            %li
+              %a{"data-toggle" => "tab", href: "#tab4"} Payment
+            %li
+              %a{"data-toggle" => "tab", href: "#tab5"} Confirmation
+    .tab-content
+      #tab1.tab-pane.active
+        - if @select_plan
+          %h3 Your selected plan:
+          .col-lg-offset-1
 
-      - if @select_plan && @select_plan.free?
-        %h3 Are you sure want to choose the Free subscription?
-        = form_tag select_free_plan_path do |f|
-          %button.btn.btn-success{type: :submit} Yes, I'd like it
-          %a.btn.btn-warning{href: pricing_path} No, Let me choose another
+            %ul
+              %li
+                Name:
+                %strong= @select_plan.title
+              %li
+                Price:
+                %strong= "€ #{@select_plan.price} / Month"
+            %a{href: pricing_path} Select another plan?
+        %hr
+        %h3
+          How do you want to receive your tips?
+        .col-lg-offset-1
+          .checkbox
+            %label
+              %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_email'} By Email
+          .checkbox
+            %label
+              %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_message'} By Message
+        %hr
+        - unless @select_plan && @select_plan.free?
+          - unless @tipsters_in_cart.blank?
+            %h3 Tipsters in your cart
+            %table.table.table-bordered
+              %thead
+                %tr
+                  %th Full Name
+                  %th Email
+                  %th Created at
+                  %td Action
+              %tbody
+                - @tipsters_in_cart.each do |tipster|
+                  %tr
+                    %td
+                      = tipster.full_name
+                    %td
+                      = tipster.email
+                    %td
+                      = tipster.created_at.strftime("%m/%d/%Y")
+                    %td
+                      = form_tag drop_tipster_cart_path do
+                        = hidden_field_tag :id, tipster.id
+                        = hidden_field_tag :return_url, subscribe_choose_offer_path
+                        %button.btn.btn-small.btn-danger{type: :submit} Remove
+          - if @total_price
+            .text-right
+              %h4
+                Total:€
+                %span#total_price
+                  = @total_price.round(3)
+          %a.btn.btn-success{href: tipsters_path} + Add more tipster
+          %a.btn.btn-primary{href: subscribe_payment_method_path} Process to Checkout
+
+        - if @select_plan && @select_plan.free?
+          %h3 Are you sure want to choose the Free subscription?
+          = form_tag select_free_plan_path do |f|
+            %button.btn.btn-warning{type: :submit} Yes, I'd like it
+            %a.btn.btn-primary{href: pricing_path} No, Let me choose another

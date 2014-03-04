@@ -1,6 +1,6 @@
 class ProfileController < ApplicationController
   before_action :authenticate_account!
-
+  skip_before_action :fill_up_profile
   def show
     prepare_user_data
   end
@@ -41,7 +41,7 @@ class ProfileController < ApplicationController
   end
 
   def crop_avatar
-    @user = current_account
+    prepare_user_data
     if @user.update_attributes(params.require(:user).permit(:crop_x, :crop_y, :crop_h, :crop_w))
       flash[:notice] = I18n.t('user.update_avatar')
       redirect_to after_update_profile_path

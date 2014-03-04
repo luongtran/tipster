@@ -8,13 +8,13 @@
         %span
           = render 'avatar_crop'
         %hr
-        -#  = image_tag @user.avatar.url(:thumb)
-        -#%span
-        -#  = simple_form_for @user, as: :user, url: change_avatar_path_for(@user), method: 'POST', html: {class: 'form-inline',novalidate: true} do |f|
-        -#    = f.file_field :avatar
-        -#    = f.hidden_field :avatar_cache
-        -#    = submit_tag t("user.update_avatar")
-        -#%hr
+          = image_tag @user.avatar.url(:thumb)
+        %span
+          = simple_form_for @user, as: :user, url: change_avatar_path_for(@user), method: 'POST', html: {class: 'form-inline',novalidate: true} do |f|
+            = f.file_field :avatar
+            = f.hidden_field :avatar_cache
+            = submit_tag t("user.update_avatar")
+        %hr
         = simple_form_for @user, as: :user, url: update_profile_path_for(@user), method: 'POST', html: {class: 'form-horizontal', novalidate: true} do |f|
           = f.input :display_name
           = f.input :full_name

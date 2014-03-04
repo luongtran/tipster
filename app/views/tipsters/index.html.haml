@@ -1,95 +1,73 @@
 = content_for(:title, "All tipsters")
-.center-block
-  %ul.sports-filter
-    %li
-      %a.btn.btn-default{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All sports
-    - @sports.each do |sport|
+.container
+  .center-block
+    %ul.sports-filter
       %li
-        %a.btn.btn-default{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
-    %li
-      = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'
-.center-block
-  - unless tipster_ids_in_cart.empty?
-    - if @tipster_in_subscription.present?
-      %a.btn.btn-success.btn-large.pull-right{href: subscribe_add_offer_path,'data-no-turbolink' => true} Proceed to checkout
-    - else
-      %a.btn.btn-success.btn-large.pull-right{href: subscribe_choose_offer_path,'data-no-turbolink' => true} Proceed to checkout
-%table.table.table-bordered
-  %thead
-    %tr
-      %th #
-      %th Full Name
-      %th
-        %a{href: tipsters_path(sort_params_for('yield'))} Yield
-      %th
-        %a{href: tipsters_path(sort_params_for('profit'))} Profil
-      %th
-        %a{href: tipsters_path(sort_params_for('tips_count'))} Number of tips
-      %th Joined at
-      %td Action
-  %tbody
-    - if @tipsters.empty?
-      %tr
-        %td
-          There are no any tipster found.
-        %td
-        %td
-        %td
-    - else
-      - @tipsters.each_with_index do |tipster,index|
-        %tr[tipster]
-          %td= index + 1
-          %td
-            %a{href: tipster_path(tipster)}
-              = tipster.full_name
-            .tipster-profit-chart
-              = image_tag profit_img_chart_url_for(tipster.profit_per_months)
-          %td= tipster.yield
-          %td= tipster.profit
-          %td= tipster.tips_count
-          %td= tipster.created_at.strftime("%m/%d/%Y")
-          %td
-            - if @tipster_in_subscription.present? && @tipster_in_subscription.include?(tipster)
-              %label.label Already purchase
-            - else
-              - if tipster_ids_in_cart.include? tipster.id.to_s
-                = form_tag drop_tipster_cart_path do
-                  = hidden_field_tag :id, tipster.id
-                  = hidden_field_tag :return_url, tipsters_url
-                  %button.btn.btn-danger{type: :submit} Remove from cart
-              - else
-                = form_tag add_tipster_cart_path do
-                  = hidden_field_tag :id, tipster.id
-                  %button.btn.btn-success{type: :submit} Add to cart
-.center-block
-  - unless tipster_ids_in_cart.empty?
-    - if @tipster_in_subscription.present?
-      %a.btn.btn-success.btn-large.pull-right#btncheckout{href: subscribe_add_offer_path,'data-no-turbolink' => true} Proceed to checkout
-    - else
-      %a.btn.btn-success.btn-large.pull-right#btncheckout{href: subscribe_choose_offer_path,'data-no-turbolink' => true} Proceed to checkout
+        %a.btn.btn-default{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All sports
+      - @sports.each do |sport|
+        %li
+          %a.btn.btn-default{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
+      %li
+        = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'
 
-:javascript
-  if($('#cart_size').val() != "0"){
-    BootstrapDialog.show({
-        size: BootstrapDialog.SIZE_LARGE,
-        message: 'The item has been added to your cart',
-        draggable: true,
-        buttons: [{
-            icon: 'glyphicon glyphicon-shopping-cart',
-            label: 'Add more tipster',
-            autospin: true,
-            addClass: 'btn-warning',
-            action: function(dialogItself){
-                          dialogItself.close();
-                      }
-        }, {
-            icon: 'glyphicon glyphicon-ok',
-            label: 'Continue to checkout',
-            autospin: true,
-            cssClass: 'btn-primary',
-            action: function(){
-              window.location = $('#btncheckout').attr('href');
-            }
-        }]
-    });
-  }
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th #
+        %th Full Name
+        %th
+          %a{href: tipsters_path(sort_params_for('yield'))} Yield
+        %th
+          %a{href: tipsters_path(sort_params_for('profit'))} Profil
+        %th
+          %a{href: tipsters_path(sort_params_for('tips_count'))} Number of tips
+        %th Joined at
+        %td Action
+    %tbody
+      - if @tipsters.empty?
+        %tr
+          %td
+            There are no any tipster found.
+          %td
+          %td
+          %td
+      - else
+        - @tipsters.each_with_index do |tipster,index|
+          %tr[tipster]
+            %td= index + 1
+            %td
+              %a{href: tipster_path(tipster)}
+                = tipster.full_name
+              .tipster-profit-chart
+                = image_tag profit_img_chart_url_for(tipster.profit_per_months)
+            %td= tipster.yield
+            %td= tipster.profit
+            %td= tipster.tips_count
+            %td= tipster.created_at.strftime("%m/%d/%Y")
+            %td
+              - if @tipster_in_subscription.present? && @tipster_in_subscription.include?(tipster)
+                %label.label Already purchase
+              - else
+                - if tipster_ids_in_cart.include? tipster.id.to_s
+                  = form_tag drop_tipster_cart_path do
+                    = hidden_field_tag :id, tipster.id
+                    = hidden_field_tag :return_url, tipsters_url
+                    %button.btn.btn-danger{type: :submit} Remove from cart
+                - else
+                  = form_tag add_tipster_cart_path do
+                    = hidden_field_tag :id, tipster.id
+                    %button.btn.btn-success{type: :submit} Add to cart
+
+  - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
+    #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
+            %h4.modal-title The item has been added to your Cart
+          .modal-body
+            .text-center.text-info
+              Do you want to choose an another tipster for only?
+              = "€9,90"
+              %button.btn.btn-success.btn-large{"data-dismiss" => "modal", type: "button"} + Add more tipster
+              %a.btn.btn-primary{href: subscribe_choose_offer_path} Process to checkout
