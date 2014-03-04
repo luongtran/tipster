@@ -1,34 +1,35 @@
-= content_for(:title, "Cart show")
-%table.table.table-bordered
-  %caption
-    %h2 Your cart
-  %thead
-    %tr
-      %th Full Name
-      %th Email
-      %th Created at
-      %td Action
-  %tbody
-    - if @tipsters.nil?
+= content_for(:title, 'Cart')
+.container
+  %table.table.table-bordered
+    %caption
+      %h2 Your cart
+    %thead
       %tr
-        %td
-          There are no any tipster found.
-        %td
-        %td
-        %td
-    - else
-      - @tipsters.each do |tipster|
+        %th Full Name
+        %th Email
+        %th Created at
+        %td Action
+    %tbody
+      - if @tipsters.nil?
         %tr
           %td
-            = tipster.full_name
+            There are no any tipster found.
           %td
-            = tipster.email
           %td
-            = tipster.created_at.strftime("%m/%d/%Y")
           %td
-            = form_tag drop_tipster_cart_path do
-              = hidden_field_tag :id, tipster.id
-              %button.btn.btn-danger{type: :submit} Remove from cart
-.text-center
-  %a.btn.btn-success.btn-large{href: tipsters_path} + Add more tipster
-  %a.btn.btn-primary.btn-large{href: subscribe_choose_offer_path} Proceed to checkout
+      - else
+        - @tipsters.each do |tipster|
+          %tr
+            %td
+              = tipster.full_name
+            %td
+              = tipster.email
+            %td
+              = tipster.created_at.strftime("%m/%d/%Y")
+            %td
+              = form_tag drop_tipster_cart_path do
+                = hidden_field_tag :id, tipster.id
+                %button.btn.btn-danger{type: :submit} Remove from cart
+  .text-center
+    %a.btn.btn-success.btn-large{href: tipsters_path} + Add more tipster
+    %a.btn.btn-primary.btn-large{href: subscribe_choose_offer_path} Proceed to checkout
