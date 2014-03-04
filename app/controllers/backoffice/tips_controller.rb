@@ -1,5 +1,5 @@
 class Backoffice::TipsController < ApplicationController
-  before_filter :authenticate_tipster!
+  before_filter :authenticate_account!
 
   def index
     @tips = current_tipster.tips

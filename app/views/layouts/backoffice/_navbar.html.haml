@@ -9,10 +9,11 @@
     %a.navbar-brand{href: backoffice_root_path} Backoffice
   #bs-example-navbar-collapse-1.collapse.navbar-collapse
     %ul.nav.navbar-nav
-      %li
-        %a{href: backoffice_tips_path} My tips
-      %li
-        %a{href: new_backoffice_tip_path} New Tip
+      - if current_tipster
+        %li
+          %a{href: backoffice_tips_path} My tips
+        %li
+          %a{href: new_backoffice_tip_path} New Tip
     %ul.nav.navbar-nav.navbar-right
       - if current_tipster
         %li.dropdown
@@ -24,7 +25,7 @@
               %a{href: backoffice_my_profile_path} My Account
             %li.divider
             %li
-              %a{href: destroy_account_session_path} Sign Out
+              %a{href: backoffice_sign_out_path} Sign Out
       - else
         %li
           %a{href: backoffice_sign_in_path} Sign In

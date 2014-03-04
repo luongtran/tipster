@@ -1,5 +1,6 @@
 class ProfileController < ApplicationController
-  before_action :authenticate_account!, :subscriber_required
+  before_action :authenticate_account!
+
   def show
     prepare_user_data
   end
@@ -54,13 +55,6 @@ class ProfileController < ApplicationController
   def prepare_user_data
     @account = current_account
     @user = @account.rolable
-  end
-
-  def user_params
-    params.require(:user).permit(
-        :first_name, :last_name, :civility, :birthday, :address, :city, :country, :zip_code, :mobile_phone,
-        :telephone, :favorite_beting_website, :know_website_from, :secret_question, :answer_secret_question
-    )
   end
 
   def change_password_params

@@ -50,6 +50,7 @@ class Tip < ActiveRecord::Base
 
   before_validation :init_status, :init_amount, on: :create
 
+  before_create :init_expire_time
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
@@ -73,5 +74,9 @@ class Tip < ActiveRecord::Base
 
   def init_amount
     self.amount = 2000*self.stake/100 if self.stake
+  end
+
+  def init_expire_time
+    self.expire_at = Time.now + 2.days
   end
 end

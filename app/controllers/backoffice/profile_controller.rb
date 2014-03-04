@@ -1,5 +1,7 @@
-class Backoffice::AccountsController < AccountsController
-  before_action :authenticate_tipster!
+class Backoffice::ProfileController < ProfileController
+  #def show
+  #
+  #end
 
   def change_avatar
 
@@ -10,6 +12,12 @@ class Backoffice::AccountsController < AccountsController
   end
 
   protected
+  def user_params
+    params.require(:user).permit(
+        :display_name,
+        :full_name
+    )
+  end
 
   def current_user
     current_tipster
