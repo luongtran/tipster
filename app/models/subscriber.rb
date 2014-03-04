@@ -29,8 +29,10 @@ class Subscriber < ActiveRecord::Base
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
+  validates_date :birthday, :before => lambda { 16.years.ago }, allow_blank: true
   validates :first_name, :last_name, presence: true, format: {with: /\A([a-z]|[A-Z])/}, length: {minimum: 2}
   validates_presence_of :birthday, :civility, :mobile_phone, :secret_question, :answer_secret_question, on: :update
+  validates_format_of :mobile_phone, :telephone, with: /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/, allow_blank: true
 
   # ==============================================================================
   # CALLBACKS
