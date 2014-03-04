@@ -19,12 +19,12 @@
               %b.caret
             %ul.dropdown-menu
               %li
-                %a{href: my_account_path} My Account
+                %a{href: my_profile_path} My Profile
               %li
                 %a{href: subscriptions_path} My Subscription
               %li.divider
               %li
-                %a{href: destroy_subscriber_session_path} Sign Out
+                %a{href: destroy_account_session_path} Sign Out
         - else
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
@@ -32,15 +32,15 @@
               %b.caret
             %ul.dropdown-menu
               %li
-                %a{href: new_subscriber_registration_path} Register
+                %a{href: new_account_registration_path} Register
               %li
-                %a{href: new_subscriber_session_path} Sign In
+                %a{href: new_account_session_path} Sign In
               = render 'shared/social_connection_links'
 
 #page_header_mid
 
   // this is container header box for sub-page (signup - steps etc)
-  - if @page=='home'
+  - if @page == 'home'
     #page-header
       #feature-profiles
         .container

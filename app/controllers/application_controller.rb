@@ -28,13 +28,13 @@ class ApplicationController < ActionController::Base
   end
 
   def tipster_required
-    unless current_tipster
+    if account_signed_in? && !current_tipster
       sign_out current_account
     end
   end
 
   def subscriber_required
-    unless current_subscriber
+    if account_signed_in? && !current_subscriber
       sign_out current_account
     end
   end

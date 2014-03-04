@@ -1,14 +1,13 @@
 class Backoffice::ProfileController < ProfileController
-  #def show
-  #
-  #end
+  before_action :authenticate_account!, :tipster_required
+
+  def show
+  end
 
   def change_avatar
-
   end
 
   def crop_avatar
-
   end
 
   protected
