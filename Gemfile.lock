@@ -243,6 +243,11 @@ GEM
     paypal-sdk-rest (0.6.0)
       paypal-sdk-core (~> 0.2.4)
       uuidtools (~> 2.1)
+    phony (2.2.3)
+    phony_rails (0.6.1)
+      activesupport (>= 3.0)
+      countries (>= 0.8.2)
+      phony (~> 2.1)
     polyamorous (0.6.4)
       activerecord (>= 3.0)
     polyglot (0.3.4)
@@ -389,6 +394,7 @@ DEPENDENCIES
   paypal-express
   paypal-recurring
   paypal-sdk-rest
+  phony_rails
   quiet_assets
   rails (= 4.0.0)
   ransack!

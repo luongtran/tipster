@@ -12,12 +12,14 @@ class SubscribeController < ApplicationController
         if @account && @account.valid_password?(params[:account][:password])
           sign_in @account
           redirect_to subscribe_payment_method_url
+        else
+          flash.now[:alert] = 'Email or password is invalid'
         end
       when 'update_profile'
         #@profile = current_subscriber.create_profile(profile_params)
       when 'facebook', 'google_oauth2'
         session[:return_url] = subscribe_payment_method_url
-        redirect_to subscriber_omniauth_authorize_path(action)
+        redirect_to account_omniauth_authorize_path(action)
     end
   end
 
