@@ -2,7 +2,7 @@ class Subscribers::SessionsController < Devise::SessionsController
   protected
 
   def after_sign_in_path_for(resource)
-    if resource.is_a?(Subscriber)
+    if resource.rolable.is_a?(Subscriber)
       if session[:cart].nil?
         initial_cart_session
       else

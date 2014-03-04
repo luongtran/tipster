@@ -1,6 +1,5 @@
 class ProfileController < ApplicationController
-  before_action :authenticate_account!
-
+  before_action :authenticate_account!, :subscriber_required
   def show
     prepare_user_data
   end

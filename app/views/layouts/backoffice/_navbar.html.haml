@@ -14,17 +14,17 @@
       %li
         %a{href: new_backoffice_tip_path} New Tip
     %ul.nav.navbar-nav.navbar-right
-      - if account_signed_in?
+      - if current_tipster
         %li.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
-            = current_tipster.name
+            = current_tipster.full_name
             %b.caret
           %ul.dropdown-menu
             %li
-              %a{href: backoffice_my_account_path} My Account
+              %a{href: backoffice_my_profile_path} My Account
             %li.divider
             %li
-              %a{href: destroy_tipster_session_path} Sign Out
+              %a{href: destroy_account_session_path} Sign Out
       - else
         %li
           %a{href: backoffice_sign_in_path} Sign In
