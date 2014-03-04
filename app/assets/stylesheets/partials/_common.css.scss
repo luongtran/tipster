@@ -21,6 +21,57 @@ body {
 }
 
 
+.tipster-form-bg {
+  background: url(/assets/form-bg.jpg) no-repeat top center;
+  min-height: 458px;
+}
+.tipster-form-board {
+  color: #ffffff;
+  background-color: rgba(black, 0.3);
+  font-size: 20px;
+  font-weight: 200;
+  .tipster-form-board-sp {
+    background-color: rgba(black, 0.4);
+  }
+}
+.tipster-form {
+  margin: 0 auto;
+  width: 511px;
+  padding: 5px 20px;
+  .tipster-form-top {
+    background: url(/assets/form-top.png) no-repeat top center;
+    height: 7px;
+  }
+  .tipster-form-mid {
+    background: url(/assets/form-mid.png) repeat-y top center;
+    form {
+      padding-top: 20px;
+      padding-right: 25px;
+    }
+    input {
+      background-color: $gray-light;
+      border-color: $gray-light;
+      box-shadow: none;
+      &.form-control {
+        font-size: 12px;
+        height: 25px;
+        line-height: 23px;
+      }
+    }
+    label.control-label {
+      font-size: 12px;
+      line-height: 23px;
+      padding-top: 0;
+      font-weight: normal;
+    }
+  }
+  .tipster-form-bot {
+    background: url(/assets/form-bot.png) no-repeat top center;
+    height: 44px;
+  }
+}
+
+
 //-----------------------------
 @import "page_header";
 @import "page_footer.css.scss";

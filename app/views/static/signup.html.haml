@@ -1,2 +1,51 @@
 = render file: 'static/page_header'
+
+
+// Sign up form
+#sign-up-bg.tipster-form-bg
+  #sign-up-board.tipster-form-board
+    .tipster-form-board-sp
+      .container.pts.pbs
+        %h4.text-uppercase Become Tipster Today and get Free trial !
+    .container.ptm.pbm
+      Start with free account really easy now.
+      %br
+      Just complete form below and you become member of Tipster Hero !
+  #sign-up-form.tipster-form
+    .tipster-form-top
+    .tipster-form-mid.clearfix
+      %form(class="form-horizontal mbn" )
+        .form-group
+          %label.control-label.col-md-4 First name
+          .col-md-7
+            %input(class="form-control" type="text" value="" placeholder="" )
+        .form-group
+          %label.control-label.col-md-4 Last Name
+          .col-md-7
+            %input(class="form-control" type="text" value="" placeholder="" )
+        .form-group
+          %label.control-label.col-md-4 Your Email
+          .col-md-7
+            %input(class="form-control" type="email" value="" placeholder="" )
+        .form-group
+          %label.control-label.col-md-4 Choose password
+          .col-md-7
+            %input(class="form-control" type="password" value="" placeholder="" )
+        .form-group
+          %label.control-label.col-md-4 Re-type password
+          .col-md-7
+            %input(class="form-control" type="password" value="" placeholder="" )
+        .form-group
+          .col-md-7.col-md-offset-4
+            %button(type="submit" class="btn btn-success" )
+              %i(class="typcn typcn-world mrs" )
+              Create Account
+            %a(class="mls text-xs" href="javascript:;" ) Recovery Account
+            %label(class="checkbox text-slim" )
+              %input(type="checkbox" ) I agree with term & conditions
+    .tipster-form-bot
+
+// END Sign up form
+
+
 = render file: 'static/page_footer'
