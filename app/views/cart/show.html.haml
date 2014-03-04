@@ -30,7 +30,5 @@
               = hidden_field_tag :id, tipster.id
               %button.btn.btn-danger{type: :submit} Remove from cart
 .text-center
-  %a.btn.btn-success.btn-large{href: tipsters_path} Add more tipster
-  = form_tag empty_cart_path do
-    %button.btn.btn-danger{type: :submit} Empty cart
-  %a.btn.btn-success.btn-large{href: subscribe_choose_offer_path} Proceed to checkout
+  %a.btn.btn-success.btn-large{href: tipsters_path} + Add more tipster
+  %a.btn.btn-primary.btn-large{href: subscribe_choose_offer_path} Proceed to checkout
