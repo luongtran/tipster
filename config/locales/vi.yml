@@ -52,6 +52,7 @@ vi:
     sign_up: "Đăng ký"
     sign_out: "Đăng xuất"
     account_info: "Thông tin tài khoản"
+    upgrade: "Nâng cấp tài khoản"
   tipster_statuses:
     all: 'Tất cả'
     active: 'Khả dụng'

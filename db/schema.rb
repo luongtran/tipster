@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140303090758) do
+ActiveRecord::Schema.define(version: 20140304081044) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -169,6 +169,7 @@ ActiveRecord::Schema.define(version: 20140303090758) do
     t.datetime "expired_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_free",       default: true
   end
 
   add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id"

@@ -73,5 +73,6 @@
               %li
                 %a{:href=>"javascript:;"}
                   %i(class="typcn typcn-cog")
+            = hidden_field_tag 'cart_size',tipster_ids_in_cart.size
           .quickpanel-right
   = render 'top_tipster' if controller_name == 'home' && action_name == 'index'

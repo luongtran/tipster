@@ -51,6 +51,7 @@ en:
     sign_up: "Sign up"
     sign_out: "Sign out"
     account_info: "Account informations"
+    upgrade: "Upgrade account"
   tipster_statuses:
     all: 'All'
     active: 'Active'

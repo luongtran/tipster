@@ -8,8 +8,11 @@
         %span #{@subscription.plan_title}
       %li
         %span
-          %strong Subscription status :
+          %strong Paid account :
         %span #{@subscription.active? ? "Active" : "Not Active"}
+      - if @subscription.is_free?
+        %li
+          %a{href: pricing_path}= t('user.upgrade')
       - if @subscription.active?
         %li
           %span

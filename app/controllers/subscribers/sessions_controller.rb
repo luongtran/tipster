@@ -1,6 +1,6 @@
 class Subscribers::SessionsController < SessionsController
   protected
-  
+
   def after_sign_in_path_for(resource)
     if resource.rolable.is_a?(Subscriber)
       if session[:cart].nil?

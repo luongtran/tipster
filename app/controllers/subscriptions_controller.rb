@@ -12,8 +12,18 @@ class SubscriptionsController < ApplicationController
   end
 
   def select_free_plan
-    session[:free_plan] = true
-    redirect_to tipsters_path
+    if Plan.exists?(session[:plan_id])
+      session[:free_plan] = true
+      if current_subscriber
+        if current_subscriber.subscription.active?
+
+        else
+          current_subscriber.build_subscription(plan_id: session[:plan_id])
+        end
+      else
+        redirect_to subscribe_identification_path
+      end
+    end
   end
 
   def show

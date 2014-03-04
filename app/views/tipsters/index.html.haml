@@ -68,25 +68,27 @@
     - else
       %a.btn.btn-success.btn-large.pull-right#btncheckout{href: subscribe_choose_offer_path,'data-no-turbolink' => true} Proceed to checkout
 :javascript
-  BootstrapDialog.show({
-      size: BootstrapDialog.SIZE_LARGE,
-      message: 'The item has been added to your cart',
-      draggable: true,
-      buttons: [{
-          icon: 'glyphicon glyphicon-shopping-cart',
-          label: 'Add more tipster',
-          autospin: true,
-          addClass: 'btn-warning',
-          action: function(dialogItself){
-                        dialogItself.close();
-                    }
-      }, {
-          icon: 'glyphicon glyphicon-ok',
-          label: 'Continue to checkout',
-          autospin: true,
-          cssClass: 'btn-primary',
-          action: function(){
-            window.location = $('#btncheckout').attr('href');
-          }
-      }]
-  });
+  if($('#cart_size').val() != "0"){
+    BootstrapDialog.show({
+        size: BootstrapDialog.SIZE_LARGE,
+        message: 'The item has been added to your cart',
+        draggable: true,
+        buttons: [{
+            icon: 'glyphicon glyphicon-shopping-cart',
+            label: 'Add more tipster',
+            autospin: true,
+            addClass: 'btn-warning',
+            action: function(dialogItself){
+                          dialogItself.close();
+                      }
+        }, {
+            icon: 'glyphicon glyphicon-ok',
+            label: 'Continue to checkout',
+            autospin: true,
+            cssClass: 'btn-primary',
+            action: function(){
+              window.location = $('#btncheckout').attr('href');
+            }
+        }]
+    });
+  }

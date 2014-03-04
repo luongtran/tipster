@@ -47,6 +47,12 @@ class CartController < ApplicationController
     redirect_to params[:return_url].present? ? params[:return_url] : cart_path
   end
 
+  def empty
+    empty_cart_session
+    flash[:notice] = "Your cart is empty"
+    redirect_to params[:return_url].present? ? params[:return_url] : root_path
+  end
+
   private
   def already_purchase
     if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active

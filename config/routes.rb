@@ -27,6 +27,7 @@ TipsterHero::Application.routes.draw do
   resource :cart, controller: 'cart', :only => [:show] do
     post :add_tipster
     post :drop_tipster
+    post :empty
   end
 
   scope path: '/subscribe', as: :subscribe do
@@ -47,6 +48,7 @@ TipsterHero::Application.routes.draw do
   resources :tipsters, only: [:index, :show]
   resource :subscriptions, controller: 'subscriptions', only: [:show] do
     post :update
+    post :upgrade
   end
 
   get '/pricing' => 'home#pricing', as: :pricing
