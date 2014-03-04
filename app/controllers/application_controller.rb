@@ -69,12 +69,14 @@ class ApplicationController < ActionController::Base
 
   def reset_cart_session
     if current_subscriber && current_subscriber.subscription
+
       current_subscriber.subscription.inactive_tipsters.each do |tipster|
         session[:cart][:tipster_ids] << tipster.id.to_s unless session[:cart][:tipster_ids].include? tipster.id.to_s
       end
       current_subscriber.subscription.active_tipsters.each do |tipster|
         session[:cart][:tipster_ids].delete(tipster.id.to_s) if session[:cart][:tipster_ids].include? tipster.id.to_s
       end
+
     end
   end
 
