@@ -18,13 +18,14 @@
     #tab3.tab-pane.active
       .text-center
         %h3 Select your payment method
-        .span6
-          = simple_form_for :nothing, url: subscribe_payment_method_path do |f|
-            = hidden_field_tag :method, Payment::BY_PAYPAL
-            %button.btn.btn-primary.btn-large{type: :submit} With Paypal
-        .span6
-          = simple_form_for :nothing, url: subscribe_payment_method_path do |f|
-            = hidden_field_tag :method, Payment::BY_FRENCH_BANK
-            %button.btn.btn-warning.btn-large{type: :submit} French Bank
+        %ul.inline
+          %li
+            = simple_form_for :nothing, url: subscribe_payment_method_path do |f|
+              = hidden_field_tag :method, Payment::BY_PAYPAL
+              %button.btn.btn-primary.btn-large{type: :submit} With Paypal
+          %li
+            = simple_form_for :nothing, url: subscribe_payment_method_path do |f|
+              = hidden_field_tag :method, Payment::BY_FRENCH_BANK
+              %button.btn.btn-warning.btn-large{type: :submit} French Bank
 
 

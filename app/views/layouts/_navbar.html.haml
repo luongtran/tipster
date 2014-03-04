@@ -40,16 +40,17 @@
   / this is container header box for sub-page (signup - steps etc)
   #sub-page-header
     .container.clearfix
-      .pull-left
-        #sub-page-title.clearfix
-          %span(class="icon typcn typcn-location pull-left man")
-          .pull-right
-            #sub-page-navi
-              %ul.list-inline.man.text-slim
-                - %w(Home Tipsters).each do |node|
-                  %li
-                    %a{:href=>"javascript:;"}= node
-            %h1#sub-page-h1.man.text-slim= yield(:title)
+      - unless controller_name == 'home' && action_name == 'index'
+        .pull-left
+          #sub-page-title.clearfix
+            %span(class="icon typcn typcn-location pull-left man")
+            .pull-right
+              #sub-page-navi
+                %ul.list-inline.man.text-slim
+                  - %w(Home Tipsters).each do |node|
+                    %li
+                      %a{:href=>"javascript:;"}= node
+              %h1#sub-page-h1.man.text-slim= yield(:title)
       .pull-right
         #sub-page-quickpanel.clearfix
           .quickpanel-left
