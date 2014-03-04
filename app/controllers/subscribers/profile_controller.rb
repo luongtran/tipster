@@ -1,5 +1,5 @@
 class Subscribers::ProfileController < ProfileController
-  # Inherited all super actions
+  before_action :subscriber_required
 
   protected
   def user_params

@@ -1,5 +1,5 @@
 class Backoffice::SessionsController < SessionsController
-
+  before_action :tipster_required
   protected
   def after_sign_in_path_for(resource)
     backoffice_root_path

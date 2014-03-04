@@ -32,15 +32,15 @@
               %b.caret
             %ul.dropdown-menu
               %li
-                %a{href: new_subscriber_registration_path} Register
+                %a{href: new_account_registration_path} Register
               %li
-                %a{href: new_subscriber_session_path} Sign In
+                %a{href: new_account_session_path} Sign In
               = render 'shared/social_connection_links'
 
 #page_header_mid
 
   // this is container header box for sub-page (signup - steps etc)
-  - if @page=='home'
+  - if @page == 'home'
     #page-header
       #feature-profiles
         .container

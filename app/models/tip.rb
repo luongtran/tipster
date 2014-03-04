@@ -3,8 +3,7 @@
   bookmaker: "Bet365"
   bookmaker_key: "bet365"
   category_slug: "european-cups"
-  comment: "A Madrid are one of the best teams in Europe right now and Costa can cause so many problems for an inconsistent defence like Milan,
-      Madrid to win by 2 or more."
+  comment: "A Madrid are one of the best teams in Europe right now and Costa can cause so many problems for an inconsistent defence like Milan"
   created_at: "2014-02-19 09:30:08"
   created_at_ts: 1392798608
   event_date: "19/02 20:45"
@@ -47,7 +46,6 @@ class Tip < ActiveRecord::Base
   validates_length_of :event, :advice, minimum: 10
   validates_inclusion_of :platform, in: BET_BOOKMARKERS
   validates_inclusion_of :bet_type, in: BET_TYPES_MAP.keys
-
   before_validation :init_status, :init_amount, on: :create
 
   before_create :init_expire_time

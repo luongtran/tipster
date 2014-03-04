@@ -1,4 +1,5 @@
 class CartController < ApplicationController
+  before_action :subscriber_required
 
   def show
     reset_cart_session
