@@ -47,6 +47,6 @@
               Create Account
             %a.mls.text-xs{href: new_account_password_path} Recovery Account
             %label.checkbox.text-slim
-              %input{type: :checkbox} I agree with term & conditions
+              %input#cb-term-and-conditions{type: :checkbox, checked: request.post?} I agree with term & conditions
     .tipster-form-bot
 

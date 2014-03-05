@@ -1,9 +1,17 @@
 /*
  * This is a temporally file because we currently don't have template yet
- *require 'bootstrap-2.3.2.min'
+ * require 'bootstrap-2.3.2.min'
  */
 
 $(document).ready(function () {
+    /* Require checked term & conditions */
+    $('form.form-register').on('submit', function () {
+        var $cb_term = $(this).find('#cb-term-and-conditions');
+        if (!$cb_term.is(':checked')) {
+            Helper.alert_warning('You must to aggree with our terms and conditions');
+            return false;
+        }
+    });
     /* Display validate message as tooltip in the register form */
     var $inputs_in_form = $('form.form-register').find('.form-control');
     for (i = 0; i < $inputs_in_form.length; i++) {
