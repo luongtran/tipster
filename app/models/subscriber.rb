@@ -30,7 +30,7 @@ class Subscriber < ActiveRecord::Base
   # VALIDATIONS
   # ==============================================================================
   validates_date :birthday, :before => lambda { 16.years.ago }, allow_blank: true
-  validates :first_name, :last_name, presence: true, format: {with: /\A([a-z]|[A-Z])/}, length: {minimum: 2}
+  validates :first_name, :last_name, presence: true, length: {minimum: 2}
   validates_presence_of :birthday, :civility, :mobile_phone, :secret_question, :answer_secret_question, :country, on: :update
   # ==============================================================================
   # CALLBACKS
@@ -43,9 +43,9 @@ class Subscriber < ActiveRecord::Base
   class << self
     def create_from_auth_info(auth)
       subscriber = new(
-          :first_name => auth[:info][:first_name],
-          :last_name => auth[:info][:last_name],
-          :account_attributes => {
+          first_name: auth[:info][:first_name],
+          last_name: auth[:info][:last_name],
+          account_attributes: {
               :email => auth[:info][:email],
               :password => Devise.friendly_token[0, 20]
           }
@@ -58,6 +58,10 @@ class Subscriber < ActiveRecord::Base
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+
+  def has_active_subscription?
+    self.subscription && self.subscription.active?
+  end
 
   def full_name
     "#{self.first_name} #{self.last_name}".titleize

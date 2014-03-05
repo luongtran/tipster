@@ -15,7 +15,7 @@ class SubscriptionsController < ApplicationController
     if Plan.exists?(session[:plan_id])
       session[:free_plan] = true
       if current_subscriber
-        if current_subscriber.subscription && current_subscriber.subscription.active?
+        if current_subscriber.has_active_subscription?
           #Select free when current subscription is active ?
         else
           subscription =  current_subscriber.build_subscription(plan_id: session[:plan_id],is_free: true)

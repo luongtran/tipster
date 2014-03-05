@@ -8,7 +8,7 @@ class CartController < ApplicationController
       redirect_to tipsters_url
     else
       @tipsters = Tipster.where(id: tipster_ids_in_cart)
-      if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active?
+      if current_subscriber && current_subscriber.has_active_subscription?
         @subscription_active = true
       end
     end
