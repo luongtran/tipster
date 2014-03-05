@@ -72,7 +72,11 @@ class Tipster < ActiveRecord::Base
 
     def perform_sport_param(sport, relation = self)
       sport = Sport.find_by(name: sport)
-      relation = relation.where(sport_id: sport.id) if sport
+      # If tipster belongs to sport
+      #relation = relation.where(sport_id: sport.id) if sport
+
+      # If tipster has many sports
+      relation = relation.where(id: sport.tipster_ids) if sport
       relation
     end
 

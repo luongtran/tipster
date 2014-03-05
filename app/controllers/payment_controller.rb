@@ -1,6 +1,6 @@
 class PaymentController < ApplicationController
   include ActiveMerchant::Billing::Integrations
-  skip_before_filter :verify_authenticity_token, :only => [:notify, :return]
+  skip_before_filter :verify_authenticity_token, only: [:notify, :return]
 
   # POST /payment
   # Initialize and redirect to Paypal payment page
