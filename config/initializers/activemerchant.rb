@@ -1,6 +1,8 @@
 if Rails.env.production?
-  PAYPAL_ACCOUNT = 'thanhquang1988@gmail.com'
+  #PAYPAL_ACCOUNT = 'thanhquang1988@gmail.com'
   ADDING_TIPSTER_PRICE = 9.9 # TODO, move this constant to Plan model
+  PAYPAL_ACCOUNT = 'sfr@tipsterhero.com'
+  ActiveMerchant::Billing::Base.mode = :test
 else
   ADDING_TIPSTER_PRICE = 9.9
   PAYPAL_ACCOUNT = 'sfr@tipsterhero.com'

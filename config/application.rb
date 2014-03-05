@@ -23,6 +23,7 @@ module TipsterHero
     config.autoload_paths = %W(#{config.root}/lib)
     config.autoload_paths += Dir[Rails.root.join('app', 'models', '{**}','lib')]
     config.assets.paths << Rails.root.join("app", "assets", "fonts")
+    config.assets.paths << "#{Rails}/vendor/assets/fonts"
 
     # config.i18n.default_locale = :de
     config.i18n.enforce_available_locales = true
