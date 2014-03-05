@@ -5,7 +5,7 @@ class Subscribers::ProfileController < ProfileController
   def user_params
     params.require(:user).permit(
         :first_name, :last_name, :civility, :birthday, :address, :city, :country, :zip_code, :mobile_phone,
-        :telephone, :favorite_beting_website, :know_website_from, :secret_question, :answer_secret_question
+        :telephone, :favorite_beting_website, :know_website_from, :secret_question, :answer_secret_question, :receive_info_from_partners
     )
   end
 
