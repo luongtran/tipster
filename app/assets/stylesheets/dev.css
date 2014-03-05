@@ -33,6 +33,11 @@ body {
 ul.inline {
     list-style: none;
 }
+
 ul.inline > li {
-   display: inline-block;
+    display: inline-block;
+}
+
+label.control-label, label.checkbox {
+    cursor: pointer;
 }
