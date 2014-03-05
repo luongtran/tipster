@@ -1,0 +1,83 @@
+= javascript_include_tag 'subscribe'
+.container
+  #rootwizard{'data-no-turbolink' => true}
+    .navbar
+      .navbar-inner
+        .container
+          %ul.nav.nav-pills
+            %li
+              %a{href: subscribe_choose_offer_path} Choose Offer
+            %li
+              %a{"data-toggle" => "tab", href: "#tab2"} Identification
+            %li
+              %a{ href: subscribe_payment_method_path} Payment Method
+            %li.active
+              %a{"data-toggle" => "tab", href: "#tab4"} Payment
+            %li
+              %a{"data-toggle" => "tab", href: "#tab5"} Confirmation
+    %hr
+    .tab-content
+      .row
+        .col-lg-12
+          %h2 Please review your selection
+          %h4
+            Plan:
+            %span.text-info= @return[:select_plan].title
+          %h4 Tipsters:
+          .span6
+            %table.table.table-bordered
+              %thead
+                %tr
+                  %th Full Name
+                  %th Sport
+                  %th Yield
+                  %th Profil
+              %tbody
+                - @return[:select_tipsters].each do |tipster|
+                  %tr
+                    %td= tipster.full_name
+                    %td= ['Football','Hourse', 'Tennis', 'Baseball'].sample
+                    %td= "#{['12.15','20.14','10.3'].sample} %"
+                    %td= "+ #{(1000..5000).to_a.sample}"
+        .col-lg-12
+          .col-lg-4.col-lg-offet-1
+            %h2 Amount
+            %div{style: 'padding: 10px; border: 1px solid #ccc'}
+              %h3 Amount
+              \- Number tipster on your current subscription:
+              %strong #{@return[:current_subscription].tipsters.size}
+              %br
+              \- Number tipster on your current plan:
+              %strong #{@return[:select_plan].number_tipster}
+              %br
+              \- Number adder tipster on cart:
+              %strong #{@return[:adder_tipster]}
+              %br
+              \- Need to paid:
+              %strong €#{@return[:subtotal]}
+              %br
+              \_______________________
+              %br
+              \ * #{@return[:select_plan].period} Month
+              %br
+              - if @return[:using_coupon]
+                \- Total before:
+                %strong.text-info= "€#{@return[:before_amount]}"
+                %br
+                \- Discount:
+                %strong - 3
+                %br
+              \_______________________
+              %br
+              \- Total:
+              %strong.text-info= "€#{@return[:amount].round(3)}"
+            - payment_service_for  @pp_object[:item_number], PAYPAL_ACCOUNT, :amount => @pp_object[:amount],
+                 :currency => @pp_object[:currency], :service => :paypal, :html => {:class=>"form-paypal"} do |service|
+            - service.tax "0.00"
+            - service.item_name @pp_object[:item_name]
+            - service.item_number @pp_object[:item_number]
+            - service.notify_url notify_payment_url
+            - service.return_url subscribe_success_url
+            - service.cancel_return_url cancel_payment_url
+            - hidden_field_tag :user_id, @pp_object[:user_id]
+              = image_submit_tag('/assets/paypal-express-checkout-button.png', alt:'Make Payment with Paypal')
