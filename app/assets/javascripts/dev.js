@@ -4,6 +4,10 @@
  */
 
 $(document).ready(function () {
+    $('#user_birthday').datepicker({
+        forceParse: false,
+        format: 'yyyy-mm-dd'
+    });
     /* Require checked term & conditions */
     $('form.form-register').on('submit', function () {
         var $cb_term = $(this).find('#cb-term-and-conditions');
