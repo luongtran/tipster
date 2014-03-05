@@ -1,34 +1,49 @@
-= content_for(:title,"Tipster profile page")
-%h1 Tipster information
+= content_for :title do
+  Tipster profile
 .container
-  .col-md-6
-    %span
-      = image_tag @tipster.avatar_url || 'avatar.jpg',class: 'user_avatar'
-    %span
+  .col-lg-12.profile-overview
+    .col-lg-3
+      = image_tag (@tipster.avatar_url || 'demo.jpg'), class: 'user_avatar'
+      %p
+        %h3
+          = @tipster.full_name
+    .col-lg-4
       %h3 Statistics
-  .col-md-6
-    %h3 Subscribe to this Tipster
-    = button_tag "Add To Cart" ,class: 'btn btn-success'
-.center-block
-  %ul.sports-filter
-    - @menu = ["General","Statistics","Last picks","Service Description","News"]
-    - @menu.each do |menu|
-      %li
-        %a.btn.btn-default{href:"javascript:;"}= menu
-.row
-  .col-md-6.col-md-offset-3
-    %h2= "#{@tipster.full_name} overall profit"
-    %table.table.table-bordered
-      %thead
-        %tr
-          %th Month
-          %th Profit
-          %th Yield
-          %th Num of tips
-      %tbody
-        - 0..12.times do |i|
-          %tr
-            %td= i + 1
-            %td= "#{(10..100).to_a.sample}%"
-            %td= "#{(10..200).to_a.sample}%"
-            %td= "#{(12..150).to_a.sample}"
+      %p
+        %strong Profit
+        %span.text-warning
+          \ +1500
+        Units
+      %p in the last 6 months
+      %p
+        %strong Yield
+        %span.text-warning
+          \ 23.5%
+      %p on last 120 tips
+
+    .col-md-4
+      %h3 Subscribe to this Tipster
+      = button_tag "Add To Cart" ,class: 'btn btn-success'
+  .col-lg-12
+    .center-block
+      %ul.sports-filter
+        - @menu = ["General","Statistics","Last picks","Service Description","News"]
+        - @menu.each do |menu|
+          %li
+            %a.btn.btn-default{href:"javascript:;"}= menu
+      .col-md-6.col-md-offset-3
+        %h2= "#{@tipster.full_name} overall profit"
+        %table.table.table-bordered
+          %thead
+            %tr
+              %th Month
+              %th Profit
+              %th Yield
+              %th Num of tips
+          %tbody
+            - 0..12.times do |i|
+              %tr
+                %td= i + 1
+                %td= "#{(10..100).to_a.sample}%"
+                %td= "#{(10..200).to_a.sample}%"
+                %td= "#{(12..150).to_a.sample}"

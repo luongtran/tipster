@@ -6,7 +6,7 @@ class TipstersController < ApplicationController
     # sport ['football', ...]
     # range ['last |1|3|6|12| months']  default: last_month
     # status [active|inactive]
-    if flash[:show_checkout_dialog ]
+    if flash[:show_checkout_dialog]
       @show_checkout_dialog = true
     end
     @tipsters = Tipster.load_data(params)

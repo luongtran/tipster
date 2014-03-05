@@ -41,3 +41,8 @@ ul.inline > li {
 label.control-label, label.checkbox {
     cursor: pointer;
 }
+.profile-overview {
+    margin: 5px;
+    padding: 10px 25px;
+    border: 1px dashed #DADADA;
+}

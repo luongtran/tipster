@@ -45,14 +45,9 @@
                     .btn.btn-default Already purchase
                   - else
                     - if tipster_ids_in_cart.include? tipster.id.to_s
-                      = form_tag drop_tipster_cart_path do
-                        = hidden_field_tag :id, tipster.id
-                        = hidden_field_tag :return_url, tipsters_url
-                        %button.btn.btn-default{type: :submit} Remove from cart
+                      = render 'shared/remove_from_cart_form', tipster_id: tipster.id, return_url: tipsters_url
                     - else
-                      = form_tag add_tipster_cart_path do
-                        = hidden_field_tag :id, tipster.id
-                        %button.btn.btn-default{type: :submit} Add to cart
+                      = render 'shared/add_to_cart_form', tipster_id: tipster.id
                     .btn.btn-default Detail
   - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
     #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}

@@ -35,7 +35,7 @@ class Tipster < ActiveRecord::Base
   # ==============================================================================
   after_update :crop_avatar
 
-  delegate :email, to: :account, :prefix => false
+  delegate :email, to: :account, prefix: false
 
   # ==============================================================================
   # CLASS METHODS

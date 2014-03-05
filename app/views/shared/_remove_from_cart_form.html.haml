@@ -1,0 +1,7 @@
+-# Required variables: tipster_id
+-# Option variables: return_url
+= form_tag drop_tipster_cart_path do
+  = hidden_field_tag :id, tipster_id
+  - if defined? return_url
+    = hidden_field_tag :return_url, return_url
+  %button.btn.btn-default{type: :submit} Remove from cart
