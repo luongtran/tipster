@@ -163,6 +163,7 @@ class Tipster < ActiveRecord::Base
   # The average odds is calculated as the sum of the odds of every tip from an tipster,
   # divided by the total number of tips from that tipster
   def avg_odds(range = nil)
+    rand(0..5)
   end
 
   # The percentage of winning tips vs total number of tips
@@ -173,6 +174,7 @@ class Tipster < ActiveRecord::Base
   # Return example:
   # 3/6
   def profitable_months
+    "#{rand(3)}/#{rand(1..6)}"
   end
 
   # Return lastest tips limit by the given quantity
