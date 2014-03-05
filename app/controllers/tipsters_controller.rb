@@ -18,5 +18,6 @@ class TipstersController < ApplicationController
 
   def show
     @tipster = Tipster.find(params[:id])
+    @recent_tips = @tipster.recent_tips
   end
 end

@@ -17,6 +17,7 @@
  = require flash_message.js
  = require dev
  = require helper
+ = require charts
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
  = require jquery.migrate
  */
