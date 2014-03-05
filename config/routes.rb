@@ -84,6 +84,7 @@ TipsterHero::Application.routes.draw do
 
   # Rueta set route here
   get '/signup', to: 'static#signup'
+  get '/list', to: 'static#list'
   get '/homepage', to: 'static#homepage'
   # END Rueta set route here
 

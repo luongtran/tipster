@@ -72,6 +72,62 @@ body {
 }
 
 
+.tipster-list {
+  padding-top: 30px;
+  padding-bottom: 20px;
+  background: url(/assets/granit.jpg) repeat left top;
+  .tipster-list-inner {
+    padding: 0;
+    border-radius: 4px;
+    background-color: #fafafa;
+    border: solid 1px #d9d9d9;
+    box-shadow: 0 2px 6px rgba(black, 0.1);
+    min-height: 200px;
+    :first-child {
+      border-radius: 4px 4px 0 0;
+    }
+  }
+  .tipster-list-line1 {
+    @include linear-gradient(to top, #ededed 0%, #f0f0f0 6%, #ffffff 100%);
+    min-height: 25px;
+    border-bottom: solid 1px #dddddd;
+  }
+  .tipster-list-line2 {
+    border-bottom: solid 1px #dddddd;
+    background-color: white;
+    padding: 10px 25px;
+    font-size: 12px;
+  }
+  .tipster-list-table {
+    width: 95%;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border: solid 1px #d9d9d9;
+    border-radius: 4px;
+    box-shadow: 0 0 6px rgba(black, 0.06);
+    table {
+      margin: 0;
+      border: none;
+      font-size: 12px;
+      thead {
+        * {
+          color: $green-site;
+          font-weight: bold;
+        }
+      }
+    }
+    td {
+      border-left: solid 1px #d9d9d9;
+      vertical-align: middle;
+      &:first-child {
+        border-left: none;
+      }
+    }
+  }
+}
+
+
+
 //-----------------------------
 @import "page_header";
 @import "page_footer.css.scss";

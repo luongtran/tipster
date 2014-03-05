@@ -1,0 +1,48 @@
+= render file: 'static/page_header'
+
+
+// list
+.tipster-list
+  .tipster-list-inner.container
+    .tipster-list-line1
+    .tipster-list-line2
+      %ul(class="list-inline mbn" )
+        %li Overrall
+        %li Last 12month
+        %li Last 6 month
+        %li Last 3 month
+        %li Last month
+    .tipster-list-table
+      %table(class="table table-hover" )
+        %thead
+          %tr
+            %th Tipster
+            %th Profit
+            %th Yield
+            %th NO of tip
+            %th Hit Rate
+            %th Avg.Odds
+            %th Profitable Months
+            %th 1 month
+        %tbody
+          - @tableList = [1,2,3,4,5,6,7,8,9]
+          - @tableList.each do |node|
+            %tr
+              %td
+                %a(href="javascript:;" )
+              %td +2584
+              %td 32.0%
+              %td 182
+              %td 25%
+              %td 14.48
+              %td 4 / 6
+              %td.text-right
+                %span(class="mrs text-left" ) $12
+                %div(class="btn-group btn-group-sm" )
+                  .btn.btn-default Add to Cart
+                  .btn.btn-default Detail
+
+
+
+
+= render file: 'static/page_footer'
