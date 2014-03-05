@@ -182,7 +182,8 @@ class Tipster < ActiveRecord::Base
   end
 
   # Return lastest tips limit by the given quantity
-  def recent_tips(quantity = nil)
+  def recent_tips(quantity = 10)
+    self.tips.limit(quantity)
   end
 
   # Return the tips on the given date

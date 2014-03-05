@@ -3,47 +3,91 @@
 .container
   .col-lg-12.profile-overview
     .col-lg-3
-      = image_tag (@tipster.avatar_url || 'demo.jpg'), class: 'user_avatar'
       %p
         %h3
           = @tipster.full_name
+      = image_tag (@tipster.avatar_url || 'demo.jpg'), class: 'user_avatar'
     .col-lg-4
       %h3 Statistics
       %p
         %strong Profit
         %span.text-warning
           \ +1500
-        Units
-      %p in the last 6 months
+        Units in the last 6 months
       %p
         %strong Yield
         %span.text-warning
           \ 23.5%
-      %p on last 120 tips
+        on last 120 tips
 
     .col-md-4
       %h3 Subscribe to this Tipster
-      = button_tag "Add To Cart" ,class: 'btn btn-success'
+      = render 'shared/add_to_cart_form', tipster_id: @tipster.id
   .col-lg-12
-    .center-block
-      %ul.sports-filter
-        - @menu = ["General","Statistics","Last picks","Service Description","News"]
-        - @menu.each do |menu|
-          %li
-            %a.btn.btn-default{href:"javascript:;"}= menu
-      .col-md-6.col-md-offset-3
-        %h2= "#{@tipster.full_name} overall profit"
-        %table.table.table-bordered
-          %thead
-            %tr
-              %th Month
-              %th Profit
-              %th Yield
-              %th Num of tips
-          %tbody
-            - 0..12.times do |i|
+    / Nav tabs
+    %ul.nav.nav-tabs
+      %li.active
+        %a{"data-toggle" => "tab", href: "#general"} General
+      %li
+        %a{"data-toggle" => "tab", href: "#statistics"} Statistics
+      %li
+        %a{"data-toggle" => "tab", href: "#last-pick"} Last picks
+      %li
+        %a{"data-toggle" => "tab", href: "#service-description"} Service Description
+      %li
+        %a{"data-toggle" => "tab", href: "#news"} News
+    / Tab panes
+    .tab-content
+      #general.tab-pane.active
+        .col-lg-12
+          = render 'tipsters/profile/general'
+        .col-lg-12
+          %hr
+          %h2 Last 10 tips
+          %table.table.table-bordered
+            %thead
               %tr
-                %td= i + 1
-                %td= "#{(10..100).to_a.sample}%"
-                %td= "#{(10..200).to_a.sample}%"
-                %td= "#{(12..150).to_a.sample}"
+                %th Event
+                %th Datetime
+                %th Selection
+                %th Odds
+                %th Stake
+                %th Profit
+                %th Result
+            %tbody
+              - 10.times do |tip|
+                - correct = [true,false].sample
+                - event =  Event.fetch.first
+                %tr
+                  %td= event.name
+                  %td= @tipster.created_at
+                  %td= event.team_a
+                  %td= (1..5).to_a.sample
+                  %td= (50..150).to_a.sample
+                  %td
+                    = %w(+ -).sample
+                    = (50..150).to_a.sample
+                  %td{class: "#{correct ? 'text-success' : 'text-danger'}"}
+                    - if correct
+                      &#x2714;
+                    - else
+                      &#x2718;
+              -#- @recent_tips.each do |tip|
+              -#  %tr
+              -#    %td= tip.event
+              -#    %td= tip.created_at
+              -#    %td= tip.selection
+              -#    %td= (1.2..4.5).to_a.samlpe
+              -#    %td= (50..150).to_a.sample
+              -#    %td
+              -#      = %w(+ -).sample
+              -#      = (50..150).to_a.sample
+              -#    %td
+              -#      = %w(&#x2714; &#x2718;).sample
+
+
+
+      #statistics.tab-pane ...
+      #last-pick.tab-pane ...
+      #service-description.tab-pane ...
+      #news.tab-pane ...
