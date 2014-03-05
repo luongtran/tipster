@@ -47,7 +47,6 @@ class ApplicationController < ActionController::Base
   def fill_up_profile
     user = current_subscriber
     if user && !user.valid?
-
       redirect_to my_profile_url, notice: 'Please update your profile'
     end
   end

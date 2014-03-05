@@ -13,35 +13,40 @@
   #sign-up-form.tipster-form
     .tipster-form-top
     .tipster-form-mid.clearfix
-      = simple_form_for resource, :url => registration_path(resource_name), :html => {class: 'form-horizontal mbn', novalidate: true} do |f|
+      = simple_form_for resource, :url => registration_path(resource_name), html: {class: 'form-horizontal mbn form-register', novalidate: true} do |f|
         = f.simple_fields_for resource.rolable do |fl|
           .form-group
-            %label.control-label.col-md-4 First Name
+            = fl.label :first_name, required: false
             .col-md-7
-              = fl.input_field :first_name, class: 'form-control',autofocus: true
+              = fl.input_field :first_name, autofocus: true
+              = fl.error :first_name, class: :hidden
           .form-group
-            %label.control-label.col-md-4 Last Name
+            = fl.label :last_name, required: false
             .col-md-7
-              = fl.input_field :last_name, class: 'form-control'
+              = fl.input_field :last_name
+              = fl.error :last_name, class: :hidden
         .form-group
-          %label.control-label.col-md-4 Your Email
+          = f.label :email, label: 'Your email', required: false
           .col-md-7
-            = f.input_field :email, :required => true, class: 'form-control'
+            = f.input_field :email, required: false
+            = f.error :email, class: :hidden
         .form-group
-          %label.control-label.col-md-4 Choose password
+          = f.label :password, label: 'Choose password', required: false
           .col-md-7
-            = f.input_field :password, :required => true, class: 'form-control'
+            = f.input_field :password, :required => true
+            = f.error :password, class: :hidden
         .form-group
-          %label.control-label.col-md-4 Re-type password
+          = f.label :password_confirmation, label: 'Re-type password ', required: false
           .col-md-7
-            = f.input_field :password_confirmation, :required => true, class: 'form-control'
+            = f.input_field :password_confirmation, required: false
+            = f.error :password_confirmation, class: :hidden
         .form-group
           .col-md-7.col-md-offset-4
             %button.btn.btn-success{type: :submit}
               %i.typcn.typcn-world.mrs
               Create Account
-            %a.mls.text-xs{href: '#'} Recovery Account
+            %a.mls.text-xs{href: new_account_password_path} Recovery Account
             %label.checkbox.text-slim
-              %input{type: :checkbox} I agree with term & conditions
+              %input#cb-term-and-conditions{type: :checkbox, checked: request.post?} I agree with term & conditions
     .tipster-form-bot
 
