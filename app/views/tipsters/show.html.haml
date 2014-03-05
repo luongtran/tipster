@@ -12,8 +12,8 @@
       %p
         %strong Profit
         %span.text-warning
-          \ +1500
-        Units in the last 6 months
+          \ +1500 Units
+        in the last 6 months
       %p
         %strong Yield
         %span.text-warning
@@ -39,54 +39,7 @@
     / Tab panes
     .tab-content
       #general.tab-pane.active
-        .col-lg-12
-          = render 'tipsters/profile/general'
-        .col-lg-12
-          %hr
-          %h2 Last 10 tips
-          %table.table.table-bordered
-            %thead
-              %tr
-                %th Event
-                %th Datetime
-                %th Selection
-                %th Odds
-                %th Stake
-                %th Profit
-                %th Result
-            %tbody
-              - 10.times do |tip|
-                - correct = [true,false].sample
-                - event =  Event.fetch.first
-                %tr
-                  %td= event.name
-                  %td= @tipster.created_at
-                  %td= event.team_a
-                  %td= (1..5).to_a.sample
-                  %td= (50..150).to_a.sample
-                  %td
-                    = %w(+ -).sample
-                    = (50..150).to_a.sample
-                  %td{class: "#{correct ? 'text-success' : 'text-danger'}"}
-                    - if correct
-                      &#x2714;
-                    - else
-                      &#x2718;
-              -#- @recent_tips.each do |tip|
-              -#  %tr
-              -#    %td= tip.event
-              -#    %td= tip.created_at
-              -#    %td= tip.selection
-              -#    %td= (1.2..4.5).to_a.samlpe
-              -#    %td= (50..150).to_a.sample
-              -#    %td
-              -#      = %w(+ -).sample
-              -#      = (50..150).to_a.sample
-              -#    %td
-              -#      = %w(&#x2714; &#x2718;).sample
-
-
-
+        = render 'tipsters/profile/general'
       #statistics.tab-pane ...
       #last-pick.tab-pane ...
       #service-description.tab-pane ...

@@ -9,15 +9,7 @@
         %td Action
     %tbody
       - if @tipsters.nil?
-        %tr
-          %td
-            There are no any tipster found.
-          %td
-          %td
-          %td
-            = form_tag drop_tipster_cart_path do
-              = hidden_field_tag :id, tipster.id
-              %button.btn.btn-danger{type: :submit} Remove from cart
+        %p There are no any tipster found.
       - else
         - @tipsters.each do |tipster|
           %tr
@@ -28,9 +20,7 @@
             %td
               = tipster.created_at.strftime("%m/%d/%Y")
             %td
-              = form_tag drop_tipster_cart_path do
-                = hidden_field_tag :id, tipster.id
-                %button.btn.btn-danger{type: :submit} Remove from cart
+              = render 'shared/remove_from_cart_form', tipster_id: tipster.id
   .text-center
     %a.btn.btn-success.btn-large{href: tipsters_path} + Add more tipster
     %a.btn.btn-primary.btn-large{href: subscribe_choose_offer_path} Proceed to checkout

@@ -1,4 +1,14 @@
 .center-block
-  %h1 Backoffice Tipster Homepage
-  - if can? :create, Tip
-    Yes I can create new tip
+  %h2 Homepage
+
+.container
+  - unless current_tipster
+    .col-lg-5.col-lg-offset-3
+      .well
+        = simple_form_for :account, :url => backoffice_sign_in_path , :html => {class: 'form-horizontal'} do |f|
+          = f.input :email, :required => false, :autofocus => true
+          = f.input :password, :required => false
+          = f.input :remember_me, :as => :boolean
+          .form-group
+            .col-sm-offset-4.col-sm-7
+              %button.btn.btn-primary{type: :submit}= I18n.t('user.sign_in')

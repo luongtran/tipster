@@ -1,22 +1,66 @@
-.col-md-6
-  %h2= "#{@tipster.full_name} overall profit"
-  #profil-chart-container
-    = image_tag profit_img_chart_url_for(@tipster.profit_per_months)
-.col-md-5.col-md-offset-1
-  %h2= 'Track'
+.col-lg-12
+  .col-md-6
+    %h2= "#{@tipster.full_name} overall profit"
+    #profil-chart-container
+      = image_tag profit_img_chart_url_for(@tipster.profit_per_months)
+  .col-md-5.col-md-offset-1
+    %h2= 'Track'
+    %table.table.table-bordered
+      %thead
+        %tr
+          %th Month
+          %th Profit
+          %th Yield
+          %th Num of tips
+      %tbody
+        - 8.times do |i|
+          %tr
+            %td= i + 1
+            %td= "#{(10..100).to_a.sample}%"
+            %td= "#{(10..200).to_a.sample}%"
+            %td= "#{(12..150).to_a.sample}"
+    .pull-right
+      %a{href: '#'} See overall track record >>
+.col-lg-12
+  %hr
+  %h2 Last 10 tips
   %table.table.table-bordered
     %thead
       %tr
-        %th Month
+        %th Event
+        %th Datetime
+        %th Selection
+        %th Odds
+        %th Stake
         %th Profit
-        %th Yield
-        %th Num of tips
+        %th Result
     %tbody
-      - 8.times do |i|
+      - 10.times do |tip|
+        - correct = [true,false].sample
+        - event =  Event.fetch.first
         %tr
-          %td= i + 1
-          %td= "#{(10..100).to_a.sample}%"
-          %td= "#{(10..200).to_a.sample}%"
-          %td= "#{(12..150).to_a.sample}"
-  .pull-right
-    %a{href: '#'} See overall track record >>
+          %td= event.name
+          %td= @tipster.created_at
+          %td= event.team_a
+          %td= (1..5).to_a.sample
+          %td= %w(20 30 40 50 70 80).to_a.sample
+          %td{class: "#{correct ? 'text-success' : 'text-danger'}"}
+            = %w(+ -).sample
+            = (50..150).to_a.sample
+          %td{class: "#{correct ? 'text-success' : 'text-danger'}"}
+            - if correct
+              &#x2714;
+            - else
+              &#x2718;
+      -#- @recent_tips.each do |tip|
+      -#  %tr
+      -#    %td= tip.event
+      -#    %td= tip.created_at
+      -#    %td= tip.selection
+      -#    %td= (1.2..4.5).to_a.samlpe
+      -#    %td= (50..150).to_a.sample
+      -#    %td
+      -#      = %w(+ -).sample
+      -#      = (50..150).to_a.sample
+      -#    %td
+      -#      = %w(&#x2714; &#x2718;).sample
