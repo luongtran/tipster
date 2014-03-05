@@ -1,8 +1,8 @@
 #page_header_top
   .container.clearfix
     #tipster-logo-main.pull-left
-      %a{:href=>"/"}
-        = image_tag("tipster-logo-main.png", :alt=>"Tipster hero", :class=>"img-responsive")
+      %a{href: root_path}
+        = image_tag 'tipster-logo-main.png', alt: 'Tipster hero', class: 'img-responsive'
     #menu-main.pull-right
       %ul.list-inline
         %li
@@ -13,7 +13,7 @@
           %a{href: tips_path}= t('menu.tips')
         - if current_subscriber
           %li.dropdown
-            %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+            %a.dropdown-toggle{'data-toggle' => "dropdown", href: "#"}
               = current_subscriber.full_name
               %b.caret
             %ul.dropdown-menu
@@ -69,7 +69,6 @@
                     %a.lk-change-lang{href: 'javascript:;', data: {lang: 'fr', url: select_language_path}} Français
               %li
                 %a{:href=>"javascript:;"}
-                  %i(class="typcn typcn-cog")
-            = hidden_field_tag 'cart_size',tipster_ids_in_cart.size
+                  %i.typcn.typcn-cog
           .quickpanel-right
   = render 'top_tipster' if controller_name == 'home' && action_name == 'index'

@@ -25,9 +25,9 @@ test:
 
 # TODO: change this when the app go live.
 production:
-  facebook:
-    app_id: "x"
-    app_secret: "y"
-  google:
-    app_id: "z"
-    app_secret: "t"
+ facebook:
+   app_id: "594797970595793"
+   app_secret: "abf2bf2b5bc1dcc27543a04d17369c70"
+ google:
+   app_id: "149719785720.apps.googleusercontent.com"
+   app_secret: "fHUag_3CFAfSeSrKAENm0rbI"
