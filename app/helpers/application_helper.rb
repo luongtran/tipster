@@ -139,7 +139,7 @@ module ApplicationHelper
             color: '454545,0,121212,1',
             angle: '270'
         },
-        line_colors: '7AB5DA',
+        line_colors: 'ACC253',
         :size => '80x40',
     )
   end

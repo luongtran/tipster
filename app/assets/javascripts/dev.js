@@ -55,4 +55,10 @@ $(document).ready(function () {
             }
         });
     });
+
+    /* Check-in befor go to cart page*/
+    $('#lk-view-cart.empty').on('click', function () {
+        Helper.alert_warning('Your cart is empty!');
+        return false;
+    });
 });

@@ -57,7 +57,7 @@
           .quickpanel-mid
             %ul.list-inline.man
               %li
-                %a{href: cart_path}= "Cart box(#{tipster_ids_in_cart.size})"
+                %a#lk-view-cart{href: cart_path, class: "#{tipster_ids_in_cart.empty? ? 'empty' : ''}"}= "Cart box(#{tipster_ids_in_cart.size})"
               %li.dropdown
                 %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
                   = I18n.t('lang')

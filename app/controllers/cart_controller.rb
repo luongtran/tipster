@@ -43,8 +43,14 @@ class CartController < ApplicationController
       tipster = Tipster.find tipster_id
       current_subscriber.subscription.inactive_tipsters.delete(tipster) if current_subscriber.subscription.inactive_tipsters.include? tipster
     end
-    flash[:notice] = "Tipster droped"
-    redirect_to params[:return_url].present? ? params[:return_url] : cart_path
+    flash[:notice] = "Tipster droped.#{'Your cart is empty.' if tipster_ids_in_cart.empty?}"
+    return_url = params[:return_url].presence
+    after_drop_tipster_url = if tipster_ids_in_cart.empty?
+                               tipsters_url
+                             else
+                               cart_url
+                             end
+    redirect_to return_url || after_drop_tipster_url
   end
 
   def empty
