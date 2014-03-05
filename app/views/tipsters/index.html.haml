@@ -48,11 +48,11 @@
                       = form_tag drop_tipster_cart_path do
                         = hidden_field_tag :id, tipster.id
                         = hidden_field_tag :return_url, tipsters_url
-                        .btn.btn-default{type: :submit} Remove from cart
+                        %button.btn.btn-default{type: :submit} Remove from cart
                     - else
                       = form_tag add_tipster_cart_path do
                         = hidden_field_tag :id, tipster.id
-                        .btn.btn-default{type: :submit} Add to cart
+                        %button.btn.btn-default{type: :submit} Add to cart
                     .btn.btn-default Detail
   - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
     #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
