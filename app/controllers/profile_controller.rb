@@ -1,13 +1,11 @@
 class ProfileController < ApplicationController
-  before_action :authenticate_account!
+  before_action :authenticate_account!, :prepare_user_data
   skip_before_action :fill_up_profile
 
   def show
-    prepare_user_data
   end
 
   def update
-    prepare_user_data
     if @user.update_attributes(user_params)
       flash[:notice] = I18n.t('user.account_update_successully')
       redirect_to after_update_profile_path
@@ -18,7 +16,6 @@ class ProfileController < ApplicationController
   end
 
   def change_password
-    prepare_user_data
     if @account.update_with_password(change_password_params)
       flash[:notice] = I18n.t('user.password_changed_successfully')
       sign_in @account, bypass: true
