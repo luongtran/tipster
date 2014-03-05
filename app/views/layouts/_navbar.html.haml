@@ -6,11 +6,11 @@
     #menu-main.pull-right
       %ul.list-inline
         %li
-          %a{href: pricing_path} Pricing
+          %a{href: pricing_path}= t('menu.pricing')
         %li
-          %a{href: tipsters_path} Tipsters
+          %a{href: tipsters_path}= t('menu.tipster')
         %li
-          %a{href: tips_path} Tips
+          %a{href: tips_path}= t('menu.tips')
         - if current_subscriber
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
@@ -18,9 +18,9 @@
               %b.caret
             %ul.dropdown-menu
               %li
-                %a{href: my_profile_path} My Profile
+                %a{href: my_profile_path}= t('menu.my_profile')
               %li
-                %a{href: subscriptions_path} My Subscription
+                %a{href: subscriptions_path}= t('menu.my_subscription')
               %li.divider
               %li
                 %a{href: destroy_account_session_path}= I18n.t('user.sign_out')
@@ -66,11 +66,7 @@
                   %li
                     %a.lk-change-lang{href: 'javascript:;',data: {lang: 'en', url: select_language_path}} English
                   %li
-                    %a.lk-change-lang{href: 'javascript:;', data: {lang: 'fr', url: select_language_path}} French
-                  %li
-                    %a.lk-change-lang{href: 'javascript:;', data: {lang: 'vi', url: select_language_path}} Việt Nam
-                  %li
-                    %a.lk-change-lang{href: 'javascript:;', data: {lang: 'cn', url: select_language_path}} Chinese
+                    %a.lk-change-lang{href: 'javascript:;', data: {lang: 'fr', url: select_language_path}} Français
               %li
                 %a{:href=>"javascript:;"}
                   %i(class="typcn typcn-cog")

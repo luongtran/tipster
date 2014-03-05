@@ -11,6 +11,9 @@ class TipstersController < ApplicationController
     end
     @tipsters = Tipster.load_data(params)
     @sports = Sport.all
+    if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active?
+      @tipster_in_subscription = current_subscriber.subscription.active_tipsters
+    end
   end
 
   def show

@@ -24,6 +24,7 @@ class SubscribeController < ApplicationController
   end
 
   # GET|POST /subscribe/payment
+
   def payment
     if current_subscriber.already_has_subscription? #Adding tipster to current subscription
       current_subscription = current_subscriber.subscription
@@ -112,6 +113,99 @@ class SubscribeController < ApplicationController
       }
     end
   end
+  #Adding tipster to current subscription
+  def adder_payment
+    if current_subscriber.already_has_subscription? #Adding tipster to current subscription
+      current_subscription = current_subscriber.subscription
+      unless current_subscription.can_change_tipster?
+        redirect_to subscriptions_path, notice: "You can change your follow tipster on day #{current_subscription.active_at.strftime('%d')}  of the month" and return
+      end
+      select_plan = current_subscription.plan
+      select_tipsters = Tipster.where(id: tipster_ids_in_cart)
+      begin
+        current_subscription.inactive_tipsters.delete_all
+        current_subscription.tipsters << select_tipsters
+        current_subscription.save
+      rescue Exception => e
+        logger = Logger.new('log/payment_errors.log')
+        logger.info(e.message)
+      end
+      adder_tipster = current_subscription.adder_tipster
+      subtotal = adder_tipster * ADDING_TIPSTER_PRICE
+      before_amount = subtotal * select_plan.period
+      if using_coupon?
+        using_coupon = true
+        current_subscription.update_attributes(using_coupon: true)
+        amount = before_amount > 0 ? before_amount - 3 : before_amount
+      else
+        amount = before_amount
+        using_coupon = false
+      end
+      @pp_object = {
+          amount: amount.round(3),
+          currency: 'EUR',
+          item_number: current_subscriber.id,
+          item_name: "TipsterHero Adding #{select_tipsters.size} Tipster to Subscriptions #{current_subscription.plan_title}"
+      }
+
+      @return = {
+          has_subscription: true,
+          current_subscription: current_subscription,
+          select_plan: select_plan,
+          subtotal: subtotal,
+          select_tipsters: select_tipsters,
+          adder_tipster: adder_tipster,
+          amount: amount.round(3),
+          before_amount: before_amount.round(3),
+          using_coupon: using_coupon
+
+      }
+    else # If user not completed his payment for subscription
+      prepare_subscribe_info
+      unless current_subscriber.subscription
+        subscription = current_subscriber.build_subscription(plan_id: session[:plan_id])
+      else
+        subscription = current_subscriber.subscription
+      end
+      select_plan = Plan.find session[:plan_id]
+      select_tipsters = Tipster.where(id: tipster_ids_in_cart)
+      subscription.tipsters = select_tipsters
+      subscription.plan_id = session[:plan_id]
+      subscription.active = false
+      subscription.save
+      adder_tipster = subscription.adder_tipster
+      subtotal = select_plan.price + adder_tipster * ADDING_TIPSTER_PRICE
+      before_amount = subscription.calculator_price
+      if using_coupon?
+        using_coupon = true
+        subscription.update_attributes(using_coupon: true)
+        amount = before_amount > 0 ? before_amount - 3 : before_amount
+      else
+        amount = before_amount
+        using_coupon = false
+      end
+      @pp_object = {
+          amount: amount.round(3),
+          currency: 'EUR',
+          item_number: current_subscriber.id,
+          item_name: "TipsterHero Subscriptions #{subscription.plan_title}"
+      }
+      @return = {
+          has_subscription: false,
+          select_plan: select_plan,
+          adder_tipster: adder_tipster,
+          select_tipsters: select_tipsters,
+          subtotal: subtotal,
+          amount: amount.round(3),
+          before_amount: before_amount.round(3),
+          using_coupon: using_coupon
+      }
+    end
+  end
+
+  #Change subscription plan
+  def change_plan
+  end
 
   # GET|POST /subscribe/payment_method
   def payment_method
@@ -138,7 +232,7 @@ class SubscribeController < ApplicationController
       @select_plan = @current_subscription.plan
       session[:plan_id] = @select_plan.id
       if !@tipsters_in_cart.blank?
-        limit = @select_plan.number_tipster
+        limit = [@select_plan.number_tipster,@current_subscription.active_tipsters.size].max
         total = @tipsters_in_cart.size + @current_subscription.active_tipsters.size
         @total_price = (total > limit ? total - limit : 0) * ADDING_TIPSTER_PRICE * @select_plan.period
       end

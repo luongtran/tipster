@@ -1,6 +1,18 @@
 fr:
   lang: "Langue"
   hello: "Hello world"
+  menu:
+    pricing: "Des prix"
+    tipster: "Pronostiqueur"
+    tips: "Pronostic"
+    connect: "Connexion"
+    cart: "Chariot"
+    home: "Accueil"
+    about_us: "A notre propos"
+    policy: "Private Policy"
+    term: "Terms of use"
+    my_profile: "Mon profil"
+    my_subscription: "Mon cotisation"
   views:
     pagination:
       first: "&laquo;"
@@ -29,7 +41,7 @@ fr:
     request_denied: 'You can get more coupon.'
   user:
     username: "Nom d’inscription"
-    email: "Adresse électronique"
+    email: "Adresse e-mail"
     first_name: "Prénom"
     last_name: "Nom"
     birthday: "Birthday"
@@ -48,8 +60,8 @@ fr:
     update_avatar: "Mettre à jour avatar"
     account_update_successully: "Your profile was updated successfully."
     account_update_failed: "Mettre à jour maintenant échoué."
-    sign_in: "Connectez-vous"
-    sign_up: "S'inscrire"
+    sign_in: "Connexion"
+    sign_up: "Inscription"
     sign_out: "Se déconnecter"
     account_info: "Informations du compte"
   tipster_statuses:
@@ -265,7 +277,9 @@ fr:
     attributes:
       subscriber:
         username: "Nom d’inscription"
-        email: "Adresse électronique"
+        email: "Adresse e-mail"
+        password: "Mot de passe"
+        password_confirmation: "Confirmez votre mot de passe"
         first_name: "Prénom"
         last_name: "Nom"
         birthday: "Birthday"
