@@ -8,7 +8,7 @@ class SubscribeController < ApplicationController
     action = params[:act]
     case action
       when 'sign_in'
-        @account = Account.find_by(:email => params[:account][:email])
+        @account = Account.find_by(email: params[:account][:email])
         if @account && @account.valid_password?(params[:account][:password])
           sign_in @account
           redirect_to subscribe_payment_method_url
@@ -113,6 +113,7 @@ class SubscribeController < ApplicationController
       }
     end
   end
+
   #Adding tipster to current subscription
   def adder_payment
     if current_subscriber.already_has_subscription? #Adding tipster to current subscription
@@ -232,7 +233,7 @@ class SubscribeController < ApplicationController
       @select_plan = @current_subscription.plan
       session[:plan_id] = @select_plan.id
       if !@tipsters_in_cart.blank?
-        limit = [@select_plan.number_tipster,@current_subscription.active_tipsters.size].max
+        limit = [@select_plan.number_tipster, @current_subscription.active_tipsters.size].max
         total = @tipsters_in_cart.size + @current_subscription.active_tipsters.size
         @total_price = (total > limit ? total - limit : 0) * ADDING_TIPSTER_PRICE * @select_plan.period
       end
@@ -258,9 +259,12 @@ class SubscribeController < ApplicationController
   def get_coupon_code
     cc = CouponCode.create_for_user(current_subscriber, coupon_params[:source])
     if cc
-      render :json => {success: true, :code => cc.code, :message => I18n.t('coupon.created_successfully')}
+      render :json => {
+          success: true,
+          code: cc.code,
+          message: I18n.t('coupon.created_successfully')
+      }
     else
-      # TODO, edit error message here
       render :json => {
           success: false,
           message: I18n.t('coupon.request_denied')

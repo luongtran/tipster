@@ -21,7 +21,7 @@ class ProfileController < ApplicationController
     prepare_user_data
     if @account.update_with_password(change_password_params)
       flash[:notice] = I18n.t('user.password_changed_successfully')
-      sign_in @account, :bypass => true
+      sign_in @account, bypass: true
       redirect_to after_update_profile_path
     else
       @user = @account.rolable

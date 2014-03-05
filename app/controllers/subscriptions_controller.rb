@@ -39,7 +39,7 @@ class SubscriptionsController < ApplicationController
     @subscription = current_subscriber.subscription
     if @subscription.can_change_tipster?
       @subscription.remove_tipster(params[:id])
-      redirect_to action: 'show', :notice => "Tipster unfollow"
+      redirect_to action: 'show', notice: 'Tipster unfollow'
     else
       redirect_to action: 'show', notice: "You can change your follow tipster on day #{current_subscription.active_at.strftime('%d')}  of the month"
     end
