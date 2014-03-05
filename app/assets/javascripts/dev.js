@@ -21,7 +21,7 @@ $(document).ready(function () {
             $input_error.tooltip({
                 title: validate_msg,
                 placement: 'top',
-                trigger: 'focus'
+                trigger: 'manual'
             });
             $input_error.tooltip('show');
             /* Hidden tooltip after the click to the error input */
