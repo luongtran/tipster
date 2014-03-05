@@ -49,20 +49,10 @@ body {
       padding-right: 25px;
     }
     input {
-      background-color: $gray-light;
-      border-color: $gray-light;
-      box-shadow: none;
-      &.form-control {
-        font-size: 12px;
-        height: 25px;
-        line-height: 23px;
-      }
+      @extend .tipster-input-text;
     }
     label.control-label {
-      font-size: 12px;
-      line-height: 23px;
-      padding-top: 0;
-      font-weight: normal;
+      @extend .tipster-label;
     }
   }
   .tipster-form-bot {
@@ -71,11 +61,26 @@ body {
   }
 }
 
+.tipster-form-style {
+  label.control-label {
+    @extend .tipster-label;
+  }
+  input.form-control {
+    @extend .tipster-input-text;
+  }
+  select.form-control {
+    @extend .tipster-input-text;
+  }
+
+}
 
 .tipster-list {
   padding-top: 30px;
   padding-bottom: 20px;
   background: url(/assets/granit.jpg) repeat left top;
+  .panel {
+    box-shadow: 0 2px 6px rgba(black, 0.1);
+  }
   .tipster-list-inner {
     padding: 0;
     border-radius: 4px;

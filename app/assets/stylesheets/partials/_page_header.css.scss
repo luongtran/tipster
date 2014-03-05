@@ -151,6 +151,17 @@
           }
         }
       }
+      .dropdown-menu {
+        li {
+          display: block;
+          float: none;
+          a {
+            line-height: 18px !important;
+            height: auto;
+            padding: 8px 15px;
+          }
+        }
+      }
     }
   }
 }
