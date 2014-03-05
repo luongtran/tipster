@@ -27,7 +27,7 @@ SimpleForm.setup do |config|
     b.use :html5
     b.use :placeholder
     b.use :label
-    b.wrapper tag: 'div', class: 'col-lg-9' do |ba|
+    b.wrapper tag: 'div', class: 'col-md-7' do |ba|
       ba.use :input
       ba.use :error, wrap_with: {tag: 'span', class: 'help-block'}
       ba.use :hint, wrap_with: {tag: 'p', class: 'help-block has-error'}
