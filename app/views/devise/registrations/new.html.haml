@@ -1,10 +1,47 @@
-= content_for(:title, I18n.t('user.sign_up'))
-%h2 #{I18n.t('user.sign_up')}
-= simple_form_for resource, :url => registration_path(resource_name), :html => {class: 'form-horizontal', novalidate: true} do |f|
-  = f.simple_fields_for resource.rolable do |fl|
-    = fl.input :first_name
-    = fl.input :last_name
-  = render 'shared/account_fields', f: f
-  .form-group
-    .col-sm-offset-3.col-sm-9
-      %button.btn.btn-primary{type: "submit"}= I18n.t('user.sign_up')
+- content_for :title do
+  Registration
+// Sign up form
+#sign-up-bg.tipster-form-bg
+  #sign-up-board.tipster-form-board
+    .tipster-form-board-sp
+      .container.pts.pbs
+        %h4.text-uppercase Become Tipster Today and get Free trial !
+    .container.ptm.pbm
+      Start with free account really easy now.
+      %br
+      Just complete form below and you become member of Tipster Hero !
+  #sign-up-form.tipster-form
+    .tipster-form-top
+    .tipster-form-mid.clearfix
+      = simple_form_for resource, :url => registration_path(resource_name), :html => {class: 'form-horizontal mbn', novalidate: true} do |f|
+        = f.simple_fields_for resource.rolable do |fl|
+          .form-group
+            %label.control-label.col-md-4 First Name
+            .col-md-7
+              = fl.input_field :first_name, class: 'form-control',autofocus: true
+          .form-group
+            %label.control-label.col-md-4 Last Name
+            .col-md-7
+              = fl.input_field :last_name, class: 'form-control'
+        .form-group
+          %label.control-label.col-md-4 Your Email
+          .col-md-7
+            = f.input_field :email, :required => true, class: 'form-control'
+        .form-group
+          %label.control-label.col-md-4 Choose password
+          .col-md-7
+            = f.input_field :password, :required => true, class: 'form-control'
+        .form-group
+          %label.control-label.col-md-4 Re-type password
+          .col-md-7
+            = f.input_field :password_confirmation, :required => true, class: 'form-control'
+        .form-group
+          .col-md-7.col-md-offset-4
+            %button.btn.btn-success{type: :submit}
+              %i.typcn.typcn-world.mrs
+              Create Account
+            %a.mls.text-xs{href: '#'} Recovery Account
+            %label.checkbox.text-slim
+              %input{type: :checkbox} I agree with term & conditions
+    .tipster-form-bot
+
