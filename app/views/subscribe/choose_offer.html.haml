@@ -61,10 +61,7 @@
                     %td
                       = tipster.created_at.strftime("%m/%d/%Y")
                     %td
-                      = form_tag drop_tipster_cart_path do
-                        = hidden_field_tag :id, tipster.id
-                        = hidden_field_tag :return_url, subscribe_choose_offer_path
-                        %button.btn.btn-small.btn-danger{type: :submit} Remove
+                      = render 'shared/remove_from_cart_form', tipster_id: tipster.id, return_url: subscribe_choose_offer_path
           - if @total_price
             .text-right
               %h4

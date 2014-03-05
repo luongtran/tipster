@@ -43,8 +43,8 @@
           %td= @tipster.created_at
           %td= event.team_a
           %td= (1..5).to_a.sample
-          %td= (50..150).to_a.sample
-          %td
+          %td= %w(20 30 40 50 70 80).to_a.sample
+          %td{class: "#{correct ? 'text-success' : 'text-danger'}"}
             = %w(+ -).sample
             = (50..150).to_a.sample
           %td{class: "#{correct ? 'text-success' : 'text-danger'}"}
