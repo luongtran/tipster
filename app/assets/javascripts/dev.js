@@ -4,7 +4,24 @@
  */
 
 $(document).ready(function () {
-
+    /* Display validate message as tooltip in the register form */
+    var $inputs_in_form = $('form.form-register').find('.form-control');
+    for (i = 0; i < $inputs_in_form.length; i++) {
+        var $input_error = $($inputs_in_form[i]);
+        if ($input_error.parent().children('.help-block').length !== 0) {
+            var validate_msg = $input_error.parent().children('.help-block').text();
+            $input_error.tooltip({
+                title: validate_msg,
+                placement: 'top',
+                trigger: 'focus'
+            });
+            $input_error.tooltip('show');
+            /* Hidden tooltip after the click to the error input */
+            $input_error.on('click', function () {
+                $(this).tooltip('destroy');
+            });
+        }
+    }
     /* Show confirm to checkout modal after add a tipster to cart */
     $('#modal-confirm-checkout').modal();
 
