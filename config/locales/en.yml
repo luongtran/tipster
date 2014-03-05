@@ -1,6 +1,18 @@
 en:
   hello: "Hello world"
   lang: "Language"
+  menu:
+    pricing: "Pricing"
+    tipster: "Tipster"
+    tips: "Tips"
+    connect: "Connect"
+    cart: "Cart"
+    home: "Home"
+    about_us: "About us"
+    policy: "Private Policy"
+    term: "Terms of use"
+    my_profile: "My Profile"
+    my_subscription: "My Subscription"
   views:
     pagination:
       first: "&laquo;"
