@@ -1,0 +1,53 @@
+= javascript_include_tag 'subscribe'
+.container
+  %h2 Please review your selection
+  %h4
+    Your current plan info:
+    %span.text-info= @return[:select_plan].title
+  %h4
+    Active
+    %span.text-info= @return[:current_subscription].active
+  %h4
+    Active date:
+    %span.text-info= @return[:current_subscription].active_at
+  %h4
+    Expired date:
+    %span.text-info= @return[:current_subscription].expired_at
+  %h4 Current Tipsters:
+  .span6
+    %table.table.table-bordered
+      %thead
+        %tr
+          %th Full Name
+          %th Sport
+          %th Yield
+          %th Profil
+      %tbody
+        - if @return[:current_subscription].active_tipsters.present?
+          - @return[:current_subscription].active_tipsters.each do |tipster|
+            %tr
+              %td= tipster.full_name
+              %td= ['Football','Hourse', 'Tennis', 'Baseball'].sample
+              %td= "#{['12.15','20.14','10.3'].sample} %"
+              %td= "+ #{(1000..5000).to_a.sample}"
+        - else
+          %tr
+            %td Your currents not follow any tipster
+  %h4 Adding Tipster
+  .span6
+    %table.table.table-bordered
+      %thead
+        %tr
+          %th Full Name
+          %th Sport
+          %th Yield
+          %th Profil
+      %tbody
+        - @return[:select_tipsters].each do |tipster|
+          %tr
+            %td= tipster.full_name
+            %td= ['Football','Hourse', 'Tennis', 'Baseball'].sample
+            %td= "#{['12.15','20.14','10.3'].sample} %"
+            %td= "+ #{(1000..5000).to_a.sample}"
+    = form_tag subscribe_add_tipster_path do
+      = submit_tag "Confirm Adding",class: "btn btn-success"
