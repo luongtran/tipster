@@ -53,6 +53,10 @@ class Subscriber < ActiveRecord::Base
       subscriber.save!
       subscriber
     end
+
+    def register(params)
+      subscriber = new(params)
+    end
   end
 
   # ==============================================================================
@@ -88,9 +92,6 @@ class Subscriber < ActiveRecord::Base
 
   private
   def format_phone_number
-    c = Country.find_country_by_name(self.country)
-    if c
-      self.mobile_phone = PhonyRails.normalize_number(self.mobile_phone, :country_code => c.alpha2)
-    end
+
   end
 end

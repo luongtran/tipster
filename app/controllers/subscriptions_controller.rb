@@ -12,7 +12,8 @@ class SubscriptionsController < ApplicationController
   end
 
   def select_free_plan
-    # FIXME: what about non-exist?
+    # FIXME: what about non-exist? or session[:plan_id] is nil.
+    # If you validate plan_id when insert it to session, you don't have to check it exist
     if Plan.exists?(session[:plan_id])
       session[:free_plan] = true
       if current_subscriber

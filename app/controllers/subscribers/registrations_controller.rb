@@ -2,20 +2,15 @@ class Subscribers::RegistrationsController < Devise::RegistrationsController
   #before_action :configure_permitted_parameters, :only => [:create, :update]
 
   def new
-    build_resource({})
-    resource.rolable = Subscriber.new
-    respond_with self.resource
+    @subscriber = Subscriber.new
+    @subscriber.build_account
   end
 
   # New subscriber
   def create
-    build_resource(sign_up_params)
-    resource.rolable = Subscriber.new(subscriber_params)
-
-    valid = resource.valid?
-    valid = resource.rolable.valid? && valid
-
-    if valid && resource.save
+    @subscriber = Subscriber.register(subscriber_params)
+    if @subscriber.save
+      resource = @subscriber.account
       if resource.active_for_authentication?
         set_flash_message :notice, :signed_up if is_flashing_format?
         sign_up(resource_name, resource)
@@ -46,6 +41,6 @@ class Subscribers::RegistrationsController < Devise::RegistrationsController
   end
 
   def subscriber_params
-    params.require(:account).require(:subscriber).permit(:first_name, :last_name)
+    params.require(:subscriber).permit(:first_name, :last_name, account_attributes: [:email, :password, :password_confirmation])
   end
 end

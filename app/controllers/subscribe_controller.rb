@@ -4,7 +4,11 @@ class SubscribeController < ApplicationController
   before_action :ready_to_payment, only: [:payment, :payment_method]
 
   def identification
-    request.get?
+    #FIXME:
+    unless current_account
+      @subscriber = Subscriber.new
+      @subscriber.build_account
+    end
     action = params[:act]
     case action
       when 'sign_in'
@@ -15,8 +19,14 @@ class SubscribeController < ApplicationController
         else
           flash.now[:alert] = 'Email or password is invalid'
         end
-      when 'update_profile'
-        #@profile = current_subscriber.create_profile(profile_params)
+      when 'sign_up'
+        subscriber_params = params.require(:subscriber).
+            permit(:first_name, :last_name, account_attributes: [:email, :password, :password_confirmation])
+        @subscriber = Subscriber.register(subscriber_params)
+        if @subscriber.save
+          sign_up(:account, @subscriber.account)
+          redirect_to subscribe_payment_method_url
+        end
       when 'facebook', 'google_oauth2'
         session[:return_url] = subscribe_payment_method_url
         redirect_to account_omniauth_authorize_path(action)
