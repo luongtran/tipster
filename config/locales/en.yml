@@ -77,14 +77,19 @@ en:
       before: "must be before %{restriction}"
   activerecord:
     attributes:
-      subscriber:
-        email: "Email:"
-        password: "Password:"
-        current_password: "Current password:"
-        password_confirmation: "Password confirmation:"
-        remember_me: "Remember me:"
-        first_name: "First name:"
-        last_name: "Last name:"
+      account:
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Re-type password"
+        submit: "Create Account"
+        subscriber:
+          email: "Email:"
+          password: "Password:"
+          current_password: "Current password:"
+          password_confirmation: "Password confirmation:"
+          remember_me: "Remember me:"
+          first_name: "First name:"
+          last_name: "Last name:"
       profile:
         birthday: "Birthday:"
         address: "Address:"

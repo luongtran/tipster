@@ -26,17 +26,17 @@
               = fl.input_field :last_name
               = fl.error :last_name, class: :hidden
         .form-group
-          = f.label :email, label: 'Your email', required: false
+          = f.label :email, required: false
           .col-md-7
             = f.input_field :email, required: false
             = f.error :email, class: :hidden
         .form-group
-          = f.label :password, label: 'Choose password', required: false
+          = f.label :password, required: false
           .col-md-7
             = f.input_field :password, :required => true
             = f.error :password, class: :hidden
         .form-group
-          = f.label :password_confirmation, label: 'Re-type password ', required: false
+          = f.label :password_confirmation, required: false
           .col-md-7
             = f.input_field :password_confirmation, required: false
             = f.error :password_confirmation, class: :hidden
@@ -44,9 +44,8 @@
           .col-md-7.col-md-offset-4
             %button.btn.btn-success{type: :submit}
               %i.typcn.typcn-world.mrs
-              Create Account
+              = t('activerecord.attributes.account.submit')
             %a.mls.text-xs{href: new_account_password_path} Recovery Account
             %label.checkbox.text-slim
               %input#cb-term-and-conditions{type: :checkbox, checked: request.post?} I agree with term & conditions
     .tipster-form-bot
-
