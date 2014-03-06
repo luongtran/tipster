@@ -14,3 +14,5 @@
     = render 'layouts/shared/flash_messages'
     = yield
     = render 'layouts/page_footer'
+    - unless account_signed_in?
+      = render 'layouts/sign_up_box'

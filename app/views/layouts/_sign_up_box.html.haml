@@ -1,0 +1,32 @@
+#sign-up-modal-box.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog.modal-md
+    .modal-content
+      .modal-header.text-center
+        %h2 SIGN UP
+      .modal-body
+        .form-group
+          .col-sm-6
+            %a.btn.btn-block.btn-lg.btn-facebook
+              %span.glyphicon.glyphicon-leaf
+              Facebook
+          .col-sm-6
+            %a.btn.btn-danger.btn-block.btn-lg
+              %span.glyphicon.glyphicon-fire
+              Google+
+        %p
+          %br
+        .text-center
+          %h3.text-muted OR
+        .row
+          .col-md-10.col-md-offset-1
+            %form{url: ''}
+              .form-group
+                %input.form-control.input-block.input-lg{placeholder: "Email address", type: :text}/
+              .form-group
+                %input.form-control.input-block.input-lg{placeholder: "Password", type: :password}/
+              .form-group
+                %input.form-control.input-block.input-lg{placeholder: "Re-type password", type: :password}/
+              .form-group
+                %button.btn.btn-success.btn-block.btn-lg SIGN UP
+        .text-center
+          %a{href: '#'} Forgot password?

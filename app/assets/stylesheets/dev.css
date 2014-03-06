@@ -87,6 +87,7 @@ label.control-label, label.checkbox {
     -moz-box-shadow: 0 0 5px #3d5ca5 inset;
     box-shadow: 0 0 5px #3d5ca5 inset;
 }
+
 .btn.btn-facebook:hover {
     background: #365293;
     background-size: 100%;
@@ -99,4 +100,10 @@ label.control-label, label.checkbox {
     -moz-transition: box-shadow .05s ease-in-out;
     -o-transition: box-shadow .05s ease-in-out;
     transition: box-shadow 0.05s ease-in-out;
+}
+
+@media (min-width: 768px) {
+    #sign-up-modal-box.modal .modal-dialog {
+        width: 500px;
+    }
 }
