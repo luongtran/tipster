@@ -98,12 +98,16 @@ body {
     border-bottom: solid 1px #dddddd;
     line-height: 25px;
     ul.list-inline {
-      margin-bottom: 0;
+      margin: 0;
       overflow: hidden;
       li {
         float: left;
         padding: 0;
         border-right: solid 1px #d9d9d9;
+        &:first-child {
+          border-radius: 4px 0 0 0;
+          overflow: hidden;
+        }
         a {
           display: inline-block;
           line-height: 25px;
