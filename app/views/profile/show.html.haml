@@ -27,7 +27,8 @@
               = f.input :know_website_from, as: :select, collection: know_website_from_for_select, include_blank: false
               = f.input :secret_question, as: :select, collection: secret_questions_for_select, include_blank: false
               = f.input :answer_secret_question
-              = f.input :receive_info_from_partners, label: 'Receive info from our partners'
+              = f.input :receive_info_from_partners, :as => :boolean, :inline_label => 'Receive info from our partners', label: '&nbsp;'.html_safe
+
               .form-group
                 .col-md-offset-4.col-md-7
                   %button{type: "submit", class: "btn btn-success text-slim"}

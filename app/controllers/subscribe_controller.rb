@@ -4,7 +4,6 @@ class SubscribeController < ApplicationController
   before_action :ready_to_payment, only: [:payment, :payment_method]
 
   def identification
-    #FIXME:
     unless current_account
       @subscriber = Subscriber.new
       @subscriber.build_account
@@ -24,7 +23,7 @@ class SubscribeController < ApplicationController
             permit(:first_name, :last_name, account_attributes: [:email, :password, :password_confirmation])
         @subscriber = Subscriber.register(subscriber_params)
         if @subscriber.save
-          sign_up(:account, @subscriber.account)
+          sign_in(:account, @subscriber.account)
           redirect_to subscribe_payment_method_url
         end
       when 'facebook', 'google_oauth2'
