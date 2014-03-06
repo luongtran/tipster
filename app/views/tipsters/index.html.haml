@@ -1,16 +1,18 @@
 = content_for(:title, "Tipster listing")
-.container
-  .center-block
-    %ul.sports-filter
-      %li
-        %a.btn.btn-default{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All sports
-      - @sports.each do |sport|
-        %li
-          %a.btn.btn-default{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
-      %li
-        = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'
 .tipster-list
+
   .tipster-list-inner.container
+    .tipster-list-line1
+      %ul(class="list-inline" )
+        %li
+          %a{href: tipsters_path(sport_filter_param(nil))} All sports
+        - @sports.each do |sport|
+          %li
+            %a{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
+    .tipster-list-line2.clearfix
+      .pull-right
+        %span(class="mrs text-muted" ) Filter by status
+        = select_tag :status, options_for_select(tipster_statuses_for_select), id: '', class: ''
     .tipster-list-table
       %table(class="table table-hover" )
         %thead

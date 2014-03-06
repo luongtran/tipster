@@ -55,3 +55,20 @@
 .relative {
   position: relative;
 }
+
+.tipster-input-text {
+  background-color: $gray-light;
+  border-color: $gray-light;
+  box-shadow: none;
+  &.form-control {
+    font-size: 12px;
+    height: 25px;
+    line-height: 23px;
+  }
+}
+.tipster-label {
+  font-size: 12px;
+  line-height: 23px;
+  padding-top: 0;
+  font-weight: normal;
+}
