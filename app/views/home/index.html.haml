@@ -1,3 +1,5 @@
+- content_for :top_tipster do
+  = render 'top_tipster', :tipsters => []
 #values-intro
   .container
     .row
@@ -43,8 +45,6 @@
           %hr.divider
           .text-center.row
             %a(href="javascript:;" class="btn btn-lg btn-success col-md-6 col-md-offset-3" ) Sign Up
-
-
       %div(class="col-md-4" )
         .abonnaments.super
           .abon-head.text-center
@@ -65,3 +65,27 @@
           %hr.divider
           .text-center.row
             %a(href="javascript:;" class="btn btn-lg btn-success col-md-6 col-md-offset-3" ) Sign Up
+-##sign-up-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+-#  .modal-dialog.modal-md
+-#    .modal-content
+-#      .modal-header.text-center
+-#        %h2 SIGN UP
+-#      .modal-body
+-#        .form-group
+-#          .col-sm-6
+-#            %a.btn.btn-primary.btn-block.btn-lg Facebook
+-#          .col-sm-6
+-#            %a.btn.btn-danger.btn-block.btn-lg Google +
+-#        %p
+-#          %br
+-#        .text-center
+-#          %h3.text-muted OR
+-#        %form{url: ''}
+-#          .form-group
+-#            %input.form-control.input-block.input-lg{placeholder: "john@example.com", type: :text}/
+-#          .form-group
+-#            %input.form-control.input-block.input-lg{placeholder: "Password", type: :password}/
+-#          .form-group
+-#            %input.form-control.input-block.input-lg{placeholder: "Re-type password", type: :password}/
+-#          .form-group
+-#            %button.btn.btn-success.btn-block.btn-lg SIGNUP

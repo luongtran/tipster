@@ -37,6 +37,9 @@ $(document).ready(function () {
     /* Show confirm to checkout modal after add a tipster to cart */
      $('#modal-confirm-checkout').modal();
 
+//    $('#lk-toggle-sign-up-box').on('click', function () {
+//        $('#sign-up-modal').modal();
+//    });
     /* Tipster filter statuses select box */
     $('#tipster_statuses_filer').on('change', function () {
         window.location = $('#tipster_statuses_filer option:selected').attr('data-url');

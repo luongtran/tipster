@@ -26,15 +26,15 @@
                 %a{href: destroy_account_session_path}= I18n.t('user.sign_out')
         - else
           %li
-            -#%a{href: new_account_session_path}= I18n.t('user.sign_in')
-            %a{"data-toggle" => "modal", href: "#loginModal"}= t('user.sign_in')
+            %a{href: new_account_session_path}= I18n.t('user.sign_in')
+            -#%a{"data-toggle" => "modal", href: "#loginModal"}= t('user.sign_in')
           %li.dropdown
             %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
               Connect
               %b.caret
             %ul.dropdown-menu
               %li
-                %a{href: new_account_registration_path}= I18n.t('user.sign_up')
+                %a#lk-toggle-sign-up-box{href: new_account_registration_path}= I18n.t('user.sign_up')
               = render 'shared/social_connection_links'
 #page_header_mid
   / this is container header box for sub-page (signup - steps etc)
@@ -74,32 +74,30 @@
                 %a{:href=>"javascript:;"}
                   %i.typcn.typcn-cog
           .quickpanel-right
-  = render 'top_tipster' if controller_name == 'home' && action_name == 'index'
-- unless current_subscriber
-  #loginModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
-    .modal-dialog.modal-sm
-      .modal-content
-        .modal-body
-          .text-center
-            %h3 CONNECT WITH
-            %ul.inline
-              %li{style: 'padding: 0 10px;'}
-                = simple_form_for :nothing, url: subscribe_identification_path do |f|
-                  = hidden_field_tag :act, 'facebook'
-                  %button.btn.btn-small.btn-primary{type: :submit} Facebook
-              %li{style: 'padding: 0 10px;'}
-                = simple_form_for :nothing, url: subscribe_identification_path  do |f|
-                  = hidden_field_tag :act, 'google_oauth2'
-                  %button.btn.btn-small.btn-warning{type: :submit} Google +
-          %hr
-          %h3.text-center="OR #{t('user.sign_in').upcase}"
-          .text-center
-            = simple_form_for :account, :url => subscribe_identification_path, :method => 'POST', :html => {class: 'form-horizontal'} do |f|
-              = hidden_field_tag :act, 'sign_in'
-              .form-group
-                = text_field_tag :email,'', :required => false, :autofocus => true,input_html: { :autocomplete => 'off'},placeHolder: 'Email'
-              .form-group
-                = text_field_tag :password,'', :required => false,placeHolder: 'Password'
-              .form-group
-                .col-sm-offset-3.col-sm-9
-                  = f.button :submit, t("user.sign_in"), class: 'btn btn-success'
+  = yield :top_tipster
+-#- unless current_subscriber
+-#  #loginModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
+-#    .modal-dialog.modal-md
+-#      .modal-content
+-#        .modal-body
+-#          .text-center
+-#            %h3 Connect with
+-#            %ul.inline
+-#              %li
+-#                = simple_form_for :nothing, url: subscribe_identification_path do |f|
+-#                  = hidden_field_tag :act, 'facebook'
+-#                  %button.btn.btn-small.btn-primary{type: :submit} Facebook
+-#              %li
+-#                = simple_form_for :nothing, url: subscribe_identification_path  do |f|
+-#                  = hidden_field_tag :act, 'google_oauth2'
+-#                  %button.btn.btn-small.btn-warning{type: :submit} Google +
+-#          %hr
+-#          #message_return
+-#          %h3.text-center="Or #{t('user.sign_in')}"
+-#          = simple_form_for :account, :url => subscribe_identification_path, :method => 'POST', :html => {class: 'form-horizontal'}, remote: true do |f|
+-#            = hidden_field_tag :act, 'sign_in'
+-#            = f.input :email, :required => false, :autofocus => true, class: 'form-group',input_html: { :autocomplete => 'off'}
+-#            = f.input :password, :required => false,class: 'form-group'
+-#            .form-group
+-#              .col-sm-offset-3.col-sm-9
+-#                = f.button :submit, "Sign in", class: 'btn btn-success'

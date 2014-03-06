@@ -4,7 +4,6 @@ class SubscribeController < ApplicationController
   before_action :ready_to_payment, only: [:payment, :payment_method]
 
   def identification
-    #FIXME:
     unless current_account
       @subscriber = Subscriber.new
       @subscriber.build_account
@@ -15,8 +14,10 @@ class SubscribeController < ApplicationController
         @account = Account.find_by(email: params[:account][:email])
         if @account && @account.valid_password?(params[:account][:password])
           sign_in @account
+          #@result = true
           redirect_to subscribe_payment_method_url
         else
+          #@result = false
           flash.now[:alert] = 'Email or password is invalid'
         end
       when 'sign_up'
@@ -24,7 +25,7 @@ class SubscribeController < ApplicationController
             permit(:first_name, :last_name, account_attributes: [:email, :password, :password_confirmation])
         @subscriber = Subscriber.register(subscriber_params)
         if @subscriber.save
-          sign_up(:account, @subscriber.account)
+          sign_in(:account, @subscriber.account)
           redirect_to subscribe_payment_method_url
         end
       when 'facebook', 'google_oauth2'
