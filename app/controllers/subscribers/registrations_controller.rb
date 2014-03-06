@@ -6,25 +6,57 @@ class Subscribers::RegistrationsController < Devise::RegistrationsController
     @subscriber.build_account
   end
 
-  # New subscriber
   def create
-    @subscriber = Subscriber.register(subscriber_params)
-    if @subscriber.save
-      resource = @subscriber.account
-      if resource.active_for_authentication?
-        set_flash_message :notice, :signed_up if is_flashing_format?
-        sign_up(resource_name, resource)
-        respond_with resource, location: after_sign_up_path_for(resource)
-      else
-        set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
-        expire_data_after_sign_in!
-        respond_with resource, location: after_inactive_sign_up_path_for(resource)
-      end
+    build_resource(account_params)
+    resource.rolable = Subscriber.new
+    if resource.save
+      #if resource.active_for_authentication?
+      #  set_flash_message :notice, :signed_up if is_flashing_format?
+      sign_up(resource_name, resource)
+      #  respond_with resource, :location => after_sign_up_path_for(resource)
+      #else
+      #  set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
+      #  expire_data_after_sign_in!
+      #  respond_with resource, :location => after_inactive_sign_up_path_for(resource)
+      #end
+      render json: {
+          success: true,
+          path: after_sign_up_path_for(resource)
+      }
     else
       clean_up_passwords resource
-      #respond_with resource
-      render :new
+      render json: {
+          success: false,
+          errors: resource.errors
+      }
     end
+  end
+
+  # New subscriber
+  #def create
+  #  @subscriber = Subscriber.register(subscriber_params)
+  #  resource
+  #  if @subscriber.save
+  #    resource = @subscriber.account
+  #    if resource.active_for_authentication?
+  #      set_flash_message :notice, :signed_up if is_flashing_format?
+  #      sign_up(resource_name, resource)
+  #      respond_with resource, location: after_sign_up_path_for(resource)
+  #    else
+  #      set_flash_message :notice, :"signed_up_but_#{resource.inactive_message}" if is_flashing_format?
+  #      expire_data_after_sign_in!
+  #      respond_with resource, location: after_inactive_sign_up_path_for(resource)
+  #    end
+  #  else
+  #    clean_up_passwords resource
+  #    #respond_with resource
+  #    render :new
+  #  end
+  #end
+
+  protected
+  def after_inactive_sign_up_path_for(resource)
+    root_path
   end
 
   private
@@ -42,5 +74,9 @@ class Subscribers::RegistrationsController < Devise::RegistrationsController
 
   def subscriber_params
     params.require(:subscriber).permit(:first_name, :last_name, account_attributes: [:email, :password, :password_confirmation])
+  end
+
+  def account_params
+    params.require(:account).permit(:email, :password, :password_confirmation)
   end
 end

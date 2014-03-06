@@ -78,4 +78,46 @@ $(document).ready(function () {
         Helper.alert_warning('Your cart is empty!');
         return false;
     });
+    $('#sign-up-modal-box #sign-up-form').on('submit', function () {
+        var $form = $(this);
+        var url = $form.attr('action');
+        var $submmiter = $form.find('#submiter');
+        $.ajax({
+            type: 'POST',
+            dataType: 'JSON',
+            url: url,
+            data: $form.serialize(),
+            beforeSend: function () {
+                $submmiter.addClass('in-progress');
+                $submmiter.attr('disabled', true);
+                $('.tooltip ').hide();
+            },
+            success: function (response) {
+                if (response.success) {
+                    window.location = response.path;
+                } else {
+                    // show error as tooltip
+                    for (field in response.errors) {
+                        var $input_error = $('#' + field);
+                        var validate_msg = response.errors[field];
+                        $input_error.tooltip({
+                            title: validate_msg,
+                            placement: 'top',
+                            trigger: 'manual',
+                            delay: { show: 500}
+                        });
+                        $input_error.tooltip('show');
+                        $input_error.on('click', function () {
+                            $(this).tooltip('destroy');
+                        });
+                    }
+                }
+            },
+            complete: function () {
+                $submmiter.removeClass('in-progress');
+                $submmiter.attr('disabled', false);
+            }
+        });
+        return false;
+    });
 });

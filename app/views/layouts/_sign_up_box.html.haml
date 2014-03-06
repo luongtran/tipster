@@ -6,12 +6,12 @@
       .modal-body
         .form-group
           .col-sm-6
-            %a.btn.btn-block.btn-lg.btn-facebook
+            %a.btn.btn-block.btn-lg.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
               %span.glyphicon.glyphicon-leaf
               Facebook
           .col-sm-6
             %a.btn.btn-danger.btn-block.btn-lg
-              %span.glyphicon.glyphicon-fire
+              %span.glyphicon.glyphicon-fire{href: account_omniauth_authorize_path(:google_oauth2)}
               Google+
         %p
           %br
@@ -19,14 +19,14 @@
           %h3.text-muted OR
         .row
           .col-md-10.col-md-offset-1
-            %form{url: ''}
+            = simple_form_for :account, url: account_registration_path, html: {id: 'sign-up-form'} do |f|
               .form-group
-                %input.form-control.input-block.input-lg{placeholder: "Email address", type: :text}/
+                = f.input_field :email, as: :email, placeholder: 'Email address',id: 'email', class: 'input-block input-lg', autocomplete: 'off'
               .form-group
-                %input.form-control.input-block.input-lg{placeholder: "Password", type: :password}/
+                = f.input_field :password, as: :password, placeholder: 'Password',id: 'password', class: 'input-block input-lg'
               .form-group
-                %input.form-control.input-block.input-lg{placeholder: "Re-type password", type: :password}/
+                = f.input_field :password_confirmation, as: :password, placeholder: 'Re-type password',id: 'password_confirmation', class: 'input-block input-lg'
               .form-group
-                %button.btn.btn-success.btn-block.btn-lg SIGN UP
+                %button.btn.btn-success.btn-block.btn-lg#submiter SIGN UP
         .text-center
           %a{href: '#'} Forgot password?
