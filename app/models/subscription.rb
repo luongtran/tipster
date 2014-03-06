@@ -52,6 +52,18 @@ class Subscription < ActiveRecord::Base
     return add
   end
 
+  def change_tipster(tipster)
+    self.subscription_tipsters.where(tipster_id: tipster.id).each do |t|
+      t.try(:set_active)
+    end
+  end
+  def insert_tipster(tipster)
+    self.tipsters << tipster
+    self.save
+    self.subscription_tipsters.each do |t|
+      t.try(:set_active)
+    end
+  end
   def can_change_tipster?
     self.active && self.active_at > 1.days.ago || (self.active_date.strftime('%d').to_i == Time.now.strftime('%d')  && self.expired_at > Time.now)
   end

@@ -5,7 +5,7 @@ if Rails.env.production?
   ActiveMerchant::Billing::Base.mode = :test
 else
   ADDING_TIPSTER_PRICE = 9.9
-  PAYPAL_ACCOUNT = 'sfr@tipsterhero.com'
+  PAYPAL_ACCOUNT = 'sfr@tipsterhero2.com'
   ActiveMerchant::Billing::Base.mode = :test
 end
 
