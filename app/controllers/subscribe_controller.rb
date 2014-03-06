@@ -14,8 +14,10 @@ class SubscribeController < ApplicationController
         @account = Account.find_by(email: params[:account][:email])
         if @account && @account.valid_password?(params[:account][:password])
           sign_in @account
+          #@result = true
           redirect_to subscribe_payment_method_url
         else
+          #@result = false
           flash.now[:alert] = 'Email or password is invalid'
         end
       when 'sign_up'

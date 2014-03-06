@@ -13,7 +13,7 @@
  *= require_tree ../../../vendor/assets/stylesheets/framework/bootstrap
  *= require bootstrap-dialog.min
  *= require partials/_common
- *= require partials/_page_home
+ *= require partials/_page
  *= require partials/_tipster
 
  *= require dev
