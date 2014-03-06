@@ -50,3 +50,6 @@ label.control-label, label.checkbox {
 #profil-chart-container {
     height: 400px;
 }
+#page_header_top #menu-main ul li a{
+    font-family: fantasy;
+}
