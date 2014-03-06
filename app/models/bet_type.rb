@@ -19,6 +19,22 @@ class BetType
               }
           },
           {
+              code: 'over_under_ht',
+              name: 'Over/Under HT',
+              other_name: 'Over/Under Halftime',
+              definition: '...',
+              example: 'Chelsea - Manchester City. Bet on: Over -0.75',
+              selections: [
+                  'Over',
+                  'Under'
+              ],
+              line: {
+                  min: 0.5,
+                  max: 10,
+                  step: 0.25
+              }
+          },
+          {
               code: 'match_odds',
               name: 'Match odds',
               other_name: '1X2;Three ways',

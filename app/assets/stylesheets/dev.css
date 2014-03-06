@@ -47,9 +47,16 @@ label.control-label, label.checkbox {
     padding: 10px 25px;
     border: 1px dashed #DADADA;
 }
+
 #profil-chart-container {
     height: 400px;
 }
-#page_header_top #menu-main ul li a{
-    font-family: fantasy;
+
+#page_header_top #menu-main ul li a {
+    /*font-family: fantasy;*/
+}
+
+.tipster-list .tipster-list-line1 ul.list-inline li a.current {
+    background-color: #3b862d;
+    color: #ffffff;
 }

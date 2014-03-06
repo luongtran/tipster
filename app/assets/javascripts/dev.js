@@ -52,10 +52,10 @@ $(document).ready(function () {
             type: "POST",
             dataType: 'json',
             url: url,
-            data: {locale: lang,current_page: current},
+            data: {locale: lang, current_page: current},
             success: function (response) {
-                if (response.success){
-                 window.location = response.location;
+                if (response.success) {
+                    window.location = response.location;
                 }
             },
             error: function (res) {

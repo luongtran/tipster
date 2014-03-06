@@ -5,14 +5,14 @@
     .tipster-list-line1
       %ul(class="list-inline" )
         %li
-          %a{href: tipsters_path(sport_filter_param(nil))} All sports
+          %a{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All sports
         - @sports.each do |sport|
           %li
             %a{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
     .tipster-list-line2.clearfix
       .pull-right
         %span(class="mrs text-muted" ) Filter by status
-        = select_tag :status, options_for_select(tipster_statuses_for_select), id: '', class: ''
+        = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'
     .tipster-list-table
       %table(class="table table-hover" )
         %thead
@@ -37,7 +37,6 @@
               %td= tipster.yield
               %td= tipster.tips_count
               %td= tipster.win_rate || '25%'
-              %td= tipster.tips_count
               %td= tipster.avg_odds
               %td= tipster.profitable_months
               %td.text-right
@@ -50,7 +49,7 @@
                       = render 'shared/remove_from_cart_form', tipster_id: tipster.id, return_url: tipsters_url
                     - else
                       = render 'shared/add_to_cart_form', tipster_id: tipster.id
-                    .btn.btn-default Detail
+                %a.btn.btn-default{href: tipster_path(tipster)} Detail
   - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
     #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
       .modal-dialog
