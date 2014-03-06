@@ -12,13 +12,14 @@ class SubscriptionsController < ApplicationController
   end
 
   def select_free_plan
+    # FIXME: what about non-exist?
     if Plan.exists?(session[:plan_id])
       session[:free_plan] = true
       if current_subscriber
         if current_subscriber.has_active_subscription?
           #Select free when current subscription is active ?
         else
-          subscription =  current_subscriber.build_subscription(plan_id: session[:plan_id],is_free: true)
+          subscription = current_subscriber.build_subscription(plan_id: session[:plan_id], is_free: true)
           if subscription.save
             redirect_to subscriptions_path
           else
