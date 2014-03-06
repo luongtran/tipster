@@ -57,6 +57,10 @@ class ApplicationController < ActionController::Base
     I18n.locale = I18n.default_locale
   end
 
+  def change_locale(lang)
+    session[:locale] = lang
+  end
+
 # Clear and create new cart
   def initial_cart_session
     session[:cart] = {}

@@ -60,3 +60,7 @@ label.control-label, label.checkbox {
     background-color: #3b862d;
     color: #ffffff;
 }
+
+.lk-change-lang.current {
+    font-weight: bold;
+}

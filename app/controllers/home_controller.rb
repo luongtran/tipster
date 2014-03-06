@@ -36,8 +36,7 @@ class HomeController < ApplicationController
   end
 
   def select_language
-    session[:locale] = params[:locale]
-    current_page = params[:current_page]
-    render json: {success: true,location: current_page}
+    change_locale params[:locale]
+    render json: {}
   end
 end

@@ -143,4 +143,9 @@ module ApplicationHelper
         :size => '80x40',
     )
   end
+
+  def class_for_link_to_change_lang(lang)
+    lang = lang.to_sym
+    I18n.locale == lang ? 'current' : ''
+  end
 end

@@ -44,23 +44,20 @@ $(document).ready(function () {
     });
 
     /* Languages selection */
-    $('.lk-change-lang').on('click', function () {
+    $('.lk-change-lang:not(.current)').on('click', function () {
         var lang = $(this).attr('data-lang');
         var url = $(this).attr('data-url');
-        var current = window.location.pathname;
+        var current_location = window.location.pathname;
         $.ajax({
-            type: "POST",
+            type: 'POST',
             dataType: 'json',
             url: url,
-            data: {locale: lang, current_page: current},
+            data: {locale: lang},
             success: function (response) {
-                if (response.success) {
-                    window.location = response.location;
-                }
+                window.location = current_location;
             },
-            error: function (res) {
-                console.log(res);
-                console.log("Error on change language! ");
+            error: function (response) {
+                Help.alert_server_error();
             }
         });
     });
