@@ -37,8 +37,7 @@ class HomeController < ApplicationController
 
   def select_language
     session[:locale] = params[:locale]
-    # FIXME: refresh current page
-    render js: 'window.location = "/"'
+    current_page = params[:current_page]
+    render json: {success: true,location: current_page}
   end
-
 end

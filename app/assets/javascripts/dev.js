@@ -47,14 +47,19 @@ $(document).ready(function () {
     $('.lk-change-lang').on('click', function () {
         var lang = $(this).attr('data-lang');
         var url = $(this).attr('data-url');
+        var current = window.location.pathname;
         $.ajax({
             type: "POST",
+            dataType: 'json',
             url: url,
-            data: {locale: lang},
+            data: {locale: lang,current_page: current},
             success: function (response) {
-                console.log(response);
+                if (response.success){
+                 window.location = response.location;
+                }
             },
-            error: function () {
+            error: function (res) {
+                console.log(res);
                 console.log("Error on change language! ");
             }
         });
