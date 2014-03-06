@@ -58,6 +58,6 @@
                 %a.btn.btn-danger Current
             - else
               - if @choosed_plan == plan.id
-                %a.btn.btn-warning Selected
+                = link_to 'Selected', select_plan_path(plan.id),class: 'btn btn-warning'
               - else
                 = link_to 'Subscribe', select_plan_path(plan.id),class: 'btn btn-success'
