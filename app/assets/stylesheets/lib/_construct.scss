@@ -43,6 +43,7 @@
 .pan { padding: 0; }
 
 .text-slim { font-weight: 200; }
+.text-bold { font-weight: 700; }
 .text-xs { font-size: 10px; }
 .text-sm { font-size: 11px; }
 .text-md { font-size: 12px; }
@@ -72,4 +73,19 @@
   line-height: 28px;
   padding-top: 0;
   font-weight: normal;
+}
+
+//re-style button of bootstrap
+.btn {
+  box-shadow: 0 1px 4px rgba(black, 0.1);
+  &.btn-default {
+    @include linear-gradient(to top, #F0F0F0 0%, #F0F0F0 20%, #FFFFFF 100%);
+  }
+  &.btn-success {
+    @include linear-gradient(to top, #4EB34E 0%, #4EB34E 20%, #47B847 100%);
+  }
+}
+
+.background-granite {
+  background: url(/assets/granit.jpg) repeat left top;
 }

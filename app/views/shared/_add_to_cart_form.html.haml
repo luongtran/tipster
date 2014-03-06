@@ -1,4 +1,6 @@
 -# Required variables: tipster_id
 = form_tag add_tipster_cart_path do
   = hidden_field_tag :id, tipster_id
-  %button.btn.btn-success{type: :submit} + Add to cart
+  %button.btn.btn-sm.btn-success{type: :submit}
+    %i(class="glyphicon glyphicon-plus mrs" )
+    Add to cart

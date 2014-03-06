@@ -1,0 +1,50 @@
+@import "../lib/general";
+
+#tipster_list {
+
+  #tipster-list-table {
+    tbody {
+      tr {
+        td:first-child {
+          .tipster-name {
+            color: black;
+            font-weight: normal;
+            font-size: 16px;
+          }
+        }
+      }
+      tr:nth-child(1) {
+        background-color: #B4FFA7;
+      }
+      tr:nth-child(2) {
+        background-color: #C6FFB3;
+      }
+      tr:nth-child(3) {
+        background-color: #E3FFDA;
+      }
+    }
+    .table-hover > tbody > tr:hover > td, .table-hover > tbody > tr:hover > th {
+      background-color: #F7FFE7;
+    }
+  }
+
+}
+
+
+
+// tipster profile
+#profile-overiew-page {
+ @extend .background-granite;
+
+  #profile-overview {
+    border: none;
+    #profile-overview-common {
+      border: solid 1px tint($gray, 50%);
+      background-color: white;
+      #profile-overview-avatar {
+
+      }
+    }
+  }
+
+}
