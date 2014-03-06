@@ -39,7 +39,7 @@
   / this is container header box for sub-page (signup - steps etc)
   #sub-page-header
     .container.clearfix
-      - unless controller_name == 'home' && action_name == 'index'
+      - unless yield(:top_tipster)
         .pull-left
           #sub-page-title.clearfix
             %span.icon.typcn.typcn-location.pull-left.man
@@ -73,4 +73,4 @@
                 %a{:href=>"javascript:;"}
                   %i.typcn.typcn-cog
           .quickpanel-right
-  = render 'top_tipster' if controller_name == 'home' && action_name == 'index'
+  = yield :top_tipster
