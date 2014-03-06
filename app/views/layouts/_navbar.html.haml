@@ -39,7 +39,7 @@
   / this is container header box for sub-page (signup - steps etc)
   #sub-page-header
     .container.clearfix
-      - unless yield(:top_tipster)
+      - unless controller_name == 'home' && action_name == 'index'
         .pull-left
           #sub-page-title.clearfix
             %span.icon.typcn.typcn-location.pull-left.man
