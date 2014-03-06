@@ -42,6 +42,7 @@ $(document).ready(function () {
             keyboard: false
         });
     });
+
     /* Auto expand dropdown */
     $('#menu-main li.dropdown:not(.open)').mouseover(function () {
         $(this).addClass('open');
