@@ -12,17 +12,18 @@
               #profile-overview-avatar.profile-overview-common.avatar.pull-left.mrl
                 = image_tag (@tipster.avatar_url || 'demo.jpg'), class: 'user_avatar'
               #profile-overiew-statistic.profile-overiew-statistic.pull-left.text-md
-                %h3.ptn.mtn.text-uppercase.text-slim.mbl Statistics
+                %h3.ptn.mtn.text-slim.mbl Nave here
+                %h4.text-md.text-uppercase.text-muted Statistics
                 %p.mbs
                   %span.mrs Profit:
                   %span.text-success.text-bold.text-lg
                     \ +1500 Units
-                  %i.text-muted in the last 6 months
+                  %i.text-muted in the last <strong>6 months</strong>
                 %p.mbs
                   %span.mrs Yield:
                   %span.text-success.text-bold.text-lg
                     \ 23.5%
-                  %i.text-muted on last 120 tips
+                  %i.text-muted on last <strong>120 tips</strong>
 
         .col-md-6
           %h3.mtl.text-slim Subscribe to this Tipster
