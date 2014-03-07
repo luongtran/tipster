@@ -17,6 +17,9 @@ class Subscriber < ActiveRecord::Base
       SQ_MOTHER_MAIDEN_NAME => 'What is the maiden name of your mother?'
   }
 
+  # Indicator to validate more attributes if subscriber is paid account
+  attr_accessor :validate_with_paid_account
+
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -30,12 +33,13 @@ class Subscriber < ActiveRecord::Base
   # VALIDATIONS
   # ==============================================================================
   validates_date :birthday, :before => lambda { 16.years.ago }, allow_blank: true
-  validates :first_name, :last_name, presence: true, length: {minimum: 2}, on: :update
-  validates_presence_of :birthday, :civility, :mobile_phone, :secret_question, :answer_secret_question, :country, on: :update
+  validates :first_name, :last_name, :birthday, presence: true, length: {minimum: 2}, on: :update
+  validates_presence_of :mobile_phone, :secret_question, :answer_secret_question, :country, on: :update, if: :validate_with_paid_account
+
   # ==============================================================================
   # CALLBACKS
   # ==============================================================================
-  before_validation :format_phone_number, on: :update
+  #before_validation :format_phone_number, on: :update
 
   # ==============================================================================
   # CLASS METHODS
@@ -48,7 +52,8 @@ class Subscriber < ActiveRecord::Base
           account_attributes: {
               :email => auth[:info][:email],
               :password => Devise.friendly_token[0, 20]
-          }
+          },
+          created_by_omniauth: true
       )
       subscriber.save!
       subscriber

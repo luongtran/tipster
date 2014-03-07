@@ -12,7 +12,8 @@
           = simple_form_for @user, as: :user, url: update_profile_path_for(@user), method: 'POST', html: {class: 'form-horizontal tipster-form-style', novalidate: true} do |f|
             = f.input :first_name
             = f.input :last_name
-            = f.input :civility
+            = f.input :nickname
+            = f.input :gender, :as => :radio_buttons, :collection => genders_collection_for_select, :item_wrapper_class => 'radio-inline'
             = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy/mm/dd'}
             = f.input :address, :required => false, input_html: {placeholder: '123 Main Street'}
             = f.input :city, :required => false
@@ -32,16 +33,17 @@
                 %button{type: "submit", class: "btn btn-success text-slim"}
                   %i(class="glyphicon glyphicon-saved mrs" )
                   = t('user.update_account')
-    .col-md-6
-      .panel.panel-default
-        .panel-heading= I18n.t('user.change_password')
-        .panel-body
-          = simple_form_for @account, as: :account, url: change_password_path_for(@user), method: 'POST', html: {class: 'form-horizontal tipster-form-style'} do |f|
-            = f.input :current_password, required: true
-            = f.input :password, required: true
-            = f.input :password_confirmation, required: true
-            .form-group
-              .col-md-offset-4.col-md-7
-                %button{type: "submit", class: 'text-slim btn btn-default'}
-                  %i(class="glyphicon glyphicon-lock mrs" )
-                  = t('user.change_password')
+    - unless @user.created_by_omniauth
+      .col-md-6
+        .panel.panel-default
+          .panel-heading= I18n.t('user.change_password')
+          .panel-body
+            = simple_form_for @account, as: :account, url: change_password_path_for(@user), method: 'POST', html: {class: 'form-horizontal tipster-form-style'} do |f|
+              = f.input :current_password, required: true
+              = f.input :password, required: true
+              = f.input :password_confirmation, required: true
+              .form-group
+                .col-md-offset-4.col-md-7
+                  %button{type: "submit", class: 'text-slim btn btn-default'}
+                    %i(class="glyphicon glyphicon-lock mrs" )
+                    = t('user.change_password')

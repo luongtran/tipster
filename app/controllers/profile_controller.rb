@@ -1,11 +1,11 @@
 class ProfileController < ApplicationController
   before_action :authenticate_account!, :prepare_user_data
-  skip_before_action :fill_up_profile
 
   def show
   end
 
   def update
+    #@user.validate_with_paid_account = true
     if @user.update_attributes(user_params)
       flash[:notice] = I18n.t('user.account_update_successully')
       redirect_to after_update_profile_path

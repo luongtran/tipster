@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_action :set_locale, :fill_up_profile
+  before_action :set_locale
 
   helper_method :tipster_ids_in_cart
 
@@ -42,13 +42,6 @@ class ApplicationController < ActionController::Base
 # Render bad request(if: invalid params, etc ...)
   def render_400
     render nothing: true, status: 400
-  end
-
-  def fill_up_profile
-    user = current_subscriber
-    if user && !user.valid?
-      redirect_to my_profile_url, notice: 'Please update your profile'
-    end
   end
 
   def set_locale
