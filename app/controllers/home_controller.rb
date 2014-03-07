@@ -27,7 +27,7 @@ class HomeController < ApplicationController
   end
 
   def pricing
-    @plans = Plan.where('price != 0')
+    @plans = Plan.all
     if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active == true
       @selected_plan = current_subscriber.subscription.plan_id
     else
