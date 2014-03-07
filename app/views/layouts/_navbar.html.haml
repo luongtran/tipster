@@ -26,7 +26,7 @@
                 %a{href: destroy_account_session_path}= I18n.t('user.sign_out')
         - else
           %li
-            %a{href: new_account_session_path}= I18n.t('user.sign_in')
+            %a#lk-toggle-sign-in-box{href: '#'}= I18n.t('user.sign_in')
             -#%a{"data-toggle" => "modal", href: "#loginModal"}= t('user.sign_in')
           %li
             %a#lk-toggle-sign-up-box{href: '#'}= I18n.t('user.sign_up')

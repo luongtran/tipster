@@ -13,6 +13,8 @@ fr:
     term: "Terms of use"
     my_profile: "Mon profil"
     my_subscription: "Mon cotisation"
+  account:
+    invalid: "Email ou mot de passe est invalide!"
   views:
     pagination:
       first: "&laquo;"

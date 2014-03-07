@@ -106,6 +106,25 @@ label.control-label, label.checkbox {
     #sign-up-modal-box.modal .modal-dialog {
         width: 500px;
     }
+    #sign-in-modal-box.modal .modal-dialog {
+        width: 400px;
+    }
+    /*body{*/
+        /*background:white;*/
+        /*background:rgba(255,255,255,0.8);*/
+        /*filter:blur(4px);*/
+        /*-o-filter:blur(4px);*/
+        /*-ms-filter:blur(4px);*/
+        /*-moz-filter:blur(4px);*/
+        /*-webkit-filter:blur(4px);*/
+    /*}*/
+    body.modal-open #page_header_mid{
+        -webkit-filter: blur(4px);
+        -moz-filter: blur(4px);
+        -o-filter: blur(4px);
+        -ms-filter: blur(4px);
+        filter: blur(4px);
+    }
 }
 
 .btn.in-progress {

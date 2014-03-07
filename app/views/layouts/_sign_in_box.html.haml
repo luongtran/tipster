@@ -1,0 +1,31 @@
+#sign-in-modal-box.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog.modal-md
+    .modal-content
+      .modal-header.text-center
+        %h2 SIGN IN
+      .modal-body
+        .form-group
+          .col-sm-6
+            %a.btn.btn-block.btn-lg.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
+              %span.glyphicon.glyphicon-leaf
+              Facebook
+          .col-sm-6
+            %a.btn.btn-danger.btn-block.btn-lg
+              %span.glyphicon.glyphicon-fire{href: account_omniauth_authorize_path(:google_oauth2)}
+              Google+
+        %p
+          %br
+        .text-center
+          %h3.text-muted OR
+        .row
+          .col-md-10.col-md-offset-1
+            = simple_form_for :account, url: account_session_path, html: {id: 'sign-in-form'} do |f|
+              .form-group
+                = f.input_field :email, as: :email, placeholder: 'Email address',id: 'email', class: 'input-block input-lg', autocomplete: 'off'
+              .form-group
+                = f.input_field :password, as: :password, placeholder: 'Password',id: 'password', class: 'input-block input-lg'
+              #message.alert.alert-info.hide
+              .form-group
+                %button.btn.btn-success.btn-block.btn-lg#submiter SIGN IN
+        .text-center
+          %a{href: '#'} Forgot password?
