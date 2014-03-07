@@ -156,4 +156,20 @@ $(document).ready(function () {
         });
         return false;
     });
+
+    $('#form-receive-tip-methods').on('submit', function () {
+        var $check_boxs = $(this).find('input[type=checkbox]');
+        var valid = false;
+        for (i = 0; i < $check_boxs.length; i++) {
+            if ($check_boxs.is(':checked')) {
+                valid = true;
+                break;
+            }
+        }
+        if (!valid) {
+            Helper.alert_warning('Please choose at leat one method');
+            return false;
+        }
+
+    });
 });

@@ -75,6 +75,10 @@ class Subscriber < ActiveRecord::Base
     self.subscription && self.subscription.active?
   end
 
+  def update_receive_tips_method(methods)
+    self.update_column :receive_tip_methods, methods.join(',')
+  end
+
   def full_name
     "#{self.first_name} #{self.last_name}".titleize
   end

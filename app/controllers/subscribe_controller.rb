@@ -258,6 +258,9 @@ class SubscribeController < ApplicationController
   end
 
   def personal_information
+    unless account_signed_in?
+      redirect_to subscribe_account_url and return
+    end
     if selected_plan
       @select_plan = selected_plan
       @account = current_account
@@ -275,9 +278,20 @@ class SubscribeController < ApplicationController
   end
 
   def shared
+
   end
 
   def receive_methods
+    unless account_signed_in?
+      redirect_to subscribe_personal_information_url and return
+    end
+    if request.get?
+
+    else
+      @account = current_account
+      @subscriber = @account.rolable
+      @subscriber.update_receive_tips_method(params[:receive_tip_methods])
+    end
   end
 
   private

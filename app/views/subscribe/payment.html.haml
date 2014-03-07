@@ -47,3 +47,16 @@
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
         .panel-body
+          %h3 Review your selection:
+          \...
+          \...
+          %h3 Select your payment method
+          %ul.inline
+            %li
+              = simple_form_for :nothing, url: subscribe_payment_method_path do |f|
+                = hidden_field_tag :method, Payment::BY_PAYPAL
+                %button.btn.btn-primary.btn-large{type: :submit} With Paypal
+            %li
+              = simple_form_for :nothing, url: subscribe_payment_method_path do |f|
+                = hidden_field_tag :method, Payment::BY_FRENCH_BANK
+                %button.btn.btn-warning.btn-large{type: :submit} French Bank

@@ -47,15 +47,18 @@
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
         .panel-body.text-center
-          %h3
-            How do you want to receive your tips?
-          .col-md-2.col-md-offset-5
-            .checkbox
-              %label
-                %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_email'} By Email
-            .checkbox
-              %label
-                %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_message'} By Message
-        .text-center
-          %br
-          %button.btn.btn-success Next >>
+          = simple_form_for :nothing, url: subscribe_receive_methods_path , method: 'POST' , html: {id: 'form-receive-tip-methods'}do |f|
+            %h3
+              How do you want to receive your tips?
+            .row
+              .col-md-2.col-md-offset-5
+                .checkbox
+                  %label
+                    %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_email', checked: true} By Email
+                .checkbox
+                  %label
+                    %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_message'} By Message
+            .row
+              .text-center
+                %br
+                %button.btn.btn-success{type: :submit} Next >>
