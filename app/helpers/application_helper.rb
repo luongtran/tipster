@@ -148,4 +148,11 @@ module ApplicationHelper
     lang = lang.to_sym
     I18n.locale == lang ? 'current' : ''
   end
+
+  def genders_collection_for_select
+    options = []
+    options << [I18n.t('user.male'), true]
+    options << [I18n.t('user.female'), false]
+    options
+  end
 end
