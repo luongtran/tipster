@@ -5,7 +5,7 @@
     .row
       - @plans.each do |plan|
         %div(class="col-md-3" )
-          .abonnaments.super
+          .abonnaments.super{class: "#{@choosed_plan == plan.id ? 'selected': ''}"}
             .abon-head.text-center
               =image_tag('abon-text-super-1.png')
               .absolute
@@ -32,7 +32,5 @@
                 - else
                   %a.btn.btn-danger Current
               - else
-                - if @choosed_plan == plan.id
-                  = link_to 'Selected', select_plan_path(plan.id),class: 'btn btn-warning'
-                - else
+                - unless @choosed_plan == plan.id
                   = link_to 'Subscribe', select_plan_path(plan.id),class: 'btn btn-success'
