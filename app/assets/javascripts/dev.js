@@ -170,6 +170,7 @@ $(document).ready(function () {
             Helper.alert_warning('Please choose at leat one method');
             return false;
         }
-
     });
+
+
 });

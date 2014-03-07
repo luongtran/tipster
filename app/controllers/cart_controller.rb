@@ -15,8 +15,11 @@ class CartController < ApplicationController
   end
 
   def add_tipster
-
-    # TODO: Check max addtional = 2
+    count_after_added = tipster_ids_in_cart.size + 1
+    if count_after_added > (selected_plan.number_tipster + Subscription::MAX_ADDTIONAL_TIPSTERS)
+      flash[:alert] = "You can add only #{Subscription::MAX_ADDTIONAL_TIPSTERS} addtional tipsters."
+      redirect_to cart_url and return
+    end
 
     unless session[:plan_id].nil?
       select_plan = Plan.find_by_id(session[:plan_id])

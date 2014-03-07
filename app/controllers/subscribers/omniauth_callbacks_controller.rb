@@ -28,7 +28,7 @@ class Subscribers::OmniauthCallbacksController < Devise::OmniauthCallbacksContro
     set_flash_message(:notice, :success, kind: provider) if is_navigational_format?
 
     sign_in account
-    redirect_to session[:return_url] || root_url
+    redirect_to session[:return_url] || pricing_url
   end
 
   protected
