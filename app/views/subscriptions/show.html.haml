@@ -1,80 +1,81 @@
-- if @subscription
-  %h1.text-success Subscription Information
-  .well
-    %ul
-      %li
-        %span
-          %strong Your plan is :
-        %span #{@subscription.plan_title}
-      %li
-        %span
-          %strong Paid account :
-        %span #{@subscription.active? ? "Active" : "Not Active"}
-      - if @subscription.is_free?
-        %li
-          %a{href: pricing_path}= t('user.upgrade')
-      - if @subscription.active?
+.container
+  - if @subscription
+    %h1.text-success Subscription Information
+    .well
+      %ul
         %li
           %span
-            %strong Plan active day:
-          %span #{@subscription.active_at.strftime("%m/%d/%Y")}
+            %strong Your plan is :
+          %span #{@subscription.plan_title}
         %li
           %span
-            %strong Plan expired day:
-          %span #{@subscription.expired_at.strftime("%m/%d/%Y")}
-  - if @subscription.active
-    %table.table.table-bordered
-      %caption List Tipster on Your subscriptions
-      %thead
-        %tr
-          %th Full Name
-          %th Email
-          %th Status
-          %th Start at
-          %th Next time purchase
-      %tbody
-        - if @subscription.tipsters.nil?
+            %strong Paid account :
+          %span #{@subscription.active? ? "Active" : "Not Active"}
+        - if @subscription.is_free?
+          %li
+            %a{href: pricing_path}= t('user.upgrade')
+        - if @subscription.active?
+          %li
+            %span
+              %strong Plan active day:
+            %span #{@subscription.active_at.strftime("%m/%d/%Y")}
+          %li
+            %span
+              %strong Plan expired day:
+            %span #{@subscription.expired_at.strftime("%m/%d/%Y")}
+    - if @subscription.active
+      %table.table.table-bordered
+        %caption List Tipster on Your subscriptions
+        %thead
           %tr
-            %td
-              There are no any tipster found.
-            %td
-            %td
-            %td
-        - else
-          - if @subscription.active_tipsters.present?
-            - @subscription.active_tipsters.each do |tipster|
-              %tr
-                %td
-                  = tipster.full_name
-                %td
-                  = tipster.email
-                %td
-                  %span.label.label-success Active
-                %td
-                  = @subscription.active_at.strftime("%m/%d/%Y")
-                %td
-                  = @subscription.expired_at.strftime("%m/%d/%Y")
-                  - if @subscription.can_change_tipster?
-                    = link_to "Unfollow", remove_inactive_tipster_path(tipster),method: 'delete',data:{confirm: "Are your sure !"} ,class: "btn btn-sm btn-danger"
-    %table.table.table-bordered
-      %caption
-        %strong Your payment history
-      %thead
-        %tr
-          %th #
-          %th Transaction ID
-          %th Payment amount
-          %th Payment date
-          %th Payment status
-          %th Payment description
-      %tbody
-        - @subscription.payments.each_with_index do |payment,index|
+            %th Full Name
+            %th Email
+            %th Status
+            %th Start at
+            %th Next time purchase
+        %tbody
+          - if @subscription.tipsters.nil?
+            %tr
+              %td
+                There are no any tipster found.
+              %td
+              %td
+              %td
+          - else
+            - if @subscription.active_tipsters.present?
+              - @subscription.active_tipsters.each do |tipster|
+                %tr
+                  %td
+                    = tipster.full_name
+                  %td
+                    = tipster.email
+                  %td
+                    %span.label.label-success Active
+                  %td
+                    = @subscription.active_at.strftime("%m/%d/%Y")
+                  %td
+                    = @subscription.expired_at.strftime("%m/%d/%Y")
+                    - if @subscription.can_change_tipster?
+                      = link_to "Unfollow", remove_inactive_tipster_path(tipster),method: 'delete',data:{confirm: "Are your sure !"} ,class: "btn btn-sm btn-danger"
+      %table.table.table-bordered
+        %caption
+          %strong Your payment history
+        %thead
           %tr
-            %td= index
-            %td= payment.txn_id
-            %td= "€#{payment.mc_gross}"
-            %td= payment.payment_date
-            %td= payment.payment_status
-            %td N/A
-- else
-  You are still not register any plan.
+            %th #
+            %th Transaction ID
+            %th Payment amount
+            %th Payment date
+            %th Payment status
+            %th Payment description
+        %tbody
+          - @subscription.payments.each_with_index do |payment,index|
+            %tr
+              %td= index
+              %td= payment.txn_id
+              %td= "€#{payment.mc_gross}"
+              %td= payment.payment_date
+              %td= payment.payment_status
+              %td N/A
+  - else
+    You are still not register any plan.

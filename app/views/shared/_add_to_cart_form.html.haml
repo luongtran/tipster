@@ -1,6 +1,9 @@
 -# Required variables: tipster_id
 = form_tag add_tipster_cart_path do
   = hidden_field_tag :id, tipster_id
-  %button.btn.btn-sm.btn-success{type: :submit}
-    %i(class="glyphicon glyphicon-plus mrs" )
+  - disabled = false
+  - if defined? disable
+    - disabled = disable
+  %button.btn.btn-sm{type: :submit, class: "#{disabled ? 'btn-default disabled' : 'btn-success'}"}
+    %i.glyphicon.glyphicon-plus.mrs
     Add to cart

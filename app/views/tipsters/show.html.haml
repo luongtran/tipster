@@ -27,7 +27,7 @@
 
         .col-md-6
           %h3.mtl.text-slim Subscribe to this Tipster
-          = render 'shared/add_to_cart_form', tipster_id: @tipster.id
+          = render 'shared/add_to_cart_form', {tipster_id: @tipster.id , disable: tipster_ids_in_cart.include?(@tipster.id.to_s)}
 
     #profile-overview-detail
       .panel.panel-default
