@@ -1,4 +1,7 @@
 class Subscriber < ActiveRecord::Base
+  include Humanizer
+  require_human_on :update, :unless => :bypass_humanizer
+
   DEFAULT_BIRTHDAY = '1990-01-01'
   KNOW_WEBSITE_FROM_LIST = %w(other sponsoring advertising social_network)
 
@@ -18,7 +21,7 @@ class Subscriber < ActiveRecord::Base
   }
 
   # Indicator to validate more attributes if subscriber is paid account
-  attr_accessor :validate_with_paid_account
+  attr_accessor :validate_with_paid_account, :bypass_humanizer
 
   # ==============================================================================
   # ASSOCIATIONS
@@ -34,7 +37,7 @@ class Subscriber < ActiveRecord::Base
   # ==============================================================================
   validates_date :birthday, :before => lambda { 16.years.ago }, allow_blank: true
   validates :first_name, :last_name, :birthday, presence: true, length: {minimum: 2}, on: :update
-  validates_presence_of :mobile_phone, :secret_question, :answer_secret_question, :country, on: :update, if: :validate_with_paid_account
+  validates_presence_of :mobile_phone, :telephone, :secret_question, :answer_secret_question, :country, on: :update, if: :validate_with_paid_account
 
   # ==============================================================================
   # CALLBACKS

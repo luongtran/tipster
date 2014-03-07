@@ -108,3 +108,5 @@ gem "ransack", github: "activerecord-hackery/ransack", branch: "rails-4"
 
 # For parsing, validating phone number
 gem 'phone'
+# Anti robot
+gem 'humanizer'

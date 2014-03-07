@@ -46,7 +46,10 @@ fr:
     email: "Adresse e-mail"
     first_name: "Prénom"
     last_name: "Nom"
-    birthday: "Birthday"
+    gender: 'Gender'
+    male: 'Homme'
+    female: 'Femme'
+    birthday: "Anniversaire"
     civility: "Civility"
     country: "Pays"
     city: "Ville"
@@ -66,6 +69,8 @@ fr:
     sign_up: "Inscription"
     sign_out: "Se déconnecter"
     account_info: "Informations du compte"
+    my_profile: 'My profil'
+    upgrade: "Mise à niveau"
   tipster_statuses:
     all: 'Tout'
     active: 'Active'
