@@ -15,6 +15,9 @@ class CartController < ApplicationController
   end
 
   def add_tipster
+
+    # TODO: Check max addtional = 2
+
     unless session[:plan_id].nil?
       select_plan = Plan.find_by_id(session[:plan_id])
       if select_plan.price == 0

@@ -54,10 +54,10 @@
               .col-md-2.col-md-offset-5
                 .checkbox
                   %label
-                    %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_email', checked: true} By Email
+                    %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_email', checked: current_subscriber.receive_tip_by_email?} By Email
                 .checkbox
                   %label
-                    %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_message'} By Message
+                    %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_sms', checked: current_subscriber.receive_tip_by_sms?} By SMS
             .row
               .text-center
                 %br

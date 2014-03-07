@@ -285,12 +285,11 @@ class SubscribeController < ApplicationController
     unless account_signed_in?
       redirect_to subscribe_personal_information_url and return
     end
-    if request.get?
-
-    else
-      @account = current_account
-      @subscriber = @account.rolable
+    @account = current_account
+    @subscriber = @account.rolable
+    if request.post?
       @subscriber.update_receive_tips_method(params[:receive_tip_methods])
+      redirect_to subscribe_payment_url
     end
   end
 

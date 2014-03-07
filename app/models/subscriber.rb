@@ -79,6 +79,14 @@ class Subscriber < ActiveRecord::Base
     self.update_column :receive_tip_methods, methods.join(',')
   end
 
+  def receive_tip_by_email?
+    self.receive_tip_methods.split(',').include? 'by_email'
+  end
+
+  def receive_tip_by_sms?
+    self.receive_tip_methods.split(',').include? 'by_sms'
+  end
+
   def full_name
     "#{self.first_name} #{self.last_name}".titleize
   end
