@@ -47,13 +47,21 @@
         color: shade($gray-dark, 50%);
         text-align: center;
         line-height: 130px;
-        font-size: 70px;
+        font-size: 60px;
         text-transform: uppercase;
         span {
           font-size: 12px;
           position: relative;
           line-height: 1;
           top: -40px;
+        }
+        #month{
+          font-family: tahoma, arial, sans-serif;
+          font-size: 12px;
+          position: relative;
+          line-height: 1;
+          top: -38px;
+          right: -90px;
         }
       }
     }

@@ -36,11 +36,8 @@
         %tbody
           - if @subscription.tipsters.nil?
             %tr
-              %td
+              %td{colspan: '4'}
                 There are no any tipster found.
-              %td
-              %td
-              %td
           - else
             - if @subscription.active_tipsters.present?
               - @subscription.active_tipsters.each do |tipster|

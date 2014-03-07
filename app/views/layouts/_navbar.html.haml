@@ -6,11 +6,17 @@
     #menu-main.pull-right
       %ul.list-inline
         %li
-          %a{href: pricing_path}= t('menu.pricing')
+          %a{href: pricing_path}
+            %i.glyphicon.glyphicon-tasks
+            = t('menu.pricing')
         %li
-          %a{href: tipsters_path}= t('menu.tipster')
+          %a{href: tipsters_path}
+            %i.glyphicon.glyphicon-user
+            = t('menu.tipster')
         %li
-          %a{href: tips_path}= t('menu.tips')
+          %a{href: tips_path}
+            %i.glyphicon.glyphicon-list
+            = t('menu.tips')
         - if current_subscriber
           %li.dropdown
             %a.dropdown-toggle{'data-toggle' => "dropdown", href: "#"}
@@ -62,7 +68,9 @@
           .quickpanel-mid
             %ul.list-inline.man
               %li
-                %a#lk-view-cart{href: cart_path, class: "#{tipster_ids_in_cart.empty? ? 'empty' : ''}"}= "Cart box(#{tipster_ids_in_cart.size})"
+                %a#lk-view-cart{href: cart_path, class: "#{tipster_ids_in_cart.empty? ? 'empty' : ''}"}
+                  %i.glyphicon.glyphicon-shopping-cart
+                  = "Cart box(#{tipster_ids_in_cart.size})"
               %li.dropdown
                 %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
                   = I18n.t('lang')

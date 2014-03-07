@@ -1,63 +1,38 @@
 = content_for :title, 'Pricing'
-.container
-  %table.table.table-bordered
-    %thead
-      %tr
-        %th
-        - @plans.each do |plan|
-          %th
-            = plan.title
-    %tbody
-      %tr
-        %td Tips reception
-        - @plans.each do |plan|
-          %td
-            = plan.reception_delay.zero? ? 'Real time' : distance_of_time_in_words(plan.reception_delay)
-      %tr
-        %td Ability to pause your subscription
-        - @plans.each do |plan|
-          %td
-            - if plan.pause_ability?
-              &#x2714;
-            - else
-              &#x2718;
-      %tr
-        %td Ability to switch tipsters
-        - @plans.each do |plan|
-          %td
-            - if plan.switch_tipster_ability
-              &#x2714;
-            - else
-              &#x2718;
-      %tr
-        %td Guaranteed Profit Subscription
-        - @plans.each do |plan|
-          %td
-            - if plan.profit_guaranteed
-              &#x2714;
-            - else
-              &#x2718;
-      %tr
-        %td Discount
-        - @plans.each do |plan|
-          %td
-            = plan.discount
-      %tr
-        %td Amount
-        - @plans.each do |plan|
-          %td
-            - unless plan.free?
-              = '€' +  plan.price.to_s + '/ month'
-            %br
-            - unless @selected_plan.nil?
-              - if plan.id < @selected_plan
-                = link_to 'Downgrade', select_plan_path(plan.id),class: 'btn btn-warning'
-              - elsif plan.id > @selected_plan
-                = link_to 'Upgrade', select_plan_path(plan.id),class: 'btn btn-success'
+#Nos-abonnaments
+  .container
+    %h1.box-title.text-center Nos abonnaments
+    .row
+      - @plans.each do |plan|
+        %div(class="col-md-3" )
+          .abonnaments.super
+            .abon-head.text-center
+              =image_tag('abon-text-super-1.png')
+              .absolute
+                =image_tag 'robbon.png'
+            .abon-mid-1
+              %h1
+                %span from
+                = '€' +  plan.price.to_s + "/"
+                #month month
+            .abon-mid-2
+              %ul.list-unstyled
+                %li Let's win thanks to our professionals 
+                %li A specialist in every sports
+                %li Real-time informations
+                %li Pro features
+                %li= "Profit guaranteed" if plan.period==3
+            %hr.divider
+            .text-center.row
+              - unless @selected_plan.nil?
+                - if plan.id < @selected_plan
+                  = link_to 'Downgrade', select_plan_path(plan.id),class: 'btn btn-warning'
+                - elsif plan.id > @selected_plan
+                  = link_to 'Upgrade', select_plan_path(plan.id),class: 'btn btn-success'
+                - else
+                  %a.btn.btn-danger Current
               - else
-                %a.btn.btn-danger Current
-            - else
-              - if @choosed_plan == plan.id
-                = link_to 'Selected', select_plan_path(plan.id),class: 'btn btn-warning'
-              - else
-                = link_to 'Subscribe', select_plan_path(plan.id),class: 'btn btn-success'
+                - if @choosed_plan == plan.id
+                  = link_to 'Selected', select_plan_path(plan.id),class: 'btn btn-warning'
+                - else
+                  = link_to 'Subscribe', select_plan_path(plan.id),class: 'btn btn-success'

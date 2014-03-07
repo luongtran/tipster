@@ -13,6 +13,7 @@ puts " -> Created plan: #{p1.title}"
 
 p2 = Plan.create!(
     :name => 'ONE',
+    reception_delay: 0,
     title: '1 Month',
     :price => 39.90,
     :number_tipster => 1,
@@ -23,6 +24,7 @@ puts " -> Created plan: #{p2.title}"
 p3 = Plan.create!(
     :name => 'TWO',
     title: '3 Month',
+    reception_delay: 0,
     :price => 34.90,
     :number_tipster => 1,
     :period => 3
@@ -32,6 +34,7 @@ puts " -> Created plan: #{p3.title}"
 p4 = Plan.create!(
     :name => 'THREE',
     title: '12 Month',
+    reception_delay: 0,
     :price => 24.90,
     :number_tipster => 1,
     :period => 12
@@ -41,6 +44,7 @@ puts " -> Created plan: #{p4.title}"
 p5 = Plan.create!(
     :name => 'FOUR',
     title: '1 Month (multi tipster)',
+    reception_delay: 0,
     :price => 59.90,
     :number_tipster => 5,
     :period => 1
