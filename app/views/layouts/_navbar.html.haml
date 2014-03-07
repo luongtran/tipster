@@ -7,7 +7,7 @@
       %ul.list-inline
         %li
           %a{href: pricing_path}
-            %i.glyphicon.glyphicon-tasks
+            %i.glyphicon.glyphicon-credit-card
             = t('menu.pricing')
         %li
           %a{href: tipsters_path}
@@ -29,10 +29,14 @@
                 %a{href: subscriptions_path}= t('menu.my_subscription')
               %li.divider
               %li
-                %a{href: destroy_account_session_path}= I18n.t('user.sign_out')
+                %a{href: destroy_account_session_path}
+                  %i.glyphicon.glyphicon-log-out
+                  = I18n.t('user.sign_out')
         - else
           %li
-            %a#lk-toggle-sign-in-box{href: '#'}= I18n.t('user.sign_in')
+            %a#lk-toggle-sign-in-box{href: '#'}
+              %i.glyphicon.glyphicon-log-in
+              = I18n.t('user.sign_in')
             -#%a{"data-toggle" => "modal", href: "#loginModal"}= t('user.sign_in')
           %li
             %a#lk-toggle-sign-up-box{href: '#'}= I18n.t('user.sign_up')
