@@ -55,6 +55,10 @@ class Subscribers::RegistrationsController < Devise::RegistrationsController
   #end
 
   protected
+  def after_sign_up_path_for(resource)
+    pricing_path
+  end
+
   def after_inactive_sign_up_path_for(resource)
     root_path
   end

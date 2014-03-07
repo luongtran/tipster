@@ -2,7 +2,7 @@ class SubscribeController < ApplicationController
   before_action :authenticate_account!, only: [:get_coupon_code, :payment_old]
   skip_before_filter :verify_authenticity_token, only: [:success]
   before_action :ready_to_payment, only: [:payment_old, :payment_method]
-
+=begin
   def identification
     unless current_account
       @subscriber = Subscriber.new
@@ -124,7 +124,7 @@ class SubscribeController < ApplicationController
       }
     end
   end
-
+=end
   #Adding tipster to current subscription
   #Validate current subscription is active & select tipster < limit
   def add_tipster
