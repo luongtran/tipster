@@ -5,7 +5,7 @@ class SubscriptionsController < ApplicationController
     selected_plan = Plan.find(params[:id])
     session[:plan_id] = selected_plan.id
     if selected_plan.free?
-      redirect_to subscribe_choose_offer_url
+      redirect_to subscribe_account_url
     else
       redirect_to tipsters_url
     end

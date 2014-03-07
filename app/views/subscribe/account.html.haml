@@ -48,6 +48,8 @@
       .panel.panel-default
         .panel-body.text-center
           .tipster-form
+            .col-md-7.col-md-offset-4
+              %h4 Sign Up
             = simple_form_for @account, url: subscribe_account_path, html: {id: 'sign-up-form', class: 'tipster-form-style form-horizontal mbn', nonvalidate: false} do |acc|
               = acc.input :email, required: true
               = acc.input :password, required: true
@@ -63,3 +65,14 @@
                     %i.typcn.typcn-world.mrs
                     Create Account
                   %a.mls.text-xs{href: "/accounts/password/new"} Recovery Account
+              .form-group
+                %hr
+              .form-group
+                .col-sm-6
+                  %a.btn.btn-block.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
+                    %span.glyphicon.glyphicon-leaf
+                    Facebook
+                .col-sm-6
+                  %a.btn.btn-danger.btn-block
+                    %span.glyphicon.glyphicon-fire{href: account_omniauth_authorize_path(:google_oauth2)}
+                    Google+

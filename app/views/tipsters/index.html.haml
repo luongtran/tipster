@@ -59,9 +59,12 @@
             %h4.modal-title The tipster has been added to your cart
           .modal-body
             .text-center.text-info
-              Do you want to choose an another tipster for only?
-              = "€9,90"
-              %button.btn.btn-success.btn-large{"data-dismiss" => "modal", type: "button"} + Add more tipster
+              - if tipster_ids_in_cart.size + 1 > 3
+                Your cart is fully.
+              - else
+                Do you want to choose an another tipster for only?
+                = "€9,90"
+                %button.btn.btn-success.btn-large{"data-dismiss" => "modal", type: "button"} + Add more tipster
           .modal-footer
             .text-center
               %a.btn.btn-default{href: cart_path}

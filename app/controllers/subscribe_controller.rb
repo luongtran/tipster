@@ -230,11 +230,10 @@ class SubscribeController < ApplicationController
   end
 
   # ========== NEW ==================================================
-
   # Request checkout the cart
   def checkout
     if current_account
-      # require selected offer befor go to personal information
+      # require selected offer before go to personal information
       redirect_to subscribe_personal_information_url
     else
       redirect_to subscribe_account_url
@@ -265,11 +264,20 @@ class SubscribeController < ApplicationController
       @select_plan = selected_plan
       @account = current_account
       @subscriber = @account.rolable
-      if request.get?
-      else
+      if request.post?
         @subscriber.validate_with_paid_account = !@select_plan.free?
         if @subscriber.update_attributes(profile_params)
-          redirect_to subscribe_shared_url
+          # Apply free plan
+          if selected_plan.free?
+            current_subscriber.subscription.delete
+            subscription = current_subscriber.build_subscription(plan: selected_plan, is_free: true, active: true)
+            subscription.save
+            empty_cart_session
+            session[:subscription_registered] = true
+            render :welcome
+          else
+            redirect_to subscribe_shared_url
+          end
         end
       end
     else
@@ -291,6 +299,10 @@ class SubscribeController < ApplicationController
       @subscriber.update_receive_tips_method(params[:receive_tip_methods])
       redirect_to subscribe_payment_url
     end
+  end
+
+  def welcome
+
   end
 
   private
