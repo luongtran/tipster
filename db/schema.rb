@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140305042940) do
+ActiveRecord::Schema.define(version: 20140307013200) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -148,6 +148,10 @@ ActiveRecord::Schema.define(version: 20140305042940) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "receive_info_from_partners", default: false
+    t.string   "nickname"
+    t.boolean  "gender",                     default: true
+    t.string   "receive_tip_methods"
+    t.boolean  "created_by_omniauth",        default: false
   end
 
   create_table "subscription_tipsters", force: true do |t|
