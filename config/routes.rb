@@ -40,6 +40,7 @@ TipsterHero::Application.routes.draw do
       match :shared, via: [:get, :post]
       match :receive_methods, via: [:get, :post]
       match :payment, via: [:get, :post]
+      get :success
       get '/checkout', to: :checkout
     end
   end

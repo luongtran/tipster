@@ -32,7 +32,7 @@ class Subscription < ActiveRecord::Base
     if self.using_coupon
       price -= 3
     end
-    return price
+    return price.round(3)
   end
 
   def adder_price
@@ -40,7 +40,7 @@ class Subscription < ActiveRecord::Base
     if self.using_coupon
       price -= 3
     end
-    return price
+    return price.round(3)
   end
 
   def adder_tipster

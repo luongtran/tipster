@@ -278,7 +278,6 @@ class SubscribeController < ApplicationController
   end
 
   def shared
-
   end
 
   def receive_methods
@@ -290,6 +289,36 @@ class SubscribeController < ApplicationController
     if request.post?
       @subscriber.update_receive_tips_method(params[:receive_tip_methods])
       redirect_to subscribe_payment_url
+    end
+  end
+
+  #Calculating price and redirect to paypal
+  #User is sign_in
+  #Only apply for first time payment
+  def payment
+    @select_plan = Plan.find(session[:plan_id])
+    @tipsters = Tipster.where(id: tipster_ids_in_cart)
+    unless current_subscriber.subscription.present?
+      @subscription = current_subscriber.build_subscription(plan_id: session[:plan_id])
+    else
+      @subscription = current_subscriber.subscription
+    end
+    @subscription.tipsters = @tipsters unless current_subscriber.already_has_subscription?
+    @subscription.using_coupon = true if using_coupon?
+    @subscription.save
+    if request.post?
+      if params[:method] == Payment::BY_PAYPAL
+        @paypal = Hash.new
+        @paypal[:amount] = "%05.2f" % @subscription.calculator_price
+        @paypal[:currency] = "EUR"
+        @paypal[:item_number] = current_subscriber.id
+        @paypal[:item_name] = "TIPSTER HERO SUBSCRIPTION"
+        respond_to do |format|
+          format.js {render 'paypalinit.js.haml'}
+        end
+      else
+        puts "FRENCH BANK HERE"
+      end
     end
   end
 

@@ -89,29 +89,3 @@
                   %i.typcn.typcn-cog
           .quickpanel-right
   = yield :top_tipster
--#- unless current_subscriber
--#  #loginModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
--#    .modal-dialog.modal-md
--#      .modal-content
--#        .modal-body
--#          .text-center
--#            %h3 Connect with
--#            %ul.inline
--#              %li
--#                = simple_form_for :nothing, url: subscribe_identification_path do |f|
--#                  = hidden_field_tag :act, 'facebook'
--#                  %button.btn.btn-small.btn-primary{type: :submit} Facebook
--#              %li
--#                = simple_form_for :nothing, url: subscribe_identification_path  do |f|
--#                  = hidden_field_tag :act, 'google_oauth2'
--#                  %button.btn.btn-small.btn-warning{type: :submit} Google +
--#          %hr
--#          #message_return
--#          %h3.text-center="Or #{t('user.sign_in')}"
--#          = simple_form_for :account, :url => subscribe_identification_path, :method => 'POST', :html => {class: 'form-horizontal'}, remote: true do |f|
--#            = hidden_field_tag :act, 'sign_in'
--#            = f.input :email, :required => false, :autofocus => true, class: 'form-group',input_html: { :autocomplete => 'off'}
--#            = f.input :password, :required => false,class: 'form-group'
--#            .form-group
--#              .col-sm-offset-3.col-sm-9
--#                = f.button :submit, "Sign in", class: 'btn btn-success'

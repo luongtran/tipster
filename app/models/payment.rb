@@ -29,11 +29,4 @@ class Payment < ActiveRecord::Base
     end
   end
 
-  def subtotal
-    self.subscription.subscription_price
-  end
-
-  def calculate_price
-
-  end
 end
