@@ -3,6 +3,11 @@ class SubscriptionsController < ApplicationController
 
   def select_plan
     selected_plan = Plan.find(params[:id])
+    max_cart_allow = selected_plan.number_tipster + Subscription::MAX_ADDTIONAL_TIPSTERS
+    if tipster_ids_in_cart.size > max_cart_allow
+      session[:cart][:tipster_ids].clear
+    end
+
     session[:plan_id] = selected_plan.id
     if selected_plan.free?
       redirect_to subscribe_account_url
