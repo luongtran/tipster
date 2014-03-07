@@ -1,49 +1,47 @@
 - content_for :title do
   = I18n.t('user.my_profile')
 
+.container
+  .row
+    .col-md-6
+      .panel.panel-default
+        .panel-heading
+          %i(class="glyphicon glyphicon-user mrm" )
+          = I18n.t('user.account_info')
+        .panel-body
+          = simple_form_for @user, as: :user, url: update_profile_path_for(@user), method: 'POST', html: {class: 'form-horizontal tipster-form-style', novalidate: true} do |f|
+            = f.input :first_name
+            = f.input :last_name
+            = f.input :civility
+            = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy/mm/dd'}
+            = f.input :address, :required => false, input_html: {placeholder: '123 Main Street'}
+            = f.input :city, :required => false
+            = f.input :country, as: :country, :required => true, :priority => ['France'], include_blank: false, input_html: {class: 'form-control'}
+            = f.input :zip_code
 
-.tipster-list
-  .container
-    .row
-      .col-md-6
-        .panel.panel-default
-          .panel-heading
-            %i(class="glyphicon glyphicon-user mrm" )
-            = I18n.t('user.account_info')
-          .panel-body
-            = simple_form_for @user, as: :user, url: update_profile_path_for(@user), method: 'POST', html: {class: 'form-horizontal tipster-form-style', novalidate: true} do |f|
-              = f.input :first_name
-              = f.input :last_name
-              = f.input :civility
-              = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy/mm/dd'}
-              = f.input :address, :required => false, input_html: {placeholder: '123 Main Street'}
-              = f.input :city, :required => false
-              = f.input :country, as: :country, :required => true, :priority => ['France'], include_blank: false, input_html: {class: 'form-control'}
-              = f.input :zip_code
+            = f.input :mobile_phone
+            = f.input :telephone, :required => false
+            = f.input :favorite_beting_website, :required => false
+            = f.input :know_website_from, as: :select, collection: know_website_from_for_select, include_blank: false
+            = f.input :secret_question, as: :select, collection: secret_questions_for_select, include_blank: false
+            = f.input :answer_secret_question
+            = f.input :receive_info_from_partners, :as => :boolean, :inline_label => 'Receive info from our partners', label: '&nbsp;'.html_safe
 
-              = f.input :mobile_phone
-              = f.input :telephone, :required => false
-              = f.input :favorite_beting_website, :required => false
-              = f.input :know_website_from, as: :select, collection: know_website_from_for_select, include_blank: false
-              = f.input :secret_question, as: :select, collection: secret_questions_for_select, include_blank: false
-              = f.input :answer_secret_question
-              = f.input :receive_info_from_partners, :as => :boolean, :inline_label => 'Receive info from our partners', label: '&nbsp;'.html_safe
-
-              .form-group
-                .col-md-offset-4.col-md-7
-                  %button{type: "submit", class: "btn btn-success text-slim"}
-                    %i(class="glyphicon glyphicon-saved mrs" )
-                    = t('user.update_account')
-      .col-md-6
-        .panel.panel-default
-          .panel-heading= I18n.t('user.change_password')
-          .panel-body
-            = simple_form_for @account, as: :account, url: change_password_path_for(@user), method: 'POST', html: {class: 'form-horizontal tipster-form-style'} do |f|
-              = f.input :current_password, required: true
-              = f.input :password, required: true
-              = f.input :password_confirmation, required: true
-              .form-group
-                .col-md-offset-4.col-md-7
-                  %button{type: "submit", class: 'text-slim btn btn-default'}
-                    %i(class="glyphicon glyphicon-lock mrs" )
-                    = t('user.change_password')
+            .form-group
+              .col-md-offset-4.col-md-7
+                %button{type: "submit", class: "btn btn-success text-slim"}
+                  %i(class="glyphicon glyphicon-saved mrs" )
+                  = t('user.update_account')
+    .col-md-6
+      .panel.panel-default
+        .panel-heading= I18n.t('user.change_password')
+        .panel-body
+          = simple_form_for @account, as: :account, url: change_password_path_for(@user), method: 'POST', html: {class: 'form-horizontal tipster-form-style'} do |f|
+            = f.input :current_password, required: true
+            = f.input :password, required: true
+            = f.input :password_confirmation, required: true
+            .form-group
+              .col-md-offset-4.col-md-7
+                %button{type: "submit", class: 'text-slim btn btn-default'}
+                  %i(class="glyphicon glyphicon-lock mrs" )
+                  = t('user.change_password')

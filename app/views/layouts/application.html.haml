@@ -11,7 +11,8 @@
   %body.subscriber-zone
     = render 'layouts/navbar'
     = render 'layouts/shared/flash_messages'
-    = yield
+    #content-wrapper.background-granite
+      = yield
     = render 'layouts/page_footer'
     - unless account_signed_in?
       = render 'layouts/sign_up_box'

@@ -1,3 +1,7 @@
+#content-wrapper {
+    padding-top: 20px;
+}
+
 ul.sports-filter {
     text-align: center;
 }
