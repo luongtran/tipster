@@ -4,7 +4,7 @@
  */
 
 $(document).ready(function () {
-    $('#user_birthday').datepicker({
+    $('.date-picker').datepicker({
         forceParse: false,
         format: 'yyyy-mm-dd'
     });

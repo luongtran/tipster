@@ -35,12 +35,19 @@ TipsterHero::Application.routes.draw do
       get :choose_offer
       match :identification, via: [:get, :post]
       match :payment_method, via: [:get, :post]
-      match :payment, via: [:get, :post]
-      match :add_tipster, via: [:get,:post]
+      match :payment_old, via: [:get, :post]
+      match :add_tipster, via: [:get, :post]
       post :success
       post :get_coupon_code
       post :apply_coupon_code
       post :deny_coupon_code
+
+      match :account, via: [:get, :post]
+      match :personal_information, via: [:get, :post]
+      match :shared, via: [:get, :post]
+      match :receive_methods, via: [:get, :post]
+      match :payment, via: [:get, :post]
+      get '/checkout', to: :checkout
     end
   end
 
@@ -90,4 +97,6 @@ TipsterHero::Application.routes.draw do
   # END Rueta set route here
 
   get '/test', to: 'home#xml_view', as: :list_match
+
+  get '/steps', to: 'home#step'
 end

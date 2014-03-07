@@ -4,7 +4,7 @@
   .row
     .subscribe-steps
       %ul.steps-container
-        %li.complete
+        %li.current
           .text-center
             %p
               %span.step-number 1
@@ -12,7 +12,7 @@
               %span.step-name Account
         %li.step-seperator-container
           .step-seperator
-        %li.complete
+        %li
           .text-center
             %p
               %span.step-number 2
@@ -20,16 +20,16 @@
               %span.step-name Personal Information
         %li.step-seperator-container
           .step-seperator
-        %li.complete
+        %li
           .text-center
             %p
               %span.step-number 3
             %p
-              %span.step-name Share on social network
+              %span.step-name Share on social network, get a reduce
 
         %li.step-seperator-container
           .step-seperator
-        %li.complete
+        %li
           .text-center
             %p
               %span.step-number 4
@@ -37,7 +37,7 @@
               %span.step-name Receive your tips
         %li.step-seperator-container
           .step-seperator
-        %li.current
+        %li
           .text-center
             %p
               %span.step-number 5
@@ -46,4 +46,20 @@
   .row
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
-        .panel-body
+        .panel-body.text-center
+          .tipster-form
+            = simple_form_for @account, url: subscribe_account_path, html: {id: 'sign-up-form', class: 'tipster-form-style form-horizontal mbn', nonvalidate: false} do |acc|
+              = acc.input :email, required: true
+              = acc.input :password, required: true
+              = acc.input :password_confirmation, required: true
+              -#.form-group
+              -#  .col-md-7.col-md-offset-4
+              -#    %label.checkbox.text-slim
+              -#      %input#cb-term-and-conditions{type: "checkbox"}>/
+              -#      I agree with term & conditions
+              .form-group
+                .col-md-7.col-md-offset-4
+                  %button.btn.btn-success{type: "submit"}
+                    %i.typcn.typcn-world.mrs
+                    Create Account
+                  %a.mls.text-xs{href: "/accounts/password/new"} Recovery Account

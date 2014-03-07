@@ -14,7 +14,7 @@
         - if current_subscriber
           %li.dropdown
             %a.dropdown-toggle{'data-toggle' => "dropdown", href: "#"}
-              = current_subscriber.full_name
+              = current_subscriber.full_name.blank? ? 'Account' : current_subscriber.full_name
               %b.caret
             %ul.dropdown-menu
               %li

@@ -1,7 +1,7 @@
 class SubscribeController < ApplicationController
-  before_action :authenticate_account!, only: [:get_coupon_code, :payment]
+  before_action :authenticate_account!, only: [:get_coupon_code, :payment_old]
   skip_before_filter :verify_authenticity_token, only: [:success]
-  before_action :ready_to_payment, only: [:payment, :payment_method]
+  before_action :ready_to_payment, only: [:payment_old, :payment_method]
 
   def identification
     unless current_account
@@ -36,7 +36,7 @@ class SubscribeController < ApplicationController
 
   # GET|POST /subscribe/payment
 
-  def payment
+  def payment_old
     if current_subscriber.already_has_subscription? #Adding tipster to current subscription
       current_subscription = current_subscriber.subscription
       unless current_subscription.can_change_tipster?
@@ -215,6 +215,7 @@ class SubscribeController < ApplicationController
   def get_coupon_code
     cc = CouponCode.create_for_user(current_subscriber, coupon_params[:source])
     if cc
+      session[:using_coupon] = cc.id
       render :json => {
           success: true,
           code: cc.code,
@@ -228,24 +229,66 @@ class SubscribeController < ApplicationController
     end
   end
 
-  #POST
-  def apply_coupon_code
-    cc = CouponCode.find_by_code(params[:code])
-    if cc && cc.subscriber_id == current_subscriber.id
-      unless cc.is_used
-        session[:using_coupon] = cc.id
-        cc.mark_used
-        flash[:notice] = I18n.t('coupon.success_using', discount: "3 EURO")
+  # ========== NEW ==================================================
+
+  # Request checkout the cart
+  def checkout
+    if current_account
+      # require selected offer befor go to personal information
+      redirect_to subscribe_personal_information_url
+    else
+      redirect_to subscribe_account_url
+    end
+  end
+
+  def account
+    if account_signed_in?
+      redirect_to subscribe_personal_information_url and return
+    end
+    if request.get?
+      @account = Account.new
+    else
+      # Create account
+      @account = Account.build_with_rolable(account_params, Subscriber)
+      if @account.save
+        sign_in @account
+        redirect_to subscribe_personal_information_url
+      end
+    end
+  end
+
+  def personal_information
+    if selected_plan
+      @select_plan = selected_plan
+      @account = current_account
+      @subscriber = @account.rolable
+      if request.get?
       else
-        flash[:notice] = I18n.t('coupon.is_using')
+        @subscriber.validate_with_paid_account = !@select_plan.free?
+        if @subscriber.update_attributes(profile_params)
+          redirect_to subscribe_shared_url
+        end
       end
     else
-      flash[:alert] = I18n.t('coupon.invalid')
+      redirect_to pricing_url, notice: 'Please choose a plan'
     end
-    redirect_to subscribe_payment_url
+  end
+
+  def shared
+  end
+
+  def receive_methods
   end
 
   private
+
+  def profile_params
+    params.require(:subscriber).permit(
+        :first_name, :last_name, :nickname, :gender, :receive_tip_methods, :birthday, :address, :city, :country, :zip_code, :mobile_phone,
+        :telephone, :favorite_beting_website, :know_website_from, :secret_question, :answer_secret_question, :receive_info_from_partners,
+        :humanizer_answer, :humanizer_question_id
+    )
+  end
 
   def prepare_subscribe_info
     @select_plan = Plan.where(id: session[:plan_id]).first
@@ -277,11 +320,6 @@ class SubscribeController < ApplicationController
               end
     redirect_to checker[:url], alert: checker[:message] and return if checker.present?
   end
-
-  def profile_params
-    params[:profile].permit!
-  end
-
 
   def using_coupon?
     if session[:using_coupon]
