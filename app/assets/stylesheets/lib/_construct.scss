@@ -84,6 +84,34 @@
   &.btn-success {
     @include linear-gradient(to top, #4EB34E 0%, #4EB34E 20%, #47B847 100%);
   }
+  &.btn-facebook {
+    color: #fff;
+    border: 1px solid #2d4479;
+    box-shadow: inset 0 1px 2px rgba(black, 0.1);
+    @include linear-gradient(to top, #003CBE 0%, #0049DC 100%);
+    @include transition(all 0.5s);
+    &:hover {
+      @include linear-gradient(to top, #0049DB 0%, #0049DB 100%);
+    }
+    &:active {
+      background: #3d5ca5;
+      border-color: #2a3f71;
+    }
+  }
+  &.btn-googleplus {
+    color: #fff;
+    border: 1px solid #B11B18;
+    box-shadow: inset 0 1px 2px rgba(black, 0.1);
+    @include linear-gradient(to top, #B01B18 0%, #C01D1A 100%);
+    @include transition(all 0.5s);
+    &:hover {
+      @include linear-gradient(to top, #C01D1A 0%, #D2201D 100%);
+    }
+    &:active {
+      background: #C01D1A;
+      border-color: #B11B18;
+    }
+  }
 }
 
 .background-granite {

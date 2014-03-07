@@ -69,46 +69,11 @@ label.control-label, label.checkbox {
     font-weight: bold;
 }
 
-.btn.btn-facebook {
-    color: #fff;
-    border: 1px solid #2d4479;
-    -webkit-box-shadow: inset 0 1px 2px #5272bf;
-    -moz-box-shadow: inset 0 1px 2px #5272bf;
-    box-shadow: inset 0 1px 2px #5272bf;
-    background: #385496;
-    background-size: 100%;
-    background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #4365b4), color-stop(100%, #385496));
-    background-image: -webkit-linear-gradient(top, #4365b4, #385496);
-    background-image: -moz-linear-gradient(top, #4365b4, #385496);
-    background-image: -o-linear-gradient(top, #4365b4, #385496);
-    background-image: linear-gradient(top, #4365b4, #385496);
-}
-
-.btn.btn-facebook:active {
-    background: #3d5ca5;
-    border-color: #2a3f71;
-    -webkit-box-shadow: 0 0 5px #3d5ca5 inset;
-    -moz-box-shadow: 0 0 5px #3d5ca5 inset;
-    box-shadow: 0 0 5px #3d5ca5 inset;
-}
-
-.btn.btn-facebook:hover {
-    background: #365293;
-    background-size: 100%;
-    background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(0%, #4365b4), color-stop(100%, #365293));
-    background-image: -webkit-linear-gradient(top, #4365b4, #365293);
-    background-image: -moz-linear-gradient(top, #4365b4, #365293);
-    background-image: -o-linear-gradient(top, #4365b4, #365293);
-    background-image: linear-gradient(top, #4365b4, #365293);
-    -webkit-transition: box-shadow .05s ease-in-out;
-    -moz-transition: box-shadow .05s ease-in-out;
-    -o-transition: box-shadow .05s ease-in-out;
-    transition: box-shadow 0.05s ease-in-out;
-}
-
 @media (min-width: 768px) {
     #sign-up-modal-box.modal .modal-dialog {
         width: 500px;
+        z-index: 9999;
+        position: relative;
     }
 
     #sign-in-modal-box.modal .modal-dialog {
@@ -124,13 +89,13 @@ label.control-label, label.checkbox {
     /*-moz-filter:blur(4px);*/
     /*-webkit-filter:blur(4px);*/
     /*}*/
-    body.modal-open #page_header_mid {
-        -webkit-filter: blur(4px);
-        -moz-filter: blur(4px);
-        -o-filter: blur(4px);
-        -ms-filter: blur(4px);
-        filter: blur(4px);
-    }
+    /*body.modal-open #page-footer-values {*/
+        /*-webkit-filter: blur(4px);*/
+        /*-moz-filter: blur(4px);*/
+        /*-o-filter: blur(4px);*/
+        /*-ms-filter: blur(4px);*/
+        /*filter: blur(4px);*/
+    /*}*/
 }
 
 .btn.in-progress {
@@ -217,17 +182,4 @@ li.step-seperator-container {
 
 .help-block {
     font-size: 13px;
-}
-
-/* Hightligh plan */
-#Nos-abonnaments .abonnaments {
-    opacity: 0.75;
-}
-
-#Nos-abonnaments .abonnaments:hover {
-    opacity: 1;
-}
-
-#Nos-abonnaments .abonnaments.selected {
-    opacity: 1;
 }

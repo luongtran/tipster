@@ -29,6 +29,13 @@
   .abonnaments {
     padding-top: 20px;
     padding-bottom: 20px;
+    position: relative;
+    opacity: 0.8;
+    @include transition(all 0.25s);
+    &:hover,
+    &.selected {
+      opacity: 1;
+    }
     > div {
       padding-left: 10px;
       padding-right: 10px;

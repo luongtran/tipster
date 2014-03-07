@@ -2,7 +2,7 @@
   .modal-dialog.modal-md
     .modal-content
       .modal-header.text-center
-        %h2 SIGN UP
+        %h2.text-slim.text-primary.mbs.mts SIGN UP
       .modal-body
         .form-group
           .col-sm-6
@@ -10,7 +10,7 @@
               %span.glyphicon.glyphicon-leaf
               Facebook
           .col-sm-6
-            %a.btn.btn-danger.btn-block.btn-lg{href: account_omniauth_authorize_path(:google_oauth2)}
+            %a.btn.btn-googleplus.btn-block.btn-lg{href: account_omniauth_authorize_path(:google_oauth2)}
               %span.glyphicon.glyphicon-fire
               Google+
         %p

@@ -19,6 +19,11 @@
  = require helper
  = require charts
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
+ = require ../../../vendor/assets/javascripts/framework/angularjs/angular.min
+ = require ../../../vendor/assets/javascripts/framework/angularjs/angular-animate.min
  = require jquery.migrate
+
+ = require appjs/app
+ = require_tree ./appjs/directive
  */
 

@@ -2,15 +2,15 @@
   .modal-dialog.modal-md
     .modal-content
       .modal-header.text-center
-        %h2 SIGN IN
+        %h2.text-slim.text-primary.mbs.mts SIGN IN
       .modal-body
         .form-group
-          .col-sm-6
+          .col-md-6
             %a.btn.btn-block.btn-lg.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
               %span.glyphicon.glyphicon-leaf
               Facebook
-          .col-sm-6
-            %a.btn.btn-danger.btn-block.btn-lg
+          .col-md-6
+            %a.btn.btn-googleplus.btn-block.btn-lg
               %span.glyphicon.glyphicon-fire{href: account_omniauth_authorize_path(:google_oauth2)}
               Google+
         %p
