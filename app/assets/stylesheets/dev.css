@@ -214,6 +214,20 @@ li.step-seperator-container {
 .subscribe-steps.three-steps {
     margin-left: 20%;
 }
-.help-block  {
+
+.help-block {
     font-size: 13px;
+}
+
+/* Hightligh plan */
+#Nos-abonnaments .abonnaments {
+    opacity: 0.75;
+}
+
+#Nos-abonnaments .abonnaments:hover {
+    opacity: 1;
+}
+
+#Nos-abonnaments .abonnaments.selected {
+    opacity: 1;
 }
