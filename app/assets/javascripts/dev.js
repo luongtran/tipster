@@ -137,24 +137,21 @@ $(document).ready(function () {
             beforeSend: function () {
                 $submmiter.addClass('in-progress');
                 $submmiter.attr('disabled', true);
-                $('.tooltip ').hide();
             },
             success: function (response) {
-                console.log(response);
                 if (response.success) {
                     window.location = response.path;
                 } else {
                     // show error as message
-                    $('#message').removeClass('hide');
-                    $('#message').text(response.error).show();
+                    Helper.flash_message('danger', response.error, 5000, '#sign-in-message-container');
                 }
             },
             complete: function () {
                 $submmiter.removeClass('in-progress');
                 $submmiter.attr('disabled', false);
             },
-            error: function(res){
-             console.log(res)  ;
+            error: function (res) {
+                console.log(res);
             }
         });
         return false;
