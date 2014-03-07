@@ -1,5 +1,5 @@
 - content_for :title do
-  Registration
+  Payment
 .container
   .row
     .subscribe-steps
@@ -48,15 +48,24 @@
       .panel.panel-default
         .panel-body
           %h3 Review your selection:
-          %p You select plan
-          %span= @select_plan.title
-          %p Plan price
-          %span= @select_plan.price.to_s + "/month"
-          %p Plan period
-          %span= @select_plan.period.to_s + "month"
-          %p Total price
-          %span= @subscription.calculator_price
-          %h3 List tipsters in your cart
+          %p
+            You select plan:
+            %span
+              %strong= @select_plan.title
+          %p
+            Plan price:
+            %span
+              %strong= @select_plan.price.to_s + "/month"
+          %p
+            Plan period:
+            %span
+              %strong= @select_plan.period.to_s + "month"
+          %p
+            Total price:
+            %span
+              %strong= @subscription.calculator_price
+          %h3
+            List tipsters in your cart:
           %table.table.table-bordered
             %caption Tipsters selected lists
             %thead
@@ -80,14 +89,49 @@
                       = tipster.profit
                     %td
                       = tipster.yield
-          %h3 Select your payment method
-          %ul.inline
-            %li
-              = simple_form_for :nothing, url: subscribe_payment_path, remote: true do |f|
-                = hidden_field_tag :method, Payment::BY_PAYPAL
-                %button.btn.btn-primary.btn-large{type: :submit} With Paypal
-            #payment
-            %li
-              = simple_form_for :nothing, url: subscribe_payment_path do |f|
-                = hidden_field_tag :method, Payment::BY_FRENCH_BANK
-                %button.btn.btn-warning.btn-large{type: :submit} French Bank
+      .tab-content
+        .row
+          .col-lg-12
+            .col-lg-4.col-lg-offet-1
+              %h2 Amount
+              %div{style: 'padding: 10px; border: 1px solid #ccc'}
+                \- Plan price:
+                %strong.text-info €#{@select_plan.price}
+                %br
+                \- Plan limit number tipster:
+                %strong= @select_plan.number_tipster
+                %br
+                \- Adder tipster price:
+                %strong= @subscription.adder_tipster
+                %br
+                \- Need to paid per month:
+                %strong.text-info €#{@subscription.monthly_price}
+                %br
+                \_______________________
+                %br
+                \ * #{@select_plan.period} Month
+                %br
+                \_______________________
+                %br
+                - if session[:using_coupon]
+                  \- Total before:
+                  %strong.text-info= "€#{@subscription.calculator_price}"
+                  %br
+                  \- Discount:
+                  %strong - €3
+                  %br
+                \- Total
+                %strong.text-info €#{@subscription.calculator_price}
+            .col-lg-6.col-lg-offet-1
+              %h3 Select your payment method
+              %ul.inline
+                %li
+                  = simple_form_for :nothing, url: subscribe_payment_path, remote: true do |f|
+                    = hidden_field_tag :method, Payment::BY_PAYPAL
+                    %button.btn.btn-primary.btn-large{type: :submit} With Paypal
+
+                %li
+                  = simple_form_for :nothing, url: subscribe_payment_path do |f|
+                    = hidden_field_tag :method, Payment::BY_FRENCH_BANK
+                    %button.btn.btn-warning.btn-large{type: :submit} French Bank
+              #payment

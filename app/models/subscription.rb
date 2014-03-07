@@ -35,6 +35,14 @@ class Subscription < ActiveRecord::Base
     return price.round(3)
   end
 
+  def monthly_price
+    price = (self.plan.price.to_f + adder_tipster * ADDING_TIPSTER_PRICE)
+    if self.using_coupon
+      price -= 3
+    end
+    return price.round(3)
+  end
+
   def adder_price
     price = self.adder_tipster * ADDING_TIPSTER_PRICE * self.plan.period
     if self.using_coupon
