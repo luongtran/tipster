@@ -6,13 +6,13 @@ class Subscription < ActiveRecord::Base
   belongs_to :plan
   belongs_to :subscriber
   has_many :payments
-  has_many :subscription_tipsters
+  has_many :subscription_tipsters, dependent: :destroy
   has_many :tipsters, :through => :subscription_tipsters
   has_many :active_tipsters, :through => :subscription_tipsters,
            :class_name => "Tipster",
            :source => :tipster,
            :conditions => ['subscription_tipsters.active = ?', true]
-           has_many :inactive_tipsters, :through => :subscription_tipsters,
+  has_many :inactive_tipsters, :through => :subscription_tipsters,
            :class_name => "Tipster",
            :source => :tipster,
            :conditions => ['subscription_tipsters.active = ?', false]
@@ -36,7 +36,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def adder_price
-    price = self.adder_tipster *  ADDING_TIPSTER_PRICE * self.plan.period
+    price = self.adder_tipster * ADDING_TIPSTER_PRICE * self.plan.period
     if self.using_coupon
       price -= 3
     end
@@ -45,7 +45,7 @@ class Subscription < ActiveRecord::Base
 
   def adder_tipster
     if self.active?
-      add  =  self.tipsters.size > [self.active_tipsters.size, self.plan.number_tipster].max ? self.tipsters.size - [self.active_tipsters.size, self.plan.number_tipster].max : 0
+      add = self.tipsters.size > [self.active_tipsters.size, self.plan.number_tipster].max ? self.tipsters.size - [self.active_tipsters.size, self.plan.number_tipster].max : 0
     else
       add = self.tipsters.size > self.plan.number_tipster ? self.tipsters.size - self.plan.number_tipster : 0
     end
@@ -57,6 +57,7 @@ class Subscription < ActiveRecord::Base
       t.try(:set_active)
     end
   end
+
   def insert_tipster(tipster)
     self.tipsters << tipster
     self.save
@@ -64,8 +65,9 @@ class Subscription < ActiveRecord::Base
       t.try(:set_active)
     end
   end
+
   def can_change_tipster?
-    self.active && self.active_at > 1.days.ago || (self.active_date.strftime('%d').to_i == Time.now.strftime('%d')  && self.expired_at > Time.now)
+    self.active && self.active_at > 1.days.ago || (self.active_date.strftime('%d').to_i == Time.now.strftime('%d') && self.expired_at > Time.now)
   end
 
   def one_shoot_price

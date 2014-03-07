@@ -13,6 +13,11 @@ class Account < ActiveRecord::Base
   # CLASS METHODS
   # ==============================================================================
   class << self
+    def build_with_rolable(params, rolable_class)
+      acc = self.new(params)
+      acc.rolable = rolable_class.new
+      acc
+    end
   end
 
   # ==============================================================================
@@ -21,6 +26,7 @@ class Account < ActiveRecord::Base
   def update_account(params)
     self.update_without_password(params)
   end
+
 
   # ==============================================================================
   # PROTECTED METHODS

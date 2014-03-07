@@ -39,4 +39,5 @@ class HomeController < ApplicationController
     change_locale params[:locale]
     render json: {}
   end
+
 end

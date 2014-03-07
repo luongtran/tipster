@@ -1,0 +1,84 @@
+- content_for :title do
+  Registration
+.container
+  .row
+    .subscribe-steps
+      %ul.steps-container
+        %li.complete
+          .text-center
+            %p
+              %span.step-number 1
+            %p
+              %span.step-name Account
+        %li.step-seperator-container
+          .step-seperator
+        %li.current
+          .text-center
+            %p
+              %span.step-number 2
+            %p
+              %span.step-name Personal Information
+        %li.step-seperator-container
+          .step-seperator
+        %li
+          .text-center
+            %p
+              %span.step-number 3
+            %p
+              %span.step-name Share on social network
+
+        %li.step-seperator-container
+          .step-seperator
+        %li
+          .text-center
+            %p
+              %span.step-number 4
+            %p
+              %span.step-name Receive your tips
+        %li.step-seperator-container
+          .step-seperator
+        %li
+          .text-center
+            %p
+              %span.step-number 5
+            %p
+              %span.step-name Payment
+  .row
+    .step-content.col-md-10.col-md-offset-1
+      .panel.panel-default
+        .panel-body.text-center
+          .col-md-8.col-md-offset-2
+            = simple_form_for @subscriber, url: subscribe_personal_information_path, method: 'POST', html: {class: 'form-horizontal tipster-form-style', novalidate: true} do |f|
+              = f.input :first_name
+              = f.input :last_name
+              = f.input :nickname
+              = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy/mm/dd (18 years old require)',class: 'date-picker'}
+              = f.input :gender, as: :radio_buttons, collection: genders_collection_for_select, :item_wrapper_class => 'radio-inline', html_wrapper: {class: 'col-md-3'}
+              - unless @select_plan.free?
+                = f.input :address, :required => false, input_html: {placeholder: '123 Main Street'}
+                = f.input :city, :required => false
+                = f.input :country, as: :country, required: true, :priority => ['France'], include_blank: false, input_html: {class: 'form-control'}
+                = f.input :zip_code
+                = f.input :mobile_phone
+                = f.input :telephone, :required => false
+                = f.input :favorite_beting_website, :required => false
+                = f.input :know_website_from, as: :select, collection: know_website_from_for_select, include_blank: false
+                = f.input :secret_question, as: :select, collection: secret_questions_for_select, include_blank: false
+                = f.input :answer_secret_question
+                = f.input :receive_info_from_partners, :as => :boolean, :inline_label => 'Receive info from our partners', label: '&nbsp;'.html_safe
+              .form-group
+                %label.col-md-4.control-label Anti-robot question
+                .col-md-7
+                  .col-md-8
+                    %label.control-label.text-warning= "#{@subscriber.humanizer_question}:"
+                  .col-md-4
+                    = f.input_field :humanizer_answer
+              .form-group
+                .col-md-7.col-md-offset-4
+                  .has-error
+                    = f.error :humanizer_answer
+              = f.input :humanizer_question_id, as: :hidden
+              .form-group
+                .col-md-offset-4.col-md-7
+                  %button.btn.btn-success.text-slim{type: :submit}
+                    = t('user.update_profile')

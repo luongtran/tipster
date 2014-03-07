@@ -76,7 +76,4 @@ class Subscribers::RegistrationsController < Devise::RegistrationsController
     params.require(:subscriber).permit(:first_name, :last_name, account_attributes: [:email, :password, :password_confirmation])
   end
 
-  def account_params
-    params.require(:account).permit(:email, :password, :password_confirmation)
-  end
 end

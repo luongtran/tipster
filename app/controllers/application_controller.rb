@@ -90,6 +90,14 @@ class ApplicationController < ActionController::Base
     # Maybe clear more session vars: coupon code, payment info ...
   end
 
+  def selected_plan
+    Plan.find_by(id: session[:plan_id])
+  end
+
+  def account_params
+    params.require(:account).permit(:email, :password, :password_confirmation)
+  end
+
   private
   def find_layout
     'backoffice' if self.class.name.split("::").first == 'Backoffice'

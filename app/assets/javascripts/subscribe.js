@@ -14,9 +14,11 @@ $(document).ready(function () {
             data: data_request,
             success: function (response) {
                 if (response.success) {
-                    $('#coupon').show();
-                    $('#message_return').text(response.message);
-                    $('#code').val(response.code);
+                    Helper.dialog_message({
+                        type: 'success',
+                        title: 'Information',
+                        content: "Thank you! You will get up to $3 discount when payment."
+                    });
                 } else {
                     $('#message_return').text(response.message);
                 }

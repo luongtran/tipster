@@ -110,19 +110,21 @@ label.control-label, label.checkbox {
     #sign-up-modal-box.modal .modal-dialog {
         width: 500px;
     }
+
     #sign-in-modal-box.modal .modal-dialog {
         width: 400px;
     }
+
     /*body{*/
-        /*background:white;*/
-        /*background:rgba(255,255,255,0.8);*/
-        /*filter:blur(4px);*/
-        /*-o-filter:blur(4px);*/
-        /*-ms-filter:blur(4px);*/
-        /*-moz-filter:blur(4px);*/
-        /*-webkit-filter:blur(4px);*/
+    /*background:white;*/
+    /*background:rgba(255,255,255,0.8);*/
+    /*filter:blur(4px);*/
+    /*-o-filter:blur(4px);*/
+    /*-ms-filter:blur(4px);*/
+    /*-moz-filter:blur(4px);*/
+    /*-webkit-filter:blur(4px);*/
     /*}*/
-    body.modal-open #page_header_mid{
+    body.modal-open #page_header_mid {
         -webkit-filter: blur(4px);
         -moz-filter: blur(4px);
         -o-filter: blur(4px);
@@ -143,4 +145,75 @@ label.control-label, label.checkbox {
     background-size: 40px 40px;
     background-image: -moz-linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
     background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0));
+}
+
+/* Steps */
+ul.steps-container {
+    list-style: none;
+}
+
+ul.steps-container li {
+    width: 120px;
+    float: left;
+    min-height: 65px;
+    display: inline-block;
+}
+
+ul.steps-container li.complete .step-number {
+    background-color: #97BB2F;
+}
+
+ul.steps-container li.current .step-number {
+    background-color: #FFC303;
+}
+
+span.step-number {
+    font-size: 17px;
+    padding-top: 4px;
+    background: #cccccc;
+    border-radius: 25px;
+    -moz-border-radius: 25px;
+    -webkit-border-radius: 25px;
+    color: #ffffff;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-right: 5px;
+    text-align: center;
+    width: 35px;
+    height: 35px;
+}
+
+ul.steps-container .step-name {
+    font-weight: 700;
+}
+
+li.step-seperator-container {
+    padding: 15px 0;
+}
+
+.step-seperator {
+    position: absolute;
+    margin-left: -14px;
+    margin-right: 5px;
+    background-color: #dadada;
+    min-width: 150px;
+    height: 5px;
+}
+
+.step-content .panel {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.subscribe-steps {
+    overflow-x: hidden;
+    display: inline-block;
+}
+
+.subscribe-steps.three-steps {
+    margin-left: 20%;
+}
+.help-block  {
+    font-size: 13px;
 }

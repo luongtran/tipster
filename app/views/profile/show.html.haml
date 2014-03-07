@@ -15,14 +15,14 @@
             = f.input :nickname
             = f.input :gender, as: :radio_buttons, collection: genders_collection_for_select, :item_wrapper_class => 'radio-inline'
             = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy/mm/dd'}
-            .col-md-7.col-md-offset-4
-              %label.control-label.text-warning= "(Anti robot) #{@user.humanizer_question}"
-            .form-group
-              .col-md-7.col-md-offset-4
-                = f.input_field :humanizer_answer
-                .has-error
-                  = f.error :humanizer_answer
-            = f.input :humanizer_question_id, as: :hidden
+            -#.col-md-7.col-md-offset-4
+            -#  %label.control-label.text-warning= "(Anti robot) #{@user.humanizer_question}"
+            -#.form-group
+            -#  .col-md-7.col-md-offset-4
+            -#    = f.input_field :humanizer_answer
+            -#    .has-error
+            -#      = f.error :humanizer_answer
+            -#= f.input :humanizer_question_id, as: :hidden
             -#= humanizer_question
             = f.input :address, :required => false, input_html: {placeholder: '123 Main Street'}
             = f.input :city, :required => false
