@@ -28,7 +28,7 @@ class Account < ActiveRecord::Base
   end
 
   def active_for_authentication?
-    super && false
+    true
   end
 
   # ==============================================================================

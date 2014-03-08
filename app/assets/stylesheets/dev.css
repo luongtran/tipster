@@ -183,3 +183,22 @@ li.step-seperator-container {
 .help-block {
     font-size: 13px;
 }
+
+/* Flash message container  */
+.flash-container {
+    padding: 0;
+}
+
+#flash {
+    text-align: center;
+}
+
+.alert {
+    padding: 5px 10px;
+    margin-bottom: 0px;
+    border-radius: 2px;
+}
+
+.tipster-list {
+    padding-top: 0;
+}
