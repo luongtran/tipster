@@ -4,7 +4,7 @@
  */
 
 $(document).ready(function () {
-
+    /* Datepicker for birthday all other */
     $.fn.datepicker.defaults.format = "yyyy-mm-dd";
     for (i = 0; i < $('.date-picker').length; i++) {
         var endDate = '';
@@ -17,6 +17,7 @@ $(document).ready(function () {
             endDate: endDate
         });
     }
+
     /* Require checked term & conditions */
     $('form.form-register').on('submit', function () {
         var $cb_term = $(this).find('#cb-term-and-conditions');
@@ -25,6 +26,7 @@ $(document).ready(function () {
             return false;
         }
     });
+
     /* Display validate message as tooltip in the register form */
     var $inputs_in_form = $('form.form-register').find('.form-control');
     for (i = 0; i < $inputs_in_form.length; i++) {
@@ -43,6 +45,7 @@ $(document).ready(function () {
             });
         }
     }
+
     /* Show confirm to checkout modal after add a tipster to cart */
     $('#modal-confirm-checkout').modal();
 
@@ -94,6 +97,8 @@ $(document).ready(function () {
         Helper.alert_warning('Your cart is empty!');
         return false;
     });
+
+    /* Sign in/up submiting */
     $('#sign-up-modal-box #sign-up-form').on('submit', function () {
         var $form = $(this);
         var url = $form.attr('action');
@@ -162,11 +167,11 @@ $(document).ready(function () {
                 $submmiter.attr('disabled', false);
             },
             error: function (res) {
-                console.log(res);
             }
         });
         return false;
     });
+
 
     $('#form-receive-tip-methods').on('submit', function () {
         var $check_boxs = $(this).find('input[type=checkbox]');
