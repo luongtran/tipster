@@ -1,43 +1,9 @@
 class SubscribeController < ApplicationController
   before_action :authenticate_account!, only: [:get_coupon_code, :payment_old]
+  before_action :no_subscription_required
   skip_before_filter :verify_authenticity_token, only: [:success]
   before_action :ready_to_payment, only: [:payment_old, :payment_method]
 
-  # Adding tipster to current subscription
-  # Validate current subscription is active & select tipster < limit
-  def add_tipster
-    current_subscription = current_subscriber.subscription
-    select_plan = current_subscription.plan
-    select_tipsters = Tipster.where(id: tipster_ids_in_cart)
-    if request.post?
-      if current_subscription.active? && current_subscription.active_tipsters.size + select_tipsters.size <= current_subscription.plan.number_tipster
-        select_tipsters.each do |tipster|
-          if current_subscription.tipsters.include?(tipster)
-            puts "TH1"
-            current_subscription.change_tipster(tipster)
-          else
-            puts "TH2"
-            current_subscription.insert_tipster(tipster)
-          end
-        end
-        redirect_to subscription_path and return
-      else
-        flash[:alert] = "SYSTEM ERROR !!!!"
-        redirect_to subscription_path and return
-      end
-    else
-      @return = {
-          has_subscription: true,
-          current_subscription: current_subscription,
-          select_plan: select_plan,
-          select_tipsters: select_tipsters
-      }
-    end
-  end
-
-  # Change subscription plan
-  def change_plan
-  end
 
   # GET|POST /subscribe/payment_method
   def payment_method
@@ -137,8 +103,8 @@ class SubscribeController < ApplicationController
     unless account_signed_in?
       redirect_to subscribe_account_url and return
     end
-    if selected_plan
-      @select_plan = selected_plan
+    @select_plan = selected_plan
+    if @select_plan
       @account = current_account
       @subscriber = @account.rolable
       if request.post?
@@ -146,7 +112,7 @@ class SubscribeController < ApplicationController
         if @subscriber.update_attributes(profile_params)
           # Apply free plan
           if selected_plan.free?
-            current_subscriber.apply_plan(selected_plan)
+            current_subscriber.apply_plan(@select_plan)
             empty_cart_session
             session[:subscription_registered] = true
             render :welcome
@@ -158,6 +124,7 @@ class SubscribeController < ApplicationController
     else
       redirect_to pricing_url, notice: 'Please choose a plan'
     end
+
   end
 
   def shared
@@ -211,6 +178,11 @@ class SubscribeController < ApplicationController
   end
 
   private
+  def no_subscription_required
+    if current_subscriber && current_subscriber.subscription.active?
+      redirect_to subscription_url
+    end
+  end
 
   def profile_params
     params.require(:subscriber).permit(
@@ -261,4 +233,5 @@ class SubscribeController < ApplicationController
       return false
     end
   end
+
 end

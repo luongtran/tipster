@@ -33,4 +33,40 @@ class SubscriptionController < ApplicationController
 
   end
 
+  # Adding tipster to current subscription
+  # Validate current subscription is active & select tipster < limit
+  def add_tipster
+    current_subscription = current_subscriber.subscription
+    select_plan = current_subscription.plan
+    select_tipsters = Tipster.where(id: tipster_ids_in_cart)
+    if request.post?
+      if current_subscription.active? && current_subscription.active_tipsters.size + select_tipsters.size <= current_subscription.plan.number_tipster
+        select_tipsters.each do |tipster|
+          if current_subscription.tipsters.include?(tipster)
+            puts "TH1"
+            current_subscription.change_tipster(tipster)
+          else
+            puts "TH2"
+            current_subscription.insert_tipster(tipster)
+          end
+        end
+        redirect_to subscription_path and return
+      else
+        flash[:alert] = "SYSTEM ERROR !!!!"
+        redirect_to subscription_path and return
+      end
+    else
+      @return = {
+          has_subscription: true,
+          current_subscription: current_subscription,
+          select_plan: select_plan,
+          select_tipsters: select_tipsters
+      }
+    end
+  end
+
+  # Change subscription plan
+  def change_plan
+  end
+
 end

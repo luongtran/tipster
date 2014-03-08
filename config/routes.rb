@@ -33,8 +33,6 @@ TipsterHero::Application.routes.draw do
   scope path: '/subscribe', as: :subscribe do
     controller :subscribe do
       match :payment_method, via: [:get, :post]
-      match :add_tipster, via: [:get, :post]
-
       match :account, via: [:get, :post]
       match :personal_information, via: [:get, :post]
       match :shared, via: [:get, :post]
@@ -48,6 +46,7 @@ TipsterHero::Application.routes.draw do
   resources :tips, only: [:index, :show]
   resources :tipsters, only: [:index, :show]
   resource :subscription, controller: 'subscription', only: [:show] do
+    match :add_tipster, via: [:get, :post]
     post :update
     post :upgrade
   end
@@ -92,5 +91,4 @@ TipsterHero::Application.routes.draw do
 
   get '/test', to: 'home#xml_view', as: :list_match
 
-  get '/steps', to: 'home#step'
 end
