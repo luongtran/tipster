@@ -9,5 +9,12 @@
 class Sport < ActiveRecord::Base
   has_and_belongs_to_many :tipsters
   validates :name, presence: true, uniqueness: {case_sensitive: false}
+  after_create :auto_position
 
+
+  private
+  def auto_position
+    self.position ||= self.id
+    self.save
+  end
 end
