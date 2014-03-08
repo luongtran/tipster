@@ -1,6 +1,6 @@
 class SubscribeController < ApplicationController
   before_action :authenticate_account!, only: [:get_coupon_code]
-  before_action :no_subscription_required
+  before_action :no_subscription_required,except: [:success]
   skip_before_filter :verify_authenticity_token, only: [:success]
 
   # Return from paypal
