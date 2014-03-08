@@ -176,22 +176,22 @@ $(document).ready(function () {
 
     /* Background switching */
     // order following: football, tennis, basket,
-    if (localStorage.getItem('bgs') == null) {
-        // AJAX REQUEST TO GET BACKGROUND LIST
-        var bgs = [
-            'http://i1.upanh.com/2014/0310/07//58891042.chrysanthemum.jpg',
-            'http://i2.upanh.com/2014/0310/07//58891043.desert.jpg',
-            'http://i3.upanh.com/2014/0310/07//58891044.hydrangeas.jpg',
-            'http://i4.upanh.com/2014/0310/07//58891045.jellyfish.jpg',
-            'http://i5.upanh.com/2014/0310/07//58891046.koala.jpg'
-        ];
-        localStorage["bgs"] = JSON.stringify(bgs);
-    }
-    var bg_urls = JSON.parse(localStorage["bgs"]);
-    setInterval(
-        function () {
-            var random_index = Math.random() * 5 | 0;
-            $('#backgrounder').attr('src', bg_urls[random_index]);
-        }, 5000
-    )
+//    if (localStorage.getItem('bgs') == null) {
+//        // AJAX REQUEST TO GET BACKGROUND LIST
+//        var bgs = [
+//            'http://i1.upanh.com/2014/0310/07//58891042.chrysanthemum.jpg',
+//            'http://i2.upanh.com/2014/0310/07//58891043.desert.jpg',
+//            'http://i3.upanh.com/2014/0310/07//58891044.hydrangeas.jpg',
+//            'http://i4.upanh.com/2014/0310/07//58891045.jellyfish.jpg',
+//            'http://i5.upanh.com/2014/0310/07//58891046.koala.jpg'
+//        ];
+//        localStorage["bgs"] = JSON.stringify(bgs);
+//    }
+//    var bg_urls = JSON.parse(localStorage["bgs"]);
+//    setInterval(
+//        function () {
+//            var random_index = Math.random() * 5 | 0;
+//            $('#backgrounder').attr('src', bg_urls[random_index]);
+//        }, 5000
+//    )
 });
