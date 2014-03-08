@@ -1,0 +1,45 @@
+= content_for :title, 'Pricing'
+#Nos-abonnaments(data-ts-equal="" data-class-link="abon-mid-2")
+  .container(data-ts-equal="" data-class-link="abon-head")
+    %h1.box-title.text-center Nos abonnaments
+    - @plans.each do |plan|
+      .col-md-3
+        .abonnaments.super
+          .abon-head.text-center
+            - if plan.free?
+              - title = 'Basic'
+            - else
+              - title = plan.title
+            %h1.text-success= title
+            - unless plan.free?
+              .absolute
+                = image_tag 'robbon.png'
+          .abon-mid-1
+            %h1
+              - if plan.free?
+                FREE
+              - else
+                %span from
+                = plan.price_in_string + "/"
+                #month month
+          .abon-mid-2
+            %ul.list-unstyled
+              %li Let's win thanks to our professionals 
+              %li A specialist in every sports
+              %li Real-time informations
+              %li Pro features
+              %li= "Profit guaranteed" if plan.period==3
+          %hr.divider
+          .text-center.row
+            - unless @selected_plan.nil?
+              - if plan.id < @selected_plan
+                = link_to 'Downgrade', select_plan_path(plan.id),class: 'btn btn-warning'
+              - elsif plan.id > @selected_plan
+                = link_to 'Upgrade', select_plan_path(plan.id),class: 'btn btn-success'
+              - else
+                %a.btn.btn-danger Current
+            - else
+              - if @choosed_plan == plan.id
+                = link_to 'Selected', select_plan_path(plan.id), class: 'btn btn-warning'
+              - else
+                = link_to 'Subscribe', select_plan_path(plan.id),class: 'btn btn-success'
