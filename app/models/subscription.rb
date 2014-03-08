@@ -1,5 +1,6 @@
 class Subscription < ActiveRecord::Base
   MAX_ADDTIONAL_TIPSTERS = 2
+  ADDING_TIPSTER_PRICE = 9.9
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -57,7 +58,7 @@ class Subscription < ActiveRecord::Base
     else
       add = self.tipsters.size > self.plan.number_tipster ? self.tipsters.size - self.plan.number_tipster : 0
     end
-    return add
+    add
   end
 
   def change_tipster(tipster)

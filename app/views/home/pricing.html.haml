@@ -3,17 +3,25 @@
   .container(data-ts-equal="" data-class-link="abon-head")
     %h1.box-title.text-center Nos abonnaments
     - @plans.each do |plan|
-      %div(class="col-md-3" )
+      .col-md-3
         .abonnaments.super
           .abon-head.text-center
-            %h1.text-success= plan.title
-            .absolute
-              =image_tag 'robbon.png'
+            - if plan.free?
+              - title = 'Basic'
+            - else
+              - title = plan.title
+            %h1.text-success= title
+            - unless plan.free?
+              .absolute
+                = image_tag 'robbon.png'
           .abon-mid-1
             %h1
-              %span from
-              = '€' +  plan.price.to_s + "/"
-              #month month
+              - if plan.free?
+                FREE
+              - else
+                %span from
+                = plan.price_in_string + "/"
+                #month month
           .abon-mid-2
             %ul.list-unstyled
               %li Let's win thanks to our professionals 
@@ -32,6 +40,6 @@
                 %a.btn.btn-danger Current
             - else
               - if @choosed_plan == plan.id
-                = link_to 'Selected', select_plan_path(plan.id),class: 'btn btn-warning'
+                = link_to 'Selected', select_plan_path(plan.id), class: 'btn btn-warning'
               - else
                 = link_to 'Subscribe', select_plan_path(plan.id),class: 'btn btn-success'

@@ -55,7 +55,7 @@
           %p
             Plan price:
             %span
-              %strong= @select_plan.price.to_s + "/month"
+              %strong= @select_plan.price_in_string + "/month"
           %p
             Plan period:
             %span
@@ -96,7 +96,7 @@
               %h2 Amount
               %div{style: 'padding: 10px; border: 1px solid #ccc'}
                 \- Plan price:
-                %strong.text-info €#{@select_plan.price}
+                %strong.text-info= @select_plan.price_in_string
                 %br
                 \- Plan limit number tipster:
                 %strong= @select_plan.number_tipster

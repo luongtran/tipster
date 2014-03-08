@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140307013200) do
+ActiveRecord::Schema.define(version: 20140308023721) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -120,7 +120,8 @@ ActiveRecord::Schema.define(version: 20140307013200) do
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
 
   create_table "sports", force: true do |t|
-    t.string "name", null: false
+    t.string  "name",     null: false
+    t.integer "position"
   end
 
   create_table "sports_tipsters", id: false, force: true do |t|
