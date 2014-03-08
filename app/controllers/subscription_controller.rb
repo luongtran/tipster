@@ -40,7 +40,7 @@ class SubscriptionController < ApplicationController
     select_plan = current_subscription.plan
     select_tipsters = Tipster.where(id: tipster_ids_in_cart)
     if request.post?
-      if current_subscription.active? && current_subscription.active_tipsters.size + select_tipsters.size <= current_subscription.plan.number_tipster
+      if current_subscription.active? && current_subscription.able_to_add_more_tipsters?(select_tipsters.size)
         select_tipsters.each do |tipster|
           if current_subscription.tipsters.include?(tipster)
             puts "TH1"
