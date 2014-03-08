@@ -1,26 +1,32 @@
 .container
   - if @subscription
-    %h1.text-success Subscription Information
     .well
-      %ul
-        %li
-          %span
-            %strong Your plan is :
-          %span #{@subscription.plan_title}
-        - if @subscription.is_free?
-          %li
-            %a{href: pricing_path}= t('user.upgrade')
-        - if @subscription.active?
+      %h1.text-success.text-center Subscription Information
+      .panel
+        %ul.list-unstyled
           %li
             %span
-              %strong Plan active day:
-            %span #{@subscription.active_at.strftime("%m/%d/%Y")}
-        - unless @subscription.plan.free?
-          %li
-            %span
-              %strong Plan expired day:
-            %span #{@subscription.expired_at.strftime("%m/%d/%Y")}
-    - if @subscription.active
+              %strong Your plan is :
+            %span #{@subscription.plan_title}
+          - if @subscription.plan.free?
+            %li
+              %a{href: pricing_path}= t('user.upgrade')
+          - elsif @subscription.active?
+            %li
+              %span
+                %strong Plan active day:
+              %span #{@subscription.active_at.strftime("%m/%d/%Y")}
+            - unless @subscription.plan.free?
+              %li
+                %span
+                  %strong Plan expired day:
+                %span #{@subscription.expired_at.strftime("%m/%d/%Y")}
+          - else
+            %li
+              %span Please make a payment for active subscription !
+              %span
+                %a.btn.btn-success{href: subscribe_checkout_path} Make a Payment now !
+    - if !@subscription.plan.free? && @subscription.active
       %table.table.table-bordered
         %caption List Tipster on Your subscriptions
         %thead
@@ -72,4 +78,11 @@
               %td= payment.payment_status
               %td N/A
   - else
-    You are still not register any plan.
+
+    .well.text-center
+      %h2.text-warning You are still not register any plan.
+      %ul.list-unstyled
+        %li
+          %span Please make a payment for active subscription !
+          %span
+            %a.btn.btn-success{href: subscribe_checkout_path} Make a Payment now !

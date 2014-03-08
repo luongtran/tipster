@@ -107,7 +107,7 @@ class Subscriber < ActiveRecord::Base
   end
 
   def already_has_subscription?
-    self.subscription && self.subscription.active == true
+    self.subscription && !self.subscription.plan.free? && self.subscription.active == true
   end
 
   # Add Facebook, Google+ identify

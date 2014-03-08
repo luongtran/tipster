@@ -68,6 +68,7 @@
 - if @show_sign_in_box
   :javascript
     $('document').ready(function(){
+      console.log("call sign in");
+      console.log($('#lk-toggle-sign-in-box').trigger('click'));
       Helper.flash_message('danger',"You need to sign in or sign up before continuing", 5000, '#sign-in-message-container');
-      $('#lk-toggle-sign-in-box').trigger('click');
     });

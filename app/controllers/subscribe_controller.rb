@@ -44,6 +44,7 @@ class SubscribeController < ApplicationController
       redirect_to subscribe_personal_information_url and return
     end
     if request.get?
+      @select_plan = selected_plan
       @account = Account.new
     else
       # Create account
@@ -110,7 +111,9 @@ class SubscribeController < ApplicationController
       @subscription = current_subscriber.subscription
     end
     @subscription.tipsters = @tipsters unless current_subscriber.already_has_subscription?
+    @subscription.plan = @select_plan
     @subscription.using_coupon = true if using_coupon?
+    @subscription.active = false
     @subscription.save
 
     if request.post?
@@ -136,7 +139,7 @@ class SubscribeController < ApplicationController
 
   private
   def no_subscription_required
-    if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active?
+    if current_subscriber && current_subscriber.subscription && !current_subscriber.subscription.plan.free? && current_subscriber.subscription.active?
       redirect_to subscription_url
     end
   end

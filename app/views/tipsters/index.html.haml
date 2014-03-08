@@ -48,7 +48,6 @@
                     -#  = render 'shared/remove_from_cart_form', tipster_id: tipster.id, return_url: tipsters_url
                     -#- else
                     = render 'shared/add_to_cart_form', {tipster_id: tipster.id, disable: tipster_ids_in_cart.include?(tipster.id.to_s)}
-                %a.btn.btn-sm.btn-default{href: tipster_path(tipster)} Detail
   - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
     #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
       .modal-dialog

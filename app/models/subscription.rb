@@ -58,7 +58,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def adder_tipster
-    if self.active?
+    if self.active? && !self.plan.free?
       add = self.tipsters.size > [self.active_tipsters.size, self.plan.number_tipster].max ? self.tipsters.size - [self.active_tipsters.size, self.plan.number_tipster].max : 0
     else
       add = self.tipsters.size > self.plan.number_tipster ? self.tipsters.size - self.plan.number_tipster : 0
