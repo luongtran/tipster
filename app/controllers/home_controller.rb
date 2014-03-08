@@ -5,6 +5,9 @@ class HomeController < ApplicationController
     params[:q] ||= {}
     q = Tipster.search(params[:q])
     @tipsters = q.result
+    if flash[:sign_in_box]
+      @show_sign_in_box = true
+    end
   end
 
   def xml_view

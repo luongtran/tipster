@@ -32,7 +32,6 @@ TipsterHero::Application.routes.draw do
 
   scope path: '/subscribe', as: :subscribe do
     controller :subscribe do
-      match :payment_method, via: [:get, :post]
       match :account, via: [:get, :post]
       match :personal_information, via: [:get, :post]
       match :shared, via: [:get, :post]

@@ -1,12 +1,13 @@
 class SubscribeController < ApplicationController
   before_action :authenticate_account!, only: [:get_coupon_code]
-  before_action :no_subscription_required
+  before_action :no_subscription_required,except: [:success]
   skip_before_filter :verify_authenticity_token, only: [:success]
 
   # Return from paypal
   def success
     flash[:alert] = I18n.t("paypal_pending_reasons.#{params[:pending_reason]}") if params[:pending_reason]
     empty_subscribe_session
+    # Critial error when IPN not working !!!
     @payment = current_subscriber.subscription.payments.last
   end
 
@@ -114,11 +115,12 @@ class SubscribeController < ApplicationController
 
     if request.post?
       if params[:method] == Payment::BY_PAYPAL
-        @paypal = Hash.new
-        @paypal[:amount] = "%05.2f" % @subscription.calculator_price
-        @paypal[:currency] = "EUR"
-        @paypal[:item_number] = current_subscriber.id
-        @paypal[:item_name] = "TIPSTER HERO SUBSCRIPTION"
+        @paypal = {
+                  amount: "%05.2f" % @subscription.calculator_price,
+                  currency: "EUR",
+                  item_number: current_subscriber.id,
+                  item_name: "TIPSTER HERO SUBSCRIPTION"
+                }
         respond_to do |format|
           format.js { render 'paypalinit.js.haml' }
         end
@@ -134,7 +136,7 @@ class SubscribeController < ApplicationController
 
   private
   def no_subscription_required
-    if current_subscriber && current_subscriber.subscription.active?
+    if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active?
       redirect_to subscription_url
     end
   end

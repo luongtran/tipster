@@ -64,5 +64,10 @@
               %li Profit guaranteed
           %hr.divider
           .text-center.row
-            %a(href="javascript:;" class="btn btn-lg btn-success col-md-6 col-md-offset-3" ) Sign Up
-
+            %a(href="javascript:;" class="btn btn-lg btn-success col-md-6 col-md-offset-3" )= t('user.sign_up')
+- if @show_sign_in_box
+  :javascript
+    $('document').ready(function(){
+      Helper.flash_message('danger',"You need to sign in or sign up before continuing", 5000, '#sign-in-message-container');
+      $('#lk-toggle-sign-in-box').trigger('click');
+    });

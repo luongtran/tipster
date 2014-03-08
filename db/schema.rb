@@ -210,7 +210,7 @@ ActiveRecord::Schema.define(version: 20140308023721) do
     t.string   "full_name"
     t.string   "avatar"
     t.integer  "status"
-    t.boolean  "active"
+    t.boolean  "active",       default: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
