@@ -14,6 +14,7 @@ else
             password_confirmation: "123456"
         }
     )
+    tipser.account.skip_confirmation!
     if tipser.save
       sport = sports.sample
       puts " -> Created tipster: #{tipser.full_name}"

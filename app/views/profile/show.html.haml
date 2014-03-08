@@ -14,7 +14,8 @@
             = f.input :last_name
             = f.input :nickname
             = f.input :gender, as: :radio_buttons, collection: genders_collection_for_select, :item_wrapper_class => 'radio-inline'
-            = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy/mm/dd'}
+            - max_date = 16.years.ago.to_date.to_s
+            = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy-mm-dd (16 years old require)', class: 'date-picker limited', 'data-max-date' => max_date}
             -#.col-md-7.col-md-offset-4
             -#  %label.control-label.text-warning= "(Anti robot) #{@user.humanizer_question}"
             -#.form-group

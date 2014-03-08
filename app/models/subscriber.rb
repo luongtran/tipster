@@ -35,7 +35,7 @@ class Subscriber < ActiveRecord::Base
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-  validates_date :birthday, :before => lambda { 16.years.ago }, allow_blank: true
+  validates_date :birthday, :before => lambda { 16.years.ago + 1.day }, allow_blank: true
   validates :first_name, :last_name, :birthday, presence: true, length: {minimum: 2}, on: :update
   validates_presence_of :mobile_phone, :telephone, :secret_question, :answer_secret_question, :country, on: :update, if: :validate_with_paid_account
 
@@ -58,6 +58,7 @@ class Subscriber < ActiveRecord::Base
           },
           created_by_omniauth: true
       )
+      subscriber.account.skip_confirmation!
       subscriber.save!
       subscriber
     end
@@ -74,7 +75,6 @@ class Subscriber < ActiveRecord::Base
     self.subscription.delete if self.subscription
     subscription = self.build_subscription(
         plan: plan,
-        is_free: plan.free?,
         active: true,
         active_at: Time.now,
         expired_at: (Time.now + plan.period.month)

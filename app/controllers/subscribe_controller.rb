@@ -1,6 +1,6 @@
 class SubscribeController < ApplicationController
   before_action :authenticate_account!, only: [:get_coupon_code]
-  before_action :no_subscription_required,except: [:success]
+  before_action :no_subscription_required, except: [:success]
   skip_before_filter :verify_authenticity_token, only: [:success]
 
   # Return from paypal
@@ -71,7 +71,7 @@ class SubscribeController < ApplicationController
           if selected_plan.free?
             current_subscriber.apply_plan(@select_plan)
             empty_cart_session
-            session[:subscription_registered] = true
+            @subscriber.account.resend_confirmation_instructions unless @subscriber.account.confirmed?
             render :welcome
           else
             redirect_to subscribe_shared_url
@@ -119,11 +119,11 @@ class SubscribeController < ApplicationController
     if request.post?
       if params[:method] == Payment::BY_PAYPAL
         @paypal = {
-                  amount: "%05.2f" % @subscription.calculator_price,
-                  currency: "EUR",
-                  item_number: current_subscriber.id,
-                  item_name: "TIPSTER HERO SUBSCRIPTION"
-                }
+            amount: "%05.2f" % @subscription.calculator_price,
+            currency: "EUR",
+            item_number: current_subscriber.id,
+            item_name: "TIPSTER HERO SUBSCRIPTION"
+        }
         respond_to do |format|
           format.js { render 'paypalinit.js.haml' }
         end

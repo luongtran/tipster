@@ -5,14 +5,14 @@
         %h2.text-slim.text-primary.mbs.mts SIGN UP
       .modal-body
         .form-group
-          .col-sm-6
-            %a.btn.btn-block.btn-lg.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
-              %span.glyphicon.glyphicon-leaf
+          .col-md-6
+            %a.btn.btn-lg.btn-block.btn-social.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
+              %i.fa.fa-facebook
               Facebook
-          .col-sm-6
-            %a.btn.btn-googleplus.btn-block.btn-lg{href: account_omniauth_authorize_path(:google_oauth2)}
-              %span.glyphicon.glyphicon-fire
-              Google+
+          .col-md-6
+            %a.btn.btn-lg.btn-block.btn-social.btn-google-plus{href: account_omniauth_authorize_path(:google_oauth2)}
+              %i.fa.fa-google-plus
+              Google plus
         %p
           %br
         .text-center

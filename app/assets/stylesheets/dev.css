@@ -70,34 +70,15 @@ label.control-label, label.checkbox {
 }
 
 @media (min-width: 768px) {
-    #sign-up-modal-box.modal .modal-dialog {
+    #sign-up-modal-box.modal .modal-dialog, #sign-in-modal-box .modal-dialog {
         width: 500px;
         z-index: 9999;
         position: relative;
     }
-
-    #sign-in-modal-box.modal .modal-dialog {
-        width: 400px;
-    }
-
-    /*body{*/
-    /*background:white;*/
-    /*background:rgba(255,255,255,0.8);*/
-    /*filter:blur(4px);*/
-    /*-o-filter:blur(4px);*/
-    /*-ms-filter:blur(4px);*/
-    /*-moz-filter:blur(4px);*/
-    /*-webkit-filter:blur(4px);*/
-    /*}*/
-    /*body.modal-open #page-footer-values {*/
-    /*-webkit-filter: blur(4px);*/
-    /*-moz-filter: blur(4px);*/
-    /*-o-filter: blur(4px);*/
-    /*-ms-filter: blur(4px);*/
-    /*filter: blur(4px);*/
-    /*}*/
 }
-
+#sign-in-message-container {
+    margin: 5px 0;
+}
 .btn.in-progress {
     outline: none;
     cursor: default;
@@ -187,6 +168,7 @@ li.step-seperator-container {
 /* Flash message container  */
 .flash-container {
     padding: 0;
+    margin-bottom: 10px;
 }
 
 #flash {
