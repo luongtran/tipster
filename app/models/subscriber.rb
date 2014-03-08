@@ -58,6 +58,7 @@ class Subscriber < ActiveRecord::Base
           },
           created_by_omniauth: true
       )
+      subscriber.account.skip_confirmation!
       subscriber.save!
       subscriber
     end

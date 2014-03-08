@@ -8,12 +8,13 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require jquery.Jcrop
 
  *= require_tree ../../../vendor/assets/stylesheets/framework/bootstrap
  *= require partials/_common
  *= require partials/_page_home
  *= require partials/_tipster
+ *= require font-awesome.min
+ *= require bootstrap-social
 
  *= require dev
  */
