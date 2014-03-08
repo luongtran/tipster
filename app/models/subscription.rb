@@ -9,6 +9,7 @@ class Subscription < ActiveRecord::Base
   has_many :payments
   has_many :subscription_tipsters, dependent: :destroy
   has_many :tipsters, :through => :subscription_tipsters
+
   has_many :active_tipsters, :through => :subscription_tipsters,
            :class_name => "Tipster",
            :source => :tipster,
