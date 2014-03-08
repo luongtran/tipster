@@ -131,16 +131,18 @@ body {
     font-size: 12px;
   }
   .tipster-list-table {
-    width: 95%;
+    width: 99%;
     margin: 20px auto;
     background-color: #ffffff;
     border: solid 1px #d9d9d9;
     border-radius: 4px;
     box-shadow: 0 0 6px rgba(black, 0.06);
     table {
+      width: 75%;
       margin: 0;
       border: none;
       font-size: 12px;
+      float:left;
       thead {
         * {
           color: $green-site;
@@ -153,6 +155,25 @@ body {
       vertical-align: middle;
       &:first-child {
         border-left: none;
+      }
+    }
+//   Quang style tipster page here
+    #top_tipsters_of_weeks{
+      float:right;
+      width:24%;
+      min-height: 600px;
+      #tipster_info{
+        margin: 0 auto;
+        #tipster_name{
+          font-size: 16px;
+          text-align: center;
+        }
+        #tipster_avatar{
+          width:215px;
+          height:215px;
+          color:#F5E78B;
+          background:url(/assets/demo.jpg)
+        }
       }
     }
   }

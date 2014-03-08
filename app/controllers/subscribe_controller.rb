@@ -48,6 +48,10 @@ class SubscribeController < ApplicationController
       redirect_to subscribe_personal_information_url and return
     end
     @select_plan = selected_plan
+    if @select_plan.nil?
+      flash[:alert] = I18n.t('errors.messages.unselect_plan')
+      redirect_to pricing_path and return
+    end
     if request.get?
       @account = Account.new
       @account2 = Account.new
