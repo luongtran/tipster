@@ -212,7 +212,7 @@ $(document).ready(function () {
             if ((current_url_index + 1) == bgs.length) {
                 current_url_index = 0;
             }
-            $('#page_header_mid').animate(
+            $('#page_header_mid:not(.fixed-bg)').animate(
                 {opacity: 0.4},
                 'slow',
                 function () {

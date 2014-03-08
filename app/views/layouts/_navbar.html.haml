@@ -48,7 +48,7 @@
           -#    %li
           -#      %a#lk-toggle-sign-up-box{href: '#'}= I18n.t('user.sign_up')
               = render 'shared/social_connection_links'
-#page_header_mid
+#page_header_mid{class: "#{(controller_name == 'home' && action_name == 'index') ? 'fixed-bg' : ''} "}
   / this is container header box for sub-page (signup - steps etc)
   #sub-page-header
     .container.clearfix
