@@ -187,6 +187,15 @@ $(document).ready(function () {
             return false;
         }
     });
+    $('#form-receive-tip-methods').on('submit', function () {
+
+     var valid = $('#cb-term-and-conditions').is(':checked');
+        if (!valid){
+            Helper.alert_warning("Please accept term and conditions about paypal payment .... !");
+            return false;
+        }
+
+    })
 
     /* Background switching */
     // order following: football, tennis, basket,
