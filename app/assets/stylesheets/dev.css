@@ -214,3 +214,18 @@ p.button a:hover {
     text-decoration: none;
 }
 
+.pricing_box strong {
+    background: url(price.sprite.png) no-repeat 0 -9999px;
+    height: 12px;
+    padding-left: 20px;
+    font-style: normal;
+}
+
+.pricing_box strong.no {
+    background-position: 0 0;
+    color: #B3B3B3;
+}
+
+.pricing_box strong.yes {
+    background-position: 0 -15px;
+}
