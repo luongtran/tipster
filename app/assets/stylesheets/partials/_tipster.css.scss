@@ -48,3 +48,21 @@
   }
 
 }
+
+#top_tipsters_of_weeks{
+  .tipster-top-body {
+    padding-top: 30px;
+  }
+  .tipster-top-unit {
+    margin-bottom: 15px;
+    .tipster-top-avatar {
+      width: 75%;
+      margin: 0 auto;
+      border-radius: 3px;
+      margin-bottom: 5px;
+    }
+    .tipster-top-name {
+      font-size: 12px;
+    }
+  }
+}

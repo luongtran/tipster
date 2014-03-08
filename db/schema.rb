@@ -94,8 +94,9 @@ ActiveRecord::Schema.define(version: 20140308023721) do
   add_index "payments", ["subscription_id"], name: "index_payments_on_subscription_id"
 
   create_table "plans", force: true do |t|
+    t.string   "name"
     t.string   "title"
-    t.integer  "reception_delay",        default: 0
+    t.integer  "reception_delay",        default: 3600
     t.text     "description"
     t.boolean  "pause_ability",          default: true
     t.boolean  "switch_tipster_ability", default: true
@@ -133,8 +134,6 @@ ActiveRecord::Schema.define(version: 20140308023721) do
   create_table "subscribers", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.string   "nickname"
-    t.boolean  "gender",                     default: true
     t.string   "civility"
     t.date     "birthday"
     t.string   "address"
@@ -147,11 +146,13 @@ ActiveRecord::Schema.define(version: 20140308023721) do
     t.string   "know_website_from"
     t.integer  "secret_question"
     t.string   "answer_secret_question"
-    t.boolean  "receive_info_from_partners", default: false
-    t.string   "receive_tip_methods"
-    t.boolean  "created_by_omniauth",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "receive_info_from_partners", default: false
+    t.string   "nickname"
+    t.boolean  "gender",                     default: true
+    t.string   "receive_tip_methods"
+    t.boolean  "created_by_omniauth",        default: false
   end
 
   create_table "subscription_tipsters", force: true do |t|
@@ -174,6 +175,7 @@ ActiveRecord::Schema.define(version: 20140308023721) do
     t.datetime "expired_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_free",       default: true
   end
 
   add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id"

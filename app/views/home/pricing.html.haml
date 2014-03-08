@@ -3,35 +3,36 @@
   .pricing-wrapper
     - @plans.each do |plan|
       - @choosed_plan ||= 9
-      .pricing_box{class: "#{@choosed_plan == plan.id ? 'large' : ''}"}
-        .header
-          %span= plan.title.capitalize
-        %ul.pricing-features
-          %li.even
-            %strong.yes Free tips
-          %li.odd
-            %strong{class: "#{plan.reception_delay == 0 ? 'yes' : 'no'}"} Real-time notice bet
-          %li.even
-            %strong{class: "#{plan.free? ? 'no' : 'yes'}"} Follow professional tipster
-          %li.odd
-            %strong{class: "#{plan.profit_guaranteed? ? 'yes' : 'no'}"} Profit guaranteed
-          %li.even
-            %strong{class: "#{plan.switch_tipster_ability? ? 'yes' : 'no'}"} Change following tipster
-          %li.odd
-            %strong{class: "#{(plan.number_tipster > 1) ? 'yes' : 'no'}"} Follow multi tipsters
-        %p
-        %h2
-          - if plan.free?
-            FREE
-          - else
-            %sup €
-            = plan.price
-            %sub /month
-        %hr
-        - if @choosed_plan == plan.id
-          %a.btn.btn-warning.disabled Choosen
-        - else @choosed_plan == plan.id
-          %p.button
-            %a.btn.btn-default{href: select_plan_path(plan.id)} Subscribe
+      .pricing-box-outer
+        .pricing_box{class: "#{@choosed_plan == plan.id ? 'large' : ''}"}
+          .header
+            %span= plan.title.capitalize
+          %ul.pricing-features
+            %li.even
+              %strong.yes Free tips
+            %li.odd
+              %strong{class: "#{plan.reception_delay == 0 ? 'yes' : 'no'}"} Real-time notice bet
+            %li.even
+              %strong{class: "#{plan.free? ? 'no' : 'yes'}"} Follow professional tipster
+            %li.odd
+              %strong{class: "#{plan.profit_guaranteed? ? 'yes' : 'no'}"} Profit guaranteed
+            %li.even
+              %strong{class: "#{plan.switch_tipster_ability? ? 'yes' : 'no'}"} Change following tipster
+            %li.odd
+              %strong{class: "#{(plan.number_tipster > 1) ? 'yes' : 'no'}"} Follow multi tipsters
+          %p
+          %h2
+            - if plan.free?
+              FREE
+            - else
+              %sup €
+              = plan.price
+              %sub /month
+          %hr
+          - if @choosed_plan == plan.id
+            %a.btn.btn-warning.disabled Choosen
+          - else @choosed_plan == plan.id
+            %p.button
+              %a.btn.btn-default{href: select_plan_path(plan.id)} Subscribe
   .clearfix
   %br

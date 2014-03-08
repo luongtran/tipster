@@ -13,6 +13,7 @@
  *= require partials/_common
  *= require partials/_page_home
  *= require partials/_tipster
+ *= require partials/_pricing
  *= require font-awesome.min
  *= require bootstrap-social
 

@@ -13,43 +13,48 @@
         %span(class="mrs text-muted" ) Filter by status
         = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'
     .tipster-list-table#tipster-list-table
-      %table(class="table table-hover" )
-        %thead
-          %tr
-            %th Tipster
-            %th Profit
-            %th Yield
-            %th NO of tip
-            %th Hit Rate
-            %th Avg.Odds
-            %th Profitable Months
-            %th 1 month
-        %tbody
-          - @tipsters.each_with_index do |tipster,index|
-            %tr
-              %td
-                %a{href: tipster_path(tipster), class: 'tipster-name'}
-                  = tipster.full_name
-                .tipster-profit-chart
-                  = image_tag profit_img_chart_url_for(tipster.profit_per_months)
-              %td= tipster.profit
-              %td= tipster.yield
-              %td= tipster.tips_count
-              %td= tipster.win_rate || '25%'
-              %td= tipster.avg_odds
-              %td= tipster.profitable_months
-              %td.text-right
-                %div(class="btn-group btn-group-sm" )
-                  - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
-                    %button.btn.btn-sm.btn-default Already purchase
-                  - else
-                    = render 'shared/add_to_cart_form', {tipster_id: tipster.id, disable: tipster_ids_in_cart.include?(tipster.id.to_s)}
-      #top_tipsters_of_weeks
-        %h3 Top 3 of the week
-        - @top_tipster.each do |tipster|
-          #tipster_info
-            #tipster_name= tipster.full_name
-            = image_tag tipster.avatar.url || 'demo.jpg',class: 'tipster_avatar'
+      .row
+        .col-md-9
+          %table(class="table table-hover" )
+            %thead
+              %tr
+                %th Tipster
+                %th Profit
+                %th Yield
+                %th NO of tip
+                %th Hit Rate
+                %th Avg.Odds
+                %th Profitable Months
+                %th 1 month
+            %tbody
+              - @tipsters.each_with_index do |tipster,index|
+                %tr
+                  %td
+                    %a{href: tipster_path(tipster), class: 'tipster-name'}
+                      = tipster.full_name
+                    .tipster-profit-chart
+                      = image_tag profit_img_chart_url_for(tipster.profit_per_months)
+                  %td= tipster.profit
+                  %td= tipster.yield
+                  %td= tipster.tips_count
+                  %td= tipster.win_rate || '25%'
+                  %td= tipster.avg_odds
+                  %td= tipster.profitable_months
+                  %td.text-right
+                    %div(class="btn-group btn-group-sm" )
+                      - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
+                        %button.btn.btn-sm.btn-default Already purchase
+                      - else
+                        = render 'shared/add_to_cart_form', {tipster_id: tipster.id, disable: tipster_ids_in_cart.include?(tipster.id.to_s)}
+        .col-md-3
+          #top_tipsters_of_weeks
+            %h4.text-slim.text-success Top 3 of the week
+            %hr.mbs.mts
+              .tipster-top-body
+                - @top_tipster.each do |tipster|
+                  .tipster-top-unit.text-center
+                    = image_tag tipster.avatar.url || 'demo.jpg',class: 'tipster-top-avatar'
+                    .tipster-top-name.text-success.text-bold= tipster.full_name
   - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
     #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
       .modal-dialog
