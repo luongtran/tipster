@@ -28,8 +28,10 @@
             = plan.price
             %sub /month
         %hr
-        - unless @choosed_plan == plan.id
-          %p.button.signup
-            %a{href: select_plan_path(plan.id)} Subscribe
+        - if @choosed_plan == plan.id
+          %a.btn.btn-warning.disabled Choosen
+        - else @choosed_plan == plan.id
+          %p.button
+            %a.btn.btn-default{href: select_plan_path(plan.id)} Subscribe
   .clearfix
   %br
