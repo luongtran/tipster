@@ -42,8 +42,8 @@
               %td.text-right
                 %span(class="mrs text-left" ) €9.9
                 %div(class="btn-group btn-group-sm" )
-                  - if @tipster_in_subscription.present? && @tipster_in_subscription.include?(tipster)
-                    .btn.btn-sm.btn-default Already purchase
+                  - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
+                    %button.btn.btn-sm.btn-default Already purchase
                   - else
                     -#- if tipster_ids_in_cart.include? tipster.id.to_s
                     -#  = render 'shared/remove_from_cart_form', tipster_id: tipster.id, return_url: tipsters_url
