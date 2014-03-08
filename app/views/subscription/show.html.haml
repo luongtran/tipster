@@ -7,10 +7,6 @@
           %span
             %strong Your plan is :
           %span #{@subscription.plan_title}
-        %li
-          %span
-            %strong Paid account :
-          %span #{@subscription.active? ? "Active" : "Not Active"}
         - if @subscription.is_free?
           %li
             %a{href: pricing_path}= t('user.upgrade')
@@ -19,6 +15,7 @@
             %span
               %strong Plan active day:
             %span #{@subscription.active_at.strftime("%m/%d/%Y")}
+        - unless @subscription.plan.free?
           %li
             %span
               %strong Plan expired day:

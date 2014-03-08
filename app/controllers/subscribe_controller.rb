@@ -2,131 +2,9 @@ class SubscribeController < ApplicationController
   before_action :authenticate_account!, only: [:get_coupon_code, :payment_old]
   skip_before_filter :verify_authenticity_token, only: [:success]
   before_action :ready_to_payment, only: [:payment_old, :payment_method]
-=begin
-  def identification
-    unless current_account
-      @subscriber = Subscriber.new
-      @subscriber.build_account
-    end
-    action = params[:act]
-    case action
-      when 'sign_in'
-        @account = Account.find_by(email: params[:account][:email])
-        if @account && @account.valid_password?(params[:account][:password])
-          sign_in @account
-          #@result = true
-          redirect_to subscribe_payment_method_url
-        else
-          #@result = false
-          flash.now[:alert] = 'Email or password is invalid'
-        end
-      when 'sign_up'
-        subscriber_params = params.require(:subscriber).
-            permit(:first_name, :last_name, account_attributes: [:email, :password, :password_confirmation])
-        @subscriber = Subscriber.register(subscriber_params)
-        if @subscriber.save
-          sign_in(:account, @subscriber.account)
-          redirect_to subscribe_payment_method_url
-        end
-      when 'facebook', 'google_oauth2'
-        session[:return_url] = subscribe_payment_method_url
-        redirect_to account_omniauth_authorize_path(action)
-    end
-  end
 
-  # GET|POST /subscribe/payment
-
-  def payment_old
-    if current_subscriber.already_has_subscription? #Adding tipster to current subscription
-      current_subscription = current_subscriber.subscription
-      unless current_subscription.can_change_tipster?
-        redirect_to subscriptions_path, notice: "You can change your follow tipster on day #{current_subscription.active_at.strftime('%d')}  of the month" and return
-      end
-      select_plan = current_subscription.plan
-      select_tipsters = Tipster.where(id: tipster_ids_in_cart)
-      begin
-        current_subscription.inactive_tipsters.delete_all
-        current_subscription.tipsters << select_tipsters
-        current_subscription.save
-      rescue Exception => e
-        logger = Logger.new('log/payment_errors.log')
-        logger.info(e.message)
-      end
-      adder_tipster = current_subscription.adder_tipster
-      subtotal = adder_tipster * ADDING_TIPSTER_PRICE
-      before_amount = subtotal * select_plan.period
-      if using_coupon?
-        using_coupon = true
-        current_subscription.update_attributes(using_coupon: true)
-        amount = before_amount > 0 ? before_amount - 3 : before_amount
-      else
-        amount = before_amount
-        using_coupon = false
-      end
-      @pp_object = {
-          amount: amount.round(3),
-          currency: 'EUR',
-          item_number: current_subscriber.id,
-          item_name: "TipsterHero Adding #{select_tipsters.size} Tipster to Subscriptions #{current_subscription.plan_title}"
-      }
-
-      @return = {
-          has_subscription: true,
-          current_subscription: current_subscription,
-          select_plan: select_plan,
-          subtotal: subtotal,
-          select_tipsters: select_tipsters,
-          adder_tipster: adder_tipster,
-          amount: amount.round(3),
-          before_amount: before_amount.round(3),
-          using_coupon: using_coupon
-
-      }
-    else # If user not completed his payment for subscription
-      prepare_subscribe_info
-      unless current_subscriber.subscription
-        subscription = current_subscriber.build_subscription(plan_id: session[:plan_id])
-      else
-        subscription = current_subscriber.subscription
-      end
-      select_plan = Plan.find session[:plan_id]
-      select_tipsters = Tipster.where(id: tipster_ids_in_cart)
-      subscription.tipsters = select_tipsters
-      subscription.plan_id = session[:plan_id]
-      subscription.active = false
-      subscription.save
-      adder_tipster = subscription.adder_tipster
-      subtotal = select_plan.price + adder_tipster * ADDING_TIPSTER_PRICE
-      before_amount = subscription.calculator_price
-      if using_coupon?
-        using_coupon = true
-        subscription.update_attributes(using_coupon: true)
-        amount = before_amount > 0 ? before_amount - 3 : before_amount
-      else
-        amount = before_amount
-        using_coupon = false
-      end
-      @pp_object = {
-          amount: amount.round(3),
-          currency: 'EUR',
-          item_number: current_subscriber.id,
-          item_name: "TipsterHero Subscriptions #{subscription.plan_title}"
-      }
-      @return = {
-          has_subscription: false,
-          select_plan: select_plan,
-          adder_tipster: adder_tipster,
-          select_tipsters: select_tipsters,
-          subtotal: subtotal,
-          amount: amount.round(3),
-          before_amount: before_amount.round(3),
-          using_coupon: using_coupon
-      }
-    end
-  end
-=end
-  #Adding tipster to current subscription
-  #Validate current subscription is active & select tipster < limit
+  # Adding tipster to current subscription
+  # Validate current subscription is active & select tipster < limit
   def add_tipster
     current_subscription = current_subscriber.subscription
     select_plan = current_subscription.plan
@@ -142,10 +20,10 @@ class SubscribeController < ApplicationController
             current_subscription.insert_tipster(tipster)
           end
         end
-        redirect_to subscriptions_path and return
+        redirect_to subscription_path and return
       else
         flash[:alert] = "SYSTEM ERROR !!!!"
-        redirect_to subscriptions_path and return
+        redirect_to subscription_path and return
       end
     else
       @return = {
@@ -157,7 +35,7 @@ class SubscribeController < ApplicationController
     end
   end
 
-  #Change subscription plan
+  # Change subscription plan
   def change_plan
   end
 
@@ -210,7 +88,6 @@ class SubscribeController < ApplicationController
     empty_subscribe_session
     @payment = current_subscriber.subscription.payments.last
   end
-
 
   def get_coupon_code
     cc = CouponCode.create_for_user(current_subscriber, coupon_params[:source])
@@ -269,9 +146,7 @@ class SubscribeController < ApplicationController
         if @subscriber.update_attributes(profile_params)
           # Apply free plan
           if selected_plan.free?
-            current_subscriber.subscription.delete
-            subscription = current_subscriber.build_subscription(plan: selected_plan, is_free: true, active: true)
-            subscription.save
+            current_subscriber.apply_plan(selected_plan)
             empty_cart_session
             session[:subscription_registered] = true
             render :welcome
@@ -314,6 +189,7 @@ class SubscribeController < ApplicationController
     @subscription.tipsters = @tipsters unless current_subscriber.already_has_subscription?
     @subscription.using_coupon = true if using_coupon?
     @subscription.save
+
     if request.post?
       if params[:method] == Payment::BY_PAYPAL
         @paypal = Hash.new
@@ -328,6 +204,7 @@ class SubscribeController < ApplicationController
         puts "FRENCH BANK HERE"
       end
     end
+
   end
 
   def welcome
