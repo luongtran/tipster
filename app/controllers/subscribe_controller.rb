@@ -33,7 +33,11 @@ class SubscribeController < ApplicationController
   def checkout
     if current_account
       # require selected offer before go to personal information
-      redirect_to subscribe_personal_information_url
+      if session[:step]
+        go_to_current_steps
+      else
+        redirect_to subscribe_personal_information_url
+      end
     else
       redirect_to subscribe_account_url
     end
@@ -85,6 +89,7 @@ class SubscribeController < ApplicationController
   end
 
   def shared
+    session[:step] = 'shared'
   end
 
   def receive_methods
@@ -93,8 +98,10 @@ class SubscribeController < ApplicationController
     end
     @account = current_account
     @subscriber = @account.rolable
+    session[:step] = 'receive_methods'
     if request.post?
       @subscriber.update_receive_tips_method(params[:receive_tip_methods])
+      session[:step] = 'payment'
       redirect_to subscribe_payment_url
     end
   end
@@ -117,6 +124,7 @@ class SubscribeController < ApplicationController
     @subscription.save
 
     if request.post?
+      session[:step] = 'payment'
       if params[:method] == Payment::BY_PAYPAL
         @paypal = {
             amount: "%05.2f" % @subscription.calculator_price,
@@ -137,7 +145,19 @@ class SubscribeController < ApplicationController
   def welcome
   end
 
+
   private
+
+  def go_to_current_steps
+    case session[:step]
+      when 'receive_methods'
+        redirect_to subscribe_receive_methods_path
+      when 'payment'
+        redirect_to subscribe_payment_path
+      when 'shared'
+        redirect_to subscribe_shared_path
+    end
+  end
   def no_subscription_required
     if current_subscriber && current_subscriber.subscription && !current_subscriber.subscription.plan.free? && current_subscriber.subscription.active?
       redirect_to subscription_url
