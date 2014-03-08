@@ -15,6 +15,10 @@ class CartController < ApplicationController
   end
 
   def add_tipster
+    if session[:plan_id].nil?
+      flash[:alert] = I18n.t("errors.messages.unselect_plan")
+      redirect_to pricing_path and return
+    end
     count_after_added = tipster_ids_in_cart.size + 1
     if count_after_added > (selected_plan.number_tipster + Subscription::MAX_ADDTIONAL_TIPSTERS)
       flash[:alert] = "You can add only #{Subscription::MAX_ADDTIONAL_TIPSTERS} addtional tipsters."
@@ -66,9 +70,11 @@ class CartController < ApplicationController
   end
 
   private
+
   def already_purchase
     if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active
       current_subscriber.subscription.active_tipsters.each { |tipster| session[:cart][:tipster_ids].delete(tipster.id.to_s) }
     end
   end
+
 end

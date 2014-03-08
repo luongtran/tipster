@@ -4,6 +4,6 @@
   - service.item_number object[:item_number]
   - service.notify_url notify_payment_url
   - service.return_url subscribe_success_url
-  - service.cancel_return_url cancel_payment_url
+  - service.cancel_return_url subscribe_payment_url
   - hidden_field_tag :user_id, object[:user_id]
   = image_submit_tag('/assets/paypal-express-checkout-button.png', alt:'Make Payment with Paypal')

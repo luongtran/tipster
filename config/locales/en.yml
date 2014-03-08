@@ -80,6 +80,7 @@ en:
     messages:
       invalid_date: "is not a valid date"
       before: "must be before %{restriction}"
+      unselect_plan: "Please choose a plan"
   activerecord:
     attributes:
       account:

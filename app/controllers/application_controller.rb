@@ -87,11 +87,14 @@ class ApplicationController < ActionController::Base
     empty_cart_session
     session[:plan_id] = nil
     session[:using_coupon] = nil
+    session[:step] = nil
     # Maybe clear more session vars: coupon code, payment info ...
   end
 
   def selected_plan
-    Plan.find_by(id: session[:plan_id])
+    if session[:plan_id]
+      Plan.find_by(id: session[:plan_id])
+    end
   end
 
   def account_params
