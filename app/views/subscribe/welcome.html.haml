@@ -30,5 +30,8 @@
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
         .panel-body.text-center
-          %h3 Congratulation! Your subscription has been created successfully.
+          %h3 Congratulation! You has been registered subscription successfully.
+          - unless current_account.confirmed?
+            %p.text-info
+              = I18n.t('devise.registrations.signed_up_but_unconfirmed')
           %a.btn.btn-primary{href: subscription_path} Go to my subscription
