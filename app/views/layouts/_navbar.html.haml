@@ -34,12 +34,12 @@
                   = I18n.t('user.sign_out')
         - else
           %li
-            %a#lk-toggle-sign-in-box{href: '#'}
+            %a.lk-toggle-sign-in-box{href: '#'}
               %i.glyphicon.glyphicon-log-in
               = I18n.t('user.sign_in')
             -#%a{"data-toggle" => "modal", href: "#loginModal"}= t('user.sign_in')
           %li
-            %a#lk-toggle-sign-up-box{href: '#'}= I18n.t('user.sign_up')
+            %a.lk-toggle-sign-up-box{href: '#'}= I18n.t('user.sign_up')
           -#%li.dropdown
           -#  %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
           -#    Connect

@@ -28,6 +28,11 @@ class Subscription < ActiveRecord::Base
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+
+  def able_to_add_more_tipsters?(count = 1)
+    (self.active_tipsters.count + count) <= self.plan.number_tipster
+  end
+
   def calculator_price
     price = (self.plan.price.to_f + adder_tipster * ADDING_TIPSTER_PRICE) * self.plan.period
     if self.using_coupon

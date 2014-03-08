@@ -1,7 +1,7 @@
 class Account < ActiveRecord::Base
   devise :database_authenticatable,
-         :recoverable, :rememberable, :trackable, :validatable, :registerable, :omniauthable
-  # :confirmable, :lockable, :timeoutable and :omniauthable , :session_limitable
+         :recoverable, :rememberable, :trackable, :validatable, :registerable, :omniauthable, :confirmable
+  # :lockable, :timeoutable and :omniauthable , :session_limitable
 
   # ==============================================================================
   # ASSOCIATIONS
@@ -27,6 +27,9 @@ class Account < ActiveRecord::Base
     self.update_without_password(params)
   end
 
+  def active_for_authentication?
+    super && false
+  end
 
   # ==============================================================================
   # PROTECTED METHODS

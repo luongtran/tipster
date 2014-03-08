@@ -10,8 +10,8 @@
               %span.glyphicon.glyphicon-leaf
               Facebook
           .col-md-6
-            %a.btn.btn-googleplus.btn-block.btn-lg
-              %span.glyphicon.glyphicon-fire{href: account_omniauth_authorize_path(:google_oauth2)}
+            %a.btn.btn-googleplus.btn-block.btn-lg{href: account_omniauth_authorize_path(:google_oauth2)}
+              %span.glyphicon.glyphicon-fire
               Google+
         %p
           %br
@@ -28,4 +28,7 @@
               .form-group
                 %button.btn.btn-success.btn-block.btn-lg#submiter SIGN IN
         .text-center
-          %a{href: '#'} Forgot password?
+          %a{href: new_account_password_path} Forgot password?
+          |
+          %a.lk-toggle-sign-up-box{href: '#'}
+            Sign Up
