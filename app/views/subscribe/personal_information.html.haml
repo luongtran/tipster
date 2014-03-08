@@ -56,7 +56,8 @@
               = f.input :first_name
               = f.input :last_name
               = f.input :nickname
-              = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy/mm/dd (18 years old require)',class: 'date-picker'}
+              - max_date = 16.years.ago.to_date.to_s
+              = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy-mm-dd (16 years old require)', class: 'date-picker limited', 'data-max-date' => max_date}
               = f.input :gender, as: :radio_buttons, collection: genders_collection_for_select, :item_wrapper_class => 'radio-inline', html_wrapper: {class: 'col-md-3'}
               - unless @select_plan.free?
                 = f.input :address, :required => false, input_html: {placeholder: '123 Main Street'}

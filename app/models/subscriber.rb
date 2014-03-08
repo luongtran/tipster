@@ -35,7 +35,7 @@ class Subscriber < ActiveRecord::Base
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-  validates_date :birthday, :before => lambda { 16.years.ago }, allow_blank: true
+  validates_date :birthday, :before => lambda { 16.years.ago + 1.day }, allow_blank: true
   validates :first_name, :last_name, :birthday, presence: true, length: {minimum: 2}, on: :update
   validates_presence_of :mobile_phone, :telephone, :secret_question, :answer_secret_question, :country, on: :update, if: :validate_with_paid_account
 
