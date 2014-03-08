@@ -51,32 +51,43 @@
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
         .panel-body.text-center
+          .row-fluid
+            .col-md-6.pull-left
+              %h4= t('user.sign_up')
+              = simple_form_for @account, url: subscribe_account_path, html: {id: 'sign-up-form', class: 'tipster-form-style form-horizontal mbn', nonvalidate: false} do |acc|
+                = acc.input :email, required: true
+                = acc.input :password, required: true
+                = acc.input :password_confirmation, required: true
+                = hidden_field_tag :act,'sign_up'
+                .form-group
+                  .col-md-7.col-md-offset-4
+                    %button.btn.btn-success{type: "submit"}
+                      %i.typcn.typcn-world.mrs
+                      Create Account
+            .col-md-6.pull-right
+              %h4= t('user.sign_in')
+              = simple_form_for @account2, url: subscribe_account_path, html: {id: 'sign-in-form', class: 'tipster-form-style form-horizontal mbn', nonvalidate: false} do |acc|
+                = acc.input :email, required: true
+                = acc.input :password, required: true
+                = hidden_field_tag :act,'sign_in'
+                #sign-in-message-container
+                .form-group
+                  .col-md-7.col-md-offset-4
+                    %button.btn.btn-success{type: "submit"}
+                      %i.typcn.typcn-world.mrs
+                      = t('user.sign_in')
+                    %a.mls.text-xs{href: "/accounts/password/new"} Recovery Account
+          .clearfix
           .tipster-form
-            .col-md-7.col-md-offset-4
-              %h4 Sign Up
-            = simple_form_for @account, url: subscribe_account_path, html: {id: 'sign-up-form', class: 'tipster-form-style form-horizontal mbn', nonvalidate: false} do |acc|
-              = acc.input :email, required: true
-              = acc.input :password, required: true
-              = acc.input :password_confirmation, required: true
-              -#.form-group
-              -#  .col-md-7.col-md-offset-4
-              -#    %label.checkbox.text-slim
-              -#      %input#cb-term-and-conditions{type: "checkbox"}>/
-              -#      I agree with term & conditions
-              .form-group
-                .col-md-7.col-md-offset-4
-                  %button.btn.btn-success{type: "submit"}
-                    %i.typcn.typcn-world.mrs
-                    Create Account
-                  %a.mls.text-xs{href: "/accounts/password/new"} Recovery Account
-              .form-group
-                %hr
-              .form-group
-                .col-sm-6
-                  %a.btn.btn-block.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
-                    %span.glyphicon.glyphicon-leaf
-                    Facebook
-                .col-sm-6
-                  %a.btn.btn-danger.btn-block
-                    %span.glyphicon.glyphicon-fire{href: account_omniauth_authorize_path(:google_oauth2)}
-                    Google+
+            .form-group
+              .col-sm-6
+                %a.btn.btn-block.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
+                  %span.glyphicon.glyphicon-leaf
+                  Facebook
+              .col-sm-6
+                %a.btn.btn-danger.btn-block
+                  %span.glyphicon.glyphicon-fire{href: account_omniauth_authorize_path(:google_oauth2)}
+                  Google+
+- if @error
+  :javascript
+    Helper.flash_message('danger','Email or password is invalid', 5000, '#sign-in-message-container');

@@ -94,6 +94,9 @@ class ApplicationController < ActionController::Base
   def selected_plan
     if session[:plan_id]
       Plan.find_by(id: session[:plan_id])
+    elsif current_subscriber && current_subscriber.subscription
+      session[:plan_id] = current_subscriber.subscription.plan.id
+      current_subscriber.subscription.plan
     end
   end
 

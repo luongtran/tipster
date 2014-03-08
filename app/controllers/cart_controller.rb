@@ -15,7 +15,7 @@ class CartController < ApplicationController
   end
 
   def add_tipster
-    if session[:plan_id].nil?
+    if selected_plan.nil?
       flash[:alert] = I18n.t("errors.messages.unselect_plan")
       redirect_to pricing_path and return
     end

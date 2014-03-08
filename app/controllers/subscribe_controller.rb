@@ -47,15 +47,33 @@ class SubscribeController < ApplicationController
     if account_signed_in?
       redirect_to subscribe_personal_information_url and return
     end
+    @select_plan = selected_plan
     if request.get?
-      @select_plan = selected_plan
       @account = Account.new
+      @account2 = Account.new
     else
       # Create account
-      @account = Account.build_with_rolable(account_params, Subscriber)
-      if @account.save
-        sign_in @account
-        redirect_to subscribe_personal_information_url
+      case params[:act]
+        when 'sign_in'
+          @account2 = Account.find_by_email(params[:account][:email])
+          if @account2 && @account2.valid_password?(params[:account][:password])
+            sign_in @account2
+            redirect_to subscribe_personal_information_url
+          else
+            # Render error !
+            @account = Account.new
+            @account2 = Account.new
+            @error = true
+          end
+        when 'sign_up'
+          @account = Account.build_with_rolable(account_params, Subscriber)
+          if @account.save
+            sign_in @account
+            redirect_to subscribe_personal_information_url
+          else
+            # Render error !
+            @account2 = Account.new
+          end
       end
     end
   end
