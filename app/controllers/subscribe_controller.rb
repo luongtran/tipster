@@ -1,52 +1,7 @@
 class SubscribeController < ApplicationController
-  before_action :authenticate_account!, only: [:get_coupon_code, :payment_old]
+  before_action :authenticate_account!, only: [:get_coupon_code]
   before_action :no_subscription_required
   skip_before_filter :verify_authenticity_token, only: [:success]
-  before_action :ready_to_payment, only: [:payment_old, :payment_method]
-
-
-  # GET|POST /subscribe/payment_method
-  def payment_method
-    if request.post?
-      # Get the payment method selected
-      method = params[:method]
-      if method == Payment::BY_PAYPAL
-        redirect_to subscribe_payment_url
-      elsif method == Payment::BY_FRENCH_BANK
-        # Redirect to action paywith_french_bank
-        flash.now[:notice] = 'Sorry, French bank feature is unavailable!'
-      else
-        render_bad_request
-      end
-    end
-  end
-
-  # GET /subscribe/offer
-  # Require choosen a plan
-  def choose_offer
-    if current_subscriber && current_subscriber.already_has_subscription?
-      @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
-      @current_subscription = current_subscriber.subscription
-      @select_plan = @current_subscription.plan
-      session[:plan_id] = @select_plan.id
-      if !@tipsters_in_cart.blank?
-        limit = [@select_plan.number_tipster, @current_subscription.active_tipsters.size].max
-        total = @tipsters_in_cart.size + @current_subscription.active_tipsters.size
-        @total_price = (total > limit ? total - limit : 0) * ADDING_TIPSTER_PRICE * @select_plan.period
-        if @total_price == 0
-          redirect_to action: 'add_tipster' and return
-        end
-      end
-    else
-      # Prepare shopping data
-      @select_plan = Plan.where(id: session[:plan_id]).first
-      @tipsters_in_cart = Tipster.where(id: tipster_ids_in_cart)
-      if @select_plan && !@tipsters_in_cart.blank?
-        adding = @tipsters_in_cart.size > @select_plan.number_tipster ? @tipsters_in_cart.size - @select_plan.number_tipster : 0
-        @total_price = (@select_plan.price + (adding * ADDING_TIPSTER_PRICE)) * @select_plan.period
-      end
-    end
-  end
 
   # Return from paypal
   def success
