@@ -201,20 +201,39 @@ $(document).ready(function () {
     // order following: football, tennis, basket,
 //    if (localStorage.getItem('bgs') == null) {
 //        // AJAX REQUEST TO GET BACKGROUND LIST
-//        var bgs = [
-//            'http://i1.upanh.com/2014/0310/07//58891042.chrysanthemum.jpg',
-//            'http://i2.upanh.com/2014/0310/07//58891043.desert.jpg',
-//            'http://i3.upanh.com/2014/0310/07//58891044.hydrangeas.jpg',
-//            'http://i4.upanh.com/2014/0310/07//58891045.jellyfish.jpg',
-//            'http://i5.upanh.com/2014/0310/07//58891046.koala.jpg'
-//        ];
+//
 //        localStorage["bgs"] = JSON.stringify(bgs);
 //    }
 //    var bg_urls = JSON.parse(localStorage["bgs"]);
-//    setInterval(
-//        function () {
+    var bgs = [
+        'http://i4.upanh.com/2014/0310/17//58894258.01.jpg',
+        'http://i5.upanh.com/2014/0310/17//58894259.02.jpg',
+        'http://i6.upanh.com/2014/0310/17//58894260.03.jpg',
+        'http://i8.upanh.com/2014/0310/17//58894262.05.png',
+        'http://i1.upanh.com/2014/0310/17//58894282.06.jpg',
+        'http://i2.upanh.com/2014/0310/17//58894283.08.png',
+        'http://i3.upanh.com/2014/0310/17//58894284.09.png'
+    ];
+    var current_url_index = 0;
+    setInterval(
+        function () {
 //            var random_index = Math.random() * 5 | 0;
-//            $('#backgrounder').attr('src', bg_urls[random_index]);
-//        }, 5000
-//    )
+            if ((current_url_index + 1) == bgs.length) {
+                current_url_index = 0;
+            }
+            $('#page_header_mid:not(.fixed-bg)').animate(
+                {opacity: 0.4},
+                'slow',
+                function () {
+                    $(this)
+                        .css({'background-image': 'url("' + bgs[current_url_index] + '")'})
+                        .animate(
+                        {opacity: 1},
+                        'slow'
+                    );
+                });
+
+            current_url_index++;
+        }, 5000
+    )
 });

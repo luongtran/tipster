@@ -4,7 +4,7 @@
     .tipster-list-line1
       %ul(class="list-inline" )
         %li
-          %a{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All sports
+          %a{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
         - @sports.each do |sport|
           %li
             %a{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize

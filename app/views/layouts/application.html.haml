@@ -10,10 +10,10 @@
   = csrf_meta_tags
   %body.subscriber-zone
     = render 'layouts/navbar'
-
     #content-wrapper.background-granite
       = render 'layouts/shared/flash_messages'
       = yield
+      .clearfix
     = render 'layouts/page_footer'
     - unless account_signed_in?
       = render 'layouts/sign_up_box'
