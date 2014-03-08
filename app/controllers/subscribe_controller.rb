@@ -70,8 +70,7 @@ class SubscribeController < ApplicationController
           if selected_plan.free?
             current_subscriber.apply_plan(@select_plan)
             empty_cart_session
-            session[:subscription_registered] = true
-            @subscriber.account.resend_confirmation_instructions
+            @subscriber.account.resend_confirmation_instructions unless @subscriber.confirmed?
             render :welcome
           else
             redirect_to subscribe_shared_url

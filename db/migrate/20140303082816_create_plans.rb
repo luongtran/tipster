@@ -1,9 +1,8 @@
 class CreatePlans < ActiveRecord::Migration
   def change
     create_table :plans do |t|
-      t.string :name
       t.string :title
-      t.integer :reception_delay, default: 1.hours
+      t.integer :reception_delay, default: 0
       t.text :description
       t.boolean :pause_ability, default: true
       t.boolean :switch_tipster_ability, default: true

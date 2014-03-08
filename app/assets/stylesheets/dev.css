@@ -187,6 +187,7 @@ li.step-seperator-container {
 /* Flash message container  */
 .flash-container {
     padding: 0;
+    margin-bottom: 10px;
 }
 
 #flash {
