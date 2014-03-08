@@ -182,6 +182,7 @@ fr:
   errors:
     format: ! '%{attribute} %{message}'
     messages:
+      unselect_plan: "Vous devez sélectionner un premier plan"
       accepted: doit être accepté(e)
       blank: doit être rempli(e)
       confirmation: ne concorde pas avec la confirmation
