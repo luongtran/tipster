@@ -74,7 +74,6 @@ class Subscriber < ActiveRecord::Base
     self.subscription.delete if self.subscription
     subscription = self.build_subscription(
         plan: plan,
-        is_free: plan.free?,
         active: true,
         active_at: Time.now,
         expired_at: (Time.now + plan.period.month)
