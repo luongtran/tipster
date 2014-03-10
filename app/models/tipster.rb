@@ -3,10 +3,11 @@ class Tipster < ActiveRecord::Base
   DEFAULT_SORT_FIELD = 'profit'
 
   RANKING_RANGES = [
-      LAST_MONTH = 'last-month',
-      LAST_3_MONTHS = 'last-3-months',
+      OVERALL = 'overall',
+      LAST_12_MONTHS = 'last-12-months',
       LAST_6_MONTHS = 'last-6-months',
-      LAST_YEAR = 'last-year'
+      LAST_3_MONTHS = 'last-3-months',
+      LAST_MONTH = 'last-month'
   ]
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h

@@ -233,3 +233,7 @@ p.button a:hover {
 .pricing-wrapper {
     margin-top: 15px;
 }
+
+.modal-open {
+    overflow: auto;
+}

@@ -9,6 +9,12 @@
           %li
             %a{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
     .tipster-list-line2.clearfix
+      .pull-left
+        %ul.list-inline.list-unstyled.mbn.rank-ranges
+          - Tipster::RANKING_RANGES.each do |range|
+            %li
+              %a{href: tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
+                = range.titleize
       .pull-right
         %span.mrs.text-muted Filter by status
         = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'
@@ -25,7 +31,7 @@
                 %th Hit Rate
                 %th Avg.Odds
                 %th Profitable Months
-                %th 1 month
+                -#%th 1 month
             %tbody
               - @tipsters.each_with_index do |tipster,index|
                 %tr
@@ -33,14 +39,14 @@
                     %a.tipster-name{href: tipster_path(tipster)}
                       = tipster.full_name
                     .tipster-profit-chart
-                      = image_tag profit_img_chart_url_for(tipster.profit_per_months)
+                      = image_tag profit_img_chart_url_for(tipster.profit_per_months), alt: 'Profit chart'
                   %td= tipster.profit
                   %td= tipster.yield
                   %td= tipster.tips_count
                   %td= tipster.win_rate || '25%'
                   %td= tipster.avg_odds
                   %td= tipster.profitable_months
-                  %td.text-right
+                  %td.text-center
                     %div.btn-group.btn-group-sm
                       - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
                         %button.btn.btn-sm.btn-default Already purchase
