@@ -12,7 +12,6 @@ class Sport < ActiveRecord::Base
   validates :name, presence: true, uniqueness: {case_sensitive: false}
   after_create :auto_position
 
-
   private
   def auto_position
     self.position ||= self.id

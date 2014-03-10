@@ -6,6 +6,7 @@ class Backoffice::TipsController < ApplicationController
 
   def index
     @tips = current_tipster.tips
+    @sports = Sport.all
   end
 
   def new

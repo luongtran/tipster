@@ -8,11 +8,6 @@ module TipstersHelper
     options
   end
 
-  def class_for_sport_filter(sport)
-    current_sport = query_params[:sport]
-    current_sport = 'all' if current_sport.nil?
-    current_sport == sport ? 'current' : ''
-  end
 
   def class_for_current_ranking_range(range)
     current_range = query_params[:ranking]

@@ -72,6 +72,12 @@ module ApplicationHelper
     options
   end
 
+  def class_for_sport_filter(sport)
+    current_sport = query_params[:sport]
+    current_sport = 'all' if current_sport.nil?
+    current_sport == sport ? 'current active' : ''
+  end
+
   def query_params
     request.query_parameters
   end

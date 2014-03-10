@@ -32,7 +32,7 @@
                 %th Hit Rate
                 %th Avg.Odds
                 %th Profitable Months
-                -#%th 1 month
+                %th
             %tbody
               - @tipsters.each_with_index do |tipster,index|
                 %tr
@@ -75,12 +75,11 @@
               - if tipster_ids_in_cart.size + 1 > 3
                 Your cart is full!
               - else
-                Do you want to choose an another tipster for only?
-                = "€9,90"
-                %button.btn.btn-success.btn-large{"data-dismiss" => "modal", type: "button"} + Add more tipster
-          .modal-footer
-            .text-center
+                Would you add a Tipster? - 60% for each additional Tipster!
+                %p
+                  %br
+                  %button.btn.btn-success.btn-large{"data-dismiss" => "modal", type: "button"} Yes, I want!
+                  %a.btn.btn-primary{href: subscribe_checkout_path} No, process to checkout
               %a.btn.btn-default{href: cart_path}
                 %i.glyphicon.glyphicon-shopping-cart
-                View cart
-              %a.btn.btn-primary{href: subscribe_checkout_path} Process to checkout
+                View Cart

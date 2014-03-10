@@ -25,6 +25,7 @@
 #
 
 =begin
+  ==> This is a example of tip information
   bet_type: "Asian handicap"
   bookmaker: "Bet365"
   bookmaker_key: "bet365"
@@ -56,28 +57,31 @@ class Tip < ActiveRecord::Base
 
   BET_BOOKMARKERS = ["betclic", "bwin", "unibet", "fdj", "netbet", "france_paris"]
 
-  OVER_UNDER = 0
-  ASIAN_HANDICAP = 1
-  MATCH_ODDS = 2
-
-  BET_TYPES_MAP = {
-      OVER_UNDER => 'Over/Under',
-      ASIAN_HANDICAP => 'Asian Handicap',
-      MATCH_ODDS => 'Match Odds'
-  }
+  STATUS_WAITING_FOR_APPROVE = 0
+  STATUS_APPROVED_AND_PUBLISHED = 1
 
   belongs_to :author, polymorphic: true
-
+  belongs_to :sport
   validates :author, :event, :platform, :bet_type, :odds, :selection, :advice, :stake, :amount, presence: true
   validates_length_of :event, :advice, minimum: 10
   validates_inclusion_of :platform, in: BET_BOOKMARKERS
-  validates_inclusion_of :bet_type, in: BET_TYPES_MAP.keys
   before_validation :init_status, :init_amount, on: :create
 
-  before_create :init_expire_time
+  #before_create :init_expire_time
+
+  # ==============================================================================
+  # Class METHODS
+  # ==============================================================================
+  class << self
+
+  end
+
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+  def to_param
+    "#{self.id}-#{self.event.parameterize}"
+  end
 
   def free?
     [false, true].sample
@@ -91,9 +95,6 @@ class Tip < ActiveRecord::Base
     # Bet on: {Selection} [Line] {Bet type}
   end
 
-  def bet_type_in_string
-    BET_TYPES_MAP[self.bet_type]
-  end
 
   private
   def init_status
@@ -105,6 +106,6 @@ class Tip < ActiveRecord::Base
   end
 
   def init_expire_time
-    self.expire_at = Time.now + 2.days
+    #self.expire_at = Time.now + 2.days
   end
 end
