@@ -9,17 +9,8 @@
   = favicon_link_tag 'demo.png'
   = csrf_meta_tags
   %body
-    .container
-      .row.clearfix
-        = render 'layouts/backoffice/navbar'
-        #flash
-          - if notice
-            %div{:class => "alert alert-info fade in", 'data-alert' => "alert"}
-              %a{:class => "close", 'data-dismiss' => 'alert', :href => "#"} &times;
-              = notice
-
-          - if alert
-            %div{:class => "alert alert-danger fade in", 'data-alert' => "alert"}
-              %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
-              = alert
+    = render 'layouts/backoffice/navbar'
+    #content-wrapper.background-granite
+      .container
+        = render 'layouts/shared/flash_messages'
         = yield
