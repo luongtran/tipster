@@ -14,7 +14,7 @@
         = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'
     .tipster-list-table#tipster-list-table
       .row
-        .col-md-9
+        .col-md-12
           %table(class="table table-hover" )
             %thead
               %tr
@@ -46,15 +46,14 @@
                         %button.btn.btn-sm.btn-default Already purchase
                       - else
                         = render 'shared/add_to_cart_form', {tipster_id: tipster.id, disable: tipster_ids_in_cart.include?(tipster.id.to_s)}
-        .col-md-3
-          #top_tipsters_of_weeks
-            %h4.text-slim.text-success Top 3 of the week
-            %hr.mbs.mts
-              .tipster-top-body
-                - @top_tipster.each do |tipster|
-                  .tipster-top-unit.text-center
-                    = image_tag tipster.avatar.url || 'demo.jpg',class: 'tipster-top-avatar'
-                    .tipster-top-name.text-success.text-bold= tipster.full_name
+  #top_tipsters_of_weeks
+    %h4.text-slim.text-success.text-center Top 3 of the week
+    %hr.mbs.mts
+      .tipster-top-body
+        - @top_tipster.each do |tipster|
+          .tipster-top-unit.text-center
+            = image_tag tipster.avatar.url || 'demo.jpg',class: 'tipster-top-avatar'
+            .tipster-top-name.text-success.text-bold= tipster.full_name
   - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
     #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
       .modal-dialog
