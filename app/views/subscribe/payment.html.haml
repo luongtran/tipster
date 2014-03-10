@@ -126,7 +126,7 @@
               %h3 Select your payment method
               %ul.inline
                 %li
-                  = simple_form_for :nothing, url: subscribe_payment_path, remote: true do |f|
+                  = simple_form_for :nothing, url: subscribe_payment_path,html: {id: 'form-select-payment'}, remote: true do |f|
                     .form-group
                       .col-md-7.col-md-offset-4
                         %label.checkbox.text-slim

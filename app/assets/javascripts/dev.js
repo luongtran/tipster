@@ -187,7 +187,7 @@ $(document).ready(function () {
             return false;
         }
     });
-    $('#form-receive-tip-methods').on('submit', function () {
+    $('#form-select-payment').on('submit', function () {
 
      var valid = $('#cb-term-and-conditions').is(':checked');
         if (!valid){
