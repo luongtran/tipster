@@ -212,6 +212,8 @@ $(document).ready(function () {
         '/backgrounds/06.jpg',
         '/backgrounds/08.png',
         '/backgrounds/09.png',
+        '/backgrounds/10.jpg',
+        '/backgrounds/11.jpg',
     ];
     var current_url_index = 0;
     setInterval(
@@ -221,8 +223,8 @@ $(document).ready(function () {
                 current_url_index = 0;
             }
             $('#page_header_mid:not(.fixed-bg)').animate(
-                {opacity: 0.2},
-                1000,
+                {opacity: 0.6},
+                1500,
                 function () {
                     $(this)
                         .css({'background-image': 'url("' + bgs[current_url_index] + '")'})
@@ -233,6 +235,6 @@ $(document).ready(function () {
                 });
 
             current_url_index++;
-        }, 5000
+        }, 7000
     )
 });

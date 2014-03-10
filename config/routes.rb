@@ -56,7 +56,7 @@ TipsterHero::Application.routes.draw do
   delete '/subscription/tipster/:id' => 'subscription#remove_inactive_tipster', as: :remove_inactive_tipster
   post '/subscription/select_free_plan' => 'subscription#select_free_plan', as: :select_free_plan
 
-  # Backoffice Tipster routes ====================================================
+  # Backoffice Tipster routes ==============================================
   # Prefix: 'backoffice'
   devise_scope :account do
     namespace :backoffice do
@@ -67,6 +67,7 @@ TipsterHero::Application.routes.draw do
       post '/forgot_password', to: 'passwords#new'
     end
   end
+
 
   namespace :backoffice do
     root 'home#index'
@@ -79,8 +80,22 @@ TipsterHero::Application.routes.draw do
     end
     resources :tips
   end
+  # End Tipster routes =====================================================
 
-  # End Tipster routes ===========================================================
+  # Admin routes ===========================================================
+  devise_scope :account do
+    namespace :admin do
+      get '/sign_in', to: 'sessions#new', as: :sign_in
+      post '/sign_in', to: 'sessions#create'
+      get '/sign_out', to: 'sessions#destroy'
+    end
+  end
+  namespace :admin do
+    root 'home#index'
+    controller :profile do
+      post :change_password
+    end
+  end
 
   # Rueta set route here
   get '/signup', to: 'static#signup'
