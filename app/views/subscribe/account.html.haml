@@ -70,24 +70,26 @@
                 = acc.input :email, required: true
                 = acc.input :password, required: true
                 = hidden_field_tag :act,'sign_in'
+                - if @error
+                  .alert.fade.in.alert-danger{"data-alert" => "alert"}
+                    %a.close{"data-dismiss" => "alert", href: "#"}> ×
+                    = t('account.invalid')
                 #sign-in-message-container
                 .form-group
                   .col-md-7.col-md-offset-4
                     %button.btn.btn-success{type: "submit"}
                       %i.typcn.typcn-world.mrs
                       = t('user.sign_in')
-                    %a.mls.text-xs{href: "/accounts/password/new"} Recovery Account
           .clearfix
+          %hr
           .tipster-form
+            %p Connect from social networks
             .form-group
-              .col-sm-6
-                %a.btn.btn-block.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
-                  %span.glyphicon.glyphicon-leaf
+              .col-md-6
+                %a.btn.btn-md.btn-block.btn-social.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
+                  %i.fa.fa-facebook
                   Facebook
-              .col-sm-6
-                %a.btn.btn-danger.btn-block
-                  %span.glyphicon.glyphicon-fire{href: account_omniauth_authorize_path(:google_oauth2)}
-                  Google+
-- if @error
-  :javascript
-    Helper.flash_message('danger','Email or password is invalid', 5000, '#sign-in-message-container');
+              .col-md-6
+                %a.btn.btn-md.btn-block.btn-social.btn-google-plus{href: account_omniauth_authorize_path(:google_oauth2)}
+                  %i.fa.fa-google-plus
+                  Google plus
