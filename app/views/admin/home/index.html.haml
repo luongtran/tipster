@@ -1,0 +1,11 @@
+.container
+  - unless current_admin
+    .col-lg-5.col-lg-offset-3
+      .well
+        = simple_form_for :account, :url => admin_sign_in_path , :html => {class: 'form-horizontal'} do |f|
+          = f.input :email, :required => false, :autofocus => true
+          = f.input :password, :required => false
+          = f.input :remember_me, :as => :boolean
+          .form-group
+            .col-sm-offset-4.col-sm-7
+              %button.btn.btn-primary{type: :submit}= I18n.t('user.sign_in')

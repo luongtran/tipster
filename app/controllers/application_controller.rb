@@ -33,6 +33,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def admin_required
+    if account_signed_in? && !current_admin
+      sign_out current_account
+    end
+  end
+
   def subscriber_required
     if account_signed_in? && !current_subscriber
       sign_out current_account
