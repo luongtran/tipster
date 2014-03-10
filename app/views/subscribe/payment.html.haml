@@ -131,9 +131,9 @@
                           %input#cb-term-and-conditions{type: "checkbox"}>/
                           I agree with term & conditions
                       = hidden_field_tag :method, Payment::BY_PAYPAL
-                      %button.btn.btn-primary.btn-large{type: :submit} With Paypal
+                      = image_submit_tag("paypal-express-checkout-button.png")
                   %li
                     = simple_form_for :nothing, url: subscribe_payment_path do |f|
                       = hidden_field_tag :method, Payment::BY_FRENCH_BANK
-                      %button.btn.btn-warning.btn-large{type: :submit} French Bank
+                      = image_submit_tag("french-bank-checkout-button.png")
                 #payment
