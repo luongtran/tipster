@@ -229,3 +229,7 @@ p.button a:hover {
 .pricing_box strong.yes {
     background-position: 0 -15px;
 }
+
+.pricing-wrapper {
+    margin-top: 15px;
+}
