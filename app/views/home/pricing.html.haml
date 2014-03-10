@@ -30,7 +30,7 @@
               %sub /month
           %hr
           - if @choosed_plan == plan.id
-            %a.btn.btn-warning.disabled Choosen
+            %a.btn.btn-warning{href: select_plan_path(plan.id)} Choosen
           - else @choosed_plan == plan.id
             %p.button
               %a.btn.btn-default{href: select_plan_path(plan.id)} Subscribe
