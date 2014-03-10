@@ -42,9 +42,8 @@ class Tipster < ActiveRecord::Base
   # ==============================================================================
   class << self
     def load_data(params = {})
-      relation = self.perform_filter_params(params)
+      relation = perform_filter_params(params)
       sorting_info = parse_sort_params(params)
-
       # paging_info = parse_paging_params(params)
       # Paginate with Kaminari
       #relation.includes([])
@@ -102,8 +101,17 @@ class Tipster < ActiveRecord::Base
       end
     end
 
+    # Find the top 3(profit) of the last week
+    def find_top_3_last_week(params)
+      relation = self.limit(3)
+      unless params[:sport].blank?
+        relation = relation.perform_sport_param(params[:sport])
+      end
+      relation.includes([:account])
+    end
+
     # ==============================================================================
-    # PROTECTED METHODS
+    # PROTECTED CLASS METHODS
     # ==============================================================================
     protected
 

@@ -2,7 +2,7 @@
 .tipster-list#tipster_list
   .tipster-list-inner.container
     .tipster-list-line1
-      %ul(class="list-inline" )
+      %ul.list-inline
         %li
           %a{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
         - @sports.each do |sport|
@@ -10,12 +10,12 @@
             %a{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
     .tipster-list-line2.clearfix
       .pull-right
-        %span(class="mrs text-muted" ) Filter by status
+        %span.mrs.text-muted Filter by status
         = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'
     .tipster-list-table#tipster-list-table
       .row
         .col-md-12
-          %table(class="table table-hover" )
+          %table.table.table-hover
             %thead
               %tr
                 %th Tipster
@@ -30,7 +30,7 @@
               - @tipsters.each_with_index do |tipster,index|
                 %tr
                   %td
-                    %a{href: tipster_path(tipster), class: 'tipster-name'}
+                    %a.tipster-name{href: tipster_path(tipster)}
                       = tipster.full_name
                     .tipster-profit-chart
                       = image_tag profit_img_chart_url_for(tipster.profit_per_months)
@@ -41,7 +41,7 @@
                   %td= tipster.avg_odds
                   %td= tipster.profitable_months
                   %td.text-right
-                    %div(class="btn-group btn-group-sm" )
+                    %div.btn-group.btn-group-sm
                       - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
                         %button.btn.btn-sm.btn-default Already purchase
                       - else
@@ -50,10 +50,12 @@
     %h4.text-slim.text-success.text-center Top 3 of the week
     %hr.mbs.mts
       .tipster-top-body
-        - @top_tipster.each do |tipster|
-          .tipster-top-unit.text-center
-            = image_tag tipster.avatar.url || 'demo.jpg',class: 'tipster-top-avatar'
-            .tipster-top-name.text-success.text-bold= tipster.full_name
+        - @top_tipsters.each do |tipster|
+          %a{href: tipster_path(tipster)}
+            .tipster-top-unit.text-center
+              = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar'
+              .tipster-top-name.text-success.text-bold
+                = tipster.full_name
   - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
     #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
       .modal-dialog
@@ -64,7 +66,7 @@
           .modal-body
             .text-center.text-info
               - if tipster_ids_in_cart.size + 1 > 3
-                Your cart is fully.
+                Your cart is full!
               - else
                 Do you want to choose an another tipster for only?
                 = "€9,90"
