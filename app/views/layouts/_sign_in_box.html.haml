@@ -6,27 +6,27 @@
       .modal-body
         .form-group
           .col-md-6
-            %a.btn.btn-lg.btn-block.btn-social.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
+            %a.btn.btn-md.btn-block.btn-social.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
               %i.fa.fa-facebook
               Facebook
           .col-md-6
-            %a.btn.btn-lg.btn-block.btn-social.btn-google-plus{href: account_omniauth_authorize_path(:google_oauth2)}
+            %a.btn.btn-md.btn-block.btn-social.btn-google-plus{href: account_omniauth_authorize_path(:google_oauth2)}
               %i.fa.fa-google-plus
               Google plus
         %p
           %br
         .text-center
-          %h3.text-muted OR
+          %h4.text-muted OR
         .row
           .col-md-10.col-md-offset-1
             = simple_form_for :account, url: account_session_path, html: {id: 'sign-in-form'} do |f|
               .form-group
-                = f.input_field :email, as: :email, placeholder: 'Email address',id: 'email', class: 'input-block input-lg', autocomplete: 'off'
+                = f.input_field :email, as: :email, placeholder: 'Email address',id: 'email', class: 'input-block input-md', autocomplete: 'off'
               .form-group
-                = f.input_field :password, as: :password, placeholder: 'Password',id: 'password', class: 'input-block input-lg'
+                = f.input_field :password, as: :password, placeholder: 'Password',id: 'password', class: 'input-block input-md'
               #sign-in-message-container
               .form-group
-                %button.btn.btn-success.btn-block.btn-lg#submiter SIGN IN
+                %button.btn.btn-success.btn-block.btn-md#submiter Sign In
         .text-center
           %a{href: new_account_password_path} Forgot password?
           |

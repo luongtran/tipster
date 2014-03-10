@@ -6,28 +6,28 @@
       .modal-body
         .form-group
           .col-md-6
-            %a.btn.btn-lg.btn-block.btn-social.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
+            %a.btn.btn-md.btn-block.btn-social.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
               %i.fa.fa-facebook
               Facebook
           .col-md-6
-            %a.btn.btn-lg.btn-block.btn-social.btn-google-plus{href: account_omniauth_authorize_path(:google_oauth2)}
+            %a.btn.btn-md.btn-block.btn-social.btn-google-plus{href: account_omniauth_authorize_path(:google_oauth2)}
               %i.fa.fa-google-plus
               Google plus
         %p
           %br
         .text-center
-          %h3.text-muted OR
+          %h4.text-muted OR
         .row
           .col-md-10.col-md-offset-1
             = simple_form_for :account, url: account_registration_path, html: {id: 'sign-up-form'} do |f|
               .form-group
-                = f.input_field :email, as: :email, placeholder: 'Email address',id: 'email', class: 'input-block input-lg', autocomplete: 'off'
+                = f.input_field :email, as: :email, placeholder: 'Email address',id: 'email', class: 'input-block input-md', autocomplete: 'off'
               .form-group
-                = f.input_field :password, as: :password, placeholder: 'Password',id: 'password', class: 'input-block input-lg'
+                = f.input_field :password, as: :password, placeholder: 'Password',id: 'password', class: 'input-block input-md'
               .form-group
-                = f.input_field :password_confirmation, as: :password, placeholder: 'Re-type password',id: 'password_confirmation', class: 'input-block input-lg'
+                = f.input_field :password_confirmation, as: :password, placeholder: 'Re-type password',id: 'password_confirmation', class: 'input-block input-md'
               .form-group
-                %button.btn.btn-success.btn-block.btn-lg#submiter SIGN UP
+                %button.btn.btn-success.btn-block.btn-md#submiter Sign Up
         .text-center
           Already registered?
           %a.lk-toggle-sign-in-box{href: '#'}
