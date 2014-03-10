@@ -44,6 +44,13 @@ class Subscription < ActiveRecord::Base
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+  def set_active
+    self.update_attributes(
+        active: true,
+        active_at: Time.now,
+        expired_at: Time.now + self.plan.period.month
+    )
+  end
 
   def able_to_add_more_tipsters?(count = 1)
     (self.active_tipsters.count + count) <= self.plan.number_tipster

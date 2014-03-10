@@ -17,7 +17,6 @@ class SubscriptionTipster < ActiveRecord::Base
   validates_uniqueness_of :tipster, scope: [:subscription]
 
   def set_active
-    puts "F"
     self.update_column(:active, true)
   end
 end

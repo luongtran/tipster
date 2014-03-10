@@ -8,7 +8,7 @@ class PaymentController < ApplicationController
     notify = Paypal::Notification.new(request.raw_post)
     subscriber = Subscriber.find(notify.item_id)
     unless subscriber.account.confirmed?
-       subscriber.account.resend_confirmation_instructions
+      subscriber.account.resend_confirmation_instructions
     end
     subscription = subscriber.subscription
     payment = subscription.payments.build_from_paypal notify.params
@@ -18,7 +18,7 @@ class PaymentController < ApplicationController
         t.set_active
       end
       unless subscription.active?
-        subscription.update_attributes({active: true, active_at: Time.now, expired_at: Time.now + subscription.plan.period.month})
+        subscription.set_active
       end
     end
     payment.save
