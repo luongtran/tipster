@@ -1,7 +1,21 @@
+# == Schema Information
+#
+# Table name: tipsters
+#
+#  id           :integer          not null, primary key
+#  display_name :string(255)
+#  full_name    :string(255)
+#  avatar       :string(255)
+#  status       :integer
+#  active       :boolean          default(TRUE)
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
 class Tipster < ActiveRecord::Base
   DEFAULT_PAGE_SIZE = 20
   DEFAULT_SORT_FIELD = 'profit'
-
+  DEFAULT_RANKING_RANGE = 'last-month'
   RANKING_RANGES = [
       OVERALL = 'overall',
       LAST_12_MONTHS = 'last-12-months',
@@ -183,7 +197,7 @@ class Tipster < ActiveRecord::Base
   # Return example:
   # 3/6
   def profitable_months
-    "#{rand(3)}/#{rand(1..6)}"
+    "#{rand(3..6)}/#{rand(6..8)}"
   end
 
   # Return lastest tips limit by the given quantity

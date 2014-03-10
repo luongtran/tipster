@@ -14,7 +14,8 @@
           - Tipster::RANKING_RANGES.each do |range|
             %li
               %a{href: tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
-                = range.titleize
+                = t("tipster.ranking.#{range}").titleize
+                -#= range.titleize
       .pull-right
         %span.mrs.text-muted Filter by status
         = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'

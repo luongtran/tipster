@@ -2,7 +2,6 @@
 .container
   .pricing-wrapper
     - @plans.each do |plan|
-      - @selected_plan ||= 9
       .pricing-box-outer
         .pricing_box{class: "#{@selected_plan == plan.id ? 'large' : ''}"}
           .header

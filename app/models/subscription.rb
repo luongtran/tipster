@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: subscriptions
+#
+#  id            :integer          not null, primary key
+#  subscriber_id :integer
+#  plan_id       :integer
+#  using_coupon  :boolean          default(FALSE)
+#  active        :boolean          default(FALSE)
+#  active_at     :datetime
+#  expired_at    :datetime
+#  created_at    :datetime
+#  updated_at    :datetime
+#
+
 class Subscription < ActiveRecord::Base
   MAX_ADDTIONAL_TIPSTERS = 2
   ADDING_TIPSTER_PRICE = 9.9

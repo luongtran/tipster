@@ -16,7 +16,11 @@ module TipstersHelper
 
   def class_for_current_ranking_range(range)
     current_range = query_params[:ranking]
-    current_range == range ? 'current' : 'text-muted'
+    if current_range.present?
+      current_range == range ? 'current' : 'text-muted'
+    else
+      range == Tipster::DEFAULT_RANKING_RANGE ? 'current' : 'text-muted'
+    end
   end
 
   def sport_filter_param(sport_name)
