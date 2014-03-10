@@ -31,10 +31,11 @@ class HomeController < ApplicationController
 
   def pricing
     @plans = Plan.all
-    if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active == true
+    @selected_plan = nil
+    if current_subscriber && current_subscriber.has_active_subscription?
       @selected_plan = current_subscriber.subscription.plan_id
     else
-      @choosed_plan = session[:plan_id]
+      @selected_plan = session[:plan_id]
     end
   end
 

@@ -1,5 +1,8 @@
 class Backoffice::TipsController < ApplicationController
-  before_action :authenticate_account!, :tipster_required
+  before_action do
+    authenticate_account! rescue redirect_to auth_url
+  end
+  before_action :tipster_required
 
   def index
     @tips = current_tipster.tips

@@ -45,6 +45,7 @@ en:
     email: "Email"
     first_name: "First Name"
     last_name: "Last Name"
+    nick_name: "Nick Name"
     gender: 'Gender'
     male: 'Male'
     female: 'Female'
@@ -74,6 +75,13 @@ en:
     all: 'All'
     active: 'Active'
     inactive: 'Inactive'
+  tipster:
+    ranking:
+      last-12-months: 'Last 12 months'
+      last-6-months: 'Last 6 months'
+      last-3-months: 'Last 12 months'
+      last-month: 'Last month'
+      overall: 'Overall'
   tip:
     created_successfully: 'A tip created successfully!'
   errors:

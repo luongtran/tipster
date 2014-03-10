@@ -1,11 +1,15 @@
 = content_for(:title, 'Cart')
 .container
-  %table.table.table-bordered
+  %table.table.table-bordered.bgw.bxshd
     %thead
       %tr
-        %th Full Name
-        %th Email
-        %th Created at
+        %th Name
+        %th Profit
+        %th Yield
+        %th NO of tip
+        %th Hit Rate
+        %th Avg.Odds
+        %th Profitable Months
         %td Action
     %tbody
       - if @tipsters.nil?
@@ -14,11 +18,14 @@
         - @tipsters.each do |tipster|
           %tr
             %td
-              = tipster.full_name
-            %td
-              = tipster.email
-            %td
-              = tipster.created_at.strftime("%m/%d/%Y")
+              %a.tipster-name{href: tipster_path(tipster)}
+                = tipster.full_name
+            %td= tipster.profit
+            %td= tipster.yield
+            %td= tipster.tips_count
+            %td= tipster.win_rate || '25%'
+            %td= tipster.avg_odds
+            %td= tipster.profitable_months
             %td
               = render 'shared/remove_from_cart_form', tipster_id: tipster.id
   .text-center

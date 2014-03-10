@@ -2,8 +2,9 @@
 #
 # Table name: sports
 #
-#  id   :integer          not null, primary key
-#  name :string(255)      not null
+#  id       :integer          not null, primary key
+#  name     :string(255)      not null
+#  position :integer
 #
 
 class Sport < ActiveRecord::Base

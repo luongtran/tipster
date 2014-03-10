@@ -233,3 +233,15 @@ p.button a:hover {
 .pricing-wrapper {
     margin-top: 15px;
 }
+
+.modal-open {
+    overflow: auto;
+}
+
+.bgw {
+    background-color: #fff;
+}
+
+.bxshd {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}

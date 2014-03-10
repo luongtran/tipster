@@ -2,9 +2,8 @@
 .container
   .pricing-wrapper
     - @plans.each do |plan|
-      - @choosed_plan ||= 9
       .pricing-box-outer
-        .pricing_box{class: "#{@choosed_plan == plan.id ? 'large' : ''}"}
+        .pricing_box{class: "#{@selected_plan == plan.id ? 'large' : ''}"}
           .header
             %span= plan.title.capitalize
           %ul.pricing-features
@@ -31,7 +30,7 @@
           %hr
           - if @choosed_plan == plan.id
             %a.btn.btn-warning{href: select_plan_path(plan.id)} Choosen
-          - else @choosed_plan == plan.id
+          - else @selected_plan == plan.id
             %p.button
               %a.btn.btn-default{href: select_plan_path(plan.id)} Subscribe
   .clearfix

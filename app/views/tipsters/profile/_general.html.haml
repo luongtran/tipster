@@ -43,10 +43,10 @@
           %td= @tipster.created_at
           %td= event.team_a
           %td= (1..5).to_a.sample
-          %td= %w(20 30 40 50 70 80).to_a.sample
+          %td= 10*rand(4..12)
           %td{class: "#{correct ? 'text-success' : 'text-danger'}"}
-            = %w(+ -).sample
-            = (50..150).to_a.sample
+            = if correct then '+' else '-' end
+            = 10*rand(4..12)
           %td{class: "#{correct ? 'text-success' : 'text-danger'}"}
             - if correct
               &#x2714;

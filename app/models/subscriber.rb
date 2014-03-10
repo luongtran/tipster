@@ -1,3 +1,31 @@
+# == Schema Information
+#
+# Table name: subscribers
+#
+#  id                         :integer          not null, primary key
+#  first_name                 :string(255)
+#  last_name                  :string(255)
+#  nickname                   :string(255)
+#  gender                     :boolean          default(TRUE)
+#  civility                   :string(255)
+#  birthday                   :date
+#  address                    :string(255)
+#  city                       :string(255)
+#  country                    :string(255)
+#  zip_code                   :string(255)
+#  mobile_phone               :string(255)
+#  telephone                  :string(255)
+#  favorite_beting_website    :string(255)
+#  know_website_from          :string(255)
+#  secret_question            :integer
+#  answer_secret_question     :string(255)
+#  receive_info_from_partners :boolean          default(FALSE)
+#  receive_tip_methods        :string(255)
+#  created_by_omniauth        :boolean          default(FALSE)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#
+
 class Subscriber < ActiveRecord::Base
   include Humanizer
   require_human_on :update, :unless => :bypass_humanizer

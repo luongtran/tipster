@@ -1,12 +1,27 @@
+# == Schema Information
+#
+# Table name: tipsters
+#
+#  id           :integer          not null, primary key
+#  display_name :string(255)
+#  full_name    :string(255)
+#  avatar       :string(255)
+#  status       :integer
+#  active       :boolean          default(TRUE)
+#  created_at   :datetime
+#  updated_at   :datetime
+#
+
 class Tipster < ActiveRecord::Base
   DEFAULT_PAGE_SIZE = 20
   DEFAULT_SORT_FIELD = 'profit'
-
+  DEFAULT_RANKING_RANGE = 'last-month'
   RANKING_RANGES = [
-      LAST_MONTH = 'last-month',
-      LAST_3_MONTHS = 'last-3-months',
+      OVERALL = 'overall',
+      LAST_12_MONTHS = 'last-12-months',
       LAST_6_MONTHS = 'last-6-months',
-      LAST_YEAR = 'last-year'
+      LAST_3_MONTHS = 'last-3-months',
+      LAST_MONTH = 'last-month'
   ]
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
@@ -42,9 +57,8 @@ class Tipster < ActiveRecord::Base
   # ==============================================================================
   class << self
     def load_data(params = {})
-      relation = self.perform_filter_params(params)
+      relation = perform_filter_params(params)
       sorting_info = parse_sort_params(params)
-
       # paging_info = parse_paging_params(params)
       # Paginate with Kaminari
       #relation.includes([])
@@ -72,10 +86,6 @@ class Tipster < ActiveRecord::Base
 
     def perform_sport_param(sport, relation = self)
       sport = Sport.find_by(name: sport)
-      # If tipster belongs to sport
-      #relation = relation.where(sport_id: sport.id) if sport
-
-      # If tipster has many sports
       relation = relation.where(id: sport.tipster_ids) if sport
       relation
     end
@@ -102,8 +112,17 @@ class Tipster < ActiveRecord::Base
       end
     end
 
+    # Find the top 3(profit) of the last week
+    def find_top_3_last_week(params)
+      relation = self.limit(3)
+      unless params[:sport].blank?
+        relation = relation.perform_sport_param(params[:sport])
+      end
+      relation.includes([:account])
+    end
+
     # ==============================================================================
-    # PROTECTED METHODS
+    # PROTECTED CLASS METHODS
     # ==============================================================================
     protected
 
@@ -178,7 +197,7 @@ class Tipster < ActiveRecord::Base
   # Return example:
   # 3/6
   def profitable_months
-    "#{rand(3)}/#{rand(1..6)}"
+    "#{rand(3..6)}/#{rand(6..8)}"
   end
 
   # Return lastest tips limit by the given quantity
