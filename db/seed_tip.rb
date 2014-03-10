@@ -20,7 +20,8 @@ tipsters.each do |tipster|
         line: 1,
         stake: rand(1..5),
         amount: 10*rand(4..12),
-        advice: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat',
+        advice: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy \
+         nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat',
         odds: rand(1..5.5).round(1),
         free: false,
         status: 1,

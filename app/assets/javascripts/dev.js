@@ -236,5 +236,5 @@ $(document).ready(function () {
 
             current_url_index++;
         }, 8000
-    )
+    );
 });

@@ -78,7 +78,8 @@ TipsterHero::Application.routes.draw do
       post :change_avatar
       post :crop_avatar
     end
-    resources :tips
+    get 'my_tips', to: 'tips#my_tips'
+    resources :tips, except: [:index]
   end
   # End Tipster routes =====================================================
 
