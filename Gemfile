@@ -60,6 +60,7 @@ gem 'countries'
 gem 'country_select'
 
 group :development do
+
   gem "better_errors"
   gem "binding_of_caller"
   # For hidden assets query
@@ -71,6 +72,7 @@ group :development do
   # Receive email from development
   gem 'mailcatcher'
   gem 'debugger'
+  gem 'active_record_query_trace'
 end
 
 #Paypal billing,payment,refund
