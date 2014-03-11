@@ -8,7 +8,12 @@ Helper = {
             offset = 10;
         $(container).animate({ scrollTop: $(element).offset().top - offset}, delay_time);
     },
-
+    add_loading_indicator: function (container) {
+        $(container).css('text-align', 'center').html('<img class="loadding-indicator" src="/assets/circle_loading.gif" />');
+    },
+    destroy_loading_indicator: function (container) {
+        $(container).find('.loadding-indicator').remove();
+    },
     create_message_panel: function (type, message) {
         var div = $('<div data-alert="alert" class="alert fade in">' +
             '<a href="#" data-dismiss="alert" class="close">&times;</a></div>');

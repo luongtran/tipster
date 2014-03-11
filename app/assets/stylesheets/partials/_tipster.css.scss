@@ -30,11 +30,9 @@
 
 }
 
-
-
 // tipster profile
 #profile-overiew-page {
- @extend .background-granite;
+  @extend .background-granite;
 
   #profile-overview {
     border: none;
@@ -49,15 +47,15 @@
 
 }
 
-#top_tipsters_of_weeks{
+#top_tipsters_of_weeks {
   width: 15%;
   float: left;
   border-radius: 4px;
   background-color: #fafafa;
   border: solid 1px #d9d9d9;
   box-shadow: 0 2px 6px rgba(black, 0.1);
-  min-height: 200px;
-  h4{
+  min-height: 215px;
+  h4 {
     line-height: 25px;
     font-size: 12px;
     padding: 0px 25px;
@@ -66,7 +64,7 @@
     font-weight: bold;
   }
   .tipster-top-body {
-    padding-top: 30px;
+    padding-top: 5px;
   }
   .tipster-top-unit {
     margin-bottom: 15px;
