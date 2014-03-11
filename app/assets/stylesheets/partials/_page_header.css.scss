@@ -46,6 +46,8 @@
         &.dropdown.active,
         &.dropdown:hover {
           .dropdown-menu {
+            padding-top: 0 !important;
+            padding-bottom: 0;
             li {
               float: none;
               display: block;
