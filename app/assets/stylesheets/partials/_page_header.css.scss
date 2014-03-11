@@ -11,6 +11,7 @@
   #menu-main {
 
     ul {
+      padding-top: 25px;
       li {
         float: left;
         border-left: solid 1px $gray-light;
@@ -26,7 +27,7 @@
           color: $gray-dark;
           display: block;
           font-size: 14px;
-          line-height: 80px;
+          line-height: 30px;
           padding: 0 20px;
         }
         &.active, &:hover {
@@ -73,8 +74,12 @@
 
 
 #page_header_mid {
-  background: url('/assets/header-bg.jpg') no-repeat center top;
+  //background: url('/assets/header-bg.jpg') no-repeat center top;
   color: #ffffff;
+  background: black;
+}
+.index #page_header_mid {
+  background: black;
 }
 
 #sub-page-header {
@@ -168,7 +173,7 @@
 
 
 .hotTipster-unit {
-  width: 210px;
+  width: 150px;
   float: left;
   margin: 0 8px;
   .hotTipster-head {
@@ -186,10 +191,27 @@
   }
   .hotTipster-body {
     margin-bottom: 5px;
+    .tipster-title {
+      color: goldenrod;
+      font-style: italic;
+    }
+    .avatar {
+    }
   }
   .hotTipster-foot {
     .chart-mini {
       margin-bottom: 5px;
+    }
+    .hotTipster-info {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      span {
+        display: block;
+        b {
+          font-style: normal;
+          color: forestgreen;
+        }
+      }
     }
     .see-profile-link {
       display: block;
@@ -199,9 +221,10 @@
       text-transform: uppercase;
       padding-top: 10px;
       padding-bottom: 10px;
-      background-color: shade($gray-dark, 50%);
+      font-style: italic;
+      background-color: forestgreen;
       &:hover {
-        background-color: shade($gray-dark, 20%);
+        background-color: tint(forestgreen, 20%);
       }
     }
   }
@@ -226,6 +249,28 @@
       span {
         right: 0%;
         margin-right: 0;
+      }
+    }
+  }
+}
+
+
+.menu {
+  background-color: forestgreen;
+  border-bottom: solid 2px white;
+  ul.list-inline {
+    margin-bottom: 0;
+    > li {
+      border-right: solid 2px white;
+      &:first-child {
+        border-left: solid 2px white;
+      }
+      > a {
+        padding: 10px 15px;
+        text-transform: uppercase;
+        font-size: 14px;
+        color: white;
+        display: inline-block;
       }
     }
   }

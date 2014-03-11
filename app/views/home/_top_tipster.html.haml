@@ -1,27 +1,36 @@
 #page-header
   #feature-profiles
     .container
-      %div(id="feature-carousel" class="carousel slide" data-ride="carousel")
-        .carousel-inner
-          - 3.times do |i|
-            .item{class: i == 1 ? "active" : "" }
-              - @tipsters.page(i).per(5).each do |tipster|
-                .hotTipster-unit
-                  .hotTipster-head
-                    %span.proofed= " No. Proofed Tips: #{rand(100..900)}"
-                    %span.yield="Yield: #{rand(0..100)}%"
-                  .hotTipster-body
-                    = image_tag(tipster.avatar_url || 'demo.jpg',width: '210')
-                  .hotTipster-foot
-                    .chart-mini
-                      =image_tag('chart-mini.jpg')
-                    %a{href: "#{tipster_path(tipster)}",class: "see-profile-link" } See Profile
-        %a(class="left carousel-control" href="#feature-carousel" data-slide="prev")
-          %span(class="glyphicon glyphicon-chevron-left")
-        %a(class="right carousel-control" href="#feature-carousel" data-slide="next")
-          %span(class="glyphicon glyphicon-chevron-right")
+      .row
+        .col-md-9
+          %h3.text-slim Tipster of the week:
+          %div(id="feature-carousel" class="carousel slide" data-ride="carousel")
+            .carousel-inner
+              - 3.times do |i|
+                .item{class: i == 1 ? "active" : "" }
+                  - @tipsters.page(i).per(5).each do |tipster|
+                    .hotTipster-unit
+                      .hotTipster-body
+                        %h4.text-slim.tipster-title James Tucker
+                        = image_tag(tipster.avatar_url || 'demo.jpg',width: '210', class: 'avatar img-responsive')
+                      .hotTipster-foot
+                        .hotTipster-info
+                          %span.proofed
+                            Profil:
+                            %b= rand(100..900)
+                          %span.yield
+                            Yield:
+                            %b= rand(0..100)
+                        %a{href: "#{tipster_path(tipster)}",class: "see-profile-link" } See Profile
+            %a(class="left carousel-control" href="#feature-carousel" data-slide="prev")
+              %span(class="glyphicon glyphicon-chevron-left")
+            %a(class="right carousel-control" href="#feature-carousel" data-slide="next")
+              %span(class="glyphicon glyphicon-chevron-right")
+        .col-md-2
+          =image_tag('headads.jpg')
   #board-gray
-    .board-gray-inner.container.relative
-      %h3.text-slim.man Stop gambling, invest...  get tips from <br>proven proffesional tipsters
-      .absolute.guranteen
-        =image_tag 'guaran.png'
+    .board-gray-inner.container.clearfix
+      %h4.text-slim.man.pull-left Stop gambling, invest...  get tips from <br>proven proffesional tipsters
+      .pull-right
+        %h4.green-box
+          %i Stop losing, join us now!

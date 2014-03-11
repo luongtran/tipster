@@ -4,6 +4,25 @@
       %a{href: root_path}
         = image_tag 'tipster-logo-main.png', alt: 'Tipster hero', class: 'img-responsive'
     #menu-main.pull-right
+      %ul.list-inline.man
+        %li
+          %a#lk-view-cart{href: cart_path, class: "#{tipster_ids_in_cart.empty? ? 'empty' : ''}"}
+            %i.glyphicon.glyphicon-shopping-cart
+            = "Cart box(#{tipster_ids_in_cart.size})"
+        %li.dropdown
+          %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+            = I18n.t('lang')
+            %b.caret
+          %ul.dropdown-menu
+            %li
+              %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('en'),data: {lang: 'en', url: select_language_path}} English
+            %li
+              %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('fr'), data: {lang: 'fr', url: select_language_path}} Français
+        %li
+          %a{:href=>"javascript:;"}
+            %i.typcn.typcn-cog
+  .menu
+    .container
       %ul.list-inline
         %li
           %a{href: pricing_path}
@@ -66,26 +85,5 @@
                     %a{href: "javascript:;"}
                       Tipsters
               %h1#sub-page-h1.man.text-slim= yield(:title)
-      .pull-right
-        #sub-page-quickpanel.clearfix
-          .quickpanel-left
-          .quickpanel-mid
-            %ul.list-inline.man
-              %li
-                %a#lk-view-cart{href: cart_path, class: "#{tipster_ids_in_cart.empty? ? 'empty' : ''}"}
-                  %i.glyphicon.glyphicon-shopping-cart
-                  = "Cart box(#{tipster_ids_in_cart.size})"
-              %li.dropdown
-                %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
-                  = I18n.t('lang')
-                  %b.caret
-                %ul.dropdown-menu
-                  %li
-                    %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('en'),data: {lang: 'en', url: select_language_path}} English
-                  %li
-                    %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('fr'), data: {lang: 'fr', url: select_language_path}} Français
-              %li
-                %a{:href=>"javascript:;"}
-                  %i.typcn.typcn-cog
           .quickpanel-right
   = yield :top_tipster
