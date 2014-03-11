@@ -4,16 +4,16 @@
     .tipster-list-line1
       %ul.list-inline
         %li
-          %a{href: fetch_tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
+          %a{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
         - @sports.each do |sport|
           %li
-            %a{href: fetch_tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
+            %a{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
     .tipster-list-line2.clearfix
       .pull-left
         %ul.list-inline.list-unstyled.mbn.rank-ranges
           - Tipster::RANKING_RANGES.each do |range|
             %li
-              %a{href: fetch_tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
+              %a{href: tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
                 = t("tipster.ranking.#{range}").titleize
       .pull-right
         %span.mrs.text-muted Filter by status
