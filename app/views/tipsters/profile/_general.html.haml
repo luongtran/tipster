@@ -24,43 +24,36 @@
 .col-lg-12
   %hr
   %h2 Last 10 tips
-  %table.table.table-bordered
+  %table.table.table-bordered.table-hover.bgw
     %thead
       %tr
         %th Event
-        %th Datetime
-        %th Selection
         %th Odds
-        %th Stake
+        %th Sport
+        %th Published at
         %th Profit
         %th Result
     %tbody
-      - 10.times do |tip|
-        - correct = [true,false].sample
-        - event =  Event.fetch.first
+      - @recent_tips.each do |tip|
         %tr
-          %td= event.name
-          %td= @tipster.created_at
-          %td= event.team_a
-          %td= (1..5).to_a.sample
-          %td= 10*rand(4..12)
-          %td{class: "#{correct ? 'text-success' : 'text-danger'}"}
-            = if correct then '+' else '-' end
-            = 10*rand(4..12)
-          %td{class: "#{correct ? 'text-success' : 'text-danger'}"}
-            - if correct
-              &#x2714;
+          %td.text-info
+            %a{href: tip_path(tip)}= tip.event
+          %td= tip.odds
+          %td= tip.sport.name.titleize
+          %td= tip.created_at
+          %td
+            - if tip.correct?
+              %span.text-success
+                \+
+                = tip.amount
             - else
-              &#x2718;
-      -#- @recent_tips.each do |tip|
-      -#  %tr
-      -#    %td= tip.event
-      -#    %td= tip.created_at
-      -#    %td= tip.selection
-      -#    %td= (1.2..4.5).to_a.samlpe
-      -#    %td= (50..150).to_a.sample
-      -#    %td
-      -#      = %w(+ -).sample
-      -#      = (50..150).to_a.sample
-      -#    %td
-      -#      = %w(&#x2714; &#x2718;).sample
+              %span.text-danger
+                \-
+                = tip.amount
+          %td
+            - if tip.correct?
+              %span.text-success
+                &#x2714;
+            - else
+              %span.text-danger
+                &#x2718;

@@ -4,7 +4,7 @@ module TipstersHelper
     options = []
     options << [I18n.t('tipster_statuses.all'), 'all', {data: {url: tipsters_path(query_params.merge(status: nil))}}]
     options << [I18n.t('tipster_statuses.active'), 'active', {data: {url: tipsters_path(query_params.merge(status: 'active'))}, selected: selected_status == 'active'}]
-    #options << [I18n.t('tipster_statuses.inactive'), 'inactive', {data: {url: tipsters_path(query_params.merge(status: 'inactive'))}, selected: selected_status == 'inactive'}]
+    options << [I18n.t('tipster_statuses.inactive'), 'inactive', {data: {url: tipsters_path(query_params.merge(status: 'inactive'))}, selected: selected_status == 'inactive'}]
     options
   end
 

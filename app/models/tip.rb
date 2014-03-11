@@ -30,7 +30,8 @@
   bookmaker: "Bet365"
   bookmaker_key: "bet365"
   category_slug: "european-cups"
-  comment: "A Madrid are one of the best teams in Europe right now and Costa can cause so many problems for an inconsistent defence like Milan"
+  comment: "A Madrid are one of the best teams in Europe right now and Costa
+  can cause so many problems for an inconsistent defence like Milan"
   created_at: "2014-02-19 09:30:08"
   created_at_ts: 1392798608
   event_date: "19/02 20:45"
@@ -55,30 +56,52 @@
 
 class Tip < ActiveRecord::Base
 
-  BET_BOOKMARKERS = ["betclic", "bwin", "unibet", "fdj", "netbet", "france_paris"]
+  BET_BOOKMARKERS = ["betclic", "bwin", "unibet",
+                     "fdj", "netbet", "france_paris"]
 
-  STATUS_WAITING_FOR_APPROVE = 0
-  STATUS_APPROVED_AND_PUBLISHED = 1
+  STATUS_WAITING_FOR_APPROVED = 0
+  STATUS_APPROVED = 1
+  STATUS_REJECTED = 2
+  STATUS_EXPIRED = 3
 
+  # ===========================================================================
+  # ASSOCIATIONS
+  # ===========================================================================
   belongs_to :author, polymorphic: true
   belongs_to :sport
-  validates :author, :event, :platform, :bet_type, :odds, :selection, :advice, :stake, :amount, presence: true
+
+  # ===========================================================================
+  # VALIDATIONS
+  # ===========================================================================
+  validates :author, :event, :platform, :bet_type, :odds, :selection, :advice,
+            :stake, :amount, presence: true
   validates_length_of :event, :advice, minimum: 10
   validates_inclusion_of :platform, in: BET_BOOKMARKERS
-  before_validation :init_status, :init_amount, on: :create
+  validates_numericality_of :stake, greater_than_or_equal_to: 0.1,
+                            less_than_or_equal_to: 5
 
+  # ===========================================================================
+  # CALLBACKS
+  # ===========================================================================
+  before_validation :init_status, :init_amount, on: :create
   #before_create :init_expire_time
 
-  # ==============================================================================
+  # ===========================================================================
+  # SCOPE
+  # ===========================================================================
+  scope :published, -> { where(status: STATUS_APPROVED) }
+  scope :paid, -> { where(free: false) }
+  scope :correct, -> { where(correct: true) }
+  # ===========================================================================
   # Class METHODS
-  # ==============================================================================
+  # ===========================================================================
   class << self
 
   end
 
-  # ==============================================================================
+  # ===========================================================================
   # INSTANCE METHODS
-  # ==============================================================================
+  # ===========================================================================
   def to_param
     "#{self.id}-#{self.event.parameterize}"
   end
@@ -94,7 +117,6 @@ class Tip < ActiveRecord::Base
   def bet_on_in_string
     # Bet on: {Selection} [Line] {Bet type}
   end
-
 
   private
   def init_status

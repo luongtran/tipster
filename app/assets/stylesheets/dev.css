@@ -270,3 +270,12 @@ p.button a:hover {
     max-width: 48px;
     max-height: 48px;
 }
+
+ul.rank-ranges li {
+    padding-right: 30px;
+}
+
+ul.rank-ranges li a.current, ul.rank-ranges li a:hover {
+    color: #3c763d;
+    border-bottom: 1px solid #3c763d;
+}

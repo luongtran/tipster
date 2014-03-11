@@ -4,6 +4,10 @@ class TipsController < ApplicationController
     @sports = Sport.all
   end
 
+  def last
+
+  end
+
   def show
     @tip = Tip.includes(:author, :sport).find(params[:id])
   end

@@ -15,7 +15,7 @@
 class Tipster < ActiveRecord::Base
   DEFAULT_PAGE_SIZE = 20
   DEFAULT_SORT_FIELD = 'profit'
-  DEFAULT_RANKING_RANGE = 'last-month'
+
   RANKING_RANGES = [
       OVERALL = 'overall',
       LAST_12_MONTHS = 'last-12-months',
@@ -23,9 +23,10 @@ class Tipster < ActiveRecord::Base
       LAST_3_MONTHS = 'last-3-months',
       LAST_MONTH = 'last-month'
   ]
+  DEFAULT_RANKING_RANGE = LAST_3_MONTHS
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-
+  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -67,6 +68,9 @@ class Tipster < ActiveRecord::Base
       #.per(paging_info.page_size)
 
       result = relation.includes([:account])
+      result.each do |tipster|
+        tipster.get_statistics(parse_range_param(params))
+      end
       if sorting_info.increase?
         result.sort_by { |tipster| tipster.send("#{sorting_info.sort_by}") }
       else
@@ -121,6 +125,32 @@ class Tipster < ActiveRecord::Base
       relation.includes([:account])
     end
 
+    def parse_range_param(params)
+      if params[:ranking].present?
+        params[:ranking]
+      else
+        LAST_6_MONTHS
+      end
+    end
+
+    # Return the start & end date specify by given range
+    def parse_range(range = LAST_MONTH)
+      end_date = Date.today
+      start_date = case range
+                     when LAST_MONTH
+                       30.days.ago(end_date)
+                     when LAST_3_MONTHS
+                       90.days.ago(end_date)
+                     when LAST_6_MONTHS
+                       180.days.ago(end_date)
+                     when LAST_12_MONTHS
+                       365.days.ago(end_date)
+                     else
+                       return nil
+                   end
+      [start_date, end_date]
+    end
+
     # ==============================================================================
     # PROTECTED CLASS METHODS
     # ==============================================================================
@@ -150,7 +180,6 @@ class Tipster < ActiveRecord::Base
           :page_size => p_size
       )
     end
-
   end
 
   # ==============================================================================
@@ -161,37 +190,65 @@ class Tipster < ActiveRecord::Base
     "#{self.id}-#{self.display_name}".parameterize
   end
 
-  def create_new_tip(params)
-    #klass = self.class.name
-    #tip_klass = klass.gsub('Tipster', 'Tip')
-    #tip = tip_klass.constantize.new(params)
-    #tip
+  def create_new_tip!(params)
   end
 
   # Substract tipster's bankroll after published a tip
   def subtract_bankroll(amount)
   end
 
-  # Ratio between the profit during a given period & total stakes during this period.
-  # This is the yardstick for tipster's performance per bet
-  def yield(range = nil)
-    self.id * [1, -1].sample
+  def yield_in_string
+    "#@yield%"
   end
 
-  # Final bank - Initial bank
-  def profit(range = nil)
-    self.id * 1000
+  def get_statistics(range = LAST_6_MONTHS)
+    range = self.class.parse_range(range)
+
+    if range.nil?
+      range = [self.created_at.to_date, Date.today]
+    end
+    tips = self.tips.paid.where(created_at: range.first..range.second)
+
+    # Save the number of tip
+    @number_of_tips = tips.count
+
+    @yield = 0
+    @profit = 0
+    correct_tips = 0
+
+    odds = 0
+    total_amount = 0
+
+    tips.each do |tip|
+      odds += tip.odds
+      total_amount += tip.amount
+      if tip.correct?
+        correct_tips += 1
+        @profit += (tip.amount*tip.odds).round(0)
+      else
+        @profit -= tip.amount
+      end
+    end
+
+    # # Cal avg of odds and hit(win) rate
+    if @number_of_tips.zero?
+      @hit_rate, @avg_odds, @yield = 0, 0, 0
+    else
+      @hit_rate = (correct_tips*100/@number_of_tips.to_f).round(1)
+      @avg_odds = (odds/@number_of_tips.to_f).round(1)
+      @yield = (@profit*100/total_amount.to_f).round(0)
+    end
+  end
+
+  def hit_rate_in_string
+    "#{hit_rate}%"
   end
 
   # The average odds is calculated as the sum of the odds of every tip from an tipster,
   # divided by the total number of tips from that tipster
-  def avg_odds(range = nil)
-    rand(0..5)
-  end
-
-  # The percentage of winning tips vs total number of tips
-  def win_rate(range = nil)
-  end
+  #def avg_odds(range = nil)
+  #  rand(0..5)
+  #end
 
   # The ratio between the number of profit months per active months
   # Return example:
@@ -202,20 +259,21 @@ class Tipster < ActiveRecord::Base
 
   # Return lastest tips limit by the given quantity
   def recent_tips(quantity = 10)
-    self.tips.limit(quantity)
+    self.tips.order('created_at desc').limit(quantity)
+  end
+
+  def win_rate
+
   end
 
   # Return the tips on the given date
   def tips_on_the_date(date)
   end
 
-  # Return the number of tips on the given range
-  def tips_count(range = nil)
-    self.id * 5
-  end
-
   def profit_per_months(range = nil)
-    (10..100).to_a.sample(15)
+    (5..30).to_a
+    #[4, 5, 6, 7, 8, 9, 10, 11, 9, 6, 7, 5, 5, 9].sample(15).map { |n| n * 10 }
+    # [20,21]
   end
 
   protected

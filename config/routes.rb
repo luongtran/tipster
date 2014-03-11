@@ -42,8 +42,19 @@ TipsterHero::Application.routes.draw do
     end
   end
 
-  resources :tips, only: [:index, :show]
-  resources :tipsters, only: [:index, :show]
+  resources :tips, only: [:index, :show] do
+    collection do
+      get :last
+    end
+  end
+  resources :tipsters, only: [:index, :show] do
+    member do
+      get :profile
+    end
+    collection do
+      get :fetch
+    end
+  end
   resource :subscription, controller: 'subscription', only: [:show] do
     match :add_tipster, via: [:get, :post]
     post :update

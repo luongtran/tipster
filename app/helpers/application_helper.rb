@@ -133,7 +133,7 @@ module ApplicationHelper
   def profit_img_chart_url_for(data)
     require 'gchart'
     Gchart.line(
-        data: data, :encoding => 'text',
+        data: data, :encoding => 'extended',
         grid_lines: '16,32,4,0,0,0',
         range_markers: 'B,99999970,0,0,0',
         bg: {
@@ -146,7 +146,7 @@ module ApplicationHelper
             angle: '270'
         },
         line_colors: 'ACC253',
-        :size => '80x40',
+        :size => '70x35',
     )
   end
 
