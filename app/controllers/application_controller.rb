@@ -103,6 +103,8 @@ class ApplicationController < ActionController::Base
     elsif current_subscriber && current_subscriber.subscription
       session[:plan_id] = current_subscriber.subscription.plan.id
       current_subscriber.subscription.plan
+    else
+      nil
     end
   end
 

@@ -4,6 +4,8 @@ class TipstersController < ApplicationController
   def index
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
 
+    @select_plan = selected_plan
+
     @tipsters = Tipster.load_data(params)
 
     @sports = Sport.all.order('position asc')
@@ -17,6 +19,11 @@ class TipstersController < ApplicationController
   end
 
   def show
+    @tipster = Tipster.find(params[:id])
+    @recent_tips = @tipster.recent_tips
+  end
+
+  def profile
     @tipster = Tipster.find(params[:id])
     @recent_tips = @tipster.recent_tips
   end

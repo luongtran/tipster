@@ -37,6 +37,7 @@
               - @tipsters.each_with_index do |tipster,index|
                 %tr
                   %td
+                    = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar-mini'
                     %a.tipster-name{href: tipster_path(tipster)}
                       = tipster.full_name
                     .tipster-profit-chart
@@ -44,7 +45,7 @@
                   %td= tipster.profit
                   %td= tipster.yield
                   %td= tipster.tips_count
-                  %td= tipster.win_rate || '25%'
+                  %td= tipster.hit_rate
                   %td= tipster.avg_odds
                   %td= tipster.profitable_months
                   %td.text-center
@@ -53,6 +54,11 @@
                         %button.btn.btn-sm.btn-default Already purchase
                       - else
                         = render 'shared/add_to_cart_form', {tipster_id: tipster.id, disable: tipster_ids_in_cart.include?(tipster.id.to_s)}
+          - if @tipsters.empty?
+            .text-center.clearfix
+              %br
+              %p.text-warning
+                Not found any tipsters match!
   #top_tipsters_of_weeks
     %h4.text-slim.text-success.text-center Top 3 of the week
     %hr.mbs.mts
@@ -72,7 +78,7 @@
             %h4.modal-title The tipster has been added to your cart
           .modal-body
             .text-center.text-info
-              - if tipster_ids_in_cart.size + 1 > 3
+              - if tipster_ids_in_cart.size + 1 > @select_plan.number_tipster + Subscription::MAX_ADDTIONAL_TIPSTERS
                 Your cart is full!
               - else
                 Would you add a Tipster? - 60% for each additional Tipster!
