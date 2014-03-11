@@ -1,6 +1,7 @@
 class SubscribeController < ApplicationController
   before_action :authenticate_account!, only: [:get_coupon_code]
   before_action :no_subscription_required, except: [:success]
+  before_action :load_subscribe_data
   skip_before_filter :verify_authenticity_token, only: [:success]
 
   # Return from paypal
@@ -47,7 +48,6 @@ class SubscribeController < ApplicationController
     if account_signed_in?
       redirect_to subscribe_personal_information_url and return
     end
-    @select_plan = selected_plan
     if @select_plan.nil?
       flash[:alert] = I18n.t('errors.messages.unselect_plan')
       redirect_to pricing_path and return
@@ -86,7 +86,6 @@ class SubscribeController < ApplicationController
     unless account_signed_in?
       redirect_to subscribe_account_url and return
     end
-    @select_plan = selected_plan
     if @select_plan
       @account = current_account
       @subscriber = @account.rolable
@@ -132,7 +131,6 @@ class SubscribeController < ApplicationController
   #User is sign_in
   #Only apply for first time payment
   def payment
-    @select_plan = Plan.find(session[:plan_id])
     @tipsters = Tipster.where(id: tipster_ids_in_cart)
     unless current_subscriber.subscription.present?
       @subscription = current_subscriber.build_subscription(plan_id: session[:plan_id])
@@ -169,6 +167,9 @@ class SubscribeController < ApplicationController
 
 
   private
+  def load_subscribe_data
+    @select_plan = selected_plan
+  end
 
   def go_to_current_steps
     case session[:step]
@@ -180,6 +181,7 @@ class SubscribeController < ApplicationController
         redirect_to subscribe_shared_path
     end
   end
+
   def no_subscription_required
     if current_subscriber && current_subscriber.subscription && !current_subscriber.subscription.plan.free? && current_subscriber.subscription.active?
       redirect_to subscription_url
@@ -192,11 +194,6 @@ class SubscribeController < ApplicationController
         :telephone, :favorite_beting_website, :know_website_from, :secret_question, :answer_secret_question, :receive_info_from_partners,
         :humanizer_answer, :humanizer_question_id
     )
-  end
-
-  def prepare_subscribe_info
-    @select_plan = Plan.where(id: session[:plan_id]).first
-    @select_tipsters = Tipster.where(id: tipster_ids_in_cart)
   end
 
   def coupon_params

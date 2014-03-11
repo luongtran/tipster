@@ -101,7 +101,7 @@ ul.steps-container {
 }
 
 ul.steps-container li {
-    width: 120px;
+    width: 102px;
     float: left;
     min-height: 65px;
     display: inline-block;
@@ -145,7 +145,7 @@ li.step-seperator-container {
     margin-left: -14px;
     margin-right: 5px;
     background-color: #dadada;
-    min-width: 150px;
+    min-width: 135px;
     height: 5px;
 }
 
@@ -159,8 +159,8 @@ li.step-seperator-container {
     display: inline-block;
 }
 
-.subscribe-steps.three-steps {
-    margin-left: 20%;
+.subscribe-steps.four-steps {
+    margin-left: 15%;
 }
 
 .help-block {
@@ -257,6 +257,16 @@ p.button a:hover {
 .menu ul.list-inline > li > a {
     padding: 10px 41px;
 }
+
 #page_header_mid:not(.fixed-bg) {
     background: url('/assets/header-bg.jpg') no-repeat top left;
+}
+
+.menu ul.list-inline > li:hover, .menu ul.list-inline > li.current {
+    background-color: rgb(52, 90, 52);
+}
+
+.tipster-top-avatar-mini {
+    max-width: 48px;
+    max-height: 48px;
 }

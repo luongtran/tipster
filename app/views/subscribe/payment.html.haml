@@ -1,5 +1,6 @@
+= javascript_include_tag 'subscribe'
 - content_for :title do
-  Payment
+  Registration
 .container
   .row
     .subscribe-steps
@@ -17,13 +18,21 @@
             %p
               %span.step-number 2
             %p
-              %span.step-name Personal Information
+              %span.step-name Choose offer
         %li.step-seperator-container
           .step-seperator
         %li.complete
           .text-center
             %p
               %span.step-number 3
+            %p
+              %span.step-name Personal Information
+        %li.step-seperator-container
+          .step-seperator
+        %li.complete
+          .text-center
+            %p
+              %span.step-number 4
             %p
               %span.step-name Share on social network
 
@@ -32,7 +41,7 @@
         %li.complete
           .text-center
             %p
-              %span.step-number 4
+              %span.step-number 5
             %p
               %span.step-name Receive your tips
         %li.step-seperator-container
@@ -40,7 +49,7 @@
         %li.current
           .text-center
             %p
-              %span.step-number 5
+              %span.step-number 6
             %p
               %span.step-name Payment
   .row
@@ -129,11 +138,13 @@
                       .form-group
                         %label.checkbox.text-slim
                           %input#cb-term-and-conditions{type: "checkbox"}>/
-                          I agree with term & conditions
+                          I agree with terms for sale
                       = hidden_field_tag :method, Payment::BY_PAYPAL
                       = image_submit_tag("paypal-express-checkout-button.png")
                   %li
                     = simple_form_for :nothing, url: subscribe_payment_path do |f|
                       = hidden_field_tag :method, Payment::BY_FRENCH_BANK
-                      = image_submit_tag("french-bank-checkout-button.png")
+                      %button.btn.btn-default.btn-lg{type: :submit}
+                        %img{src: '/assets/lang_fr_ico.png'}
+                        French Bank
                 #payment

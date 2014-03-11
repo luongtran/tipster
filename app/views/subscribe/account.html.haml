@@ -2,7 +2,7 @@
   Registration
 .container
   .row
-    .subscribe-steps{class: "#{@select_plan.free? ? 'three-steps' : ''}"}
+    .subscribe-steps{class: "#{@select_plan.free? ? 'four-steps' : ''}"}
       %ul.steps-container
         %li.current
           .text-center
@@ -12,10 +12,18 @@
               %span.step-name Account
         %li.step-seperator-container
           .step-seperator
-        %li
+        %li{class: "#{'complete' if @select_plan}"}
           .text-center
             %p
               %span.step-number 2
+            %p
+              %span.step-name Choose offer
+        %li.step-seperator-container
+          .step-seperator
+        %li
+          .text-center
+            %p
+              %span.step-number 3
             %p
               %span.step-name Personal Information
         %li.step-seperator-container
@@ -23,7 +31,7 @@
         %li
           .text-center
             %p
-              %span.step-number 3
+              %span.step-number 4
             %p
               %span.step-name
                 - if @select_plan.free?
@@ -36,7 +44,7 @@
           %li
             .text-center
               %p
-                %span.step-number 4
+                %span.step-number 5
               %p
                 %span.step-name Receive your tips
           %li.step-seperator-container
@@ -44,7 +52,7 @@
           %li
             .text-center
               %p
-                %span.step-number 5
+                %span.step-number 6
               %p
                 %span.step-name Payment
   .row
