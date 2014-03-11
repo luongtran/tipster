@@ -245,3 +245,18 @@ p.button a:hover {
 .bxshd {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
+
+#menu-main > ul > li > a {
+    text-transform: uppercase;
+}
+
+#Nos-abonnaments h1.box-title {
+    color: #fff;
+}
+
+.menu ul.list-inline > li > a {
+    padding: 10px 41px;
+}
+#page_header_mid:not(.fixed-bg) {
+    background: url('/assets/header-bg.jpg') no-repeat top left;
+}

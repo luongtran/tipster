@@ -65,7 +65,7 @@ en:
     update_avatar: "Update avatar"
     account_update_successully: "Your profile was updated successfully."
     account_update_failed: "Update profile failed."
-    sign_in: "Sign in"
+    sign_in: "Log in"
     sign_up: "Sign up"
     sign_out: "Sign out"
     account_info: "Account information"

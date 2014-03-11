@@ -12,7 +12,7 @@
               #profile-overview-avatar.profile-overview-common.avatar.pull-left.mrl
                 = image_tag (@tipster.avatar_url || 'demo.jpg'), class: 'user_avatar'
               #profile-overiew-statistic.profile-overiew-statistic.pull-left.text-md
-                %h3.ptn.mtn.text-slim.mbl Nave here
+                %h3.ptn.mtn.text-slim.mbl= @tipster.full_name
                 %h4.text-md.text-uppercase.text-muted Statistics
                 %p.mbs
                   %span.mrs Profit:

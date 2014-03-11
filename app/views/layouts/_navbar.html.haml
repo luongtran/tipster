@@ -8,35 +8,24 @@
         %li
           %a#lk-view-cart{href: cart_path, class: "#{tipster_ids_in_cart.empty? ? 'empty' : ''}"}
             %i.glyphicon.glyphicon-shopping-cart
-            = "Cart box(#{tipster_ids_in_cart.size})"
+            = "Shopping cart(#{tipster_ids_in_cart.size})"
         %li.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
+            %img{src: '/assets/lang_en_ico.png'}
             = I18n.t('lang')
             %b.caret
           %ul.dropdown-menu
             %li
-              %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('en'),data: {lang: 'en', url: select_language_path}} English
+              %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('en'),data: {lang: 'en', url: select_language_path}}
+                English
             %li
-              %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('fr'), data: {lang: 'fr', url: select_language_path}} Français
-        %li
-          %a{:href=>"javascript:;"}
-            %i.typcn.typcn-cog
-  .menu
-    .container
-      %ul.list-inline
-        %li
-          %a{href: pricing_path}
-            %i.glyphicon.glyphicon-credit-card
-            = t('menu.pricing')
-        %li
-          %a{href: tipsters_path}
-            %i.glyphicon.glyphicon-user
-            = t('menu.tipster')
-        %li
-          %a{href: tips_path}
-            %i.glyphicon.glyphicon-list
-            = t('menu.tips')
+              %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('fr'), data: {lang: 'fr', url: select_language_path}}
+                Français
         - if current_subscriber
+          %li
+            %a{:href=>"javascript:;"}
+              %i.fa.fa-gear
+              Settings
           %li.dropdown
             %a.dropdown-toggle{'data-toggle' => "dropdown", href: "#"}
               = current_subscriber.full_name.blank? ? 'Account' : current_subscriber.full_name
@@ -51,22 +40,37 @@
                 %a{href: destroy_account_session_path}
                   %i.glyphicon.glyphicon-log-out
                   = I18n.t('user.sign_out')
-        - else
+  .menu
+    .container
+      %ul.list-inline
+        %li
+          %a{href: '#'}
+            Statistics
+        %li
+          %a{href: '#'}
+            Livescore
+        %li
+          %a{href: tipsters_path}
+            -#%i.glyphicon.glyphicon-user
+            = t('menu.tipster')
+        %li
+          %a{href: tips_path}
+            Last tips
+        %li
+          %a{href: '#'}
+            News
+        %li
+          %a{href: pricing_path}
+            -#%i.glyphicon.glyphicon-credit-card
+            = t('menu.pricing')
+        - unless current_subscriber
           %li
             %a.lk-toggle-sign-in-box{href: '#'}
               %i.glyphicon.glyphicon-log-in
               = I18n.t('user.sign_in')
-            -#%a{"data-toggle" => "modal", href: "#loginModal"}= t('user.sign_in')
-          %li
-            %a.lk-toggle-sign-up-box{href: '#'}= I18n.t('user.sign_up')
-          -#%li.dropdown
-          -#  %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
-          -#    Connect
-          -#    %b.caret
-          -#  %ul.dropdown-menu
-          -#    %li
-          -#      %a#lk-toggle-sign-up-box{href: '#'}= I18n.t('user.sign_up')
-              = render 'shared/social_connection_links'
+          -#%li
+          -#  %a.lk-toggle-sign-up-box{href: '#'}= I18n.t('user.sign_up')
+
 #page_header_mid{class: "#{(controller_name == 'home' && action_name == 'index') ? 'fixed-bg' : ''} "}
   / this is container header box for sub-page (signup - steps etc)
   #sub-page-header
