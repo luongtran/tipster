@@ -12,6 +12,9 @@ class HomeController < ApplicationController
 
   def xml_view
     require 'open-uri'
+    if params[:sport] == 'football'
+      params[:sport] = 'soccer'
+    end
     doc = Nokogiri::XML(open("http://xml.pinnaclesports.com/pinnacleFeed.aspx?sportType=#{params[:sport] || 'soccer'}"))
     events = doc.xpath("//event")
     @results = []
@@ -23,6 +26,9 @@ class HomeController < ApplicationController
       evt.xpath("participants//participant").each_with_index do |part, index|
         eve["participiant_name_#{index}"] = part.xpath("participant_name").text
         eve["visit_#{index}"] = part.xpath("visiting_home_draw").text
+      end
+      evt.xpath("periods//period").each_with_index do |period,index|
+
       end
       @results.push(eve)
     end

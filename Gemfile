@@ -112,3 +112,4 @@ gem "ransack", github: "activerecord-hackery/ransack", branch: "rails-4"
 gem 'phone'
 # Anti robot
 gem 'humanizer'
+gem 'highcharts-rails'
