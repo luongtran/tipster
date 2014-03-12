@@ -50,16 +50,16 @@ module ApplicationHelper
 
   def platforms_for_select
     options = []
-    Tip::BET_BOOKMARKERS.each do |pf|
-      options << [pf.titleize, pf]
-    end
+    #Tip::BET_BOOKMARKERS.each do |pf|
+    #  options << [pf.titleize, pf]
+    #end
     options
   end
 
   def sports_for_select
     options = []
     Sport.all.each do |sp|
-      options << [sp.name, sp.id]
+      options << [sp.name.titleize, sp.id]
     end
     options
   end

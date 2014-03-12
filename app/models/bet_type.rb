@@ -1,4 +1,4 @@
-class BetType
+class BetType < ActiveRecord::Base
   # BetType::TYPES[:football].first[:code]
   TYPES = {
       football: [

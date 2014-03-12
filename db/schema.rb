@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140310095134) do
+ActiveRecord::Schema.define(version: 20140312025909) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -53,6 +53,15 @@ ActiveRecord::Schema.define(version: 20140310095134) do
 
   add_index "authorizations", ["subscriber_id"], name: "index_authorizations_on_subscriber_id"
   add_index "authorizations", ["uid"], name: "index_authorizations_on_uid"
+
+  create_table "bet_types", force: true do |t|
+    t.integer "sport_id"
+    t.string  "code"
+    t.string  "name"
+    t.string  "other_name"
+    t.string  "definition"
+    t.string  "example"
+  end
 
   create_table "coupon_codes", force: true do |t|
     t.integer  "subscriber_id"
@@ -106,6 +115,11 @@ ActiveRecord::Schema.define(version: 20140310095134) do
     t.integer  "period"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "platforms", force: true do |t|
+    t.string "code", null: false
+    t.string "name", null: false
   end
 
   create_table "sessions", force: true do |t|
@@ -182,24 +196,24 @@ ActiveRecord::Schema.define(version: 20140310095134) do
   create_table "tips", force: true do |t|
     t.integer  "author_id"
     t.string   "author_type"
-    t.string   "event",                        null: false
-    t.string   "platform",                     null: false
-    t.integer  "bet_type",                     null: false
-    t.float    "odds",                         null: false
-    t.integer  "selection",                    null: false
+    t.integer  "sport_id"
+    t.string   "event",                          null: false
+    t.datetime "event_start_at"
+    t.datetime "event_end_at"
+    t.integer  "platform_id",                    null: false
+    t.integer  "bet_type_id",                    null: false
+    t.float    "odds",                           null: false
+    t.string   "selection",                      null: false
     t.float    "line"
-    t.text     "advice",                       null: false
-    t.float    "stake",                        null: false
-    t.integer  "amount",                       null: false
-    t.boolean  "correct",      default: false
-    t.integer  "status",                       null: false
-    t.boolean  "free",         default: false
+    t.text     "advice",                         null: false
+    t.integer  "amount",                         null: false
+    t.boolean  "correct",        default: false
+    t.integer  "status",                         null: false
+    t.boolean  "free",           default: false
     t.integer  "published_by"
     t.datetime "published_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "expire_at"
-    t.integer  "sport_id"
   end
 
   add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type"
