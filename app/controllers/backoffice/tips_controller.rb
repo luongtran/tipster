@@ -32,6 +32,6 @@ class Backoffice::TipsController < ApplicationController
   end
 
   def tip_params
-    params.require(:tip).permit(:event, :platform, :bet_type, :odds, :selection, :advice, :stake, :amount)
+    params.require(:tip).permit(:event, :platform, :bet_type, :odds, :selection, :advice, :stake, :amount,:sport_id)
   end
 end

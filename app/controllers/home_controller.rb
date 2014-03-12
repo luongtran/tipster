@@ -28,10 +28,13 @@ class HomeController < ApplicationController
         eve["visit_#{index}"] = part.xpath("visiting_home_draw").text
       end
       evt.xpath("periods//period").each_with_index do |period,index|
-
+        eve["moneyline_visiting"] = period.xpath("moneyline//moneyline_visiting").text
+        eve["moneyline_home"] = period.xpath("moneyline//moneyline_home").text
+        eve["moneyline_draw"] = period.xpath("moneyline//moneyline_draw").text
       end
       @results.push(eve)
     end
+    @results.sort_by{|e| e['datetime']}
     @sports = Sport.all
   end
 
