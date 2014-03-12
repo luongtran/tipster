@@ -13,7 +13,6 @@
  = require jquery
  = require jquery_ujs
  = require jquery.Jcrop
- = require user.js
  = require flash_message.js
  = require dev
  = require ajaxify
@@ -25,6 +24,6 @@
  = require jquery.migrate
 
  = require appjs/app
- = require_tree ./appjs/directive
+ = require_tree .
  */
 
