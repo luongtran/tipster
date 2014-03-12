@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20140312025909) do
-=======
-ActiveRecord::Schema.define(version: 20140312030351) do
->>>>>>> f8eeefe927424a0bcfe7f9b88b785784546a8b7d
+ActiveRecord::Schema.define(version: 20140312044845) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -65,6 +61,7 @@ ActiveRecord::Schema.define(version: 20140312030351) do
     t.string  "other_name"
     t.string  "definition"
     t.string  "example"
+    t.boolean "has_line",   default: true
   end
 
   create_table "coupon_codes", force: true do |t|

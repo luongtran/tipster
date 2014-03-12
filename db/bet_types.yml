@@ -1,0 +1,152 @@
+football:
+  -
+    code: 'match_odds'
+    name: 'Match odds'
+    line: 'no'
+  -
+    code: 'over_under'
+    name: 'Over/Under'
+  -
+    code: 'european_handicap'
+    name: 'European Handicap'
+  -
+    code: 'asian_handicap'
+    name: 'Asian Handicap'
+  -
+    code: 'match_odds_ht'
+    name: 'Match odds HT'
+  -
+    code: 'european_handicap_ht'
+    name: 'European Handicap HT'
+  -
+    code: 'over_under_ht'
+    name: 'Over/Under_HT'
+  -
+    code: 'asian_handicap_ht'
+    name: 'Asian Handicap HT'
+tennis:
+  -
+    code: 'two_way'
+    name: 'Two way'
+    line: 'no'
+  -
+    code: 'handicap_games'
+    name: 'Handicap games'
+  -
+    code: 'handicap_sets'
+    name: 'Handicap sets'
+  -
+    code: 'over_under_games'
+    name: 'Over/Under games'
+  -
+    code: 'over_under_sets'
+    name: 'Over/Under sets'
+basketball:
+  -
+    code: 'two_way'
+    name: 'Two way'
+    line: 'no'
+  -
+    code: 'handicap'
+    name: 'Handicap'
+  -
+    code: 'over_under'
+    name: 'Over/Under'
+handball:
+  -
+    code: 'match_odds'
+    name: 'Match odds'
+    line: 'no'
+  -
+    code: 'asian_handicap'
+    name: 'Asian Handicap'
+  -
+    code: 'over_under'
+    name: 'Over/Under'
+rugby:
+  -
+    code: 'match_odds'
+    name: 'Match odds'
+    line: 'no'
+  -
+    code: 'asian_handicap'
+    name: 'Asian Handicap'
+  -
+    code: 'european_handicap'
+    name: 'European Handicap'
+  -
+    code: 'over_under'
+    name: 'Over/Under'
+  -
+    code: 'match_odds_ht'
+    name: 'Match odds HT'
+    line: 'no'
+  -
+    code: 'asian_handicap_ht'
+    name: 'Asian Handicap HT'
+  -
+    code: 'european_handicap_ht'
+    name: 'European Handicap HT'
+  -
+    code: 'over_under_ht'
+    name: 'Over/Under HT'
+hockey:
+  -
+    code: 'match_odds'
+    name: 'Match odds'
+    line: 'no'
+  -
+    code: 'two_way'
+    name: 'Two way'
+    line: 'no'
+  -
+    code: 'over_under'
+    name: 'Over/Under'
+  -
+    code: 'handicap'
+    name: 'Handicap'
+horse:
+  -
+    code: 'winner'
+    name: 'Winner'
+    line: 'no'
+  -
+    code: 'lay_winner'
+    name: 'Lay winner'
+    line: 'no'
+  -
+    code: 'to_be_placed'
+    name: 'To be placed'
+    line: 'no'
+  -
+    code: 'lay_to_be_placed'
+    name: 'Lay to be placed'
+    line: 'no'
+  -
+    code: 'each_way'
+    name: 'Each way'
+football_us:
+  -
+    code: 'two_way'
+    name: 'Two way'
+    line: 'no'
+    other_name: 'Money line'
+  -
+    code: 'over_under'
+    name: 'Over/Under'
+  -
+    code: 'handicap'
+    name: 'Handicap'
+baseball:
+  -
+    code: 'two_way'
+    name: 'Two way'
+    line: 'no'
+  -
+    code: 'over_under'
+    name: 'Over/Under'
+  -
+    code: 'handicap'
+    name: 'Handicap'
+
+

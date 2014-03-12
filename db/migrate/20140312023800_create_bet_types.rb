@@ -7,6 +7,7 @@ class CreateBetTypes < ActiveRecord::Migration
       t.string :other_name
       t.string :definition
       t.string :example
+      t.index :sport_id
     end
   end
 end
