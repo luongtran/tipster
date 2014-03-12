@@ -51,17 +51,15 @@
             Livescore
         %li
           %a{href: tipsters_path}
-            -#%i.glyphicon.glyphicon-user
             = t('menu.tipster')
         %li
-          %a{href: tips_path}
+          %a{href: last_tips_path}
             Last tips
         %li
           %a{href: '#'}
             News
         %li
           %a{href: pricing_path}
-            -#%i.glyphicon.glyphicon-credit-card
             = t('menu.pricing')
         - unless current_subscriber
           %li

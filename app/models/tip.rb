@@ -70,9 +70,11 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   # VALIDATIONS
   # ===========================================================================
-  validates :author, :event, :platform, :odds, :selection, :advice, :sport,
+  validates :author, :odds, :selection, :advice, :sport, :platform, :bet_type,
             :amount, presence: true
-  validates_length_of :event, :advice, minimum: 10 , allow_blank: true
+  validates_presence_of :bet_type_id, :platform_id, :event,
+                        message: 'Choose at least one'
+  validates_length_of :event, :advice, minimum: 10, allow_blank: true
 
   # ===========================================================================
   # CALLBACKS
@@ -85,12 +87,40 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   scope :published, -> { where(status: STATUS_APPROVED) }
   scope :paid, -> { where(free: false) }
+  scope :free, -> { where(free: true) }
   scope :correct, -> { where(correct: true) }
+
   # ===========================================================================
   # Class METHODS
   # ===========================================================================
   class << self
+    def load_data(params)
+      relation = perform_filter_params(params)
+      result = relation.includes([:author])
+    end
 
+    def perform_filter_params(params, relation = self)
+      unless params[:sport].blank?
+        relation = relation.perform_sport_param(params[:sport])
+      end
+      unless params[:date].blank?
+        relation = relation.perform_date_param(params[:date])
+      end
+      relation
+    end
+
+    def perform_sport_param(sport, relation = self)
+      sport = Sport.find_by(name: sport)
+      relation = relation.where(sport_id: sport.id) if sport
+      relation
+    end
+
+    def perform_date_param(date, relation = self)
+      date = date.to_date
+      relation = relation.where(published_at: date.beginning_of_day..date.end_of_day)
+    rescue => e
+      relation
+    end
   end
 
   # ===========================================================================
