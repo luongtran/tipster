@@ -3,7 +3,10 @@ sports = Sport.all.to_a
 if sports.empty?
   puts "Error! There are no any sports!"
 else
-  15.times do
+  ActiveRecord::Base.record_timestamps = false
+  created_at = rand(100..222).days.ago - rand(1..15).hours
+  puts "\n===> Creating tipsters ==================="
+  1.times do
     fn = Faker::Name.first_name
     tipser = Tipster.new(
         display_name: fn,
@@ -12,15 +15,17 @@ else
             email: "#{fn}@fakemail.com",
             password: "123456",
             password_confirmation: "123456"
-        }
+        },
+        created_at: created_at,
+        updated_at: created_at
     )
     tipser.account.skip_confirmation!
-    if tipser.save
-      sport = sports.sample
-      puts " -> Created tipster: #{tipser.full_name}"
-      tipser.sports << sport
-    else
-      puts " -> Failed: #{tipser.errors.full_messages}"
-    end
+    tipser.save!
+    # Add sport for tipster
+    sports_of_tipster = sports.sample(rand(1..3))
+    tipser.sports << sports_of_tipster
+    puts " -> Created tipster: #{tipser.full_name} -> sports: #{sports_of_tipster.map { |s| s.name.titleize }.join(',')}"
   end
+  puts "\n===> Done tipsters seeds ==================="
+  ActiveRecord::Base.record_timestamps = true
 end

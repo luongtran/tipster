@@ -5,5 +5,5 @@ Platform.delete_all
       code: pf,
       name: pf.titleize
   )
-  puts "Created: #{pf.titleize}"
+  puts "-> Created: #{pf.titleize}"
 end

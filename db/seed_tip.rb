@@ -1,42 +1,61 @@
 tipsters = Tipster.all
 events = Event.fetch
-sports = Sport.all
 platforms = Platform.all
 
 if platforms.empty?
   raise 'Can not create tip without any platforms!'
 else
   ActiveRecord::Base.record_timestamps = false
+  puts "\n===> Creating tips ==================="
   tipsters.each do |tipster|
-    puts " ==> Generating tip for #{tipster.full_name}"
-    rand_number_tips = rand(10..20)
-    rand_number_tips.times do |index|
-      created_at = rand(2..300).days.ago - rand(1..15).hours
-      event = events.sample
-      Tip.create!(
-          event: event.name,
-          sport_id: sports.sample.id,
-          author_id: tipster.id,
-          author_type: tipster.class.name,
-          platform_id: platforms.sample.id,
-          event_start_at: created_at + rand(1..5).hours,
-          event_end_at: created_at + rand(6..7).hours,
-          bet_type_id: 1,
-          selection: event.team_a,
-          line: 1,
-          amount: 10*rand(4..12),
-          advice: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy.',
-          odds: rand(1..5.5).round(1),
-          free: false,
-          status: 1,
-          correct: [false, true].sample,
-          published_at: created_at,
-          created_at: created_at,
-          updated_at: created_at + 10.seconds,
-      )
-      puts " -> Tip for event #{event.name}"
+    puts " ==> Tipster [#{tipster.id}] #{tipster.full_name}"
+    tipster_created_at = tipster.created_at
+
+    start_date = tipster_created_at.to_date + 1.days
+    end_date = Date.today - 3.days
+    sports_of_tipsters = tipster.sports
+
+    date_have_tip = start_date
+    while date_have_tip < end_date
+      number_tips_on_the_date = rand(1..2)
+      sport_of_tip = sports_of_tipsters.sample
+      bet_types_of_tip = sport_of_tip.bet_types
+
+      number_tips_on_the_date.times do
+        bet_type = bet_types_of_tip.sample
+        created_at = date_have_tip.beginning_of_day + rand(10..600).minutes
+        event = events.sample
+        tip = Tip.new(
+            event: event.name,
+            sport_id: sport_of_tip.id,
+            author_id: tipster.id,
+            author_type: tipster.class.name,
+            platform_id: platforms.sample.id,
+
+            event_start_at: created_at + rand(1..5).hours,
+            bet_type_id: bet_type.id,
+            selection: [event.team_a, event.team_b, 'Draw'].sample,
+            amount: 10*rand(4..12),
+            advice: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy.',
+            odds: rand(1..5.5).round(1),
+
+            free: false,
+            status: Tip::STATUS_APPROVED,
+            correct: [false, true].sample,
+            published_at: created_at + rand(1..3).hours + rand(10..30).minutes,
+            created_at: created_at,
+            updated_at: created_at,
+        )
+        if bet_type.has_line?
+          tip.line = rand(5..15)
+        end
+        tip.save!
+        puts " -> Tip for event #{event.name}"
+      end
+
+      # Go to the next day
+      date_have_tip += rand(1..5).days
     end
-    puts "========================\n"
   end
   ActiveRecord::Base.record_timestamps = true
 end

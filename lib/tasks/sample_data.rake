@@ -24,6 +24,6 @@ namespace :db do
       load_seed_file('seed_tip.rb')
     end
 
-    task :all => [:plan, :sport, :bet_type, :platform, :tipster]
+    task :all => [:plan, :sport, :bet_type, :platform]
   end
 end
