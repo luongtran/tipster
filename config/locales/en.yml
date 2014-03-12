@@ -82,6 +82,8 @@ en:
       last-3-months: 'Last 3 months'
       last-month: 'Last month'
       overall: 'Overall'
+    units: 'Units'
+
   tip:
     created_successfully: 'A tip created successfully!'
   errors:

@@ -40,7 +40,7 @@ class Tipster < ActiveRecord::Base
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-
+  validates :display_name, uniqueness: {case_sensitive: false}
   # ==============================================================================
   # SCOPE
   # ==============================================================================
@@ -101,6 +101,14 @@ class Tipster < ActiveRecord::Base
       relation
     end
 
+    def parse_range_param(params)
+      if params[:ranking].present?
+        params[:ranking]
+      else
+        LAST_6_MONTHS
+      end
+    end
+
     def top_rank_in_range(range)
       case range
         when LAST_MONTH
@@ -125,13 +133,6 @@ class Tipster < ActiveRecord::Base
       relation.includes([:account])
     end
 
-    def parse_range_param(params)
-      if params[:ranking].present?
-        params[:ranking]
-      else
-        LAST_6_MONTHS
-      end
-    end
 
     # Return the start & end date specify by given range
     def parse_range(range = LAST_MONTH)
@@ -197,8 +198,19 @@ class Tipster < ActiveRecord::Base
   def subtract_bankroll(amount)
   end
 
+  def profit_in_string(include_unit = false)
+    sign = if @profit > 0
+             '+'
+           elsif @profit < 0
+             '-'
+           else
+             ''
+           end
+    "#{sign}#@profit #{I18n.t('tipster.units') if include_unit}"
+  end
+
   def yield_in_string
-    "#@yield%"
+    "#@yield %"
   end
 
   def get_statistics(range = LAST_6_MONTHS)

@@ -9,8 +9,10 @@ $(function () {
                 x: -20 //center
             },
             xAxis: {
+                type: 'datetime',
                 categories: ['Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug']
+                    'Jul', 'Aug', 'Sep', ''],
+                tickInterval: 24 * 3600 * 1000
             },
             yAxis: {
                 title: {
@@ -31,7 +33,7 @@ $(function () {
             series: [
                 {
                     name: 'Profit',
-                    data: [80, 120, 170, 180, 195, 190]
+                    data: [80, 120, 170, 180, 195, 190, 170, 180, 195, 190, 170, 180, 195, 190]
                 }
             ],
             credits: {

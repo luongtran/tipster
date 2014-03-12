@@ -41,6 +41,7 @@ class TipstersController < ApplicationController
 
   def show
     @tipster = Tipster.find(params[:id])
+    @tipster.get_statistics
     @recent_tips = @tipster.recent_tips
   end
 
