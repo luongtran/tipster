@@ -11,15 +11,15 @@
             = "Shopping cart(#{tipster_ids_in_cart.size})"
         %li.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", href: "#"}
-            %img{src: '/assets/lang_en_ico.png'}
-            = I18n.t('lang')
+            %img{src: I18n.t('language.icon')}
+            = I18n.t('language.text')
             %b.caret
           %ul.dropdown-menu
             %li
               %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('en'),data: {lang: 'en', url: select_language_path}}
                 English
             %li
-              %a.lk-change-lang-disabled{href: 'javascript:;', class: class_for_link_to_change_lang('fr'), data: {lang: 'fr', url: select_language_path}}
+              %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('fr'), data: {lang: 'fr', url: select_language_path}}
                 Français
         - if current_subscriber
           %li

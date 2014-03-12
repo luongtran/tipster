@@ -14,7 +14,9 @@
       %th Live
       %th Home
       %th Visiting
-      %td Action
+      %td MoneyLineVisiting
+      %td M Home
+      %td M Draw
   %tbody
     - if @results.empty?
       %tr
@@ -33,4 +35,6 @@
           %td= result["islive"]
           %td= result["participiant_name_0"]
           %td= result["participiant_name_1"]
-          %td
+          %td= result["moneyline_visiting"]
+          %td= result["moneyline_home"]
+          %td= result["moneyline_draw"]

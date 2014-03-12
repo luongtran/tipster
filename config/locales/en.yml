@@ -1,6 +1,8 @@
 en:
   hello: "Hello world"
-  lang: "Language"
+  language:
+    text: 'Language'
+    icon: '/assets/lang_en_ico.png'
   menu:
     pricing: "Pricing"
     tipster: "Tipsters"

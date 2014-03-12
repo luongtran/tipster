@@ -1,5 +1,7 @@
 fr:
-  lang: "Langue"
+  language:
+    text: 'Langue'
+    icon: '/assets/lang_fr_ico.png'
   hello: "Hello world"
   menu:
     pricing: "Des prix"

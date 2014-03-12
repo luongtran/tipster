@@ -56,6 +56,14 @@ module ApplicationHelper
     options
   end
 
+  def sports_for_select
+    options = []
+    Sport.all.each do |sp|
+      options << [sp.name, sp.id]
+    end
+    options
+  end
+
   def events_for_select(events)
     options = []
     events.each do |event|
