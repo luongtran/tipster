@@ -1,0 +1,66 @@
+- content_for :title do
+  Last Tips
+
+.container
+  .panel.panel-default
+    .panel-header.pas
+
+      %ul.sports-filter
+        %li
+          %a.btn{href: last_tips_path(sport_filter_param(nil)), class: class_for_sport_filter('all')}
+            All sports
+        - @sports.each do |sport|
+          %li
+            %a.btn{href: last_tips_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}
+              = sport.name.titleize
+      %hr
+      .text-center
+        %ul.list-inline.list-unstyled.mbn.dates-list
+          %li
+            %a{href: '#'}
+              2014/03/01
+    .panel-body
+      / Tab panes
+      .tab-content
+        #all.tab-pane.active
+          %table.table.table-bordered.table-hover.bgw
+            %thead
+              %tr
+                %th Event
+                %th Odds
+                %th Tipster
+                %th Sport
+                %th Published at
+                %th Profit
+                %th Result
+            %tbody
+              - @tips.each do |tip|
+                %tr
+                  %td.text-info
+                    %a{href: tip_path(tip)}= tip.event
+                  %td= tip.odds
+                  %td
+                    %a.text-warning{href: tipster_path(tip.author)}= tip.author.full_name
+                  %td= tip.sport.name.titleize
+                  %td= tip.published_at
+                  %td
+                    - if tip.correct?
+                      %span.text-success
+                        \+
+                        = tip.amount
+                    - else
+                      %span.text-danger
+                        \-
+                        = tip.amount
+                  %td
+                    - if tip.correct?
+                      %span.text-success
+                        &#x2714;
+                    - else
+                      %span.text-danger
+                        &#x2718;
+        - @sports.each do |sport|
+          %div.tab-pane{id: sport.name, class: class_for_current_sport(sport.name)}
+            = sport.name
+
+

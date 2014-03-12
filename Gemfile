@@ -106,7 +106,6 @@ gem 'fog'
 
 # For get google image chart
 gem 'googlecharts', git: 'git@github.com:luanht/googlecharts.git'
-gem "ransack", github: "activerecord-hackery/ransack", branch: "rails-4"
 
 # For parsing, validating phone number
 gem 'phone'

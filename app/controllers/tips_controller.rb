@@ -1,11 +1,12 @@
 class TipsController < ApplicationController
   def index
-    @tips = Tip.includes(:author).limit(30)
+    @tips = Tip.load_data(params)
     @sports = Sport.all
   end
 
   def last
-
+    @tips = Tip.load_data(params)
+    @sports = Sport.all
   end
 
   def show

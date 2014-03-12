@@ -18,9 +18,10 @@
               %tr
                 %th Event
                 %th Odds
-                %th Tipster
                 %th Sport
-                %th Published at
+                %th Type of bet
+                %th Selection
+                %th Created at
                 %th Profit
                 %th Result
             %tbody
@@ -29,9 +30,9 @@
                   %td.text-info
                     %a{href: tip_path(tip)}= tip.event
                   %td= tip.odds
-                  %td
-                    %a.text-warning{href: tipster_path(tip.author)}= tip.author.full_name
                   %td= tip.sport.name.titleize
+                  %td= tip.bet_type.name
+                  %td= tip.selection
                   %td= tip.created_at
                   %td
                     - if tip.correct?

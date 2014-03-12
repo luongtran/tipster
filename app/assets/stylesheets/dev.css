@@ -279,3 +279,7 @@ ul.rank-ranges li a.current, ul.rank-ranges li a:hover {
     color: #3c763d;
     border-bottom: 1px solid #3c763d;
 }
+ul.dates-list li a {
+    border: 2px solid #eee;
+    padding: 5px;
+}

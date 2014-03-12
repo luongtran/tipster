@@ -1,5 +1,5 @@
 .container
-  .text-center
+  .well.text-center
     %h4 Choose a sport
     = select_tag :sport,
         options_for_select(@tipster_sports.map {|s| [s.name.titleize, s.name, data: {url: new_backoffice_tip_path(sport: s.name)}]}),

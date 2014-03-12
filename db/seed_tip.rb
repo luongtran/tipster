@@ -30,6 +30,7 @@ else
           free: false,
           status: 1,
           correct: [false, true].sample,
+          published_at: created_at,
           created_at: created_at,
           updated_at: created_at + 10.seconds,
       )
