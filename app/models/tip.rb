@@ -70,7 +70,7 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   # VALIDATIONS
   # ===========================================================================
-  validates :author, :event, :platform, :odds, :selection, :advice,
+  validates :author, :event, :platform, :odds, :selection, :advice, :sport,
             :amount, presence: true
   validates_length_of :event, :advice, minimum: 10
 
