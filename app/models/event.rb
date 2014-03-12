@@ -1,5 +1,5 @@
 class Event
-  attr_accessor :team_a, :team_b, :time, :tournament
+  attr_accessor :team_a, :team_b, :time, :tournament, :selections
 
   def initialize(attrs = {})
     attrs ||= {}
@@ -94,6 +94,27 @@ class Event
        'West Bromwich',
        'Wigan Athletic'
       ].sample
+    end
+
+    def events_for_sport(sport)
+      case sport
+        when 'football'
+        when 'tennis'
+        when 'basketball'
+        when 'handball'
+        when 'rugby'
+        when 'hockey'
+        when 'horse_racing'
+        when 'football_us'
+        when 'baseball'
+      end
+    end
+
+    def create_football_events
+      new(
+          team_a: rand_team_a,
+          team_b: rand_team_b,
+      )
     end
   end
 end

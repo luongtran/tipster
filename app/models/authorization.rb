@@ -21,8 +21,8 @@ class Authorization < ActiveRecord::Base
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-  validates :subscriber, :uid, :provider, :presence => true
-  validates_uniqueness_of :uid, :scope => :provider
+  validates :subscriber, :uid, :provider, presence: true
+  validates_uniqueness_of :uid, scope: :provider
 
   # ==============================================================================
   # CLASS METHODS
