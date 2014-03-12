@@ -96,7 +96,7 @@ class Tip < ActiveRecord::Base
   class << self
     def load_data(params)
       relation = perform_filter_params(params)
-      result = relation.includes([:author])
+      result = relation.includes([:author, :sport]).limit(50)
     end
 
     def perform_filter_params(params, relation = self)
