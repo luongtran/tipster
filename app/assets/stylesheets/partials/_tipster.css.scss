@@ -46,7 +46,12 @@
   }
 
 }
-
+.registration{
+   padding: 0 !important;
+  .tipster-list-line1 ul.list-inline li a{
+    padding: 10px 16px;
+  }
+}
 #top_tipsters_of_weeks {
   width: 15%;
   float: left;

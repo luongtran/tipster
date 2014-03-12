@@ -10,7 +10,7 @@
             %p
               %span.step-number 1
             %p
-              %span.step-name Account
+              %span.step-name= link_to t('menu.subscribe.step1'), subscribe_account_path
         %li.step-seperator-container
           .step-seperator
         %li.complete
@@ -18,7 +18,7 @@
             %p
               %span.step-number 2
             %p
-              %span.step-name Choose offer
+              %span.step-name= link_to t('menu.subscribe.step2'), subscribe_choose_offer_path
         %li.step-seperator-container
           .step-seperator
         %li.complete
@@ -26,7 +26,7 @@
             %p
               %span.step-number 3
             %p
-              %span.step-name Personal Information
+              %span.step-name= link_to t('menu.subscribe.step3'), subscribe_personal_information_path
         %li.step-seperator-container
           .step-seperator
         %li.complete
@@ -34,7 +34,7 @@
             %p
               %span.step-number 4
             %p
-              %span.step-name Share on social network
+              %span.step-name= link_to t('menu.subscribe.step4'),subscribe_shared_path
 
         %li.step-seperator-container
           .step-seperator
@@ -43,7 +43,7 @@
             %p
               %span.step-number 5
             %p
-              %span.step-name Receive your tips
+              %span.step-name= link_to t('menu.subscribe.step5'),subscribe_receive_methods_path
         %li.step-seperator-container
           .step-seperator
         %li.current
@@ -51,7 +51,7 @@
             %p
               %span.step-number 6
             %p
-              %span.step-name Payment
+              %span.step-name= t('menu.subscribe.step6')
   .row
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
@@ -92,11 +92,7 @@
                     %td
                       = tipster.full_name
                     %td
-<<<<<<< HEAD
                       = tipster.tips.count
-=======
-                      -#= tipster.tips_count
->>>>>>> 6d5368cd32aa448909d43a018ff37e98d7bb00f1
                     %td
                       = tipster.profit
                     %td

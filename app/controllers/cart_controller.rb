@@ -18,7 +18,11 @@ class CartController < ApplicationController
   def add_tipster
     if selected_plan.nil?
       flash[:alert] = I18n.t("errors.messages.unselect_plan")
-      redirect_to pricing_path and return
+      unless params["step"]
+        redirect_to pricing_path and return
+      else
+        redirect_to subscribe_choose_offer_path and return
+      end
     end
     count_after_added = tipster_ids_in_cart.size + 1
     if count_after_added > (selected_plan.number_tipster + Subscription::MAX_ADDTIONAL_TIPSTERS)
@@ -29,7 +33,9 @@ class CartController < ApplicationController
     unless session[:plan_id].nil?
       select_plan = Plan.find_by_id(session[:plan_id])
       if select_plan.price == 0
-        redirect_to pricing_path, alert: "You cannot follow any tipsters with Free plan, please select another!" and return
+        unless params["step"]
+          redirect_to pricing_path, alert: "You cannot follow any tipsters with Free plan, please select another!" and return
+        end
       end
     end
     tipster_id = params[:id]
@@ -44,7 +50,11 @@ class CartController < ApplicationController
       flash[:alert] = "Request is invalid"
     end
     flash[:show_checkout_dialog] = true
-    redirect_to tipsters_url
+    unless params["step"]
+      redirect_to tipsters_url
+    else
+      redirect_to subscribe_choose_offer_path('sport' => 'all','enable' => 'tipster') and return
+    end
   end
 
   def drop_tipster

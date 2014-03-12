@@ -1,6 +1,8 @@
 -# Required variables: tipster_id
 = form_tag add_tipster_cart_path do
   = hidden_field_tag :id, tipster_id
+  - if defined? step
+    = hidden_field_tag :step,'choose_offer'
   - disabled = false
   - if defined? disable
     - disabled = disable

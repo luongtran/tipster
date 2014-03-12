@@ -19,7 +19,8 @@ fr:
       step1: "Compte"
       step2: "Choisir offre"
       step3: "Personnels"
-      step4: "Confirmation"
+      step4: "Share on social network"
+      step4_free: "Confirmation"
       step5: "Recevoir tips"
       step6: "Paiement"
   account:

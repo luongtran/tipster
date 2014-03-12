@@ -64,6 +64,8 @@ ActiveRecord::Schema.define(version: 20140312044845) do
     t.boolean "has_line",   default: true
   end
 
+  add_index "bet_types", ["sport_id"], name: "index_bet_types_on_sport_id"
+
   create_table "coupon_codes", force: true do |t|
     t.integer  "subscriber_id"
     t.string   "code",                          null: false
