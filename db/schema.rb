@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140310095134) do
+ActiveRecord::Schema.define(version: 20140312030351) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -53,6 +53,15 @@ ActiveRecord::Schema.define(version: 20140310095134) do
 
   add_index "authorizations", ["subscriber_id"], name: "index_authorizations_on_subscriber_id"
   add_index "authorizations", ["uid"], name: "index_authorizations_on_uid"
+
+  create_table "bet_types", force: true do |t|
+    t.integer "sport_id"
+    t.string  "code"
+    t.string  "name"
+    t.string  "other_name"
+    t.string  "definition"
+    t.string  "example"
+  end
 
   create_table "coupon_codes", force: true do |t|
     t.integer  "subscriber_id"
