@@ -34,7 +34,7 @@ class Backoffice::TipsController < ApplicationController
   def prepare_data_for_sport(sport)
     @choosen_sport ||= current_tipster.sports.find_by!(sport)
     @bet_types = @choosen_sport.bet_types
-    @events = Event.fetch(@choosen_sport)
+    @events = Event.fetch(@choosen_sport.name)
     @platforms = Platform.all
   end
 
