@@ -19,7 +19,8 @@ en:
       step1: "Account"
       step2: "Choose offer"
       step3: "Personal Information"
-      step4: "Confirmation"
+      step4: "Share on social network"
+      step4_free: "Confirmation"
       step5: "Receive your tips"
       step6: "Payment"
   account:

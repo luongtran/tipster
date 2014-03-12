@@ -1,6 +1,6 @@
 - @plans.each do |plan|
   .pricing-box-outer
-    .pricing_box{class: "#{@selected_plan == plan.id ? 'large' : ''}"}
+    .pricing_box{class: "#{@selected_plan.to_i == plan.id ? 'large' : ''}"}
       .header
         %span= plan.title.capitalize
       %ul.pricing-features

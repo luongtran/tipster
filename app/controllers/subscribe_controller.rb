@@ -84,18 +84,39 @@ class SubscribeController < ApplicationController
 
   def choose_offer
     if request.get?
-      @plans = Plan.all
-      @selected_plan = session[:plan_id]
-      @choose_offer = true
-    else
-      if params[:next_step]
-        redirect_to action: personal_information
-      elsif params[:plan_id]
-        session[:plan_id] = params[:plan_id]
+      if params[:enable]
+        params.delete(:enable)
         @show_checkout_dialog = !!flash[:show_checkout_dialog]
         @selected_plan = session[:plan_id]
         @tipsters = Tipster.load_data(params)
         @sports = Sport.all.order('position asc')
+        @top_tipsters = Tipster.find_top_3_last_week(params)
+        @sport = params["sport"]
+      else
+        @plans = Plan.all
+        @selected_plan = session[:plan_id]
+        @choose_offer = true
+      end
+    else
+      if params[:next_step]
+        redirect_to action: personal_information
+      elsif params[:plan_id] #Select plan
+        selected_plan = Plan.find(params[:plan_id])
+        max_cart_allow = selected_plan.number_tipster + Subscription::MAX_ADDTIONAL_TIPSTERS
+        if tipster_ids_in_cart.size > max_cart_allow
+          session[:cart][:tipster_ids].clear
+        end
+        session[:plan_id] = selected_plan.id
+        if selected_plan.free?
+          session[:cart][:tipster_ids].clear
+          redirect_to subscribe_personal_information_path and return
+        else
+          @show_checkout_dialog = !!flash[:show_checkout_dialog]
+          @selected_plan = session[:plan_id]
+          @tipsters = Tipster.load_data(params)
+          @top_tipsters = Tipster.find_top_3_last_week(params)
+          @sports = Sport.all.order('position asc')
+        end
       end
     end
   end
