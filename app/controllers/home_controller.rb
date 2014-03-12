@@ -2,9 +2,7 @@ class HomeController < ApplicationController
   before_action :subscriber_required
 
   def index
-    params[:q] ||= {}
-    q = Tipster.search(params[:q])
-    @tipsters = q.result
+    @tipsters = Tipster.limit(10)
     if flash[:sign_in_box]
       @show_sign_in_box = true
     end

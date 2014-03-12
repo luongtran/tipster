@@ -10,7 +10,9 @@
 class Sport < ActiveRecord::Base
   has_and_belongs_to_many :tipsters
   has_many :bet_types
+
   validates :name, presence: true, uniqueness: {case_sensitive: false}
+
   after_create :auto_position
 
   private

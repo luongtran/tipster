@@ -1,14 +1,22 @@
 .well
-  %h2 Create new tip
-  = simple_form_for @tip, url: backoffice_tips_path, html: {class: 'form-horizontal'} do |f|
-    = f.input :event,as: :select, collection: events_for_select(@events), include_blank: false
-    = f.input :platform, as: :select, collection: platforms_for_select, include_blank: false
-    = f.input :bet_type#, as: :select, collection: bet_types_for_select, include_blank: false
-    = f.input :sport_id ,as: :select,collection: sports_for_select, include_blank: false
+  %h4
+    Choosen sport:
+    %span.text-success= @choosen_sport.name.titleize
+  %h4 Tip information:
+
+  = simple_form_for @tip, url: backoffice_tips_path(sport: @choosen_sport.name), html: {class: 'form-horizontal', id: 'form-new-tip'} do |f|
+    = @tip.errors.full_messages
+    = f.input :event, as: :select, collection: events_for_select(@events),
+          include_blank: '-- Choose one --' , input_html: {class: 'select2able'}
+    = f.association :bet_type, collection: bet_types_for_select(@bet_types),
+          include_blank: '-- Choose one --' , input_html: {class: 'select2able', 'data-no-search' => true}
+    = f.input :platform_id, as: :select, collection: platforms_for_select(@platforms), include_blank: '-- Choose one --'
+    = f.input :sport_id, as: :hidden
     = f.input :odds
     = f.input :selection
+    = f.input :amount
     = f.input :advice
     .form-group
       .col-sm-offset-4.col-sm-7
         %button.btn.btn-primary{type: :submit} Submit
-        %a.btn.btn-default{href: backoffice_tips_path } Cancel
+        %a.btn.btn-default{href: backoffice_my_tips_path } Cancel

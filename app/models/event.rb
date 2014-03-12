@@ -15,7 +15,9 @@ class Event
 
   class << self
     def fetch(sport = 'soccer')
+      sport = (sport == 'football') ? 'soccer' : sport
       re_events = []
+
       #require 'open-uri'
       #doc = Nokogiri::XML(open("http://xml.pinnaclesports.com/pinnacleFeed.aspx?sportType=#{sport}"))
       #
@@ -30,6 +32,8 @@ class Event
       #  eve[:team_b] = three_ways[1].xpath("participant_name").text
       #  re_events << new(eve)
       #end
+
+      # ============ Randomize
       15.times do
         re_events << new(
             team_a: rand_team_a,
@@ -38,7 +42,7 @@ class Event
             time: (120..1200).to_a.sample.minutes.from_now
         )
       end
-
+      # ============ End of randomize
       re_events
     end
 
