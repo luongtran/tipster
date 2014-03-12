@@ -45,7 +45,7 @@
             - if tip.correct?
               %span.text-success
                 \+
-                = tip.amount
+                = (tip.amount*(tip.odds - 1)).round(0)
             - else
               %span.text-danger
                 \-

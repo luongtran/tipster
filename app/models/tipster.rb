@@ -236,7 +236,7 @@ class Tipster < ActiveRecord::Base
       total_amount += tip.amount
       if tip.correct?
         correct_tips += 1
-        @profit += (tip.amount*tip.odds).round(0)
+        @profit += (tip.amount*(tip.odds - 1)).round(0)
       else
         @profit -= tip.amount
       end
