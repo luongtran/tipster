@@ -48,17 +48,17 @@ module ApplicationHelper
     options
   end
 
-  def platforms_for_select
+  def platforms_for_select(platforms)
     options = []
-    #Tip::BET_BOOKMARKERS.each do |pf|
-    #  options << [pf.titleize, pf]
-    #end
+    platforms.each do |pf|
+      options << [pf.name.titleize, pf.id]
+    end
     options
   end
 
-  def sports_for_select
+  def sports_for_select(sports)
     options = []
-    Sport.all.each do |sp|
+    sports.each do |sp|
       options << [sp.name.titleize, sp.id]
     end
     options
@@ -72,10 +72,10 @@ module ApplicationHelper
     options
   end
 
-  def bet_types_for_select
+  def bet_types_for_select(bet_types)
     options = []
-    Tip::BET_TYPES_MAP.each do |type_key, type_name|
-      options << [type_name, type_key]
+    bet_types.each do |bet_type|
+      options << [bet_type.name.titleize, bet_type.id]
     end
     options
   end
