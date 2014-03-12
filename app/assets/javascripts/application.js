@@ -16,6 +16,7 @@
  = require user.js
  = require flash_message.js
  = require dev
+ = require ajaxify
  = require helper
  = require charts
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap

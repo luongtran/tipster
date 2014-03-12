@@ -1,0 +1,7 @@
+-# Required vars: tipsters
+- tipsters.each do |tipster|
+  %a{href: tipster_path(tipster)}
+    .tipster-top-unit.text-center
+      = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar'
+      .tipster-top-name.text-success.text-bold
+        = tipster.full_name

@@ -26,7 +26,7 @@ class Tipster < ActiveRecord::Base
   DEFAULT_RANKING_RANGE = LAST_3_MONTHS
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield
+  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield, :profit_per_months, :profit_per_days
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================

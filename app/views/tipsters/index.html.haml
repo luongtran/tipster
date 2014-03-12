@@ -63,13 +63,7 @@
   #top_tipsters_of_weeks
     %h4.text-slim.text-success.text-center Top 3 of the week
     %hr.mbs.mts
-      .tipster-top-body
-        - @top_tipsters.each do |tipster|
-          %a{href: tipster_path(tipster)}
-            .tipster-top-unit.text-center
-              = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar'
-              .tipster-top-name.text-success.text-bold
-                = tipster.full_name
+      .tipster-top-body.remote-data{data: {url: top_three_tipsters_path(sport: query_params[:sport]), 'error-msg' => 'Failed to load top 3 of the week.'}}
   - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
     #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
       .modal-dialog

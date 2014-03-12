@@ -34,6 +34,11 @@ class TipstersController < ApplicationController
     end
   end
 
+  def top_three
+    tipsters = Tipster.find_top_3_last_week(params)
+    render partial: 'top_three', locals: {tipsters: tipsters}
+  end
+
   def show
     @tipster = Tipster.find(params[:id])
     @recent_tips = @tipster.recent_tips

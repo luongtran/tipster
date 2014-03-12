@@ -1,6 +1,7 @@
+-# Required vars: tipster, @recent_tips
 .col-lg-12
   .col-md-6
-    %h2= "#{@tipster.full_name} overall profit"
+    %h2= "#{tipster.full_name} overall profit"
     #profil-chart-container
       = image_tag profit_img_chart_url_for(@tipster.profit_per_months)
   .col-md-5.col-md-offset-1
@@ -34,7 +35,7 @@
         %th Profit
         %th Result
     %tbody
-      - @recent_tips.each do |tip|
+      - recent_tips.each do |tip|
         %tr
           %td.text-info
             %a{href: tip_path(tip)}= tip.event

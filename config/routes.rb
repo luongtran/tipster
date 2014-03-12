@@ -53,6 +53,7 @@ TipsterHero::Application.routes.draw do
     end
     collection do
       get :fetch
+      get :top_three
     end
   end
   resource :subscription, controller: 'subscription', only: [:show] do
