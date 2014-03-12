@@ -82,6 +82,24 @@ class SubscribeController < ApplicationController
     end
   end
 
+  def choose_offer
+    if request.get?
+      @plans = Plan.all
+      @selected_plan = session[:plan_id]
+      @choose_offer = true
+    else
+      if params[:next_step]
+        redirect_to action: personal_information
+      elsif params[:plan_id]
+        session[:plan_id] = params[:plan_id]
+        @show_checkout_dialog = !!flash[:show_checkout_dialog]
+        @selected_plan = session[:plan_id]
+        @tipsters = Tipster.load_data(params)
+        @sports = Sport.all.order('position asc')
+      end
+    end
+  end
+
   def personal_information
     unless account_signed_in?
       redirect_to subscribe_account_url and return
