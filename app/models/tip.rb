@@ -13,7 +13,6 @@
 #  selection    :integer          not null
 #  line         :float
 #  advice       :text             not null
-#  stake        :float            not null
 #  amount       :integer          not null
 #  correct      :boolean          default(FALSE)
 #  status       :integer          not null
@@ -56,9 +55,6 @@
 
 class Tip < ActiveRecord::Base
 
-  BET_BOOKMARKERS = ["betclic", "bwin", "unibet",
-                     "fdj", "netbet", "france_paris"]
-
   STATUS_WAITING_FOR_APPROVED = 0
   STATUS_APPROVED = 1
   STATUS_REJECTED = 2
@@ -69,21 +65,19 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   belongs_to :author, polymorphic: true
   belongs_to :sport
-
+  belongs_to :bet_type
+  belongs_to :platform
   # ===========================================================================
   # VALIDATIONS
   # ===========================================================================
-  validates :author, :event, :platform, :bet_type, :odds, :selection, :advice,
-            :stake, :amount, presence: true
+  validates :author, :event, :platform, :odds, :selection, :advice,
+            :amount, presence: true
   validates_length_of :event, :advice, minimum: 10
-  validates_inclusion_of :platform, in: BET_BOOKMARKERS
-  validates_numericality_of :stake, greater_than_or_equal_to: 0.1,
-                            less_than_or_equal_to: 5
 
   # ===========================================================================
   # CALLBACKS
   # ===========================================================================
-  before_validation :init_status, :init_amount, on: :create
+  before_validation :init_status, on: :create
   #before_create :init_expire_time
 
   # ===========================================================================
@@ -121,10 +115,6 @@ class Tip < ActiveRecord::Base
   private
   def init_status
     self.status = 0
-  end
-
-  def init_amount
-    self.amount = 2000*self.stake/100 if self.stake
   end
 
   def init_expire_time

@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
+ActiveRecord::Schema.define(version: 20140312025909) do
+=======
 ActiveRecord::Schema.define(version: 20140312030351) do
+>>>>>>> f8eeefe927424a0bcfe7f9b88b785784546a8b7d
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -117,6 +121,11 @@ ActiveRecord::Schema.define(version: 20140312030351) do
     t.datetime "updated_at"
   end
 
+  create_table "platforms", force: true do |t|
+    t.string "code", null: false
+    t.string "name", null: false
+  end
+
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
     t.text     "data"
@@ -191,24 +200,24 @@ ActiveRecord::Schema.define(version: 20140312030351) do
   create_table "tips", force: true do |t|
     t.integer  "author_id"
     t.string   "author_type"
-    t.string   "event",                        null: false
-    t.string   "platform",                     null: false
-    t.integer  "bet_type",                     null: false
-    t.float    "odds",                         null: false
-    t.integer  "selection",                    null: false
+    t.integer  "sport_id"
+    t.string   "event",                          null: false
+    t.datetime "event_start_at"
+    t.datetime "event_end_at"
+    t.integer  "platform_id",                    null: false
+    t.integer  "bet_type_id",                    null: false
+    t.float    "odds",                           null: false
+    t.string   "selection",                      null: false
     t.float    "line"
-    t.text     "advice",                       null: false
-    t.float    "stake",                        null: false
-    t.integer  "amount",                       null: false
-    t.boolean  "correct",      default: false
-    t.integer  "status",                       null: false
-    t.boolean  "free",         default: false
+    t.text     "advice",                         null: false
+    t.integer  "amount",                         null: false
+    t.boolean  "correct",        default: false
+    t.integer  "status",                         null: false
+    t.boolean  "free",           default: false
     t.integer  "published_by"
     t.datetime "published_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "expire_at"
-    t.integer  "sport_id"
   end
 
   add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type"
