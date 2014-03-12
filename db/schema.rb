@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 20140312025909) do
-=======
 ActiveRecord::Schema.define(version: 20140312030351) do
->>>>>>> f8eeefe927424a0bcfe7f9b88b785784546a8b7d
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"

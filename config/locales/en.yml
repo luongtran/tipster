@@ -15,6 +15,13 @@ en:
     term: "Terms of use"
     my_profile: "My Profile"
     my_subscription: "My Subscription"
+    subscribe:
+      step1: "Account"
+      step2: "Choose offer"
+      step3: "Personal Information"
+      step4: "Confirmation"
+      step5: "Receive your tips"
+      step6: "Payment"
   account:
     invalid: "Email or password is invalid!"
   views:

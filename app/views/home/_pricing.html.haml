@@ -1,0 +1,37 @@
+- @plans.each do |plan|
+  .pricing-box-outer
+    .pricing_box{class: "#{@selected_plan == plan.id ? 'large' : ''}"}
+      .header
+        %span= plan.title.capitalize
+      %ul.pricing-features
+        %li.even
+          %strong.yes Free tips
+        %li.odd
+          %strong{class: "#{plan.reception_delay == 0 ? 'yes' : 'no'}"} Real-time notice bet
+        %li.even
+          %strong{class: "#{plan.free? ? 'no' : 'yes'}"} Follow professional tipster
+        %li.odd
+          %strong{class: "#{plan.profit_guaranteed? ? 'yes' : 'no'}"} Profit guaranteed
+        %li.even
+          %strong{class: "#{plan.switch_tipster_ability? ? 'yes' : 'no'}"} Change following tipster
+        %li.odd
+          %strong{class: "#{(plan.number_tipster > 1) ? 'yes' : 'no'}"} Follow multi tipsters
+      %p
+      %h2
+        - if plan.free?
+          FREE
+        - else
+          %sup €
+          = plan.price
+          %sub /month
+      %hr
+      - if @choosed_plan == plan.id
+        %a.btn.btn-warning{href: select_plan_path(plan.id)} Choosen
+      - else @selected_plan == plan.id
+        %p.button
+          - unless @choose_offer
+            = link_to "Subscribe", select_plan_path(plan.id),class: 'btn btn-default'
+          - else
+            = form_tag subscribe_choose_offer_path,method: 'post' do
+              = hidden_field_tag :plan_id, plan.id
+              = submit_tag "Subscribe", class: "btn btn-default"

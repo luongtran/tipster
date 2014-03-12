@@ -15,6 +15,13 @@ fr:
     term: "Terms of use"
     my_profile: "Mon profil"
     my_subscription: "Mon cotisation"
+    subscribe:
+      step1: "Compte"
+      step2: "Choisir offre"
+      step3: "Personnels"
+      step4: "Confirmation"
+      step5: "Recevoir tips"
+      step6: "Paiement"
   account:
     invalid: "Email ou mot de passe est invalide!"
   views:
@@ -79,6 +86,13 @@ fr:
     inactive: 'Inactive'
     tip:
       created_successfully: 'A tip created successfully!'
+  tipster:
+    ranking:
+      last-12-months: 'Last 12 months'
+      last-6-months: 'Last 6 months'
+      last-3-months: 'Last 3 months'
+      last-month: 'Last month'
+      overall: 'Overall'
     errors:
       messages:
         invalid_date: "is not a valid date"
