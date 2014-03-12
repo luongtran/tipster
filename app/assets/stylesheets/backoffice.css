@@ -14,5 +14,6 @@
  *= require partials/_page_home
  *= require font-awesome.min
  *= require select2
+ *= require select2-bootstrap
 
  */

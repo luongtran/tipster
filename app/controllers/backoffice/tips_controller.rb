@@ -12,7 +12,7 @@ class Backoffice::TipsController < ApplicationController
       @tip = current_tipster.tips.new(sport: @choosen_sport)
     else
       @tipster_sports = current_tipster.sports
-      render 'tips/choose_sport'
+      render 'backoffice/tips/choose_sport'
     end
   end
 

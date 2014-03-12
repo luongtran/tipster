@@ -4,28 +4,31 @@
       .row
         .col-md-9
           %h3.text-slim Tipster of the week:
-          %div(id="feature-carousel" class="carousel slide" data-ride="carousel")
+          #feature-carousel.carousel.slide(data-ride='carousel')
             .carousel-inner
-              - 3.times do |i|
-                .item{class: i == 1 ? "active" : "" }
-                  - @tipsters.page(i).per(5).each do |tipster|
+              - tipsters.each_slice(5).to_a.each_with_index do |tpts, index|
+                .item{class: index == 1 ? "active" : "" }
+                  - tpts.each do |tipster|
                     .hotTipster-unit
                       .hotTipster-body
-                        %h4.text-slim.tipster-title James Tucker
-                        = image_tag(tipster.avatar_url || 'demo.jpg',width: '210', class: 'avatar img-responsive')
+                        %h4.text-slim.tipster-title= tipster.full_name
+                        = image_tag(tipster.avatar_url || 'demo.jpg', width: '210', class: 'avatar img-responsive')
                       .hotTipster-foot
                         .hotTipster-info
                           %span.proofed
-                            Profil:
-                            %b= rand(100..900)
+                            Profit:
+                            %b
+                              +
+                              = rand(100..900)
                           %span.yield
                             Yield:
-                            %b= rand(0..100)
+                            %b
+                              = "#{rand(0..100)}%"
                         %a{href: "#{tipster_path(tipster)}",class: "see-profile-link" } See Profile
-            %a(class="left carousel-control" href="#feature-carousel" data-slide="prev")
-              %span(class="glyphicon glyphicon-chevron-left")
-            %a(class="right carousel-control" href="#feature-carousel" data-slide="next")
-              %span(class="glyphicon glyphicon-chevron-right")
+            %a.left.carousel-control(href="#feature-carousel" data-slide="prev")
+              %span.glyphicon.glyphicon-chevron-left
+            %a.right.carousel-control(href="#feature-carousel" data-slide="next")
+              %span.glyphicon.glyphicon-chevron-right
         .col-md-2
           =image_tag('headads.jpg')
   #board-gray

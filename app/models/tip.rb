@@ -72,7 +72,7 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   validates :author, :event, :platform, :odds, :selection, :advice, :sport,
             :amount, presence: true
-  validates_length_of :event, :advice, minimum: 10
+  validates_length_of :event, :advice, minimum: 10 , allow_blank: true
 
   # ===========================================================================
   # CALLBACKS
