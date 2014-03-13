@@ -1,5 +1,5 @@
 class Event
-  attr_accessor :team_a, :team_b, :time, :tournament, :selections
+  attr_accessor :team_a, :team_b, :time, :tournament, :league, :name, :teams
 
   def initialize(attrs = {})
     attrs ||= {}
@@ -9,16 +9,23 @@ class Event
     return self
   end
 
-  def name
-    "#{self.team_a} - #{self.team_b}"
-  end
-
   class << self
-    def fetch(sport = 'soccer')
-      sport = (sport == 'football') ? 'soccer' : sport
-      re_events = []
+    def fetch(sport)
+      file = File.join(Rails.root, 'db', "sample_matches_csv", "#{sport}.csv")
+      puts file
+
+      events_result = []
+      require 'csv'
+      if File.exists?(file)
+        CSV.foreach(file, :headers => true) do |row|
+          events_result << Event.new(row.to_hash)
+        end
+      else
+        puts "File doesn't exist!"
+      end
 
       #require 'open-uri'
+      #sport = (sport == 'football') ? 'soccer' : sport
       #doc = Nokogiri::XML(open("http://xml.pinnaclesports.com/pinnacleFeed.aspx?sportType=#{sport}"))
       #
       #events = doc.xpath("//event")
@@ -34,16 +41,16 @@ class Event
       #end
 
       # ============ Randomize
-      15.times do
-        re_events << new(
-            team_a: rand_team_a,
-            team_b: rand_team_b,
-            tournament: rand_tournament,
-            time: (120..1200).to_a.sample.minutes.from_now
-        )
-      end
+      #15.times do
+      #  re_events << new(
+      #      team_a: rand_team_a,
+      #      team_b: rand_team_b,
+      #      tournament: rand_tournament,
+      #      time: (120..1200).to_a.sample.minutes.from_now
+      #  )
+      #end
       # ============ End of randomize
-      re_events
+      events_result
     end
 
     def rand_team_a
@@ -110,11 +117,5 @@ class Event
       end
     end
 
-    def create_football_events
-      new(
-          team_a: rand_team_a,
-          team_b: rand_team_b,
-      )
-    end
   end
 end

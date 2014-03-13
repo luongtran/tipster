@@ -90,6 +90,7 @@ class Tip < ActiveRecord::Base
   scope :free, -> { where(free: true) }
   scope :correct, -> { where(correct: true) }
 
+  delegate :name, to: :sport, prefix: true
   # ===========================================================================
   # Class METHODS
   # ===========================================================================
