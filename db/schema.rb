@@ -220,9 +220,9 @@ ActiveRecord::Schema.define(version: 20140313021647) do
   end
 
   add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type", using: :btree
-  add_index "tips", ["bet_type_id"], name: "index_tips_on_bet_type_id"
-  add_index "tips", ["platform_id"], name: "index_tips_on_platform_id"
-  add_index "tips", ["sport_id"], name: "index_tips_on_sport_id"
+  add_index "tips", ["bet_type_id"], name: "index_tips_on_bet_type_id", using: :btree
+  add_index "tips", ["platform_id"], name: "index_tips_on_platform_id", using: :btree
+  add_index "tips", ["sport_id"], name: "index_tips_on_sport_id", using: :btree
 
   create_table "tipsters", force: true do |t|
     t.string   "display_name"
