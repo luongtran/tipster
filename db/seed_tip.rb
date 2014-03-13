@@ -54,7 +54,7 @@ else
       end
 
       # Go to the next day
-      date_have_tip += rand(1..5).days
+      date_have_tip += rand(1..4).days
     end
   end
   ActiveRecord::Base.record_timestamps = true

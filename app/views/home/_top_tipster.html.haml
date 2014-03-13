@@ -11,7 +11,7 @@
                   - tpts.each do |tipster|
                     .hotTipster-unit
                       .hotTipster-body
-                        %h4.text-slim.tipster-title= tipster.full_name
+                        %h4.text-slim.tipster-title= truncate(tipster.full_name, length: 17)
                         = image_tag(tipster.avatar_url || 'demo.jpg', width: '210', class: 'avatar img-responsive')
                       .hotTipster-foot
                         .hotTipster-info
