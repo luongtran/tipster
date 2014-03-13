@@ -6,7 +6,7 @@ else
   ActiveRecord::Base.record_timestamps = false
   created_at = rand(100..222).days.ago - rand(1..15).hours
   puts "\n===> Creating tipsters ==================="
-  45.times do
+  50.times do
     fn = Faker::Name.first_name
     tipser = Tipster.new(
         display_name: fn,
