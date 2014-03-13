@@ -86,6 +86,12 @@ module ApplicationHelper
     current_sport == sport ? 'current active' : ''
   end
 
+  def class_for_date_filter(date)
+    current_date = query_params[:date]
+    current_date = 'today' if current_date.nil?
+    current_date == date ? 'disable text-muted' : ''
+  end
+
   def query_params
     request.query_parameters
   end
@@ -138,6 +144,10 @@ module ApplicationHelper
     query_params.merge(sort: "#{field}_#{sort_direction}")
   end
 
+  def date_filter_param(date)
+    query_params.merge(date: date)
+  end
+
   def profit_img_chart_url_for(data)
     require 'gchart'
     Gchart.line(
@@ -168,5 +178,27 @@ module ApplicationHelper
     options << [I18n.t('user.male'), true]
     options << [I18n.t('user.female'), false]
     options
+  end
+
+  def date_range_filter_for_tips
+    date_param = query_params[:date]
+    if date_param.present?
+      begin
+        current_date = date_param.to_date
+      rescue => e
+        current_date = Date.today
+      end
+    end
+    current_date = Date.today if (current_date.nil? || current_date.future?)
+    range = []
+    tmp_date = current_date
+    if current_date.past?
+      range << {value: current_date.next_day.to_s, label: '<< Next day'}
+    end
+    7.times do |i|
+      range << {value: tmp_date.to_s, label: tmp_date.strftime("%b %d")}
+      tmp_date = tmp_date.prev_day
+    end
+    range << {value: current_date.prev_day.to_s, label: 'Prev day >>'}
   end
 end

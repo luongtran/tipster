@@ -17,8 +17,12 @@
       .text-center
         %ul.list-inline.list-unstyled.mbn.dates-list
           %li
-            %a{href: '#'}
-              2014/03/01
+            %a{href: last_tips_path(date_filter_param(nil)), class: class_for_date_filter('today')}
+              Today
+          - date_range_filter_for_tips.each do |date|
+            %li
+              %a{href: last_tips_path(date_filter_param(date[:value])), class: class_for_date_filter(date[:value])}
+                = date[:label]
     .panel-body
       / Tab panes
       .tab-content
@@ -31,6 +35,7 @@
                 %th Tipster
                 %th Sport
                 %th Published at
+                %th Stake
                 %th Profit
                 %th Result
             %tbody
@@ -43,6 +48,7 @@
                     %a.text-warning{href: tipster_path(tip.author)}= tip.author.full_name
                   %td= tip.sport.name.titleize
                   %td= tip.published_at
+                  %td= tip.amount
                   %td
                     - if tip.correct?
                       %span.text-success
@@ -59,8 +65,9 @@
                     - else
                       %span.text-danger
                         &#x2718;
-        - @sports.each do |sport|
-          %div.tab-pane{id: sport.name, class: class_for_current_sport(sport.name)}
-            = sport.name
+          - if @tips.empty?
+            .clearfix
+              .text-center.text-danger
+                Not found !
 
 
