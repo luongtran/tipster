@@ -60,6 +60,8 @@ class Tip < ActiveRecord::Base
   STATUS_REJECTED = 2
   STATUS_EXPIRED = 3
 
+  CREATE_PARAMS = [:event, :platform_id, :bet_type_id, :odds, :selection, :advice, :amount, :sport_id, :line]
+
   # ===========================================================================
   # ASSOCIATIONS
   # ===========================================================================
@@ -75,12 +77,13 @@ class Tip < ActiveRecord::Base
   validates_presence_of :bet_type_id, :platform_id, :event,
                         message: 'Choose at least one'
   validates_length_of :event, :advice, minimum: 10, allow_blank: true
+  validates_numericality_of :amount, greater_than_or_equal_to: 10
+  validates_numericality_of :odds, greater_than_or_equal_to: 1.0
 
   # ===========================================================================
   # CALLBACKS
   # ===========================================================================
   before_validation :init_status, on: :create
-  #before_create :init_expire_time
 
   # ===========================================================================
   # SCOPE
@@ -91,6 +94,7 @@ class Tip < ActiveRecord::Base
   scope :correct, -> { where(correct: true) }
 
   delegate :name, to: :sport, prefix: true
+
   # ===========================================================================
   # Class METHODS
   # ===========================================================================
@@ -124,15 +128,24 @@ class Tip < ActiveRecord::Base
       rescue => e
         date = Date.today
       end
-      relation = relation.where(published_at: date.beginning_of_day..date.end_of_day)
+      relation = relation.where(created_at: date.beginning_of_day..date.end_of_day)
       relation
     end
   end
+
   # ===========================================================================
   # INSTANCE METHODS
   # ===========================================================================
   def to_param
     "#{self.id}-#{self.event.parameterize}"
+  end
+
+  # Send tip and subtract bankroll
+  def published!
+  end
+
+  def published?
+    !!self.published_at
   end
 
   def published_date
@@ -155,6 +168,9 @@ class Tip < ActiveRecord::Base
     ((self.amount) * (self.odds - 1)).round(0)
   end
 
+  # ===========================================================================
+  # PRIVATE METHODS
+  # ===========================================================================
   private
   def init_status
     self.status = 0

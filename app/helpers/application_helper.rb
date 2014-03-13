@@ -75,7 +75,12 @@ module ApplicationHelper
   def bet_types_for_select(bet_types)
     options = []
     bet_types.each do |bet_type|
-      options << [bet_type.name.titleize, bet_type.id]
+      if bet_type.has_line?
+        options << [bet_type.name.titleize, bet_type.id, 'data-has-line' => true]
+      else
+        options << [bet_type.name.titleize, bet_type.id]
+      end
+
     end
     options
   end

@@ -5,13 +5,14 @@
   %h4 Tip information:
 
   = simple_form_for @tip, url: backoffice_tips_path(sport: @choosen_sport.name), html: {class: 'form-horizontal', id: 'form-new-tip'} do |f|
+    = f.input :sport_id, as: :hidden
     = f.input :event, as: :select, collection: events_for_select(@events),
           include_blank: '-- Choose one --', input_html: {class: 'select2able'}
-    = f.association :bet_type, collection: bet_types_for_select(@bet_types),
-          include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true}
     = f.input :platform_id, as: :select, collection: platforms_for_select(@platforms),
           include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true}
-    = f.input :sport_id, as: :hidden
+    = f.association :bet_type, collection: bet_types_for_select(@bet_types),
+          include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true, id: 'bet-types-select-for-tip'}
+    = f.input :line, wrapper_html: {id: 'line-for-tip', class: "#{'hide' unless @tip.bet_type.has_line? }"}
     = f.input :odds
     = f.input :selection
     = f.input :amount

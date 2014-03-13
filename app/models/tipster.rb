@@ -26,7 +26,7 @@ class Tipster < ActiveRecord::Base
   DEFAULT_RANKING_RANGE = LAST_3_MONTHS
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield, :profit_per_months, :profit_per_dates, :statistics_range, :tips_per_dates
+  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield, :profit_per_months, :profit_per_dates, :current_statistics_range, :tips_per_dates
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -187,8 +187,6 @@ class Tipster < ActiveRecord::Base
   def profit_in_string(include_unit = false)
     sign = if @profit > 0
              '+'
-           elsif @profit < 0
-             '-'
            else
              ''
            end
@@ -200,7 +198,7 @@ class Tipster < ActiveRecord::Base
   end
 
   def get_statistics(range = LAST_6_MONTHS)
-    @statistics_range = range
+    @current_statistics_range = range
     range = self.class.parse_range(range)
 
     if range.nil?
@@ -211,6 +209,7 @@ class Tipster < ActiveRecord::Base
     # Save the number of tip
     @number_of_tips = tips.count
 
+    # Grouping by published date
     date_with_tips = tips.group_by(&:published_date)
 
     @profit_per_dates = []
@@ -220,6 +219,8 @@ class Tipster < ActiveRecord::Base
     correct_tips = 0
     odds = 0
     total_amount = 0
+
+
     date_with_tips.each do |date, tips|
       @tips_per_dates << {date: date, tips_count: tips.count}
       tips.each do |tip|
