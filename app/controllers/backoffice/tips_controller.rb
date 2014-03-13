@@ -2,7 +2,7 @@ class Backoffice::TipsController < ApplicationController
   before_action :authenticate_account!, :tipster_required
 
   def my_tips
-    @tips = current_tipster.tips
+    @tips = Tip.by_author(current_tipster, params)
     @sports = current_tipster.sports
   end
 

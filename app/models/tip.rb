@@ -95,9 +95,13 @@ class Tip < ActiveRecord::Base
   # Class METHODS
   # ===========================================================================
   class << self
-    def load_data(params)
+    def by_author(author, params)
+      where(author_id: author, author_type: author.class.name).load_data(params)
+    end
+
+    def load_data(params, relation = self)
       relation = perform_filter_params(params)
-      result = relation.includes([:author, :sport]).limit(50)
+      result = relation.includes([:author, :sport, :bet_type]).limit(50)
     end
 
     def perform_filter_params(params, relation = self)
@@ -141,6 +145,10 @@ class Tip < ActiveRecord::Base
 
   def bet_on_in_string
     # Bet on: {Selection} [Line] {Bet type}
+  end
+
+  def profit
+    ((self.amount) * (self.odds - 1)).round(0)
   end
 
   private
