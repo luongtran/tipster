@@ -18,7 +18,10 @@ class Event
       require 'csv'
       if File.exists?(file)
         CSV.foreach(file, :headers => true) do |row|
-          events_result << Event.new(row.to_hash)
+          evnt = Event.new(row.to_hash)
+          evnt.team_a = evnt.teams.split('|').first
+          evnt.team_b = evnt.teams.split('|').last
+          events_result << evnt
         end
       else
         puts "File doesn't exist!"
