@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140312044845) do
+ActiveRecord::Schema.define(version: 20140313021647) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -220,6 +220,9 @@ ActiveRecord::Schema.define(version: 20140312044845) do
   end
 
   add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type"
+  add_index "tips", ["bet_type_id"], name: "index_tips_on_bet_type_id"
+  add_index "tips", ["platform_id"], name: "index_tips_on_platform_id"
+  add_index "tips", ["sport_id"], name: "index_tips_on_sport_id"
 
   create_table "tipsters", force: true do |t|
     t.string   "display_name"

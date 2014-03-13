@@ -6,7 +6,7 @@ else
   ActiveRecord::Base.record_timestamps = false
   created_at = rand(100..222).days.ago - rand(1..15).hours
   puts "\n===> Creating tipsters ==================="
-  1.times do
+  45.times do
     fn = Faker::Name.first_name
     tipser = Tipster.new(
         display_name: fn,
@@ -20,7 +20,7 @@ else
         updated_at: created_at
     )
     tipser.account.skip_confirmation!
-    tipser.save!
+    tipser.save
     # Add sport for tipster
     sports_of_tipster = sports.sample(rand(1..3))
     tipser.sports << sports_of_tipster
