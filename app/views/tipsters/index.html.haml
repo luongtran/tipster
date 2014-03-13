@@ -43,7 +43,7 @@
                       = tipster.full_name
                     .tipster-profit-chart
                       = image_tag profit_img_chart_url_for(tipster.profit_per_months), alt: 'Profit chart'
-                  %td= tipster.profit
+                  %td= tipster.profit_in_string
                   %td= tipster.yield_in_string
                   %td= tipster.number_of_tips
                   %td= tipster.hit_rate_in_string

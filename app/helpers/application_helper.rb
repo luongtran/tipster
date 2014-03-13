@@ -96,6 +96,14 @@ module ApplicationHelper
     request.query_parameters
   end
 
+  def current_date_param
+    query_params[:date] ||= 'Today'
+  end
+
+  def current_sport_param
+    query_params[:sport]
+  end
+
   # Detemine the my_account path for two resources: subscriber or tipster
   def update_profile_path_for(user)
     if user.is_a? Tipster

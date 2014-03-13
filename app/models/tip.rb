@@ -101,16 +101,14 @@ class Tip < ActiveRecord::Base
 
     def load_data(params, relation = self)
       relation = perform_filter_params(params)
-      result = relation.includes([:author, :sport, :bet_type]).limit(50)
+      result = relation.includes([:author, :sport, :bet_type])
     end
 
     def perform_filter_params(params, relation = self)
       unless params[:sport].blank?
         relation = relation.perform_sport_param(params[:sport])
       end
-      unless params[:date].blank?
-        relation = relation.perform_date_param(params[:date])
-      end
+      relation = relation.perform_date_param(params[:date])
       relation
     end
 
@@ -121,13 +119,15 @@ class Tip < ActiveRecord::Base
     end
 
     def perform_date_param(date, relation = self)
-      date = date.to_date
+      begin
+        date = date.to_date
+      rescue => e
+        date = Date.today
+      end
       relation = relation.where(published_at: date.beginning_of_day..date.end_of_day)
-    rescue => e
       relation
     end
   end
-
   # ===========================================================================
   # INSTANCE METHODS
   # ===========================================================================

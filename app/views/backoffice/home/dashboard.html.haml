@@ -1,0 +1,38 @@
+.container
+  .mam
+  .row
+    .panel.panel-default
+      .panel-heading
+        %strong Overview
+        .pull-right
+          %strong= t("tipster.ranking.#{@tipster.statistics_range}").titleize
+      .panel-body
+        .row
+          .text-center
+            %h4 Profit chart here
+        %hr
+        .row
+          .col-md-2.col-md-offset-1
+            Number of tips:
+            %strong= @tipster.number_of_tips
+          .col-md-2
+            Profit:
+            %strong= @tipster.profit_in_string
+          .col-md-2
+            Yield:
+            %strong= @tipster.yield_in_string
+          .col-md-2
+            Win rate:
+            %strong= @tipster.hit_rate_in_string
+          .col-md-2
+            Avg of odds:
+            %strong= @tipster.avg_odds
+    .panel.panel-default
+      .panel-heading
+        %strong Last tips
+      .panel-body
+  .row
+    .panel.panel-default
+      .panel-heading
+        %strong Followers
+      .panel-body

@@ -84,6 +84,7 @@ TipsterHero::Application.routes.draw do
 
   namespace :backoffice do
     root 'home#index'
+    get '/dashboard', to: 'home#dashboard'
     controller :profile do
       get :my_profile, to: :show
       post :update_profile, to: :update

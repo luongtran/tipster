@@ -26,7 +26,7 @@ class Tipster < ActiveRecord::Base
   DEFAULT_RANKING_RANGE = LAST_3_MONTHS
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield, :profit_per_months, :profit_per_days
+  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield, :profit_per_months, :profit_per_days, :statistics_range
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -214,6 +214,7 @@ class Tipster < ActiveRecord::Base
   end
 
   def get_statistics(range = LAST_6_MONTHS)
+    @statistics_range = range
     range = self.class.parse_range(range)
 
     if range.nil?
@@ -253,7 +254,7 @@ class Tipster < ActiveRecord::Base
   end
 
   def hit_rate_in_string
-    "#{hit_rate}%"
+    "#@hit_rate%"
   end
 
   # The average odds is calculated as the sum of the odds of every tip from an tipster,

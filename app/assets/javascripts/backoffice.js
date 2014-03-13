@@ -3,6 +3,7 @@
  = require jquery_ujs
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
  = require helper
+ = require highcharts
  = require select2
  */
 $(document).ready(function () {
@@ -17,4 +18,5 @@ $(document).ready(function () {
         $('#lk-create-new-tip').attr('href', $select_elm.attr('data-url')).removeClass('disabled');
     });
 
+    /* Charts */
 });
