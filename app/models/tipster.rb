@@ -26,7 +26,7 @@ class Tipster < ActiveRecord::Base
   DEFAULT_RANKING_RANGE = LAST_3_MONTHS
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield, :profit_per_months, :profit_per_days, :statistics_range
+  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield, :profit_per_months, :profit_per_dates, :statistics_range, :tips_per_dates
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -109,28 +109,14 @@ class Tipster < ActiveRecord::Base
       end
     end
 
-    def top_rank_in_range(range)
-      case range
-        when LAST_MONTH
-          # 30 days
-        when LAST_3_MONTHS
-          # 90 days
-        when LAST_6_MONTHS
-          # 180 days
-        when LAST_YEAR
-          # 365 days
-        else
-          # Overall ?
-      end
-    end
-
     # Find the top 3(profit) of the last week
     def find_top_3_last_week(params)
-      relation = self.limit(3)
+      # FIXME: this method isn't really implement
+      relation= self
       unless params[:sport].blank?
         relation = relation.perform_sport_param(params[:sport])
       end
-      relation.includes([:account])
+      relation.includes([:account]).limit(3)
     end
 
 
@@ -220,30 +206,36 @@ class Tipster < ActiveRecord::Base
     if range.nil?
       range = [self.created_at.to_date, Date.today]
     end
-    tips = self.tips.paid.where(created_at: range.first..range.second)
+    tips = self.tips.paid.where(published_at: range.first..range.second)
 
     # Save the number of tip
     @number_of_tips = tips.count
 
+    date_with_tips = tips.group_by(&:published_date)
+
+    @profit_per_dates = []
+    @tips_per_dates = []
     @yield = 0
     @profit = 0
     correct_tips = 0
-
     odds = 0
     total_amount = 0
-
-    tips.each do |tip|
-      odds += tip.odds
-      total_amount += tip.amount
-      if tip.correct?
-        correct_tips += 1
-        @profit += (tip.amount*(tip.odds - 1)).round(0)
-      else
-        @profit -= tip.amount
+    date_with_tips.each do |date, tips|
+      @tips_per_dates << {date: date, tips_count: tips.count}
+      tips.each do |tip|
+        odds += tip.odds
+        total_amount += tip.amount
+        if tip.correct?
+          correct_tips += 1
+          @profit += (tip.amount*(tip.odds - 1)).round(0)
+        else
+          @profit -= tip.amount
+        end
       end
+      @profit_per_dates << {date: date, profit: @profit}
     end
 
-    # # Cal avg of odds and hit(win) rate
+    #  Cal avg of odds and hit(win) rate
     if @number_of_tips.zero?
       @hit_rate, @avg_odds, @yield = 0, 0, 0
     else
@@ -251,17 +243,17 @@ class Tipster < ActiveRecord::Base
       @avg_odds = (odds/@number_of_tips.to_f).round(1)
       @yield = (@profit*100/total_amount.to_f).round(0)
     end
+    self
+  end
+
+  def profit_data_for_chart(range = LAST_6_MONTHS)
+    data = @profit_per_dates.map { |ppd| ppd[:profit] }
+    data
   end
 
   def hit_rate_in_string
     "#@hit_rate%"
   end
-
-  # The average odds is calculated as the sum of the odds of every tip from an tipster,
-  # divided by the total number of tips from that tipster
-  #def avg_odds(range = nil)
-  #  rand(0..5)
-  #end
 
   # The ratio between the number of profit months per active months
   # Return example:
@@ -272,7 +264,7 @@ class Tipster < ActiveRecord::Base
 
   # Return lastest tips limit by the given quantity
   def recent_tips(quantity = 10)
-    self.tips.order('created_at desc').limit(quantity)
+    self.tips.includes([:author, :sport]).order('created_at desc').limit(quantity)
   end
 
   def win_rate

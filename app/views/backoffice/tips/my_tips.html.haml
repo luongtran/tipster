@@ -63,7 +63,7 @@
       - if @tips.empty?
         .text-center.text-danger
           Not found any
-          %strong= current_sport_param
+          %strong= current_sport_param.try(:capitalize)
           tips on
           %strong= current_date_param
 

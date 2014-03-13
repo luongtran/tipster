@@ -135,6 +135,10 @@ class Tip < ActiveRecord::Base
     "#{self.id}-#{self.event.parameterize}"
   end
 
+  def published_date
+    self.published_at.to_date
+  end
+
   def free?
     [false, true].sample
   end

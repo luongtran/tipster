@@ -1,7 +1,12 @@
 #page_header_top
   .container.clearfix
     #tipster-logo-main.pull-left
-      %a{href: backoffice_root_path}
+      - home_url = ''
+      - if account_signed_in?
+        - home_url = backoffice_dashboard_path
+      - else
+        - home_url = backoffice_root_path
+      %a{href: home_url}
         = image_tag 'tipster-logo-main.png', alt: 'Tipster hero', class: 'img-responsive'
     #menu-main.pull-right
       %ul.list-inline
