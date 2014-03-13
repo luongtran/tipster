@@ -1,8 +1,3 @@
-/*
- * This is a temporally file because we currently don't have template yet
- * require 'bootstrap-2.3.2.min'
- */
-
 $(document).ready(function () {
     /* Datepicker for birthday all other */
     $.fn.datepicker.defaults.format = "yyyy-mm-dd";
@@ -238,13 +233,17 @@ $(document).ready(function () {
         }, 8000
     );
     var AvatarCropper,
-        __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+        __bind = function (fn, me) {
+            return function () {
+                return fn.apply(me, arguments);
+            };
+        };
 
-    jQuery(function() {
+    jQuery(function () {
         return new AvatarCropper();
     });
 
-    AvatarCropper = (function() {
+    AvatarCropper = (function () {
         function AvatarCropper() {
             this.updatePreview = __bind(this.updatePreview, this);
             this.update = __bind(this.update, this);
@@ -255,7 +254,8 @@ $(document).ready(function () {
                 onChange: this.update
             });
         }
-        AvatarCropper.prototype.update = function(coords) {
+
+        AvatarCropper.prototype.update = function (coords) {
             $('#user_crop_x').val(coords.x);
             $('#user_crop_y').val(coords.y);
             $('#user_crop_w').val(coords.w);
@@ -263,7 +263,7 @@ $(document).ready(function () {
             return this.updatePreview(coords);
         };
 
-        AvatarCropper.prototype.updatePreview = function(coords) {
+        AvatarCropper.prototype.updatePreview = function (coords) {
             return $('#preview').css({
                 width: Math.round(100 / coords.w * $('#cropbox').width()) + 'px',
                 height: Math.round(100 / coords.h * $('#cropbox').height()) + 'px',

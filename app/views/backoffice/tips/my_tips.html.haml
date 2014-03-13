@@ -3,12 +3,14 @@
   .panel.panel-default
     .panel-header{style: 'padding: 5px;'}
       / Nav tabs
-      %ul.nav.nav-tabs
-        %li{class: class_for_sport_filter('all')}
-          %a{"data-toggle" => "tab", href: "#all", data: {url: tips_path(sport_filter_param('all'))}}= 'All'
+      %ul.sports-filter.list-inline.list-unstyled.mbn
+        %li
+          %a.btn{href: backoffice_my_tips_path(sport_filter_param(nil)), class: class_for_sport_filter('all')}
+            All sports
         - @sports.each do |sport|
-          %li{class: class_for_sport_filter(sport.name)}
-            %a{"data-toggle" => "tab", href: "##{sport.name}", data: {url: tips_path(sport_filter_param(sport.name))}}= sport.name.titleize
+          %li
+            %a.btn{href: backoffice_my_tips_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}
+              = sport.name.titleize
     .panel-body
       / Tab panes
       .tab-content
@@ -38,7 +40,7 @@
                     - if tip.correct?
                       %span.text-success
                         \+
-                        = tip.amount
+                        = tip.profit
                     - else
                       %span.text-danger
                         \-
