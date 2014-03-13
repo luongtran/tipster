@@ -12,7 +12,7 @@
           include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true}
     = f.association :bet_type, collection: bet_types_for_select(@bet_types),
           include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true, id: 'bet-types-select-for-tip'}
-    = f.input :line, wrapper_html: {id: 'line-for-tip', class: "#{'hide' unless @tip.bet_type.has_line? }"}
+    = f.input :line, wrapper_html: {id: 'line-for-tip', class: "#{'hide' unless @tip.bet_type.try(:has_line?) }"}
     = f.input :odds
     = f.input :selection
     = f.input :amount
