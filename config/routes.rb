@@ -1,3 +1,10 @@
+class ActionDispatch::Routing::Mapper
+  # For split routes to multiple files
+  def draw(routes_name)
+    instance_eval(File.read(Rails.root.join("config/routes/#{routes_name}.rb")))
+  end
+end
+
 TipsterHero::Application.routes.draw do
   root 'home#index'
 
@@ -69,50 +76,6 @@ TipsterHero::Application.routes.draw do
   delete '/subscription/tipster/:id' => 'subscription#remove_inactive_tipster', as: :remove_inactive_tipster
   post '/subscription/select_free_plan' => 'subscription#select_free_plan', as: :select_free_plan
 
-  # Backoffice Tipster routes ==============================================
-  # Prefix: 'backoffice'
-  devise_scope :account do
-    namespace :backoffice do
-      get '/sign_in', to: 'sessions#new', as: :sign_in
-      post '/sign_in', to: 'sessions#create'
-      get '/sign_out', to: 'sessions#destroy'
-      get '/forgot_password', to: 'passwords#new', as: :forgot_password
-      post '/forgot_password', to: 'passwords#new'
-    end
-  end
-
-
-  namespace :backoffice do
-    root 'home#index'
-    get '/dashboard', to: 'home#dashboard'
-    controller :profile do
-      get :my_profile, to: :show
-      post :update_profile, to: :update
-      post :change_password
-      post :change_avatar
-      post :crop_avatar
-    end
-    get 'my_tips', to: 'tips#my_tips'
-    resources :tips, except: [:index] do
-
-    end
-  end
-  # End Tipster routes =====================================================
-
-  # Admin routes ===========================================================
-  devise_scope :account do
-    namespace :admin do
-      get '/sign_in', to: 'sessions#new', as: :sign_in
-      post '/sign_in', to: 'sessions#create'
-      get '/sign_out', to: 'sessions#destroy'
-    end
-  end
-  namespace :admin do
-    root 'home#index'
-    controller :profile do
-      post :change_password
-    end
-  end
 
   # Rueta set route here
   get '/signup', to: 'static#signup'
@@ -122,4 +85,6 @@ TipsterHero::Application.routes.draw do
 
   get '/test', to: 'home#xml_view', as: :list_match
 
+  draw :backoffice
+  draw :admin
 end
