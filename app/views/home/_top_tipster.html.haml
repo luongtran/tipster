@@ -1,36 +1,36 @@
 #page-header
   #feature-profiles
-    .container
-      .row
-        .col-md-9
-          %h3.text-slim Tipster of the week:
-          #feature-carousel.carousel.slide(data-ride='carousel')
-            .carousel-inner
-              - tipsters.each_slice(5).to_a.each_with_index do |tpts, index|
-                .item{class: index == 1 ? "active" : "" }
-                  - tpts.each do |tipster|
-                    .hotTipster-unit
-                      .hotTipster-body
-                        %h4.text-slim.tipster-title= truncate(tipster.full_name, length: 17)
-                        = image_tag(tipster.avatar_url || 'demo.jpg', width: '210', class: 'avatar img-responsive')
-                      .hotTipster-foot
-                        .hotTipster-info
-                          %span.proofed
-                            Profit:
-                            %b
-                              +
-                              = rand(100..900)
-                          %span.yield
-                            Yield:
-                            %b
-                              = "#{rand(0..100)}%"
-                        %a{href: "#{tipster_path(tipster)}",class: "see-profile-link" } See Profile
-            %a.left.carousel-control(href="#feature-carousel" data-slide="prev")
-              %span.glyphicon.glyphicon-chevron-left
-            %a.right.carousel-control(href="#feature-carousel" data-slide="next")
-              %span.glyphicon.glyphicon-chevron-right
-        .col-md-2
-          =image_tag('headads.jpg')
+    .container.pbm
+      %div= image_tag('title-tipweek.png')
+    .container.box-white.ptm.pbm.clearfix
+      -#feature-carousel.carousel.slide.mlm(data-ride='carousel')
+      #feature-carousel.mlm.pull-left
+        .carousel-inner
+          - tipsters.each_slice(4).to_a.each_with_index do |tpts, index|
+            .item{class: index == 1 ? "active" : "" }
+              - tpts.each do |tipster|
+                .hotTipster-unit
+                  .hotTipster-body
+                    %h4.text-slim.tipster-title= truncate(tipster.full_name, length: 17)
+                    = image_tag(tipster.avatar_url || 'demo.jpg', width: '210', class: 'avatar img-responsive')
+                  .hotTipster-foot
+                    .hotTipster-info
+                      %span.proofed
+                        Profit:
+                        %b
+                          +
+                          = rand(100..900)
+                      %span.yield
+                        Yield:
+                        %b
+                          = "#{rand(0..100)}%"
+                    %a{href: "#{tipster_path(tipster)}",class: "see-profile-link" } See Profile
+        -#%a.left.carousel-control(href="#feature-carousel" data-slide="prev")
+          %span.glyphicon.glyphicon-chevron-left
+        -#%a.right.carousel-control(href="#feature-carousel" data-slide="next")
+          %span.glyphicon.glyphicon-chevron-right
+      .pull-right
+        =image_tag('headads.jpg')
   #board-gray
     .board-gray-inner.container.clearfix
       %h4.text-slim.man.pull-left Stop gambling, invest...  get tips from <br>proven proffesional tipsters

@@ -253,17 +253,8 @@ p.button a:hover {
 #Nos-abonnaments h1.box-title {
     color: #fff;
 }
-
-.menu ul.list-inline > li > a {
-    padding: 10px 35px;
-}
-
 #page_header_mid:not(.fixed-bg) {
     background: url('/assets/header-bg.jpg') no-repeat top left;
-}
-
-.menu ul.list-inline > li:hover, .menu ul.list-inline > li.current {
-    background-color: rgb(52, 90, 52);
 }
 
 .tipster-top-avatar-mini {

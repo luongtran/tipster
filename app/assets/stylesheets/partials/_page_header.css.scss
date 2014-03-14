@@ -78,10 +78,11 @@
 #page_header_mid {
   //background: url('/assets/header-bg.jpg') no-repeat center top;
   color: #ffffff;
-  background: black;
+  @extend .background-granite;
 }
 .index #page_header_mid {
-  background: black;
+  //background: black;
+  @extend .background-granite;
 }
 
 #sub-page-header {
@@ -175,9 +176,14 @@
 
 
 .hotTipster-unit {
-  width: 150px;
+  width: 180px;
   float: left;
-  margin: 0 8px;
+  margin: 0 22px;
+  background-color: #f7f7f7;
+  border: solid 1px shade(#f7f7f7, 10%);
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 10px;
   .hotTipster-head {
     background-color: shade($gray-dark, 50%);
     color: #ffffff;
@@ -192,15 +198,20 @@
     }
   }
   .hotTipster-body {
+    padding-left: 10px;
+    padding-right: 10px;
     margin-bottom: 5px;
     .tipster-title {
-      color: goldenrod;
-      font-style: italic;
+      text-align: center;
+      color: graytext;
     }
     .avatar {
+
     }
   }
   .hotTipster-foot {
+    padding-left: 10px;
+    padding-right: 10px;
     .chart-mini {
       margin-bottom: 5px;
     }
@@ -209,6 +220,7 @@
       margin-bottom: 20px;
       span {
         display: block;
+        color: gray;
         b {
           font-style: normal;
           color: forestgreen;
@@ -258,22 +270,57 @@
 
 
 .menu {
-  background-color: forestgreen;
-  border-bottom: solid 2px white;
+  background-color: #414242;
   ul.list-inline {
     margin-bottom: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
     > li {
-      border-right: solid 2px white;
-      &:first-child {
-        border-left: solid 2px white;
+      border-right: solid 1px white;
+      &:last-child {
+        border-right: none;
       }
       > a {
-        padding: 10px 15px;
+        padding: 2px 35px;
         text-transform: uppercase;
         font-size: 14px;
         color: white;
         display: inline-block;
+        &:hover {
+          background-color: #808080;
+        }
       }
     }
   }
+}
+
+.tipsterdetail-head {
+  height: 270px;
+  position: relative;
+  > .row {
+    position: absolute;
+    z-index: 1;
+    bottom: -30px;
+    width: 100%;
+  }
+  .avatar-tipster {
+    img {
+      border-radius: 100px;
+      border: solid 3px white;
+    }
+  }
+  .common-tipster-info {
+    padding-top: 100px;
+    .table {
+      tr {
+        border: none;
+        td {
+          border: none;
+        }
+      }
+    }
+  }
+}
+.tipters-menu-quicklink {
+  background-color: white;
 }
