@@ -32,7 +32,10 @@ class Tipster < ActiveRecord::Base
   DEFAULT_RANKING_RANGE = LAST_3_MONTHS
 
   attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield, :profit_per_months, :profit_per_dates, :current_statistics_range, :tips_per_dates
+  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield,
+                :profit_per_months, :profit_per_dates, :current_statistics_range, :tips_per_dates,
+                :profitable_months
+
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -47,6 +50,7 @@ class Tipster < ActiveRecord::Base
   # VALIDATIONS
   # ==============================================================================
   validates :display_name, uniqueness: {case_sensitive: false}
+
   # ==============================================================================
   # SCOPE
   # ==============================================================================
@@ -75,7 +79,7 @@ class Tipster < ActiveRecord::Base
 
       result = relation.includes([:account])
       result.each do |tipster|
-        tipster.get_statistics(parse_range_param(params))
+        tipster.get_statistics(params)
       end
       if sorting_info.increase?
         result.sort_by { |tipster| tipster.send("#{sorting_info.sort_by}") }
@@ -111,7 +115,7 @@ class Tipster < ActiveRecord::Base
       if params[:ranking].present?
         params[:ranking]
       else
-        LAST_6_MONTHS
+        DEFAULT_RANKING_RANGE
       end
     end
 
@@ -125,9 +129,8 @@ class Tipster < ActiveRecord::Base
       relation.includes([:account]).limit(3)
     end
 
-
     # Return the start & end date specify by given range
-    def parse_range(range = LAST_MONTH, tipster)
+    def range_paser(range, tipster)
       end_date = Date.today
       start_date = case range
                      when LAST_MONTH
@@ -143,7 +146,7 @@ class Tipster < ActiveRecord::Base
                      else
                        90.days.ago
                    end
-      [start_date, end_date]
+      start_date..end_date
     end
 
     # ==============================================================================
@@ -201,10 +204,13 @@ class Tipster < ActiveRecord::Base
     "#@yield%"
   end
 
-  def get_statistics(range = LAST_6_MONTHS)
+  def get_statistics(params = {})
+    range = self.class.parse_range_param(params)
+
     @current_statistics_range = range
-    range = self.class.parse_range(range, self)
-    tips = self.tips.paid.where(published_at: range.first..range.second)
+
+    range = self.class.range_paser(range, self)
+    tips = self.tips.paid.where(published_at: range)
 
     # Save the number of tip
     @number_of_tips = tips.count
@@ -219,7 +225,6 @@ class Tipster < ActiveRecord::Base
     correct_tips = 0
     odds = 0
     total_amount = 0
-
 
     date_with_tips.each do |date, tips|
       @tips_per_dates << {date: date, tips_count: tips.count}
@@ -247,9 +252,17 @@ class Tipster < ActiveRecord::Base
     self
   end
 
-  def profit_data_for_chart(range = LAST_6_MONTHS)
-    data = @profit_per_dates.map { |ppd| ppd[:profit] }
-    data
+  #def statistics_by_month
+  #  #self.tips.size
+  #  dates = first_dates_of_months_since_join
+  #end
+
+  def profit_values_for_chart
+    @profit_per_dates.map { |ppd| ppd[:profit] }
+  end
+
+  def profit_dates_for_chart
+    @profit_per_dates.map { |ppd| ppd[:date].strftime("%b %d") }
   end
 
   def hit_rate_in_string
@@ -260,7 +273,7 @@ class Tipster < ActiveRecord::Base
   # Return example:
   # 3/6
   def profitable_months
-    "#{rand(3..6)}/#{rand(6..8)}"
+    "#{rand(3..6)}/#{first_dates_of_months_since_join.count}"
   end
 
   # Return lastest tips limit by the given quantity
@@ -269,17 +282,20 @@ class Tipster < ActiveRecord::Base
   end
 
   def win_rate
-
   end
 
-  # Return the tips on the given date
-  def tips_on_the_date(date)
-  end
-
-  def profit_per_months(range = nil)
-    (5..30).to_a
-    #[4, 5, 6, 7, 8, 9, 10, 11, 9, 6, 7, 5, 5, 9].sample(15).map { |n| n * 10 }
-    # [20,21]
+  # Return an array of the first date of the months from tipster join date to today
+  # Ex: ['2013-02-01','2013-02-01' ...]
+  def first_dates_of_months_since_join
+    dates = []
+    first_date_of_first_month = self.created_at.to_date.beginning_of_month
+    first_date_of_last_month = Date.today.beginning_of_month
+    tmp_date = first_date_of_first_month
+    while tmp_date <= first_date_of_last_month
+      dates << tmp_date
+      tmp_date = tmp_date.next_month
+    end
+    dates
   end
 
   protected

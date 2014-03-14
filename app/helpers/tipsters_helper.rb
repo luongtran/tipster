@@ -43,8 +43,4 @@ module TipstersHelper
   def ranking_param(range)
     query_params.merge(ranking: range)
   end
-
-  def current_sort_by_param
-    query_params[:sort_by]
-  end
 end

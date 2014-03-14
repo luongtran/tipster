@@ -111,3 +111,4 @@ gem 'googlecharts', git: 'git@github.com:luanht/googlecharts.git'
 gem 'phone'
 # Anti robot
 gem 'humanizer'
+gem 'lazy_high_charts'

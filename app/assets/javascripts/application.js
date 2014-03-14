@@ -17,7 +17,7 @@
  = require dev
  = require ajaxify
  = require helper
- = require charts
+ = require highcharts/highcharts
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
  = require ../../../vendor/assets/javascripts/framework/angularjs/angular.min
  = require ../../../vendor/assets/javascripts/framework/angularjs/angular-animate.min
@@ -26,11 +26,3 @@
  = require appjs/app
  = require_tree .
  */
-
-$(function() {
-    return $("a").bind("ajax:error", function(event, jqXHR, ajaxSettings, thrownError) {
-        if (jqXHR.status === 401) {
-            return window.location.replace(this);
-        }
-    });
-});

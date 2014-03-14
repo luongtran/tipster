@@ -1,5 +1,6 @@
 class TipstersController < ApplicationController
 
+  before_action :find_tipster, only: [:show, :detail_statistics, :last_tips, :biography, :profile]
   # GET /tipsters
   def index
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
@@ -24,13 +25,26 @@ class TipstersController < ApplicationController
   end
 
   def show
-    @tipster = Tipster.find(params[:id])
-    @tipster.get_statistics
-    @recent_tips = @tipster.recent_tips
+    @tipster.get_statistics(params)
+    @chart = Charter.tipster_profit_chart(@tipster)
+  end
+
+  def detail_statistics
+    @tipster.statistics_by_month
+  end
+
+  def last_tips
+  end
+
+  def biography
   end
 
   def profile
-    @tipster = Tipster.find(params[:id])
     @recent_tips = @tipster.recent_tips
+  end
+
+  private
+  def find_tipster
+    @tipster = Tipster.find(params[:id])
   end
 end

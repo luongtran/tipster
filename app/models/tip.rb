@@ -56,7 +56,7 @@
 class Tip < ActiveRecord::Base
 
   STATUS_WAITING_FOR_APPROVED = 0
-  STATUS_APPROVED = 1
+  STATUS_PUBLISHED = 1
   STATUS_REJECTED = 2
   STATUS_FINISHED = 3
 
@@ -84,12 +84,12 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   # CALLBACKS
   # ===========================================================================
-  before_validation :init_status, on: :create
+  before_create :init_status
 
   # ===========================================================================
   # SCOPE
   # ===========================================================================
-  scope :published, -> { where(status: STATUS_APPROVED) }
+  scope :published, -> { where(status: STATUS_PUBLISHED) }
   scope :paid, -> { where(free: false) }
   scope :free, -> { where(free: true) }
   scope :correct, -> { where(correct: true) }
@@ -174,7 +174,7 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   private
   def init_status
-    self.status = 0
+    self.status = STATUS_WAITING_FOR_APPROVED
   end
 
   def init_expire_time

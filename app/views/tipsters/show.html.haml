@@ -1,9 +1,8 @@
 = content_for :title do
   Tipster profile
-  
+
 #profile-overiew-page
   .container
-
     #profile-overview.profile-overview
       .row
         .col-md-6
@@ -13,49 +12,53 @@
                 = image_tag (@tipster.avatar_url || 'demo.jpg'), class: 'user_avatar'
               #profile-overiew-statistic.profile-overiew-statistic.pull-left.text-md
                 %h3.ptn.mtn.text-slim.mbl= @tipster.full_name
-                %h4.text-md.text-uppercase.text-muted Statistics
-                %p.mbs
-                  %span.mrs Profit:
-                  %span.text-success.text-bold.text-lg
-                    = @tipster.profit_in_string(true)
-                  %i.text-muted
-                    in the last
-                    %strong 6 months
-                %p.mbs
-                  %span.mrs Yield:
-                  %span.text-success.text-bold.text-lg
-                    = @tipster.yield_in_string
-                  %i.text-muted
-                    on last
-                    %strong
-                      = @tipster.number_of_tips
-                      tips
+                = render 'shared/add_to_cart_form', {tipster_id: @tipster.id , disable: tipster_ids_in_cart.include?(@tipster.id.to_s)}
 
-        .col-md-6
-          %h3.mtl.text-slim Subscribe to this Tipster
-          = render 'shared/add_to_cart_form', {tipster_id: @tipster.id , disable: tipster_ids_in_cart.include?(@tipster.id.to_s)}
-
+        .col-md-1.col-md-offset-4
+          = select_tag :ranking, options_for_select(ranking_ranges_for_select), class: 'select-as-links'
     #profile-overview-detail
       .panel.panel-default
         .panel-header
-          / Nav tabs
-          %ul.nav.nav-tabs
-            %li.active
-              %a{"data-toggle" => "tab", href: "#general"} General
-            %li
-              %a{"data-toggle" => "tab", href: "#statistics"} Statistics
-            %li
-              %a{"data-toggle" => "tab", href: "#last-pick"} Last picks
-            %li
-              %a{"data-toggle" => "tab", href: "#service-description"} Biography
-            %li
-              %a{"data-toggle" => "tab", href: "#news"} News
+          .mam.text-center
+            %ul.list-unstyled.list-inline
+              %li
+                %a.btn.btn-default{href: '#'}
+                  General statistics
+                %a.btn.btn-default{href: '#'}
+                  Details statistics
+                %a.btn.btn-default{href: '#'}
+                  Last tips
+                %a.btn.btn-default{href: '#'}
+                  Description
+          .clearfix
+            %hr
         .panel-body
-          / Tab panes
-          .tab-content
-            #general.tab-pane.active
-              = render 'tipsters/profile/general', {tipster: @tipster, recent_tips: @recent_tips}
-            #statistics.tab-pane ...
-            #last-pick.tab-pane ...
-            #service-description.tab-pane ...
-            #news.tab-pane ...
+          .clearfix
+            .col-md-12
+              .col-md-2.col-md-offset-1.text-center
+                %h2
+                  %i Profit:
+                = @tipster.profit_in_string(true)
+              .col-md-2.text-center
+                %h2
+                  %i Yield:
+                = @tipster.yield_in_string
+              .col-md-2.text-center
+                %h2
+                  %i Tips:
+                = @tipster.number_of_tips
+              .col-md-2.text-center
+                %h2
+                  %i Avg Odds:
+                = @tipster.avg_odds
+              .col-md-2.text-center
+                %h2
+                  %i Win rate:
+                = @tipster.hit_rate_in_string
+            .col-md-12
+              .text-center
+                = high_chart("profil-chart-container", @chart)
+
+
+
+

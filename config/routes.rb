@@ -58,6 +58,9 @@ TipsterHero::Application.routes.draw do
   resources :tipsters, only: [:index, :show] do
     member do
       get :profile
+      get :detail_statistics
+      get :last_tips
+      get :biography
     end
     collection do
       get :top_three

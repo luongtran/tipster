@@ -85,6 +85,19 @@ module ApplicationHelper
     options
   end
 
+  def ranking_ranges_for_select
+    options = []
+    Tipster::RANKING_RANGES.each do |range|
+      options << [
+          I18n.t("tipster.ranking.ranges.#{range}").titleize,
+          range,
+          'data-url' => tipster_path(ranking: range),
+          selected: current_ranking_range_param == range
+      ]
+    end
+    options
+  end
+
   def class_for_sport_filter(sport)
     current_sport = query_params[:sport]
     current_sport = 'all' if current_sport.nil?
@@ -162,7 +175,11 @@ module ApplicationHelper
     query_params.merge(date: date)
   end
 
-  def profit_img_chart_url_for(data)
+  def profit_img_chart_url_for(data, options = {})
+    default_options = {
+        size: '70x35'
+    }
+    options = default_options.merge(options)
     require 'gchart'
     Gchart.line(
         data: data, :encoding => 'extended',
@@ -178,7 +195,7 @@ module ApplicationHelper
             angle: '270'
         },
         line_colors: 'ACC253',
-        :size => '70x35',
+        :size => options[:size],
     )
   end
 
@@ -214,5 +231,13 @@ module ApplicationHelper
       tmp_date = tmp_date.prev_day
     end
     range << {value: current_date.prev_day.to_s, label: 'Prev day >>'}
+  end
+
+  def current_sort_by_param
+    query_params[:sort_by] ||= Tipster::DEFAULT_RANKING_SORT_BY
+  end
+
+  def current_ranking_range_param
+    query_params[:ranking] ||= Tipster::DEFAULT_RANKING_RANGE
   end
 end

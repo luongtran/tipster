@@ -5,7 +5,7 @@ class TipsController < ApplicationController
   end
 
   def last
-    @tips = Tip.load_data(params)
+    @tips = Tip.published.load_data(params)
     @sports = Sport.all
   end
 
