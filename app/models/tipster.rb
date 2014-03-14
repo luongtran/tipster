@@ -117,8 +117,8 @@ class Tipster < ActiveRecord::Base
 
     # Find the top 3(profit) of the last week
     def find_top_3_last_week(params)
-      # FIXME: this method isn't really implement
-      relation= self
+      # FIXME: this method isn't really implement yet
+      relation = self
       unless params[:sport].blank?
         relation = relation.perform_sport_param(params[:sport])
       end
@@ -127,19 +127,21 @@ class Tipster < ActiveRecord::Base
 
 
     # Return the start & end date specify by given range
-    def parse_range(range = LAST_MONTH)
+    def parse_range(range = LAST_MONTH, tipster)
       end_date = Date.today
       start_date = case range
                      when LAST_MONTH
-                       30.days.ago(end_date)
+                       30.days.ago
                      when LAST_3_MONTHS
-                       90.days.ago(end_date)
+                       90.days.ago
                      when LAST_6_MONTHS
-                       180.days.ago(end_date)
+                       180.days.ago
                      when LAST_12_MONTHS
-                       365.days.ago(end_date)
+                       365.days.ago
+                     when OVERALL
+                       tipster.created_at.to_date
                      else
-                       return nil
+                       90.days.ago
                    end
       [start_date, end_date]
     end
@@ -191,11 +193,7 @@ class Tipster < ActiveRecord::Base
   end
 
   def profit_in_string(include_unit = false)
-    sign = if @profit > 0
-             '+'
-           else
-             ''
-           end
+    sign = '+' if @profit > 0
     "#{sign}#@profit #{I18n.t('tipster.units') if include_unit}"
   end
 
@@ -205,11 +203,7 @@ class Tipster < ActiveRecord::Base
 
   def get_statistics(range = LAST_6_MONTHS)
     @current_statistics_range = range
-    range = self.class.parse_range(range)
-
-    if range.nil?
-      range = [self.created_at.to_date, Date.today]
-    end
+    range = self.class.parse_range(range, self)
     tips = self.tips.paid.where(published_at: range.first..range.second)
 
     # Save the number of tip

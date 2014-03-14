@@ -97,7 +97,11 @@ en:
         yield: 'Yield'
         profit: 'Profit'
     units: 'Units'
-
+  cart:
+    empty: 'Your cart is empty'
+    already_in_cart: 'The tipster already in your cart'
+    free_plan_alert: 'You cannot follow any tipsters with Free plan, please choose another.'
+    limit_add_tipster: "You can add only addtional %{count} tipsters."
   tip:
     created_successfully: 'A tip created successfully!'
   errors:

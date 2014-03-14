@@ -4,7 +4,7 @@ class CartController < ApplicationController
   def show
     reset_cart_session
     if tipster_ids_in_cart.empty?
-      flash[:alert] = "Your cart is empty"
+      flash[:alert] = I18n.t('cart.empty')
       redirect_to tipsters_url
     else
       @tipsters = Tipster.where(id: tipster_ids_in_cart)
@@ -24,42 +24,42 @@ class CartController < ApplicationController
         redirect_to subscribe_choose_offer_path and return
       end
     end
+
     count_after_added = tipster_ids_in_cart.size + 1
     if count_after_added > (selected_plan.number_tipster + Subscription::MAX_ADDTIONAL_TIPSTERS)
-      flash[:alert] = "You can add only #{Subscription::MAX_ADDTIONAL_TIPSTERS} addtional tipsters."
+      flash[:alert] = I18n.t('cart.limit_add_tipster', count: Subscription::MAX_ADDTIONAL_TIPSTERS)
       redirect_to cart_url and return
     end
 
-    unless session[:plan_id].nil?
+    unless selected_plan.nil?
       select_plan = Plan.find_by_id(session[:plan_id])
       if select_plan.price == 0
         unless params["step"]
-          redirect_to pricing_path, alert: "You cannot follow any tipsters with Free plan, please select another!" and return
+          redirect_to pricing_path, alert: I18n.t('cart.free_plan_alert') and return
         end
       end
     end
+
     tipster_id = params[:id]
     if Tipster.exists?(tipster_id)
       initial_cart_session if session[:cart].nil?
       if tipster_ids_in_cart.include? tipster_id
-        flash[:alert] = "Tipster already added to cart"
+        flash[:alert] = I18n.t('cart.already_in_cart')
       else
-        session[:cart][:tipster_ids] << tipster_id
+        add_tipster_to_cart(tipster_id)
       end
-    else
-      flash[:alert] = "Request is invalid"
     end
     flash[:show_checkout_dialog] = true
-    unless params["step"]
+    unless params['step']
       redirect_to tipsters_url
     else
-      redirect_to subscribe_choose_offer_path('sport' => 'all','enable' => 'tipster') and return
+      redirect_to subscribe_choose_offer_path(sport: 'all', enable: 'tipster') and return
     end
   end
 
   def drop_tipster
     tipster_id = params[:id]
-    session[:cart][:tipster_ids].delete(tipster_id) if session[:cart][:tipster_ids].include? tipster_id
+    remove_tipster_from_cart(tipster_id) if tipster_ids_in_cart.include?(tipster_id)
     if current_subscriber && current_subscriber.subscription
       tipster = Tipster.find tipster_id
       current_subscriber.subscription.inactive_tipsters.delete(tipster) if current_subscriber.subscription.inactive_tipsters.include? tipster
@@ -76,16 +76,8 @@ class CartController < ApplicationController
 
   def empty
     empty_cart_session
-    flash[:notice] = "Your cart is empty"
+    flash[:notice] = I18n.t('cart.empty')
     redirect_to params[:return_url].present? ? params[:return_url] : root_path
-  end
-
-  private
-
-  def already_purchase
-    if current_subscriber && current_subscriber.subscription && current_subscriber.subscription.active
-      current_subscriber.subscription.active_tipsters.each { |tipster| session[:cart][:tipster_ids].delete(tipster.id.to_s) }
-    end
   end
 
 end
