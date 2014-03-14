@@ -85,6 +85,70 @@ TipsterHero::Application.routes.draw do
 
   get '/test', to: 'home#xml_view', as: :list_match
 
-  draw :backoffice
-  draw :admin
+  #draw :backoffice
+  #draw :admin
+
+  # ==============================================================================
+  # Backoffice Tipster routes
+  # ==============================================================================
+  devise_scope :account do
+    namespace :backoffice do
+      get '/sign_in', to: 'sessions#new', as: :sign_in
+      post '/sign_in', to: 'sessions#create'
+      get '/sign_out', to: 'sessions#destroy'
+      get '/forgot_password', to: 'passwords#new', as: :forgot_password
+      post '/forgot_password', to: 'passwords#new'
+    end
+  end
+
+  namespace :backoffice do
+    root 'home#index'
+    get '/dashboard', to: 'home#dashboard'
+    controller :profile do
+      get :my_profile, to: :show
+      post :update_profile, to: :update
+      post :change_password
+      post :change_avatar
+      post :crop_avatar
+    end
+    get 'my_tips', to: 'tips#my_tips'
+    resources :tips, except: [:index] do
+    end
+  end
+
+  # ==============================================================================
+  # Backoffice Admin routes
+  # ==============================================================================
+  devise_scope :account do
+    namespace :admin do
+      get '/sign_in', to: 'sessions#new', as: :sign_in
+      post '/sign_in', to: 'sessions#create'
+      get '/sign_out', to: 'sessions#destroy'
+    end
+  end
+
+  namespace :admin do
+    root 'home#index'
+    get '/dashboard', to: 'home#dashboard'
+    controller :profile do
+      get :my_profile, to: :show
+      post :change_password
+    end
+
+    resources :tipsters do
+      member do
+      end
+    end
+
+    resources :tips, only: [:show, :index] do
+      collection do
+        get :waiting
+        get :published
+      end
+      member do
+        post :approved
+        post :reject
+      end
+    end
+  end
 end

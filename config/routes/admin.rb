@@ -12,9 +12,9 @@ end
 namespace :admin do
   root 'home#index'
   get '/dashboard', to: 'home#dashboard'
-  controller :profile do
-    post :change_password
-  end
+  #controller :profile do
+  #  post :change_password
+  #end
 
   resources :tipsters, only: [:show] do
     member do

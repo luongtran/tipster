@@ -23,6 +23,5 @@ namespace :backoffice do
   end
   get 'my_tips', to: 'tips#my_tips'
   resources :tips, except: [:index] do
-
   end
 end
