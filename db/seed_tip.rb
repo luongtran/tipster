@@ -34,7 +34,7 @@ else
               event_start_at: created_at + rand(1..5).hours,
               bet_type_id: bet_type.id,
               selection: [event.team_a, event.team_b, 'Draw'].sample,
-              amount: 10*rand(4..12),
+              amount: 10*rand(3..10),
               advice: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy.',
               odds: rand(1..5.5).round(1),
 
