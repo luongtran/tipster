@@ -73,6 +73,7 @@ TipsterHero::Application.routes.draw do
   end
 
   get '/pricing' => 'home#pricing', as: :pricing
+
   post '/home/select_language' => 'home#select_language', as: :select_language
   get '/subscription/select/:id' => 'subscription#select_plan', as: :select_plan
   delete '/subscription/tipster/:id' => 'subscription#remove_inactive_tipster', as: :remove_inactive_tipster
@@ -136,6 +137,8 @@ TipsterHero::Application.routes.draw do
       get :my_profile, to: :show
       post :change_password
     end
+
+  get '/get_matches', to: 'home#get_matches'
 
     resources :tipsters do
       member do

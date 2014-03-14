@@ -1,6 +1,5 @@
 = content_for :title do
-  Tipster profile
-
+  Tipster profile | #{@tipster.full_name}
 #profile-overiew-page
   .container
     #profile-overview.profile-overview
@@ -31,9 +30,6 @@
                 %a.btn.btn-default{href: '#'}
                   Description
           .clearfix
-            %hr
-        .panel-body
-          .clearfix
             .col-md-12
               .col-md-2.col-md-offset-1.text-center
                 %h2
@@ -58,7 +54,4 @@
             .col-md-12
               .text-center
                 = high_chart("profil-chart-container", @chart)
-
-
-
 
