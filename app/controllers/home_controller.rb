@@ -51,4 +51,15 @@ class HomeController < ApplicationController
     render json: {}
   end
 
+  def get_matches
+    require 'open-uri'
+    sport = params[:sport] || "soccer"
+    doc = Nokogiri::XML(open("http://api.core.optasports.com/#{sport}/get_matches_live?now_playing=no&minutes=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3"))
+    competitions = doc.xpath('//competition')
+    results = []
+    competitions.each do |competition|
+      competition_name = competition.attr('name')
+
+    end
+  end
 end

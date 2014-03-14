@@ -1,6 +1,5 @@
 = content_for :title do
-  Tipster profile
-  
+  Tipster profile | #{@tipster.full_name}
 #profile-overiew-page
   .container
 
@@ -55,7 +54,11 @@
           .tab-content
             #general.tab-pane.active
               = render 'tipsters/profile/general', {tipster: @tipster, recent_tips: @recent_tips}
-            #statistics.tab-pane ...
-            #last-pick.tab-pane ...
-            #service-description.tab-pane ...
-            #news.tab-pane ...
+            #statistics.tab-pane
+              = render 'tipsters/statistics'
+            #last-pick.tab-pane
+              = render 'tipsters/lastpick'
+            #service-description.tab-pane
+              = render 'tipsters/service'
+            #news.tab-pane
+              = render 'tipsters/news'

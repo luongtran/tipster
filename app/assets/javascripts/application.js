@@ -27,10 +27,3 @@
  = require_tree .
  */
 
-$(function() {
-    return $("a").bind("ajax:error", function(event, jqXHR, ajaxSettings, thrownError) {
-        if (jqXHR.status === 401) {
-            return window.location.replace(this);
-        }
-    });
-});
