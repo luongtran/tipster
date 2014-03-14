@@ -16,6 +16,12 @@ class Tipster < ActiveRecord::Base
   DEFAULT_PAGE_SIZE = 20
   DEFAULT_SORT_FIELD = 'profit'
 
+  RANKING_SORT_BY = [
+      BY_PROFIT = 'profit',
+      BY_YIELD = 'yield',
+  ]
+  DEFAULT_RANKING_SORT_BY = BY_PROFIT
+
   RANKING_RANGES = [
       OVERALL = 'overall',
       LAST_12_MONTHS = 'last-12-months',
@@ -148,8 +154,8 @@ class Tipster < ActiveRecord::Base
     #  direction: asc | desc
     def parse_sort_params(params)
       SortingInfo.new(
-          params[:sort],
-          default_sort_by: DEFAULT_SORT_FIELD,
+          params[:sort_by],
+          default_sort_by: DEFAULT_RANKING_SORT_BY,
           default_sort_direction: SortingInfo::DECREASE
       )
     end
@@ -194,7 +200,7 @@ class Tipster < ActiveRecord::Base
   end
 
   def yield_in_string
-    "#@yield %"
+    "#@yield%"
   end
 
   def get_statistics(range = LAST_6_MONTHS)

@@ -60,7 +60,6 @@ TipsterHero::Application.routes.draw do
       get :profile
     end
     collection do
-      get :fetch
       get :top_three
     end
   end

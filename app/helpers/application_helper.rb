@@ -144,18 +144,19 @@ module ApplicationHelper
     end
   end
 
-  def sort_params_for(field)
-    current_sort_param = params[:sort]
-    sort_direction = ''
-
-    if current_sort_param.present?
-      sort_direction = current_sort_param.split('_').last
-      sort_direction = (sort_direction == 'desc') ? 'asc' : 'desc'
-    else
-      sort_direction = SortingInfo::INCREASE
-    end
-    query_params.merge(sort: "#{field}_#{sort_direction}")
-  end
+  # This method nolonger used because we only sort by profit or yield with DESC direction
+  #def sort_params_for(field)
+  #  current_sort_param = params[:sort]
+  #  sort_direction = ''
+  #
+  #  if current_sort_param.present?
+  #    sort_direction = current_sort_param.split('_').last
+  #    sort_direction = (sort_direction == 'desc') ? 'asc' : 'desc'
+  #  else
+  #    sort_direction = SortingInfo::INCREASE
+  #  end
+  #  query_params.merge(sort: "#{field}_#{sort_direction}")
+  #end
 
   def date_filter_param(date)
     query_params.merge(date: date)

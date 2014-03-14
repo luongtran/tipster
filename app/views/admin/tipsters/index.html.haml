@@ -1,0 +1,56 @@
+.container
+  %ul.list-inline
+    %li
+      %a{href: admin_tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
+    - @sports.each do |sport|
+      %li
+        %a{href: admin_tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
+  .pull-left
+    %ul.list-inline.list-unstyled.mbn.rank-ranges
+      - Tipster::RANKING_RANGES.each do |range|
+        %li
+          %a{href: admin_tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
+            = t("tipster.ranking.ranges.#{range}").titleize
+  .pull-right
+    %span.mrs.text-muted Filter by status
+    = select_tag :status, options_for_select(tipster_statuses_for_select(tipsters_path)), id: 'tipster_statuses_filer'
+  %table.table.table-hover.table-bordered
+    %thead
+      %tr
+        %th Tipster
+        %th Profit
+        %th Yield
+        %th
+          = ("N" + content_tag(:sup, 'o')).html_safe
+          of tips
+        %th Hit Rate
+        %th Avg.Odds
+        %th Profitable Months
+        %th Actions
+    %tbody
+      - @tipsters.each_with_index do |tipster,index|
+        %tr
+          %td
+            = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar-mini'
+            %a.tipster-name{href: tipster_path(tipster)}
+              = tipster.full_name
+            -#.tipster-profit-chart
+            -#  = image_tag profit_img_chart_url_for(tipster.profit_data_for_chart), alt: 'Profit chart'
+          %td= tipster.profit_in_string
+          %td= tipster.yield_in_string
+          %td= tipster.number_of_tips
+          %td= tipster.hit_rate_in_string
+          %td= tipster.avg_odds
+          %td= tipster.profitable_months
+          %td
+            %a.text-info{href: '#'}
+              Edit
+            |
+            %a.text-danger{href: '#'}
+              Lock
+
+  - if @tipsters.empty?
+    .text-center.clearfix
+      %br
+      %p.text-warning
+        Not found any tipsters match!

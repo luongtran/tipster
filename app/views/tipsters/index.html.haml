@@ -14,10 +14,12 @@
           - Tipster::RANKING_RANGES.each do |range|
             %li
               %a{href: tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
-                = t("tipster.ranking.#{range}").titleize
+                = t("tipster.ranking.ranges.#{range}").titleize
       .pull-right
+        %span.mrs.text-muted Sort by
+        = select_tag :sort, options_for_select(ranking_sort_by_for_select), class: 'select-links'
         %span.mrs.text-muted Filter by status
-        = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'
+        = select_tag :status, options_for_select(tipster_statuses_for_select(tipsters_path)), class: 'select-links'
     .tipster-list-table#tipster-list-table
       .row
         .col-md-12

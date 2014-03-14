@@ -5,8 +5,6 @@ class ProfileController < ApplicationController
   end
 
   def update
-    #@user.validate_with_paid_account = true
-    #@user.
     @user.bypass_humanizer = true
     if @user.update_attributes(user_params)
       flash[:notice] = I18n.t('user.account_update_successully')
