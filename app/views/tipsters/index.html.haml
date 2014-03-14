@@ -17,9 +17,9 @@
                 = t("tipster.ranking.ranges.#{range}").titleize
       .pull-right
         %span.mrs.text-muted Sort by
-        = select_tag :sort, options_for_select(ranking_sort_by_for_select), class: 'select-links'
+        = select_tag :sort, options_for_select(ranking_sort_by_for_select), class: 'select-as-links'
         %span.mrs.text-muted Filter by status
-        = select_tag :status, options_for_select(tipster_statuses_for_select(tipsters_path)), class: 'select-links'
+        = select_tag :status, options_for_select(tipster_statuses_for_select(tipsters_path)), class: 'select-as-links'
     .tipster-list-table#tipster-list-table
       .row
         .col-md-12
