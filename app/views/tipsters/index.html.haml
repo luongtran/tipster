@@ -14,10 +14,12 @@
           - Tipster::RANKING_RANGES.each do |range|
             %li
               %a{href: tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
-                = t("tipster.ranking.#{range}").titleize
+                = t("tipster.ranking.ranges.#{range}").titleize
       .pull-right
+        %span.mrs.text-muted Sort by
+        = select_tag :sort, options_for_select(ranking_sort_by_for_select), class: 'select-as-links'
         %span.mrs.text-muted Filter by status
-        = select_tag :status, options_for_select(tipster_statuses_for_select), id: 'tipster_statuses_filer'
+        = select_tag :status, options_for_select(tipster_statuses_for_select(tipsters_path)), class: 'select-as-links'
     .tipster-list-table#tipster-list-table
       .row
         .col-md-12
@@ -42,7 +44,7 @@
                     %a.tipster-name{href: tipster_path(tipster)}
                       = tipster.full_name
                     .tipster-profit-chart
-                      = image_tag profit_img_chart_url_for(tipster.profit_data_for_chart), alt: 'Profit chart'
+                      = image_tag profit_img_chart_url_for(tipster.profit_values_for_chart), alt: 'Profit chart'
                   %td= tipster.profit_in_string
                   %td= tipster.yield_in_string
                   %td= tipster.number_of_tips

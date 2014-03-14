@@ -23,7 +23,9 @@ namespace :db do
     task :tip => :environment do
       load_seed_file('seed_tip.rb')
     end
-
+    task :admin => :environment do
+      load_seed_file('seed_admin.rb')
+    end
     task :all => [:plan, :sport, :bet_type, :platform]
   end
 end

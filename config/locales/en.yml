@@ -87,13 +87,21 @@ en:
     inactive: 'Inactive'
   tipster:
     ranking:
-      last-12-months: 'Last 12 months'
-      last-6-months: 'Last 6 months'
-      last-3-months: 'Last 3 months'
-      last-month: 'Last month'
-      overall: 'Overall'
+      ranges:
+        last-12-months: 'Last 12 months'
+        last-6-months: 'Last 6 months'
+        last-3-months: 'Last 3 months'
+        last-month: 'Last month'
+        overall: 'Overall'
+      sort_by:
+        yield: 'Yield'
+        profit: 'Profit'
     units: 'Units'
-
+  cart:
+    empty: 'Your cart is empty'
+    already_in_cart: 'The tipster already in your cart'
+    free_plan_alert: 'You cannot follow any tipsters with Free plan, please choose another.'
+    limit_add_tipster: "You can add only addtional %{count} tipsters."
   tip:
     created_successfully: 'A tip created successfully!'
   errors:

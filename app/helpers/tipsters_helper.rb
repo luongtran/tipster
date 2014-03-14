@@ -1,5 +1,6 @@
 module TipstersHelper
-  def tipster_statuses_for_select
+  def tipster_statuses_for_select(path)
+    # FIXME: the url need to dependency to 'path'
     selected_status = query_params[:status]
     options = []
     options << [
@@ -16,6 +17,15 @@ module TipstersHelper
     options
   end
 
+  def ranking_sort_by_for_select
+    #return []
+    current_raking_sort_by = query_params[:sort]
+    options = []
+    Tipster::RANKING_SORT_BY.each do |field|
+      options << [I18n.t("tipster.ranking.sort_by.#{field}"), field, 'data-url' => tipsters_path(sort_by: field), selected: current_sort_by_param == field]
+    end
+    options
+  end
 
   def class_for_current_ranking_range(range)
     current_range = query_params[:ranking]

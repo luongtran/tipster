@@ -62,9 +62,9 @@ $(document).ready(function () {
         $(this).addClass('open');
     });
 
-    /* Tipster filter statuses select box */
-    $('#tipster_statuses_filer').on('change', function () {
-        window.location = $('#tipster_statuses_filer option:selected').attr('data-url');
+    /* Load the link of select box as links */
+    $('.select-as-links').on('change', function () {
+        window.location = $(this).children('option:selected').attr('data-url');
         return false;
     });
 

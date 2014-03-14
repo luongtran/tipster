@@ -39,7 +39,7 @@ else
               odds: rand(1..5.5).round(1),
 
               free: false,
-              status: Tip::STATUS_APPROVED,
+              status: Tip::STATUS_PUBLISHED,
               correct: [false, true].sample,
               published_at: created_at + rand(1..3).hours + rand(10..30).minutes,
               created_at: created_at,

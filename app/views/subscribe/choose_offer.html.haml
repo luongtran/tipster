@@ -73,7 +73,7 @@
                       - Tipster::RANKING_RANGES.each do |range|
                         %li
                           %a{href: subscribe_choose_offer_path('ranking' => range,'sport' => @sport || 'all','enable' => 'tipster'), class: class_for_current_ranking_range(range)}
-                            = t("tipster.ranking.#{range}").titleize
+                            = t("tipster.ranking.ranges.#{range}").titleize
                 .tipster-list-table#tipster-list-table
                   .row
                     .col-md-12

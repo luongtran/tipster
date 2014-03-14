@@ -4,9 +4,9 @@ if sports.empty?
   puts "Error! There are no any sports!"
 else
   ActiveRecord::Base.record_timestamps = false
-  created_at = rand(100..222).days.ago - rand(1..15).hours
   puts "\n===> Creating tipsters ==================="
-  50.times do
+  45.times do
+    created_at = rand(100..222).days.ago - rand(1..15).hours
     fn = Faker::Name.first_name
     tipser = Tipster.new(
         display_name: fn,

@@ -3,7 +3,6 @@
  = require jquery_ujs
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
  = require helper
- = require highcharts
  = require select2
  */
 $(document).ready(function () {

@@ -56,9 +56,9 @@
 class Tip < ActiveRecord::Base
 
   STATUS_WAITING_FOR_APPROVED = 0
-  STATUS_APPROVED = 1
+  STATUS_PUBLISHED = 1
   STATUS_REJECTED = 2
-  STATUS_EXPIRED = 3
+  STATUS_FINISHED = 3
 
   CREATE_PARAMS = [:event, :platform_id, :bet_type_id, :odds, :selection, :advice, :amount, :sport_id, :line]
 
@@ -69,6 +69,7 @@ class Tip < ActiveRecord::Base
   belongs_to :sport
   belongs_to :bet_type
   belongs_to :platform
+
   # ===========================================================================
   # VALIDATIONS
   # ===========================================================================
@@ -77,18 +78,18 @@ class Tip < ActiveRecord::Base
   validates_presence_of :bet_type_id, :platform_id, :event,
                         message: 'Choose at least one'
   validates_length_of :event, :advice, minimum: 10, allow_blank: true
-  validates_numericality_of :amount, greater_than_or_equal_to: 10
+  validates_numericality_of :amount, greater_than_or_equal_to: 10, less_than_or_equal_to: 100, only_integer: true
   validates_numericality_of :odds, greater_than_or_equal_to: 1.0
 
   # ===========================================================================
   # CALLBACKS
   # ===========================================================================
-  before_validation :init_status, on: :create
+  before_create :init_status
 
   # ===========================================================================
   # SCOPE
   # ===========================================================================
-  scope :published, -> { where(status: STATUS_APPROVED) }
+  scope :published, -> { where(status: STATUS_PUBLISHED) }
   scope :paid, -> { where(free: false) }
   scope :free, -> { where(free: true) }
   scope :correct, -> { where(correct: true) }
@@ -173,7 +174,7 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   private
   def init_status
-    self.status = 0
+    self.status = STATUS_WAITING_FOR_APPROVED
   end
 
   def init_expire_time

@@ -50,21 +50,27 @@
                   %td= tip.published_at
                   %td= tip.amount
                   %td
-                    - if tip.correct?
-                      %span.text-success
-                        \+
-                        = tip.profit
+                    - if tip.published?
+                      - if tip.correct?
+                        %span.text-success
+                          \+
+                          = tip.profit
+                      - else
+                        %span.text-danger
+                          \-
+                          = tip.amount
                     - else
-                      %span.text-danger
-                        \-
-                        = tip.amount
+                      \---
                   %td
-                    - if tip.correct?
-                      %span.text-success
-                        &#x2714;
+                    - if tip.published?
+                      - if tip.correct?
+                        %span.text-success
+                          &#x2714;
+                      - else
+                        %span.text-danger
+                          &#x2718;
                     - else
-                      %span.text-danger
-                        &#x2718;
+                      \---
           - if @tips.empty?
             .clearfix
               .text-center.text-danger
