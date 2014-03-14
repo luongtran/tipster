@@ -17,7 +17,6 @@
  = require dev
  = require ajaxify
  = require helper
- = require highcharts/highcharts
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
  = require ../../../vendor/assets/javascripts/framework/angularjs/angular.min
  = require ../../../vendor/assets/javascripts/framework/angularjs/angular-animate.min

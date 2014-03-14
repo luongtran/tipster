@@ -25,14 +25,14 @@ class HomeController < ApplicationController
         eve["participiant_name_#{index}"] = part.xpath("participant_name").text
         eve["visit_#{index}"] = part.xpath("visiting_home_draw").text
       end
-      evt.xpath("periods//period").each_with_index do |period,index|
+      evt.xpath("periods//period").each_with_index do |period, index|
         eve["moneyline_visiting"] = period.xpath("moneyline//moneyline_visiting").text
         eve["moneyline_home"] = period.xpath("moneyline//moneyline_home").text
         eve["moneyline_draw"] = period.xpath("moneyline//moneyline_draw").text
       end
       @results.push(eve)
     end
-    @results.sort_by{|e| e['datetime']}
+    @results.sort_by { |e| e['datetime'] }
     @sports = Sport.all
   end
 
@@ -56,10 +56,21 @@ class HomeController < ApplicationController
     sport = params[:sport] || "soccer"
     doc = Nokogiri::XML(open("http://api.core.optasports.com/#{sport}/get_matches_live?now_playing=no&minutes=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3"))
     competitions = doc.xpath('//competition')
-    results = []
+    @results = []
     competitions.each do |competition|
       competition_name = competition.attr('name')
-
+      #Competition.new ??
+      competition.xpath('season//round//match').each do |match|
+        #Competition.maths
+        @results << {
+            competition_name: competition_name,
+            match_id: match.attr('match_id'),
+            date_utc: match.attr('date_utc'),
+            time_utc: match.attr('time_utc'),
+            team_A_name: match.attr('team_A_name'),
+            team_B_name: match.attr('team_B_name')
+        }
+      end
     end
   end
 end

@@ -1,6 +1,3 @@
-/*
- = require highcharts
- */
 $(function () {
     if ($('#profil-chart-container').length != 0) {
         $('#profil-chart-container').highcharts({

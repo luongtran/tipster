@@ -1,1 +1,22 @@
-test
+.container
+  .row
+    %table.table.table-bordered.bgw.table-hover
+      %thead
+        %tr
+          %th ID
+          %th League
+          %th Date
+          %th Time
+          %th Home
+          %td Visiting
+          %td M Home
+          %td M Draw
+      %tbody
+        - @results.each do |result|
+          %tr
+            %td= result[:match_id]
+            %td= result[:competition_name]
+            %td= result[:date_utc]
+            %td= result[:time_utc]
+            %td= result[:team_A_name]
+            %td= result[:team_B_name]

@@ -86,8 +86,7 @@ TipsterHero::Application.routes.draw do
   get '/homepage', to: 'static#homepage'
   # END Rueta set route here
 
-  get '/test', to: 'home#xml_view', as: :list_match
-
+  get '/get_matches' => 'home#get_matches'
   #draw :backoffice
   #draw :admin
 
@@ -138,7 +137,7 @@ TipsterHero::Application.routes.draw do
       post :change_password
     end
 
-  get '/get_matches', to: 'home#get_matches'
+
 
     resources :tipsters do
       member do
