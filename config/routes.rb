@@ -41,10 +41,12 @@ TipsterHero::Application.routes.draw do
     controller :subscribe do
       match :account, via: [:get, :post]
       match :choose_offer, via: [:get, :post]
+      match :choose_tipster, via: [:get, :post]
       match :personal_information, via: [:get, :post]
       match :shared, via: [:get, :post]
       match :receive_methods, via: [:get, :post]
       match :payment, via: [:get, :post]
+      match :welcome, via: [:get, :post]
       post :success
       get '/checkout', to: :checkout
     end

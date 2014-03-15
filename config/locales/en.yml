@@ -16,8 +16,8 @@ en:
     my_profile: "My Profile"
     my_subscription: "My Subscription"
     subscribe:
-      step1: "Account"
-      step2: "Choose offer"
+      step1: "Choose your offer"
+      step2: "Choose your tipster"
       step3: "Personal Information"
       step4: "Share on social network"
       step4_free: "Confirmation"

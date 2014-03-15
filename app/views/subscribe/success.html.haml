@@ -1,23 +1,27 @@
-.row
-  .step-content.col-md-10.col-md-offset-1
-    .panel.panel-default
-      .panel-body.text-center
-        %h3 Congratulation! Your subscription has been created successfully.
-        %a.btn.btn-primary{href: subscription_path} Go to my subscription
-        %hr
-        %h3 Your payment information
-        %table.table.table-bordered
-          %thead
-            %tr
-              %th Transaction ID
-              %th Payment amount
-              %th Payment date
-              %th Payment status
-              %th Payment description
-          %tbody
-            %tr
-              %td= @payment.txn_id
-              %td= "€#{@payment.mc_gross}"
-              %td= @payment.payment_date
-              %td= @payment.payment_status
-              %td N/A
+.container
+  .row
+    .subscribe-steps{class: "#{@select_plan.free? ? 'four-steps' : ''}"}
+      = render 'step_header',step: @step,select_plan: @select_plan
+  .row
+    .step-content.col-md-10.col-md-offset-1
+      .panel.panel-default
+        .panel-body.text-center
+          %h3 Congratulation! Your subscription has been created successfully.
+          %a.btn.btn-primary{href: subscription_path} Go to my subscription
+          %hr
+          %h3 Your payment information
+          %table.table.table-bordered
+            %thead
+              %tr
+                %th Transaction ID
+                %th Payment amount
+                %th Payment date
+                %th Payment status
+                %th Payment description
+            %tbody
+              %tr
+                %td= @payment.txn_id
+                %td= "€#{@payment.mc_gross}"
+                %td= @payment.payment_date
+                %td= @payment.payment_status
+                %td N/A

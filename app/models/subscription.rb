@@ -14,8 +14,9 @@
 #
 
 class Subscription < ActiveRecord::Base
-  MAX_ADDTIONAL_TIPSTERS = 2
+  MAX_ADDITIONAL_TIPSTERS = 2
   ADDING_TIPSTER_PRICE = 9.9
+  ADDING_TIPSTER_PERCENT = 0.4
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -57,7 +58,15 @@ class Subscription < ActiveRecord::Base
   end
 
   def calculator_price
-    price = (self.plan.price.to_f + adder_tipster * ADDING_TIPSTER_PRICE) * self.plan.period
+    if self.is_one_shoot
+      one_shoot_price
+    else
+      monthly_price
+    end
+  end
+
+  def one_shoot_price
+    price = (self.plan.price.to_f + adder_tipster * (self.plan.price * ADDING_TIPSTER_PERCENT)) * self.plan.period
     if self.using_coupon
       price -= 3
     end
@@ -65,15 +74,15 @@ class Subscription < ActiveRecord::Base
   end
 
   def monthly_price
-    price = (self.plan.price.to_f + adder_tipster * ADDING_TIPSTER_PRICE)
+    price = (self.plan.price.to_f + adder_tipster * (self.plan.price * ADDING_TIPSTER_PERCENT))
     if self.using_coupon
       price -= 3
     end
     return price.round(3)
   end
-
+# =========NEED TO CALCULATING AGAIN  =======
   def adder_price
-    price = self.adder_tipster * ADDING_TIPSTER_PRICE * self.plan.period
+    price = self.adder_tipster * (self.plan.price * ADDING_TIPSTER_PERCENT) * self.plan.period
     if self.using_coupon
       price -= 3
     end
@@ -107,9 +116,6 @@ class Subscription < ActiveRecord::Base
     self.active && self.active_at > 1.days.ago || (self.active_date.strftime('%d').to_i == Time.now.strftime('%d') && self.expired_at > Time.now)
   end
 
-  def one_shoot_price
-    self.plan.price.to_f
-  end
 
   def remove_tipster(id)
     self.tipsters.delete(id)

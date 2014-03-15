@@ -3,55 +3,8 @@
   Registration
 .container
   .row
-    .subscribe-steps
-      %ul.steps-container
-        %li.complete
-          .text-center
-            %p
-              %span.step-number 1
-            %p
-              %span.step-name= link_to t('menu.subscribe.step1'), subscribe_account_path
-        %li.step-seperator-container
-          .step-seperator
-        %li.complete
-          .text-center
-            %p
-              %span.step-number 2
-            %p
-              %span.step-name= link_to t('menu.subscribe.step2'), subscribe_choose_offer_path
-        %li.step-seperator-container
-          .step-seperator
-        %li.complete
-          .text-center
-            %p
-              %span.step-number 3
-            %p
-              %span.step-name= link_to t('menu.subscribe.step3'), subscribe_personal_information_path
-        %li.step-seperator-container
-          .step-seperator
-        %li.complete
-          .text-center
-            %p
-              %span.step-number 4
-            %p
-              %span.step-name= link_to t('menu.subscribe.step4'),subscribe_shared_path
-
-        %li.step-seperator-container
-          .step-seperator
-        %li.current
-          .text-center
-            %p
-              %span.step-number 5
-            %p
-              %span.step-name= t('menu.subscribe.step5')
-        %li.step-seperator-container
-          .step-seperator
-        %li
-          .text-center
-            %p
-              %span.step-number 6
-            %p
-              %span.step-name= t('menu.subscribe.step6')
+    .subscribe-steps{class: "#{@select_plan.free? ? 'four-steps' : ''}"}
+      = render 'step_header',step: @step,select_plan: @select_plan
   .row
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
@@ -63,7 +16,7 @@
               .col-md-2.col-md-offset-5
                 .checkbox
                   %label
-                    %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_email', checked: current_subscriber.receive_tip_by_email?} By Email
+                    %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_email', checked: true} By Email
                 .checkbox
                   %label
                     %input{type: :checkbox, name: 'receive_tip_methods[]', value: 'by_sms', checked: current_subscriber.receive_tip_by_sms?} By SMS

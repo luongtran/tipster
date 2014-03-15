@@ -21,13 +21,12 @@ class CartController < ApplicationController
       unless params["step"]
         redirect_to pricing_path and return
       else
-        redirect_to subscribe_choose_offer_path and return
+        redirect_to subscribe_choose_tipster_path and return
       end
     end
-
     count_after_added = tipster_ids_in_cart.size + 1
-    if count_after_added > (selected_plan.number_tipster + Subscription::MAX_ADDTIONAL_TIPSTERS)
-      flash[:alert] = I18n.t('cart.limit_add_tipster', count: Subscription::MAX_ADDTIONAL_TIPSTERS)
+    if count_after_added > (selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS)
+      flash[:alert] = I18n.t('cart.limit_add_tipster', count: Subscription::MAX_ADDITIONAL_TIPSTERS)
       redirect_to cart_url and return
     end
 
@@ -35,7 +34,7 @@ class CartController < ApplicationController
       select_plan = Plan.find_by_id(session[:plan_id])
       if select_plan.price == 0
         unless params["step"]
-          redirect_to pricing_path, alert: I18n.t('cart.free_plan_alert') and return
+          redirect_to subscribe_choose_offer_path, alert: I18n.t('cart.free_plan_alert') and return
         end
       end
     end
@@ -53,7 +52,7 @@ class CartController < ApplicationController
     unless params['step']
       redirect_to tipsters_url
     else
-      redirect_to subscribe_choose_offer_path(sport: 'all', enable: 'tipster') and return
+      redirect_to subscribe_choose_tipster_path and return
     end
   end
 

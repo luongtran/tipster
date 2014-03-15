@@ -3,7 +3,7 @@ class SubscriptionController < ApplicationController
 
   def select_plan
     selected_plan = Plan.find(params[:id])
-    max_cart_allow = selected_plan.number_tipster + Subscription::MAX_ADDTIONAL_TIPSTERS
+    max_cart_allow = selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS
     if tipster_ids_in_cart.size > max_cart_allow
       session[:cart][:tipster_ids].clear
     end

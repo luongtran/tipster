@@ -240,4 +240,31 @@ module ApplicationHelper
   def current_ranking_range_param
     query_params[:ranking] ||= Tipster::DEFAULT_RANKING_RANGE
   end
+
+  def class_for_subscribe_step(step,current_step)
+    if step < current_step
+      'complete'
+    elsif step == current_step
+      'current'
+    else
+      'default'
+    end
+  end
+
+  def links_for_subscribe_step(step,current_step)
+    case step
+      when 1
+        current_step >= step ? link_to(I18n.t('menu.subscribe.step1'), subscribe_choose_offer_path) : I18n.t('menu.subscribe.step1')
+      when 2
+        current_step >= step ? link_to(I18n.t('menu.subscribe.step2'), subscribe_choose_tipster_path) : I18n.t('menu.subscribe.step2')
+      when 3
+        current_step >= step ? link_to(I18n.t('menu.subscribe.step3'), subscribe_personal_information_path) : I18n.t('menu.subscribe.step3')
+      when 4
+        current_step >= step ? link_to(I18n.t('menu.subscribe.step4'), subscribe_shared_path) : I18n.t('menu.subscribe.step4')
+      when 5
+        current_step >= step ? link_to(I18n.t('menu.subscribe.step5'), subscribe_receive_methods_path) : I18n.t('menu.subscribe.step5')
+      when 6
+        current_step >= step ? link_to(I18n.t('menu.subscribe.step6'), subscribe_payment_path) : I18n.t('menu.subscribe.step6')
+    end
+  end
 end

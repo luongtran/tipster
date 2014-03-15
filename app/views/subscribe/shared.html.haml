@@ -3,69 +3,22 @@
   Registration
 .container
   .row
-    .subscribe-steps
-      %ul.steps-container
-        %li.complete
-          .text-center
-            %p
-              %span.step-number 1
-            %p
-              %span.step-name= link_to t('menu.subscribe.step1'), subscribe_account_path
-        %li.step-seperator-container
-          .step-seperator
-        %li.complete
-          .text-center
-            %p
-              %span.step-number 2
-            %p
-              %span.step-name= link_to t('menu.subscribe.step2'), subscribe_choose_offer_path
-        %li.step-seperator-container
-          .step-seperator
-        %li.complete
-          .text-center
-            %p
-              %span.step-number 3
-            %p
-              %span.step-name= link_to t('menu.subscribe.step3'), subscribe_personal_information_path
-        %li.step-seperator-container
-          .step-seperator
-        %li.current
-          .text-center
-            %p
-              %span.step-number 4
-            %p
-              %span.step-name= t('menu.subscribe.step4')
-
-        %li.step-seperator-container
-          .step-seperator
-        %li
-          .text-center
-            %p
-              %span.step-number 5
-            %p
-              %span.step-name= t('menu.subscribe.step5')
-        %li.step-seperator-container
-          .step-seperator
-        %li
-          .text-center
-            %p
-              %span.step-number 6
-            %p
-              %span.step-name= t('menu.subscribe.step6')
+    .subscribe-steps{class: "#{@select_plan.free? ? 'four-steps' : ''}"}
+      = render 'step_header',step: @step,select_plan: @select_plan
   .row
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
         .panel-body
           .row
             .col-md-6.col-md-offset-1
-              %h3 Would you win a bonus? Help us
+              %h3 Follow us now, you’ll get a discount of 3 €
           .row
             .col-md-4.col-md-offset-1{style: 'padding: 10px; border: 1px solid #ccc; height: 90px'}
               .fb-login-button{"data-auto-logout-link" => "false", "data-max-rows" => "1",
                   "data-show-faces" => "false", "data-size" => "medium", onlogin: 'window.location.reload()', style: 'display:none'}
-              = like_button '548927411872156', href: 'https://www.facebook.com/BetAdvisor', layout: :standard, show_faces: true
+              = like_button '548927411872156', href: 'https://www.facebook.com/thanhquang1988', layout: :standard, show_faces: true
             .col-md-4.col-md-offset-1{style: 'padding: 10px; border: 1px solid #ccc; height: 90px'}
-              = tweet_button url: 'https://twitter.com/hellorelaxation', lang: 'en', text: 'Check out this site', via: 'hellorelaxation'
+              = tweet_button url: 'https://twitter.com/tipsterhero', lang: 'en', text: 'Check out this site', via: 'tipsterhero'
           .text-center
             %br
             %a.btn.btn-success{href: subscribe_receive_methods_path} Next >>

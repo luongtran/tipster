@@ -75,7 +75,7 @@
             %h4.modal-title The tipster has been added to your cart
           .modal-body
             .text-center.text-info
-              - if tipster_ids_in_cart.size + 1 > @select_plan.number_tipster + Subscription::MAX_ADDTIONAL_TIPSTERS
+              - if tipster_ids_in_cart.size + 1 > @select_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS
                 Your cart is full!
               - else
                 Would you add a Tipster? - 60% for each additional Tipster!

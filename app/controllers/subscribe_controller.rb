@@ -32,19 +32,16 @@ class SubscribeController < ApplicationController
   # ========== NEW ==================================================
   # Request checkout the cart
   def checkout
-    if current_account
-      # require selected offer before go to personal information
-      if session[:step]
-        go_to_current_steps
-      else
-        redirect_to subscribe_personal_information_url
-      end
+    if current_account && session[:step] > 2
+      go_to_current_steps
     else
-      redirect_to subscribe_account_url
+      redirect_to subscribe_personal_information_url
     end
   end
 
   def account
+    @step = 3
+    session[:step] = 3
     if account_signed_in?
       redirect_to subscribe_personal_information_url and return
     end
@@ -82,27 +79,17 @@ class SubscribeController < ApplicationController
     end
   end
 
+  # listing all plan
   def choose_offer
-    if request.get?
-      if params[:enable]
-        params.delete(:enable)
-        @show_checkout_dialog = !!flash[:show_checkout_dialog]
-        @selected_plan = session[:plan_id]
-        @tipsters = Tipster.load_data(params)
-        @sports = Sport.all.order('position asc')
-        @top_tipsters = Tipster.find_top_3_last_week(params)
-        @sport = params["sport"]
-      else
-        @plans = Plan.all
-        @selected_plan = session[:plan_id]
-        @choose_offer = true
-      end
-    else
-      if params[:next_step]
-        redirect_to action: personal_information
-      elsif params[:plan_id] #Select plan
+    @step = 1
+    session[:step] = 1 unless session[:step]
+    @plans = Plan.all
+    @selected_plan = session[:plan_id]
+    @choose_offer = true
+    if request.post?
+      if params[:plan_id]
         selected_plan = Plan.find(params[:plan_id])
-        max_cart_allow = selected_plan.number_tipster + Subscription::MAX_ADDTIONAL_TIPSTERS
+        max_cart_allow = selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS
         if tipster_ids_in_cart.size > max_cart_allow
           session[:cart][:tipster_ids].clear
         end
@@ -111,17 +98,31 @@ class SubscribeController < ApplicationController
           session[:cart][:tipster_ids].clear
           redirect_to subscribe_personal_information_path and return
         else
-          @show_checkout_dialog = !!flash[:show_checkout_dialog]
-          @selected_plan = session[:plan_id]
-          @tipsters = Tipster.load_data(params)
-          @top_tipsters = Tipster.find_top_3_last_week(params)
-          @sports = Sport.all.order('position asc')
+          redirect_to subscribe_choose_tipster_path and return
         end
       end
     end
   end
 
+  # listing all tipster
+  def choose_tipster
+    @step = 2
+    session[:step] = 2 if session[:step] < 2
+    @show_checkout_dialog = !!flash[:show_checkout_dialog]
+    @selected_plan = session[:plan_id]
+    @tipsters = Tipster.load_data(params)
+    @sports = Sport.all.order('position asc')
+    @top_tipsters = Tipster.find_top_3_last_week(params)
+    @sport = params["sport"]
+    if params[:enable]
+
+    end
+  end
+
+  # reg / input information
   def personal_information
+    @step = 3
+    session[:step] = 3 if (session[:step].nil? || session[:step] < 3)
     unless account_signed_in?
       redirect_to subscribe_account_url and return
     end
@@ -136,7 +137,7 @@ class SubscribeController < ApplicationController
             current_subscriber.apply_plan(@select_plan)
             empty_cart_session
             @subscriber.account.resend_confirmation_instructions unless @subscriber.account.confirmed?
-            render :welcome
+            redirect_to action: :welcome
           else
             redirect_to subscribe_shared_url
           end
@@ -145,31 +146,36 @@ class SubscribeController < ApplicationController
     else
       redirect_to pricing_url, notice: 'Please choose a plan'
     end
-
   end
 
+  # shared & confirm if plan.free?
   def shared
-    session[:step] = 'shared'
+    @step = 4
+    session[:step] = 4 if (session[:step].nil? || session[:step] < 4)
   end
 
+  # select receiver methods, default true
   def receive_methods
+    @step = 5
+    session[:step] = 5 if (session[:step].nil? || session[:step] < 5)
     unless account_signed_in?
       redirect_to subscribe_personal_information_url and return
     end
     @account = current_account
     @subscriber = @account.rolable
-    session[:step] = 'receive_methods'
     if request.post?
       @subscriber.update_receive_tips_method(params[:receive_tip_methods])
-      session[:step] = 'payment'
+      session[:step] = 6
       redirect_to subscribe_payment_url
     end
   end
 
-  #Calculating price and redirect to paypal
-  #User is sign_in
-  #Only apply for first time payment
+  # Calculating price and redirect to paypal
+  # User is sign_in
+  # Only apply for first time payment
   def payment
+    @step = 6
+    session[:step] = 6 if (session[:step].nil? || session[:step] < 6)
     @tipsters = Tipster.where(id: tipster_ids_in_cart)
     unless current_subscriber.subscription.present?
       @subscription = current_subscriber.build_subscription(plan_id: session[:plan_id])
@@ -183,7 +189,11 @@ class SubscribeController < ApplicationController
     @subscription.save
 
     if request.post?
-      session[:step] = 'payment'
+      if params[:is_one_shoot] == "true"
+        @subscription.update_attributes(is_one_shoot: true)
+      elsif params[:is_one_shoot] == "false"
+        @subscription.update_attributes(is_one_shoot: false)
+      end
       if params[:method] == Payment::BY_PAYPAL
         @paypal = {
             amount: "%05.2f" % @subscription.calculator_price,
@@ -202,6 +212,7 @@ class SubscribeController < ApplicationController
   end
 
   def welcome
+    @step = 4
   end
 
 
@@ -212,12 +223,16 @@ class SubscribeController < ApplicationController
 
   def go_to_current_steps
     case session[:step]
-      when 'receive_methods'
-        redirect_to subscribe_receive_methods_path
-      when 'payment'
-        redirect_to subscribe_payment_path
-      when 'shared'
+      when 3
+        redirect_to subscribe_personal_information_path
+      when 4
         redirect_to subscribe_shared_path
+      when 5
+        redirect_to subscribe_receive_methods_path
+      when 6
+        redirect_to subscribe_payment_path
+      else
+        redirect_to subscribe_choose_offer_path
     end
   end
 
