@@ -191,6 +191,7 @@ GEM
     multi_json (1.8.4)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    mysql2 (0.3.13)
     naught (1.0.0)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
@@ -377,6 +378,7 @@ DEPENDENCIES
   lazy_high_charts
   mailcatcher
   meta_request
+  mysql2 (= 0.3.13)
   nokogiri
   omniauth
   omniauth-facebook
