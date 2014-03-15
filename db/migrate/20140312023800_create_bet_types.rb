@@ -10,13 +10,4 @@ class CreateBetTypes < ActiveRecord::Migration
       t.index :sport_id
     end
   end
-
-
-  def down
-    change_column :operations, :text_type_discount, :string
-    change_column :operations, :discount_min, :string
-    change_column :operations, :discount_level, :string
-    change_column :operations, :discount_sponsor, :string
-  end
-
 end
