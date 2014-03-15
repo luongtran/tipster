@@ -240,4 +240,11 @@ module ApplicationHelper
   def current_ranking_range_param
     query_params[:ranking] ||= Tipster::DEFAULT_RANKING_RANGE
   end
+
+  def abc
+    OptaSport::Fetcher(
+        'soccer',
+        function: 'get_matches'
+    )
+  end
 end
