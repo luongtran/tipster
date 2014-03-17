@@ -16,36 +16,26 @@ class CartController < ApplicationController
   end
 
   def add_tipster
-    if selected_plan.nil?
-      flash[:alert] = I18n.t("errors.messages.unselect_plan")
-      unless params["step"]
-        redirect_to pricing_path and return
-      else
-        redirect_to subscribe_choose_tipster_path and return
-      end
-    end
-    count_after_added = tipster_ids_in_cart.size + 1
-    if count_after_added > (selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS)
-      flash[:alert] = I18n.t('cart.limit_add_tipster', count: Subscription::MAX_ADDITIONAL_TIPSTERS)
-      redirect_to cart_url and return
-    end
-
     unless selected_plan.nil?
-      select_plan = Plan.find_by_id(session[:plan_id])
-      if select_plan.price == 0
+      count_after_added = tipster_ids_in_cart.size + 1
+      if count_after_added > (selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS)
+        flash[:alert] = I18n.t('cart.limit_add_tipster', count: Subscription::MAX_ADDITIONAL_TIPSTERS)
+        redirect_to cart_url and return
+      end
+      if selected_plan.price == 0
         unless params["step"]
           redirect_to subscribe_choose_offer_path, alert: I18n.t('cart.free_plan_alert') and return
         end
       end
-    end
-
-    tipster_id = params[:id]
-    if Tipster.exists?(tipster_id)
-      initial_cart_session if session[:cart].nil?
-      if tipster_ids_in_cart.include? tipster_id
-        flash[:alert] = I18n.t('cart.already_in_cart')
-      else
-        add_tipster_to_cart(tipster_id)
+      tipster_id = params[:id]
+      if Tipster.exists?(tipster_id)
+        initial_cart_session if session[:cart].nil?
+        if tipster_ids_in_cart.include? tipster_id
+          flash[:alert] = I18n.t('cart.already_in_cart')
+        else
+          add_tipster_to_cart(tipster_id)
+          session[:add_tipster_id] = tipster_id
+        end
       end
     end
     flash[:show_checkout_dialog] = true
@@ -73,10 +63,18 @@ class CartController < ApplicationController
     redirect_to return_url || after_drop_tipster_url
   end
 
+  # next day
+  def change_tipster
+    if tipster_ids_in_cart.include?(params[:old_id])
+
+    else
+      raise 404
+    end
+  end
   def empty
     empty_cart_session
     flash[:notice] = I18n.t('cart.empty')
-    redirect_to params[:return_url].present? ? params[:return_url] : root_path
+    redirect_to params[:return_url].present? ? params[:return_url] : cart_path
   end
 
 end

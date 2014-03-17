@@ -34,6 +34,7 @@ TipsterHero::Application.routes.draw do
   resource :cart, controller: 'cart', :only => [:show] do
     post :add_tipster
     post :drop_tipster
+    post :change_tipster
     get :empty
   end
 
