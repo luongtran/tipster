@@ -41,8 +41,13 @@ class SubscribeController < ApplicationController
   end
 
   def account
-    @step = 3
-    session[:step] = 3
+    if @select_plan.free?
+      @step = 2
+      session[:step] = 2
+    else
+      @step = 3
+      session[:step] = 3
+    end
     if account_signed_in?
       redirect_to subscribe_personal_information_url and return
     end
@@ -85,7 +90,7 @@ class SubscribeController < ApplicationController
     @step = 1
     session[:step] = 1 unless session[:step]
     @plans = Plan.all
-    @selected_plan = session[:plan_id]
+    @selected_plan = selected_plan
     @choose_offer = true
     if request.post?
       if params[:plan_id]
@@ -110,13 +115,14 @@ class SubscribeController < ApplicationController
     @step = 2
     session[:step] = 2 if session[:step] < 2
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
-    @selected_plan = session[:plan_id]
+    @selected_plan = selected_plan
     @tipsters = Tipster.load_data(params)
     @sports = Sport.all.order('position asc')
     @top_tipsters = Tipster.find_top_3_last_week(params)
     @sport = params["sport"]
-    if params[:enable]
-
+    if session[:add_tipster_id]
+      @choose_tipster = Tipster.find  session[:add_tipster_id]
+      session[:add_tipster_id] = nil
     end
   end
 

@@ -1,6 +1,6 @@
 - @plans.each do |plan|
   .pricing-box-outer
-    .pricing_box{class: "#{@selected_plan.to_i == plan.id ? 'large' : ''}"}
+    .pricing_box{class: "#{@selected_plan.id == plan.id ? 'large' : ''}"}
       .header
         %span= plan.title.capitalize
       %ul.pricing-features
@@ -29,9 +29,6 @@
         %a.btn.btn-warning{href: select_plan_path(plan.id)} Choosen
       - else @selected_plan == plan.id
         %p.button
-          - unless @choose_offer
-            = link_to "Subscribe", select_plan_path(plan.id),class: 'btn btn-default'
-          - else
-            = form_tag subscribe_choose_offer_path,method: 'post' do
-              = hidden_field_tag :plan_id, plan.id
-              = submit_tag "Subscribe", class: "btn btn-default"
+          = form_tag subscribe_choose_offer_path,method: 'post' do
+            = hidden_field_tag :plan_id, plan.id
+            = submit_tag "Subscribe", class: "btn btn-default"

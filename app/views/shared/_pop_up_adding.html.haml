@@ -1,0 +1,50 @@
+-#Popup for confirm information when choose tipster or plan
+#modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
+        %h4.modal-title
+          %i.glyphicon.glyphicon-shopping-cart
+          = t('menu.cart')
+      .modal-body
+        .row
+          .col-md-5
+            .tipster_info
+              - unless @choose_tipster.nil?
+                %ul.list-unstyled
+                  %li= @choose_tipster.full_name
+                  %li= image_tag @choose_tipster.avatar.url(:thumb) || 'demo.jpg'
+                  %li
+                    = simple_form_for :nothing,url: change_tipster_cart_path do
+                      = hidden_field :current_tipster, @choose_tipster.id
+                      = submit_tag 'Change tipster'
+              - else
+                %ul.list-unstyled
+                  %li Tipster choose
+                  %li
+                    %image{src: path_to_image('unselect_tipster.jpg')}
+                  %li
+                    %a{href: "#"} Choose tipster
+          .col-md-2
+            %image{src: path_to_image("example_narow.png"),height: '250px'}
+          .col-md-5
+            .subscription-info
+              - unless @selected_plan.nil?
+                %ul.list-unstyled
+                  %li= @selected_plan.title
+                  %li
+                    %image{src: path_to_image('select_subscription.png')}
+                  %li.subscription-price= @selected_plan.price.to_s + " EURO / month"
+                  %li
+                    %a{href: subscribe_choose_offer_path} Change subscription
+              - else
+                %ul.list-unstyled
+                  %li Plan info
+                  %li
+                    %image{src: path_to_image('unselect_subscription.png')}
+                  %li
+                    %a{href: subscribe_choose_offer_path} Choose subscription
+      .modal-footer
+        %button.btn.btn-info Continue shoping
+        %button.submit.btn.btn-success Checkout

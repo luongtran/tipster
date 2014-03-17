@@ -66,25 +66,5 @@
     %h4.text-slim.text-success.text-center Top 3 of the week
     %hr.mbs.mts
       .tipster-top-body.remote-data{data: {url: top_three_tipsters_path(sport: query_params[:sport]), 'error-msg' => 'Failed to load top 3 of the week.'}}
-  - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
-    #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
-      .modal-dialog
-        .modal-content
-          .modal-header
-            %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
-            %h4.modal-title
-              %i.glyphicon.glyphicon-shopping-cart
-              = t('menu.cart')
-          .modal-body
-            .text-center.text-info
-              - if tipster_ids_in_cart.size + 1 > @select_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS
-                Your cart is full!
-              - else
-                Would you add a Tipster? - 60% for each additional Tipster!
-                %p
-                  %br
-                  %button.btn.btn-success.btn-large{"data-dismiss" => "modal", type: "button"} Yes, I want!
-                  %a.btn.btn-primary{href: subscribe_checkout_path} No, process to checkout
-              %a.btn.btn-default{href: cart_path}
-                %i.glyphicon.glyphicon-shopping-cart
-                View Cart
+  - if @show_checkout_dialog
+    = render 'shared/pop_up_adding', choose_tipster: @choose_tipster,selected_plan: @selected_plan

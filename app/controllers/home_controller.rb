@@ -38,12 +38,7 @@ class HomeController < ApplicationController
 
   def pricing
     @plans = Plan.all
-    @selected_plan = nil
-    if current_subscriber && current_subscriber.has_active_subscription?
-      @selected_plan = current_subscriber.subscription.plan_id
-    else
-      @selected_plan = session[:plan_id]
-    end
+    @selected_plan = selected_plan
   end
 
   def select_language
