@@ -71,7 +71,7 @@ class Subscriber < ActiveRecord::Base
   # CALLBACKS
   # ==============================================================================
   #before_validation :format_phone_number, on: :update
-
+  delegate :email, to: :account, prefix: false
   # ==============================================================================
   # CLASS METHODS
   # ==============================================================================

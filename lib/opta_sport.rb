@@ -3,6 +3,7 @@ require 'open-uri'
 require 'nokogiri'
 
 module OptaSport
+
   API_ROOT_URL = 'http://api.core.optasports.com'
 
   AVAILABLE_SPORTS = [
@@ -14,36 +15,60 @@ module OptaSport
       TENNIS = 'tennis',
       FOOTBALL_US = 'american_football'
   ]
-  AVAILABLE_FUNCTIONS = %w(get_areas get_matches get_compettions get_matches_live get_seasons get_teams)
 
-  #SPORT_FUNCTIONS_MAP = {
-  #    SOCCER => %w(get_areas get_matches get_compettions get_matches_live get_seasons get_teams),
-  #    BASEBALL => %w(),
-  #    BASKETBALL => %w(),
-  #    HANDBALL => %w(),
-  #    HOCKEY => %w(),
-  #    TENNIS => %w(),
-  #    FOOTBALL_US => %w(),
-  #}
+  class << self
 
-  def self.configure(&block)
-    yield @config ||= OptaSport::Configuration.new
-  end
+    def configure(&block)
+      yield @config ||= OptaSport::Configuration.new
+    end
 
-  def self.available_sprorts
-    %w(soccer baseball basketball handball hockey rugby tennis)
-  end
+    def available_sprorts
+      %w(soccer baseball basketball handball hockey rugby tennis)
+    end
 
-  def self.available_functions
+    def available_functions
+    end
 
-  end
+    def config
+      @config
+    end
 
-  def self.config
-    @config
-  end
+    def authenticate_params
+      "&username=#{self.config.username}&authkey=#{self.config.authkey}"
+    end
 
-  def self.authenticate_params
-    "&username=#{self.config.username}&authkey=#{self.config.authkey}"
+    AVAILABLE_SPORTS.each do |sport|
+      define_method sport.to_sym do
+        return "#{self.name}::Fetcher::#{sport.capitalize}".constantize.new
+      end
+    end
+
+    def get_football_areas
+      fetcher = Fetcher.new(
+          SOCCER,
+          function: 'get_areas'
+      )
+      xml_result = fetcher.go!
+      nodes = xml_result.xpath('//area')
+      areas = []
+      nodes.each do |area|
+        areas << {
+            area_id: area['area_id'],
+            name: area['name'],
+            country_code: area['countrycode'],
+            parent_area_id: area.parent['area_id']
+        }
+      end
+      areas
+    end
+
+    def get_football_matches
+      fetcher = Fetcher.new(
+          SOCCER,
+          function: 'get_matches'
+      )
+      xml_result = fetcher.go!
+    end
   end
 
   class Configuration
@@ -52,62 +77,71 @@ module OptaSport
     config_accessor :authkey
   end
 
-  class Fetcher
-    attr_accessor :sport, :function, :lang, :start_dt, :end_dt, :url
+  module Fetcher
+    class Base
+      #include ActiveRecord::ReadonlyAttributes
+      attr_accessor :function, :options
 
-    def self.url_for(fetcher)
-      u = API_ROOT_URL
-      u << "/#{fetcher.sport}"
-      u << "/#{fetcher.function}?"
-      # After all, append authoriation info
-      u << OptaSport.authenticate_params
-    end
-
-    def initialize(sport, options)
-      if OptaSport.available_sprorts.exclude? sport
-        raise "The given sport is not avaiable. Please use one of the following #{OptaSport.available_sprorts.join(' ')}"
-      else
-        default_options = {
-            lang: :en,
-            id: '',
-            type: ''
-        }
-        options = default_options.merge options
-        @sport = sport
-        @function = options[:function]
-        @lang = options[:lang]
+      class << self
+        def url_for(fetcher)
+          u = API_ROOT_URL
+          u << "/#{fetcher.sport}"
+          u << "/#{fetcher.function}"
+          u << '?'
+          if fetcher.options
+            u << options.to_param
+          end
+          # After all: append authoriation info
+          u << OptaSport.authenticate_params
+        end
       end
-      self
+
+      def sport
+        self.class.name.split('::').last.downcase
+      end
+
+      def go!
+        Nokogiri::XML(open(self.class.url_for(self)))
+      end
+
+      def get_areas
+      end
+
+      def get_compettions
+      end
+
+      def get_seasons
+      end
+
+      def get_teams
+      end
+
+      def get_matches
+      end
+
+      def get_matches_live
+      end
     end
 
-    def go!
-      Nokogiri::XML(open(self.class.url_for(self)))
+    class Soccer < Base
     end
-  end
 
-  class MatchesFetcher
-    attr_accessor :id, :type
-  end
-
-  class Result
-  end
-
-  def self.get_football_areas
-    fetcher = Fetcher.new(
-        SOCCER,
-        function: 'get_areas'
-    )
-    xml_result = fetcher.go!
-    nodes = xml_result.xpath('//area')
-    areas = []
-    nodes.each do |area|
-      areas << {
-          name: area['name'],
-          country_code: area['countrycode'],
-          uid: area['area_id'],
-          parent_id: area.parent['area_id']
-      }
+    class Baseball < Base
     end
-    areas
+
+    class Basketball < Base
+    end
+
+    class Handball < Base
+    end
+
+    class Hockey < Base
+    end
+
+    class Tennis < Base
+    end
+
+    class FootballUS < Base
+    end
   end
 end

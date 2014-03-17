@@ -1,0 +1,50 @@
+soccer:
+  functions:
+    -
+      name: 'get_areas'
+      required_params:
+      option_params:
+        - area_id
+    -
+      name: 'get_competitions'
+      option_params:
+        - area_id
+        - authorized
+    -
+      name: 'get_matches'
+      required_params:
+        - id
+        - type
+      option_params:
+        - detailed
+        - start_date
+        - end_date
+        - last_updated
+        - limit
+    -
+      name: 'get_matches_live'
+      option_params:
+        - id
+        - now_playing
+        - date
+        - minutes
+        - detailed
+        - type
+    -
+      name: 'get_matches_live_update'
+      option_params:
+        - last_updated
+    -
+      name: 'get_seasons'
+    -
+      name: 'get_match_statistics_v2'
+    -
+      name: 'get_teams'
+baseball:
+basketball:
+handball:
+tennis:
+hockey:
+rugby:
+
+
