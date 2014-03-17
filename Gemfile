@@ -3,8 +3,6 @@ source 'http://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
 
-# Use mysql2 as the database for Active Record
-gem 'mysql2', '0.3.13'
 gem 'sqlite3'
 
 # Use SCSS for stylesheets
@@ -85,8 +83,8 @@ gem 'paypal-sdk-rest'
 gem 'validates_timeliness', '~> 3.0'
 
 # Facebook Query Language
-gem 'fql'
 gem "social-buttons", '~> 0.3'
+
 gem 'faker'
 
 # For pagination
@@ -94,8 +92,8 @@ gem "kaminari", ">= 0.14.1"
 
 # For more secure sessions
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
-# More secure for devise
 
+# More secure for devise
 gem 'devise_security_extension'
 
 gem 'actionpack'
@@ -109,6 +107,7 @@ gem 'googlecharts', git: 'git@github.com:luanht/googlecharts.git'
 
 # For parsing, validating phone number
 gem 'phone'
+
 # Anti robot
 gem 'humanizer'
 gem 'lazy_high_charts'

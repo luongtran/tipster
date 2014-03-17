@@ -67,7 +67,7 @@ module OptaSport
           SOCCER,
           function: 'get_matches'
       )
-      xml_result = fetcher.go!
+      xml_result = fetcher.go
     end
   end
 
@@ -100,14 +100,19 @@ module OptaSport
         self.class.name.split('::').last.downcase
       end
 
-      def go!
-        Nokogiri::XML(open(self.class.url_for(self)))
+      def go
+        uri = URI(self.class.url_for(self))
+        response = Net::HTTP.get(uri)
+        case response
+          when Net::HTTPSuccess
+            response
+          when Net::HTTPBadRequest
+            # do something
+        end
+        Nokogiri::XML(response)
       end
 
       def get_areas
-      end
-
-      def get_compettions
       end
 
       def get_seasons

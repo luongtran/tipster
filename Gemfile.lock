@@ -129,8 +129,6 @@ GEM
       net-ssh (>= 2.1.3)
       nokogiri (>= 1.5.11)
     formatador (0.2.4)
-    fql (0.3.1)
-      multi_json
     haml (4.0.5)
       tilt
     haml-rails (0.5.1)
@@ -191,7 +189,6 @@ GEM
     multi_json (1.8.4)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    mysql2 (0.3.13)
     naught (1.0.0)
     net-scp (1.1.2)
       net-ssh (>= 2.6.5)
@@ -366,7 +363,6 @@ DEPENDENCIES
   devise_security_extension
   faker
   fog
-  fql
   googlecharts!
   haml
   haml-rails
@@ -378,7 +374,6 @@ DEPENDENCIES
   lazy_high_charts
   mailcatcher
   meta_request
-  mysql2 (= 0.3.13)
   nokogiri
   omniauth
   omniauth-facebook

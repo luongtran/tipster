@@ -32,7 +32,7 @@ soccer:
         - type
     -
       name: 'get_matches_live_update'
-      option_params:
+      required_params:
         - last_updated
     -
       name: 'get_seasons'
@@ -40,6 +40,12 @@ soccer:
       name: 'get_match_statistics_v2'
     -
       name: 'get_teams'
+    -
+      name: 'get_match_formations'
+      required_params:
+        - id
+      option_params:
+        - last_updated
 baseball:
 basketball:
 handball:
