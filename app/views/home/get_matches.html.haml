@@ -1,22 +1,26 @@
+= content_for :title, "Matches"
 .container
   .row
+    %h2.text-center.mbl.text-success List all Football match today !
     %table.table.table-bordered.bgw.table-hover
       %thead
         %tr
-          %th ID
-          %th League
           %th Date
-          %th Time
-          %th Home
-          %td Visiting
-          %td M Home
-          %td M Draw
+          %th Time UTC
+          %th Match
+          %th Description
       %tbody
         - @results.each do |result|
           %tr
-            %td= result[:match_id]
-            %td= result[:competition_name]
-            %td= result[:date_utc]
-            %td= result[:time_utc]
-            %td= result[:team_A_name]
-            %td= result[:team_B_name]
+            %td.success{colspan: 5}
+              %strong.text-center.text-success= "#{result[:area_name] + " > " + result[:competition_name]}"
+          - result[:matchs].each do |match|
+            = hidden_field_tag :match_id,match[:match_id]
+            %tr
+              %td= match[:date_utc]
+              %td= match[:time_utc]
+              %td
+                %strong= match[:team_A_name]
+                vs
+                %strong= match[:team_B_name]
+              %td N/A

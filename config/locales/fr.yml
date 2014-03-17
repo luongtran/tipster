@@ -89,11 +89,15 @@ fr:
       created_successfully: 'A tip created successfully!'
   tipster:
     ranking:
-      last-12-months: 'Last 12 months'
-      last-6-months: 'Last 6 months'
-      last-3-months: 'Last 3 months'
-      last-month: 'Last month'
-      overall: 'Overall'
+      ranges:
+        last-12-months: 'Last 12 months'
+        last-6-months: 'Last 6 months'
+        last-3-months: 'Last 3 months'
+        last-month: 'Last month'
+        overall: 'Overall'
+      sort_by:
+        yield: 'Yield'
+        profit: 'Profit'
     errors:
       messages:
         invalid_date: "is not a valid date"

@@ -78,3 +78,4 @@ TipsterHero::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 end
+API_AUTHENTICATION = 'username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3'

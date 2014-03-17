@@ -54,16 +54,17 @@ class HomeController < ApplicationController
   def get_matches
     require 'open-uri'
     sport = params[:sport] || "soccer"
-    doc = Nokogiri::XML(open("http://api.core.optasports.com/#{sport}/get_matches_live?now_playing=no&minutes=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3"))
+    doc = Nokogiri::XML(open("http://api.core.optasports.com/#{sport}/get_matches_live?now_playing=no&minutes=yes&#{API_AUTHENTICATION}"))
     competitions = doc.xpath('//competition')
     @results = []
     competitions.each do |competition|
       competition_name = competition.attr('name')
+      area_name = competition.attr('area_name')
       #Competition.new ??
+      @matchs = []
       competition.xpath('season//round//match').each do |match|
         #Competition.maths
-        @results << {
-            competition_name: competition_name,
+        @matchs << {
             match_id: match.attr('match_id'),
             date_utc: match.attr('date_utc'),
             time_utc: match.attr('time_utc'),
@@ -71,6 +72,11 @@ class HomeController < ApplicationController
             team_B_name: match.attr('team_B_name')
         }
       end
+      @results << {
+          competition_name: competition_name,
+          area_name: area_name,
+          matchs: @matchs
+      }
     end
   end
 end
