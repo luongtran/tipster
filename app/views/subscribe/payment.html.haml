@@ -95,7 +95,7 @@
                     - else
                       = simple_form_for :nothing,url: subscribe_payment_path,html: {id: 'form-select-payment-period'} do
                         = hidden_field_tag :is_one_shoot,true
-                        = submit_tag "Change to one shoot payment !",class: "btn btn-info"
+                        = submit_tag "Change to one shoot payment !",class: "btn btn-primary"
                   %li
                     = simple_form_for :nothing, url: subscribe_payment_path,html: {id: 'form-select-payment'}, remote: true do |f|
                       .form-group

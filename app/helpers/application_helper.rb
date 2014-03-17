@@ -241,6 +241,7 @@ module ApplicationHelper
     query_params[:ranking] ||= Tipster::DEFAULT_RANKING_RANGE
   end
 
+
   def class_for_subscribe_step(step,current_step)
     if step < current_step
       'complete'
@@ -266,5 +267,11 @@ module ApplicationHelper
       when 6
         current_step >= step ? link_to(I18n.t('menu.subscribe.step6'), subscribe_payment_path) : I18n.t('menu.subscribe.step6')
     end
+  end
+  def abc
+    OptaSport::Fetcher(
+        'soccer',
+        function: 'get_matches'
+    )
   end
 end
