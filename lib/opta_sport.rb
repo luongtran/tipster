@@ -81,7 +81,7 @@ module OptaSport
     end
 
     def go!
-      xml_result = Nokogiri::XML(open(self.class.url_for(self)))
+      Nokogiri::XML(open(self.class.url_for(self)))
     end
   end
 
@@ -90,5 +90,24 @@ module OptaSport
   end
 
   class Result
+  end
+
+  def self.get_football_areas
+    fetcher = Fetcher.new(
+        SOCCER,
+        function: 'get_areas'
+    )
+    xml_result = fetcher.go!
+    nodes = xml_result.xpath('//area')
+    areas = []
+    nodes.each do |area|
+      areas << {
+          name: area['name'],
+          country_code: area['countrycode'],
+          uid: area['area_id'],
+          parent_id: area.parent['area_id']
+      }
+    end
+    areas
   end
 end
