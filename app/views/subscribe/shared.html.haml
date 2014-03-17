@@ -10,7 +10,7 @@
       .panel.panel-default
         .panel-body
           .row
-            .col-md-6.col-md-offset-1
+            .col-md-8.col-md-offset-2
               %h3 Follow us now, you’ll get a discount of 3 €
           .row
             .col-md-4.col-md-offset-1{style: 'padding: 10px; border: 1px solid #ccc; height: 90px'}
@@ -21,4 +21,7 @@
               = tweet_button url: 'https://twitter.com/tipsterhero', lang: 'en', text: 'Check out this site', via: 'tipsterhero'
           .text-center
             %br
-            %a.btn.btn-success{href: subscribe_receive_methods_path} Next >>
+            - if @select_plan.free?
+              %a.btn.btn-success{href: subscribe_welcome_path} Next >>
+            - else
+              %a.btn.btn-success{href: subscribe_receive_methods_path} Next >>

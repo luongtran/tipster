@@ -1,0 +1,32 @@
+#tipster_list
+  .tipster-list-inner
+    .tipster-list-table#tipster-list-table
+      .row
+        .col-md-12
+          %table.table.table-hover
+            %thead
+              %tr
+                %th Tipster
+                %th Profit
+                %th Yield
+                %th
+                  = ("N" + content_tag(:sup, 'o')).html_safe
+                  of tips
+                %th Hit Rate
+                %th Avg.Odds
+                %th Profitable Months
+            %tbody
+              - @tipsters.each_with_index do |tipster,index|
+                %tr
+                  %td
+                    = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar-mini'
+                    %a.tipster-name{href: tipster_path(tipster)}
+                      = tipster.full_name
+                    .tipster-profit-chart
+                      -#= image_tag profit_img_chart_url_for(tipster.profit_values_for_chart), alt: 'Profit chart'
+                  %td= tipster.profit
+                  %td= tipster.yield_in_string
+                  %td= tipster.number_of_tips
+                  %td= tipster.hit_rate_in_string
+                  %td= tipster.avg_odds
+                  %td= tipster.profitable_months

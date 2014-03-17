@@ -72,7 +72,9 @@
         .modal-content
           .modal-header
             %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
-            %h4.modal-title The tipster has been added to your cart
+            %h4.modal-title
+              %i.glyphicon.glyphicon-shopping-cart
+              = t('menu.cart')
           .modal-body
             .text-center.text-info
               - if tipster_ids_in_cart.size + 1 > @select_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS

@@ -274,4 +274,10 @@ ul.dates-list li a {
     border: 2px solid #eee;
     padding: 5px;
 }
+ul.steps-container .step-name a{
+    color: green;
+}
+ul.steps-container .step-name a:hover{
+    color: orangered;
+}
 /*#page_header_mid.fixed-bg*/

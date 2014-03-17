@@ -13,10 +13,3 @@
             %p.text-info
               = I18n.t('devise.registrations.signed_up_but_unconfirmed')
           %a.btn.btn-primary{href: subscription_path} Go to my subscription
-          %h3 Follow us now, you’ll get a discount of 3 €
-          .col-md-4.col-md-offset-1{style: 'padding: 10px; border: 1px solid #ccc; height: 90px'}
-            .fb-login-button{"data-auto-logout-link" => "false", "data-max-rows" => "1",
-                "data-show-faces" => "false", "data-size" => "medium", onlogin: 'window.location.reload()', style: 'display:none'}
-            = like_button '548927411872156', href: 'https://www.facebook.com/thanhquang1988', layout: :standard, show_faces: true
-          .col-md-4.col-md-offset-1{style: 'padding: 10px; border: 1px solid #ccc; height: 90px'}
-            = tweet_button url: 'https://twitter.com/tipsterhero', lang: 'en', text: 'Check out this site', via: 'tipsterhero'
