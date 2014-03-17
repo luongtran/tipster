@@ -66,5 +66,23 @@
             %a.lk-toggle-sign-in-box{href: '#'}
               %i.glyphicon.glyphicon-log-in
               = I18n.t('user.sign_in')
-          -#%li
-          -#  %a.lk-toggle-sign-up-box{href: '#'}= I18n.t('user.sign_up')
+
+- if content_for? :page_head_mid
+  = yield :page_head_mid
+- else
+  #page_header_mid
+    #sub-page-header
+      .container.clearfix
+        .pull-left
+          #sub-page-title.clearfix
+            %span.icon.typcn.typcn-location.pull-left.man
+            .pull-right
+              #sub-page-navi
+                %ul.list-inline.man.text-slim
+                  %li
+                    %a{href: "javascript:;"}
+                      Home
+                  %li
+                    %a{href: "javascript:;"}
+                      Tipsters
+              %h1#sub-page-h1.man.text-slim= yield(:title)
