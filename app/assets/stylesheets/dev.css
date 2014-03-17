@@ -253,6 +253,7 @@ p.button a:hover {
 #Nos-abonnaments h1.box-title {
     color: #fff;
 }
+
 #page_header_mid {
     background: url('/assets/header-bg.jpg') no-repeat top left;
 }
@@ -270,14 +271,49 @@ ul.rank-ranges li a.current, ul.rank-ranges li a:hover {
     color: #3c763d;
     border-bottom: 1px solid #3c763d;
 }
+
 ul.dates-list li a {
     border: 2px solid #eee;
     padding: 5px;
 }
+
 ul.steps-container .step-name a{
     color: green;
 }
 ul.steps-container .step-name a:hover{
     color: orangered;
 }
-/*#page_header_mid.fixed-bg*/
+
+
+.box-user-control > a {
+    text-transform: none !important;
+}
+
+.tipsterdetail-head .common-tipster-info {
+    padding-top: 95px;
+}
+
+.tipsterdetail-head .avatar-tipster img {
+    max-width: 200px;
+}
+
+.tipters-menu-quicklink ul li a {
+    color: #3c763d;
+    font-weight: bold;
+    font-size: 17px;
+}
+
+.avatar-tipster {
+    position: absolute;
+    padding-top: 180px;
+}
+
+.bgtest {
+    height: 60px;
+    background: rgba(0, 0, 0, 0.23);
+}
+
+.common-tipster-info table {
+    margin-bottom: 0px;
+}
+

@@ -21,25 +21,11 @@
             %li
               %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('fr'), data: {lang: 'fr', url: select_language_path}}
                 Français
-        - if current_subscriber
-          %li
-            %a{:href=>"javascript:;"}
-              %i.fa.fa-gear
-              Settings
-          %li.dropdown
-            %a.dropdown-toggle{'data-toggle' => "dropdown", href: "#"}
-              = current_subscriber.full_name.blank? ? 'Account' : current_subscriber.full_name
-              %b.caret
-            %ul.dropdown-menu
-              %li
-                %a{href: my_profile_path}= t('menu.my_profile')
-              %li
-                %a{href: subscription_path}= t('menu.my_subscription')
-              %li.divider
-              %li
-                %a{href: destroy_account_session_path}
-                  %i.glyphicon.glyphicon-log-out
-                  = I18n.t('user.sign_out')
+        %li
+          %a{:href=>"javascript:;"}
+            %i.fa.fa-gear
+            Settings
+
   .menu
     .container
       %ul.list-inline.clearfix
@@ -61,7 +47,22 @@
         %li.pull-left
           %a{href: pricing_path}
             = t('menu.pricing')
-        - unless current_subscriber
+        - if current_subscriber
+          %li.dropdown.box-user-control
+            %a.dropdown-toggle{'data-toggle' => "dropdown", href: "#"}
+              = current_subscriber.full_name.blank? ? current_subscriber.email : current_subscriber.full_name
+              %b.caret
+            %ul.dropdown-menu
+              %li
+                %a{href: my_profile_path}= t('menu.my_profile')
+              %li
+                %a{href: subscription_path}= t('menu.my_subscription')
+              %li.divider
+              %li
+                %a{href: destroy_account_session_path}
+                  %i.glyphicon.glyphicon-log-out
+                  = I18n.t('user.sign_out')
+        - else
           %li.pull-left
             %a.lk-toggle-sign-in-box{href: '#'}
               %i.glyphicon.glyphicon-log-in

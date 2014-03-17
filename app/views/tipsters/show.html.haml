@@ -21,26 +21,28 @@
       .container.clearfix
         .tipsterdetail-head
           .row
-            .col-md-3
-              .avatar-tipster
-                = image_tag (@tipster.avatar_url || 'demo.jpg'), class: 'img-responsive'
-            .col-md-9
-              .common-tipster-info
-                %table.table
-                  %tr
-                    %td(rowspan="2" width="200")
-                      %h4.mtn THOMAS
-                      %span Souksouvanh
-                    %td() RANK
-                    %td() AVG.YIED
-                    %td() AVG.PROFIT
-                  %tr
-                    %td()
-                      %h4.man 1
-                    %td()
-                      %h4.man 30%
-                    %td()
-                      %h4.man 1290,90
+            .avatar-tipster
+              = image_tag (@tipster.avatar_url || 'demo.jpg'), class: 'img-responsive'
+      .bgtest
+        .row
+          .col-lg-9.col-lg-offset-3
+            .common-tipster-info
+              .col-md-3
+                THOMAS
+                %br
+                Souksouvanh
+              .col-md-3
+                RANK
+                %br
+                1
+              .col-md-3
+                AVG.YIED
+                %br
+                21.5%
+              .col-md-3
+                AVG.PROFIT
+                %br
+                129.90 $
   .tipters-menu-quicklink
     .container
       .row
@@ -48,21 +50,19 @@
           %ul.list-inline
             %li
               %a{href: '#'}
-                %i General Statistic
+                %i General statistics
             %li -
             %li
               %a{href: '#'}
-                %i Details statistic
+                %i Details statistics
             %li -
             %li
               %a{href: '#'}
-                %i Last Tips
+                %i Last tips
             %li -
             %li
               %a{href: '#'}
                 %i Tipster's description
-
-
 #profile-overiew-page
   .container
     .pull-right
