@@ -1,34 +1,75 @@
 = content_for :title do
   Tipster profile | #{@tipster.full_name}
+
+- content_for :page_head_mid do
+  .background-granite
+    .container
+      #sub-page-navi.text-success
+        %ol.breadcrumb.mbn
+          %li
+            %a.text-success
+              %i.fa.fa-home
+              Home
+          %li
+            %a.text-success
+              Tipsters
+          %li
+            %a.text-success
+              = @tipster.full_name.titleize
+  #page_header_mid.fixed-bg
+    #sub-page-header
+      .container.clearfix
+        .tipsterdetail-head
+          .row
+            .col-md-3
+              .avatar-tipster
+                = image_tag (@tipster.avatar_url || 'demo.jpg'), class: 'img-responsive'
+            .col-md-9
+              .common-tipster-info
+                %table.table
+                  %tr
+                    %td(rowspan="2" width="200")
+                      %h4.mtn THOMAS
+                      %span Souksouvanh
+                    %td() RANK
+                    %td() AVG.YIED
+                    %td() AVG.PROFIT
+                  %tr
+                    %td()
+                      %h4.man 1
+                    %td()
+                      %h4.man 30%
+                    %td()
+                      %h4.man 1290,90
+  .tipters-menu-quicklink
+    .container
+      .row
+        .col-md-9.col-md-offset-3.pts
+          %ul.list-inline
+            %li
+              %a{href: '#'}
+                %i General Statistic
+            %li -
+            %li
+              %a{href: '#'}
+                %i Details statistic
+            %li -
+            %li
+              %a{href: '#'}
+                %i Last Tips
+            %li -
+            %li
+              %a{href: '#'}
+                %i Tipster's description
+
+
 #profile-overiew-page
   .container
-    #profile-overview.profile-overview
-      .row
-        .col-md-6
-          .clearfix
-            #profile-overview-common.profile-overview-common.clearfix.pam
-              #profile-overview-avatar.profile-overview-common.avatar.pull-left.mrl
-                = image_tag (@tipster.avatar_url || 'demo.jpg'), class: 'user_avatar'
-              #profile-overiew-statistic.profile-overiew-statistic.pull-left.text-md
-                %h3.ptn.mtn.text-slim.mbl= @tipster.full_name
-                = render 'shared/add_to_cart_form', {tipster_id: @tipster.id , disable: tipster_ids_in_cart.include?(@tipster.id.to_s)}
-
-        .col-md-1.col-md-offset-4
-          = select_tag :ranking, options_for_select(ranking_ranges_for_select), class: 'select-as-links'
+    .pull-right
+      = select_tag :ranking, options_for_select(ranking_ranges_for_select), class: 'select-as-links'
     #profile-overview-detail
       .panel.panel-default
         .panel-header
-          .mam.text-center
-            %ul.list-unstyled.list-inline
-              %li
-                %a.btn.btn-default{href: '#'}
-                  General statistics
-                %a.btn.btn-default{href: '#'}
-                  Details statistics
-                %a.btn.btn-default{href: '#'}
-                  Last tips
-                %a.btn.btn-default{href: '#'}
-                  Description
           .clearfix
             .col-md-12
               .col-md-2.col-md-offset-1.text-center

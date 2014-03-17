@@ -253,7 +253,7 @@ p.button a:hover {
 #Nos-abonnaments h1.box-title {
     color: #fff;
 }
-#page_header_mid:not(.fixed-bg) {
+#page_header_mid {
     background: url('/assets/header-bg.jpg') no-repeat top left;
 }
 
@@ -274,3 +274,4 @@ ul.dates-list li a {
     border: 2px solid #eee;
     padding: 5px;
 }
+/*#page_header_mid.fixed-bg*/
