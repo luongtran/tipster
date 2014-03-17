@@ -15,6 +15,7 @@ class SubscribeController < ApplicationController
   def get_coupon_code
     cc = CouponCode.create_for_user(current_subscriber, coupon_params[:source])
     if cc
+      current_subscriber.subscription.update_attributes(using_coupon: true)
       session[:using_coupon] = cc.id
       render :json => {
           success: true,
@@ -121,12 +122,17 @@ class SubscribeController < ApplicationController
 
   # reg / input information
   def personal_information
-    @step = 3
-    session[:step] = 3 if (session[:step].nil? || session[:step] < 3)
     unless account_signed_in?
       redirect_to subscribe_account_url and return
     end
     if @select_plan
+      if @select_plan.free?
+        @step = 2
+        session[:step] = 2 if (session[:step].nil? || session[:step] < 2)
+      else
+        @step = 3
+        session[:step] = 3 if (session[:step].nil? || session[:step] < 3)
+      end
       @account = current_account
       @subscriber = @account.rolable
       if request.post?
@@ -137,10 +143,8 @@ class SubscribeController < ApplicationController
             current_subscriber.apply_plan(@select_plan)
             empty_cart_session
             @subscriber.account.resend_confirmation_instructions unless @subscriber.account.confirmed?
-            redirect_to action: :welcome
-          else
-            redirect_to subscribe_shared_url
           end
+          redirect_to subscribe_shared_url
         end
       end
     else
@@ -150,8 +154,13 @@ class SubscribeController < ApplicationController
 
   # shared & confirm if plan.free?
   def shared
-    @step = 4
-    session[:step] = 4 if (session[:step].nil? || session[:step] < 4)
+    if @select_plan.free?
+      @step = 3
+      session[:step] = 3 if (session[:step].nil? || session[:step] < 3)
+      else
+      @step = 4
+      session[:step] = 4 if (session[:step].nil? || session[:step] < 4)
+    end
   end
 
   # select receiver methods, default true

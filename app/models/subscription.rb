@@ -15,7 +15,6 @@
 
 class Subscription < ActiveRecord::Base
   MAX_ADDITIONAL_TIPSTERS = 2
-  ADDING_TIPSTER_PRICE = 9.9
   ADDING_TIPSTER_PERCENT = 0.4
   # ==============================================================================
   # ASSOCIATIONS
@@ -39,7 +38,6 @@ class Subscription < ActiveRecord::Base
   # VALIDATIONS
   # ==============================================================================
   validates :subscriber, :plan, presence: true
-
   delegate :title, :to => :plan, :prefix => true # Example using: self.plan_title
 
   # ==============================================================================

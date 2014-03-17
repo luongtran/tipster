@@ -268,6 +268,20 @@ module ApplicationHelper
         current_step >= step ? link_to(I18n.t('menu.subscribe.step6'), subscribe_payment_path) : I18n.t('menu.subscribe.step6')
     end
   end
+
+  def links_for_subscribe_free_step(step,current_step)
+    case step
+      when 1
+        current_step >= step ? link_to(I18n.t('menu.subscribe.step1'), subscribe_choose_offer_path) : I18n.t('menu.subscribe.step1')
+      when 2
+        current_step >= step ? link_to(I18n.t('menu.subscribe.step3'), subscribe_personal_information_path) : I18n.t('menu.subscribe.step3')
+      when 3
+        current_step >= step ? link_to(I18n.t('menu.subscribe.step4'), subscribe_shared_path) : I18n.t('menu.subscribe.step4')
+      when 4
+        I18n.t('menu.subscribe.step4_free')
+    end
+  end
+
   def abc
     OptaSport::Fetcher(
         'soccer',

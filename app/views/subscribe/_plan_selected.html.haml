@@ -1,0 +1,17 @@
+.pricing-wrapper
+  .pricing_box.large
+    .header
+      %span= @select_plan.title.capitalize
+    %ul.pricing-features
+      %li.even
+        %strong.yes Free tips
+      %li.odd
+        %strong{class: "#{@select_plan.reception_delay == 0 ? 'yes' : 'no'}"} Real-time notice bet
+      %li.even
+        %strong{class: "#{@select_plan.free? ? 'no' : 'yes'}"} Follow professional tipster
+      %li.odd
+        %strong{class: "#{@select_plan.profit_guaranteed? ? 'yes' : 'no'}"} Profit guaranteed
+      %li.even
+        %strong{class: "#{@select_plan.switch_tipster_ability? ? 'yes' : 'no'}"} Change following tipster
+      %li.odd
+        %strong{class: "#{(@select_plan.number_tipster > 1) ? 'yes' : 'no'}"} Follow multi tipsters

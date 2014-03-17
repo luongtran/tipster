@@ -6,52 +6,20 @@
     .subscribe-steps{class: "#{@select_plan.free? ? 'four-steps' : ''}"}
       = render 'step_header',step: @step,select_plan: @select_plan
   .row
-    .step-content.col-md-10.col-md-offset-1
+    .step-content
       .panel.panel-default
         .panel-body
-          %h3 Review your selection:
-          %p
-            You select plan:
-            %span
-              %strong= @select_plan.title
-          %p
-            Plan price:
-            %span
-              %strong= @select_plan.price_in_string + "/month"
-          %p
-            Plan period:
-            %span
-              %strong= @select_plan.period.to_s + " month"
-          %p
-            Total price:
-            %span
-              %strong= @subscription.calculator_price
-          %h3
-            List tipsters in your cart:
-          %table.table.table-bordered
-            %thead
-              %tr
-                %th Tipster name
-                %th Total tips
-                %th Profit
-                %th Yeild
-            %tbody
-              - if @tipsters.empty?
-                %tr
-                  %td{colspan: '4'} Your cart is empty !
-              - else
-                - @tipsters.each do |tipster|
-                  %tr
-                    %td
-                      = tipster.full_name
-                    %td
-                      = tipster.tips.count
-                    %td
-                      = tipster.profit
-                    %td
-                      = tipster.yield
-        .tab-content
-          .row
+          .selection_info
+            %h1.text-center.text-success Review your selection:
+            .col-md-3
+              %h2.text-center.text-info Plan selected
+              .well
+                = render 'plan_selected',selected_plan: @select_plan
+            .col-md-9
+              %h2.text-center.text-info Tipsters selected
+              = render 'tipsters_selected',tipsters: @tipsters
+            .clearfix
+          .payment_info
             .col-lg-12
               .col-lg-4.col-lg-offet-1
                 %h2 Amount
@@ -76,6 +44,7 @@
                     \_______________________
                     %br
                   - if session[:using_coupon]
+                    %br
                     \- Total before:
                     %strong.text-info= "€#{@subscription.calculator_price}"
                     %br

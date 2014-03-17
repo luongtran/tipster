@@ -47,6 +47,7 @@ TipsterHero::Application.routes.draw do
       match :receive_methods, via: [:get, :post]
       match :payment, via: [:get, :post]
       match :welcome, via: [:get, :post]
+      post :get_coupon_code
       post :success
       get '/checkout', to: :checkout
     end
