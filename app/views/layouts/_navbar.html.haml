@@ -79,7 +79,8 @@
             %a() Home
           %li
             %a() Tipster
-#page_header_mid{class: "#{(controller_name == ('home'||'tipsters') && action_name == ('index'||'show')) ? 'fixed-bg' : ''} "}
+- page_header_mid_class = 'fixed-bg' if ((controller_name == 'home' && action_name == 'index') || controller_name == 'tipsters' && action_name == 'show')
+#page_header_mid{class: page_header_mid_class}
   / this is container header box for sub-page (signup - steps etc)
   #sub-page-header
     .container.clearfix
