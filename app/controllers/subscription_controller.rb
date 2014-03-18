@@ -1,4 +1,5 @@
 class SubscriptionController < ApplicationController
+  before_filter :subscriber_required
   before_filter :authenticate_account!, only: [:show, :remove_inactive_tipster]
 
   def select_plan

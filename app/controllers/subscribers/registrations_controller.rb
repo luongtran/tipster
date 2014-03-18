@@ -2,8 +2,12 @@ class Subscribers::RegistrationsController < Devise::RegistrationsController
   #before_action :configure_permitted_parameters, :only => [:create, :update]
 
   def new
-    @subscriber = Subscriber.new
-    @subscriber.build_account
+    if request.xhr?
+      @subscriber = Subscriber.new
+      @subscriber.build_account
+    else
+      render_404
+    end
   end
 
   def create

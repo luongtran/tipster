@@ -136,6 +136,10 @@ module OptaSport
       end
     end
 
+
+    # =========================================================================
+    # Fetcher Classes
+    # =========================================================================
     class Soccer < Base
       def get_matches(params)
         # Check required params
@@ -163,10 +167,8 @@ module OptaSport
       end
 
       def get_areas
-
       end
     end
-
     class Baseball < Base
     end
     class Basketball < Base
@@ -180,6 +182,9 @@ module OptaSport
     class FootballUS < Base
     end
 
+    # =========================================================================
+    # Result Classes
+    # =========================================================================
     class SoccerMatchesResult
       attr_accessor :xml_doc
 
@@ -189,11 +194,6 @@ module OptaSport
     end
 
     class SoccerAreasResult
-      attr_accessor :xml_doc
-
-      def initialize(xml_doc)
-        @xml_doc = xml_doc
-      end
     end
   end
 
@@ -211,5 +211,20 @@ module OptaSport
       )
     end
     areas
+  end
+
+  def self.get_all_competitions
+    uri = URI 'http://api.globalsportsmedia.com/soccer/get_competitions?authkey=3f727da50764fd0fa31f6884a68cf75e431ee994&username=cportal'
+    xml_result = Nokogiri::XML(Net::HTTP.get_response(uri).body)
+    nodes = xml_result.xpath('//competition ')
+    competitions = []
+    nodes.each do |compt|
+      competitions << Competition.create(
+          competition_id: compt['competition_id'],
+          name: compt['name'],
+          area_id: compt['area_id']
+      )
+    end
+    competitions
   end
 end
