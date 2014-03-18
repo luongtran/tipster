@@ -34,7 +34,7 @@ class TipstersController < ApplicationController
   def last_tips
   end
 
-  def biography
+  def description
   end
 
   def profile

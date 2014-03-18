@@ -277,16 +277,22 @@ ul.dates-list li a {
     padding: 5px;
 }
 
-ul.steps-container .step-name a{
+ul.steps-container .step-name a {
     color: green;
 }
-ul.steps-container .step-name a:hover{
+
+ul.steps-container .step-name a:hover {
     color: orangered;
 }
 
-
 .box-user-control > a {
     text-transform: none !important;
+}
+
+/* Markup tipster profile page */
+
+.tipsterdetail-head {
+    height: 150px;
 }
 
 .tipsterdetail-head .common-tipster-info {
@@ -299,17 +305,17 @@ ul.steps-container .step-name a:hover{
 
 .tipters-menu-quicklink ul li a {
     color: #3c763d;
-    font-weight: bold;
-    font-size: 17px;
+    font-size: 21px;
 }
 
 .avatar-tipster {
+
     position: absolute;
-    padding-top: 180px;
+    padding-top: 75px;
 }
 
 .bgtest {
-    height: 60px;
+    height: 70px;
     background: rgba(0, 0, 0, 0.23);
 }
 
@@ -317,3 +323,25 @@ ul.steps-container .step-name a:hover{
     margin-bottom: 0px;
 }
 
+.tipters-menu-quicklink {
+    padding-top: 10px;
+    height: 60px;
+}
+
+.common-tipster-info h4.label {
+
+}
+
+.common-tipster-info span.value {
+    font-weight: 900;
+    font-size: 20px;
+}
+
+.common-tipster-info select.statistics-range {
+    height: 30px;
+    color: #000;
+}
+
+.common-tipster-info select.statistics-range * {
+    color: #000;
+}
