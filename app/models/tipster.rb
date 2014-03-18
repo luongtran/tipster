@@ -188,6 +188,14 @@ class Tipster < ActiveRecord::Base
     "#{self.id}-#{self.display_name}".parameterize
   end
 
+  def first_name
+    self.full_name.split(' ').first.capitalize
+  end
+
+  def last_name
+    self.full_name.split(' ').try(:second).try(:capitalize)
+  end
+
   def create_new_tip!(params)
   end
 

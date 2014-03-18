@@ -64,7 +64,7 @@ TipsterHero::Application.routes.draw do
       get :profile
       get :detail_statistics
       get :last_tips
-      get :biography
+      get :description
     end
     collection do
       get :top_three
@@ -140,7 +140,6 @@ TipsterHero::Application.routes.draw do
       get :my_profile, to: :show
       post :change_password
     end
-
 
 
     resources :tipsters do

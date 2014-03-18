@@ -32,11 +32,11 @@
         }
         &.active, &:hover {
           a  {
-            background-color: tint($green-lighter, 70%);
+//            background-color: tint($green-lighter, 70%);
             color: $green-dark;
           }
           &:first-child {
-            border-left: solid 1px $gray-light;
+//            border-left: solid 1px $gray-light;
           }
           &:last-child {
             border-right: solid 1px $gray-light;
@@ -176,9 +176,9 @@
 
 
 .hotTipster-unit {
-  width: 180px;
+  width: 205px;
   float: left;
-  margin: 0 22px;
+  margin: 0 10px;
   background-color: #f7f7f7;
   border: solid 1px shade(#f7f7f7, 10%);
   padding-left: 5px;

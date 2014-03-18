@@ -62,34 +62,3 @@
                 %i Tipster's description
 #profile-overiew-page
   .container
-    #profile-overview-detail
-      .panel.panel-default
-        .panel-header
-          .clearfix
-            .col-md-12
-              .col-md-2.col-md-offset-1.text-center
-                %h2
-                  Profit:
-                = @tipster.profit_in_string(true)
-              .col-md-2.text-center
-                %h2
-                  Yield:
-                = @tipster.yield_in_string
-              .col-md-2.text-center
-                %h2
-                  Tips:
-                = @tipster.number_of_tips
-              .col-md-2.text-center
-                %h2
-                  Avg Odds:
-                = @tipster.avg_odds
-              .col-md-2.text-center
-                %h2
-                  Win rate:
-                = @tipster.hit_rate_in_string
-            .mal.clearfix
-              %hr
-            .col-md-12
-              .text-center
-                = high_chart("profil-chart-container", @chart)
-

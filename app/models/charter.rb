@@ -1,7 +1,9 @@
 class Charter
   def self.tipster_profit_chart(tipster)
     @chart2 = LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "Overall profit")
+      f.title(
+          :text => "Overall profit"
+      )
       f.xAxis(
           :categories => tipster.profit_dates_for_chart,
           tickInterval: 5
@@ -9,6 +11,7 @@ class Charter
       f.series(
           :name => 'Profit',
           :yAxis => 0,
+          :color => '#AABF46',
           :data => tipster.profit_values_for_chart,
           showInLegend: false
       )
