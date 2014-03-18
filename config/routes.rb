@@ -34,7 +34,6 @@ TipsterHero::Application.routes.draw do
   resource :cart, controller: 'cart', :only => [:show] do
     post :add_tipster
     post :drop_tipster
-    post :change_tipster
     get :empty
   end
 
@@ -43,6 +42,7 @@ TipsterHero::Application.routes.draw do
       match :account, via: [:get, :post]
       match :choose_offer, via: [:get, :post]
       match :choose_tipster, via: [:get, :post]
+      match :change_tipster, via: [:get, :post]
       match :personal_information, via: [:get, :post]
       match :shared, via: [:get, :post]
       match :receive_methods, via: [:get, :post]

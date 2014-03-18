@@ -65,3 +65,18 @@
     font-size: 16px;
   }
 }
+#modal-change-tipster{
+  .modal-content{
+    .modal-body{
+      .tipster-list-line1{
+        a{
+          padding: 10px 15px;
+        }
+      }
+    }
+  }
+  .modal-dialog{
+    width:1000px !important;
+  }
+
+}

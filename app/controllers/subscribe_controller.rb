@@ -126,6 +126,20 @@ class SubscribeController < ApplicationController
     end
   end
 
+  def change_tipster
+    @step = 2
+    session[:step] = 2 if session[:step] < 2
+    @show_checkout_dialog = !!flash[:show_checkout_dialog]
+    if tipster_ids_in_cart.include?(params[:old_id])
+      session[:cart][:tipster_ids].delete(params[:old_id])
+      add_tipster_to_cart(params[:new_id])
+      session[:add_tipster_id] = params[:new_id]
+      render json: {success: true,url: subscribe_choose_tipster_path}
+    else
+      render json: {success: false}
+    end
+  end
+
   # reg / input information
   def personal_information
     unless account_signed_in?
