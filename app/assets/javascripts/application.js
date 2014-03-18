@@ -24,6 +24,5 @@
  = require jquery.migrate
 
  = require appjs/app
- = require_tree .
  */
 

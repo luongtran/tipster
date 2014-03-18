@@ -1,4 +1,7 @@
 class Backoffice::TipsController < ApplicationController
+  include Wicked::Wizard
+  steps :add_name, :add_price, :add_category
+
   before_action :authenticate_account!, :tipster_required
 
   def my_tips
@@ -14,6 +17,10 @@ class Backoffice::TipsController < ApplicationController
       @tipster_sports = current_tipster.sports
       render 'backoffice/tips/choose_sport'
     end
+  end
+
+  def get_areas
+
   end
 
   def create

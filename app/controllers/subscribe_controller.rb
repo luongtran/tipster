@@ -1,7 +1,10 @@
 class SubscribeController < ApplicationController
   before_action :authenticate_account!, only: [:get_coupon_code]
+
   before_action :no_subscription_required, except: [:success]
+
   before_action :load_subscribe_data
+
   skip_before_filter :verify_authenticity_token, only: [:success]
 
   # Return from paypal
@@ -122,7 +125,7 @@ class SubscribeController < ApplicationController
     @top_tipsters = Tipster.find_top_3_last_week(params)
     @sport = params["sport"]
     if session[:add_tipster_id]
-      @choose_tipster = Tipster.find  session[:add_tipster_id]
+      @choose_tipster = Tipster.find session[:add_tipster_id]
       session[:add_tipster_id] = nil
     end
   end
@@ -179,7 +182,7 @@ class SubscribeController < ApplicationController
     if @select_plan.free?
       @step = 3
       session[:step] = 3 if (session[:step].nil? || session[:step] < 3)
-      else
+    else
       @step = 4
       session[:step] = 4 if (session[:step].nil? || session[:step] < 4)
     end

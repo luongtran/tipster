@@ -1,50 +1,50 @@
 soccer:
   functions:
-    -
+    get_areas:
       name: 'get_areas'
-      required_params:
-      option_params:
+      required_params: []
+      optional_params:
         - area_id
-    -
+    get_competitions:
       name: 'get_competitions'
-      option_params:
+      optional_params:
         - area_id
         - authorized
-    -
+    get_matches:
       name: 'get_matches'
       required_params:
         - id
         - type
-      option_params:
+      optional_params:
         - detailed
         - start_date
         - end_date
         - last_updated
         - limit
-    -
+    get_matches_live:
       name: 'get_matches_live'
-      option_params:
+      optional_params:
         - id
         - now_playing
         - date
         - minutes
         - detailed
         - type
-    -
+    get_matches_live_update:
       name: 'get_matches_live_update'
       required_params:
         - last_updated
-    -
+    get_seasons:
       name: 'get_seasons'
-    -
+    get_match_statistics_v2:
       name: 'get_match_statistics_v2'
-    -
+    get_teams:
       name: 'get_teams'
-    -
+    get_match_formations:
       name: 'get_match_formations'
       required_params:
         - id
-      option_params:
+      optional_params:
         - last_updated
 baseball:
 basketball:

@@ -50,6 +50,10 @@ class ApplicationController < ActionController::Base
     render nothing: true, status: 400
   end
 
+  def render_404
+    render nothing: true, status: 404
+  end
+
   def set_locale
     I18n.locale = session[:locale] || I18n.default_locale
   rescue I18n::InvalidLocale => e
@@ -102,7 +106,8 @@ class ApplicationController < ActionController::Base
     session[:step] = nil
     # Maybe clear more session vars: coupon code, payment info ...
   end
-  # Return current plan
+
+# Return current plan
   def selected_plan
     if session[:plan_id]
       Plan.find_by_id(session[:plan_id])
