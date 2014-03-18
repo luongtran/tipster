@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140315043620) do
+ActiveRecord::Schema.define(version: 20140318080820) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -40,6 +40,14 @@ ActiveRecord::Schema.define(version: 20140315043620) do
     t.string   "full_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "areas", force: true do |t|
+    t.string  "area_id"
+    t.string  "name"
+    t.string  "country_code"
+    t.string  "parent_area_id"
+    t.boolean "active",         default: true
   end
 
   create_table "authorizations", force: true do |t|
@@ -218,6 +226,11 @@ ActiveRecord::Schema.define(version: 20140315043620) do
     t.datetime "published_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "match_id"
+    t.string   "match_name"
+    t.datetime "match_date"
+    t.string   "league_id"
+    t.string   "area_id"
   end
 
   add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type"

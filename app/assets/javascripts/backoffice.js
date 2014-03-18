@@ -1,9 +1,11 @@
 /*
  = require jquery
+ = require jquery.turbolinks
  = require jquery_ujs
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
  = require helper
  = require select2
+ = require turbolinks
  */
 $(document).ready(function () {
     $('.select2able').each(function () {
