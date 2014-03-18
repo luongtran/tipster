@@ -15,6 +15,7 @@
  *= require partials/_tipster
  *= require partials/_pricing
  *= require partials/_subscription
+ *= require partials/_fonts
  *= require font-awesome.min
  *= require bootstrap-social
 

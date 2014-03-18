@@ -9,42 +9,56 @@
           = t('menu.cart')
       .modal-body
         .row
-          .col-md-5
-            .tipster_info
-              - unless @choose_tipster.nil?
-                %ul.list-unstyled
-                  %li= @choose_tipster.full_name
-                  %li= image_tag @choose_tipster.avatar.url(:thumb) || 'demo.jpg'
-                  %li
-                    = simple_form_for :nothing,url: change_tipster_cart_path do
-                      = hidden_field :current_tipster, @choose_tipster.id
-                      = submit_tag 'Change tipster'
-              - else
-                %ul.list-unstyled
-                  %li Tipster choose
-                  %li
-                    %image{src: path_to_image('unselect_tipster.jpg')}
-                  %li
-                    %a{href: "#"} Choose tipster
-          .col-md-2
-            %image{src: path_to_image("example_narow.png"),height: '250px'}
-          .col-md-5
-            .subscription-info
-              - unless @selected_plan.nil?
-                %ul.list-unstyled
-                  %li= @selected_plan.title
-                  %li
-                    %image{src: path_to_image('select_subscription.png')}
-                  %li.subscription-price= @selected_plan.price.to_s + " EURO / month"
-                  %li
-                    %a{href: subscribe_choose_offer_path} Change subscription
-              - else
-                %ul.list-unstyled
-                  %li Plan info
-                  %li
-                    %image{src: path_to_image('unselect_subscription.png')}
-                  %li
-                    %a{href: subscribe_choose_offer_path} Choose subscription
+          %p Your SUPER TipsterHero has been added in your shopping cart
+        .row.adding
+          .adding-header
+            .col-md-6
+              %p.text-center Your SUPER TIPSTERHERO
+            .col-md-6
+              %p.text-center Your Subscription
+          .adding-info
+            .col-md-5
+              .tipster_info
+                - unless @choose_tipster.nil?
+                  %ul.list-unstyled
+                    %li.text-center= @choose_tipster.full_name
+                    %li.responsive-image= image_tag @choose_tipster.avatar.url(:thumb) || 'demo.jpg'
+                    %li
+                      = simple_form_for :nothing,url: change_tipster_cart_path do
+                        = hidden_field_tag :old_id,@choose_tipster.id
+                        = hidden_field_tag :new_id,''
+                        = button_tag(type: 'submit', class: 'submitLink') do
+                          %i.glyphicon.glyphicon-play
+                          Change tipster
+                - else
+                  %ul.list-unstyled
+                    %li.text-center Tipster choose
+                    %li.responsive-image
+                      %image{src: path_to_image('unselect_tipster.jpg')}
+                    %li
+                      %a{href: "#"} Choose tipster
+            .col-md-2
+              %image{src: path_to_image("example_narow.png"),height: '250px'}
+            .col-md-5
+              .subscription-info
+                - unless @selected_plan.nil?
+                  %ul.list-unstyled
+                    %li.text-center= @selected_plan.title
+                    %li.responsive-image
+                      %image{src: path_to_image('select_subscription.png')}
+                    %li.subscription-price= @selected_plan.price.to_s + " € / month"
+                    %li
+                      %a.submitLink{href: subscribe_choose_offer_path}
+                        %i.glyphicon.glyphicon-play
+                        Change subscription
+                - else
+                  %ul.list-unstyled
+                    %li.text-center Plan info
+                    %li.responsive-image
+                      %image{src: path_to_image('unselect_subscription.png')}
+                    %li
+                      %a.submitLink{href: subscribe_choose_offer_path}
+                        %i.glyphicon.glyphicon-play
+                        Choose subscription
       .modal-footer
-        %button.btn.btn-info Continue shoping
-        %button.submit.btn.btn-success Checkout
+        %a.btn.checkoutbtn{href: subscribe_checkout_path} Process checkout

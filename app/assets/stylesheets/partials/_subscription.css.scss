@@ -7,3 +7,61 @@
     text-align: center;
   }
 }
+#modal-confirm-checkout{
+  .modal-header, .modal-footer{
+    background: #3B862D;
+    color:#FFFFFF;
+    height: 33px;
+    padding: 5px 10px;
+  }
+  .modal-content{border-radius: 0;}
+  .modal-body{
+    p:first-child{
+      font-weight: bold;
+    }
+    .adding{
+      background-color: #f5f5f5;
+      .adding-header{
+        background: #3B862D;
+        color:#FFFFFF;
+        height: 25px;
+        padding: 3px 3px;
+        p{
+          text-transform: uppercase;
+          font-weight: bold;
+        }
+      }
+    }
+    .tipster_info{
+      li:first-child{
+        font: 600 16px/18px 'Source Sans Pro',sans-serif;
+      }
+      .responsive-image{
+        img{
+          width: 215px;
+          padding: 25px;
+        }
+      }
+    }
+    .subscription-info{
+      li:first-child{
+        font: 600 16px/18px 'Source Sans Pro',sans-serif;
+      }
+    }
+  }
+  .modal-footer{
+    .checkoutbtn{
+      padding: 1px 20px;
+      color: #fff;
+      background-color: #424242;
+    }
+  }
+
+  .submitLink {
+    background-color: transparent;
+    border: none;
+    color: #3B862D;
+    cursor: pointer;
+    font-size: 16px;
+  }
+}

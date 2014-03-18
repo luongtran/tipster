@@ -67,9 +67,9 @@ class CartController < ApplicationController
   # next day
   def change_tipster
     if tipster_ids_in_cart.include?(params[:old_id])
-
+      session[:cart][:tipster_ids].delete(:old_id)
+      add_tipster_to_cart(params[:new_id])
     else
-      raise 404
     end
   end
   def empty
