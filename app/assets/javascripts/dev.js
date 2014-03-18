@@ -46,8 +46,8 @@ $(document).ready(function () {
     $('#change-tipster').on('click',function(){
         $('#modal-change-tipster').modal();
     });
-    $('#change-subscription').on('click',function(){
-        $('#modal-change-subscription').modal();
+    $('#change-plan').on('click',function(){
+        $('#modal-change-plan').modal();
     });
 
     $('.lk-toggle-sign-up-box').on('click', function () {

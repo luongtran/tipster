@@ -46,7 +46,8 @@
                       %image{src: path_to_image('select_subscription.png')}
                     %li.subscription-price= @selected_plan.price.to_s + " € / month"
                     %li
-                      %a.submitLink{href: subscribe_choose_offer_path}
+                      = hidden_field_tag :current_plan_id,@selected_plan.id
+                      = button_tag(class: 'submitLink',id: 'change-plan') do
                         %i.glyphicon.glyphicon-play
                         Change subscription
                 - else
@@ -124,13 +125,43 @@
                   %p.text-warning
                     Not found any tipsters match!
       .modal-footer
-#modal-change-subscription.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
+#modal-change-plan.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
   .modal-dialog
     .modal-content
       .modal-header
       .modal-body
         - @plans = Plan.where.not(price: 0)
-        = render 'home/pricing',plans: @plans
+        - @plans.each do |plan|
+          .pricing-box-outer
+            .pricing_box{class: "#{@selected_plan && @selected_plan.id == plan.id ? 'large' : ''}"}
+              .header
+                %span= plan.title.capitalize
+              %ul.pricing-features
+                %li.even
+                  %strong.yes Free tips
+                %li.odd
+                  %strong{class: "#{plan.reception_delay == 0 ? 'yes' : 'no'}"} Real-time notice bet
+                %li.even
+                  %strong{class: "#{plan.free? ? 'no' : 'yes'}"} Follow professional tipster
+                %li.odd
+                  %strong{class: "#{plan.profit_guaranteed? ? 'yes' : 'no'}"} Profit guaranteed
+                %li.even
+                  %strong{class: "#{plan.switch_tipster_ability? ? 'yes' : 'no'}"} Change following tipster
+                %li.odd
+                  %strong{class: "#{(plan.number_tipster > 1) ? 'yes' : 'no'}"} Follow multi tipsters
+              %p
+              %h2
+                - if plan.free?
+                  FREE
+                - else
+                  %sup €
+                  = plan.price
+                  %sub /month
+              %hr
+              - if @selected_plan.id == plan.id
+                %a.btn.btn-warning{href: select_plan_path(plan.id)} Choosen
+              - else
+                %a.btn.btn-primary{href: "javascript:;",onclick: "changePlan(#{plan.id})"} Change
       .modal-footer
 :javascript
   function changeTipster(id){
@@ -158,4 +189,29 @@
               console.log("Ajax error !!!!");
           }
       });
+      };
+  function changePlan(id){
+    var current_plan_id = $('#current_plan_id');
+    var new_plan_id = id;
+    console.log("Change &id to &id",old_id,new_id);
+    $.ajax({
+      url: '/subscribe/change_plan',
+      type: 'post',
+      data: {old_id: current_plan_id,new_id: new_plan_id},
+      dataType: "json",
+      beforeSend: function(xhr){},
+      success: function(response){
+          if(response.success){
+            $('#modal-change-plan').modal('hide');
+            $('#modal-confirm-checkout').modal('hide');
+            window.location = response.url;
+          }
+          else{
+            Helper.alert_warning('Error, change plan failer !!!');
+          }
+      },
+      error: function(){
+          console.log("Ajax error !!!!");
       }
+  });
+}
