@@ -64,14 +64,6 @@ class CartController < ApplicationController
     redirect_to return_url || after_drop_tipster_url
   end
 
-  # next day
-  def change_tipster
-    if tipster_ids_in_cart.include?(params[:old_id])
-      session[:cart][:tipster_ids].delete(:old_id)
-      add_tipster_to_cart(params[:new_id])
-    else
-    end
-  end
   def empty
     empty_cart_session
     flash[:notice] = I18n.t('cart.empty')

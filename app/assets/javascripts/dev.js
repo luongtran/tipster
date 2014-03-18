@@ -198,6 +198,7 @@ $(document).ready(function () {
 
     })
 
+
     /* Background switching */
     // order following: football, tennis, basket,
 //    if (localStorage.getItem('bgs') == null) {

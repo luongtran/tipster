@@ -115,6 +115,7 @@ class SubscribeController < ApplicationController
 
   # listing all tipster
   def choose_tipster
+    puts "Session add tipster id #{session[:add_tipster_id]}"
     @step = 2
     session[:step] = 2 if session[:step] < 2
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
@@ -126,6 +127,21 @@ class SubscribeController < ApplicationController
     if session[:add_tipster_id]
       @choose_tipster = Tipster.find session[:add_tipster_id]
       session[:add_tipster_id] = nil
+    end
+  end
+
+  def change_tipster
+    @step = 2
+    session[:step] = 2 if session[:step] < 2
+    @show_checkout_dialog = !!flash[:show_checkout_dialog]
+    if tipster_ids_in_cart.include?(params[:old_id])
+      session[:cart][:tipster_ids].delete(params[:old_id])
+      add_tipster_to_cart(params[:new_id])
+      flash[:show_checkout_dialog] = true
+      session[:add_tipster_id] = params[:new_id]
+      render json: {success: true,url: subscribe_choose_tipster_path}
+    else
+      render json: {success: false}
     end
   end
 
