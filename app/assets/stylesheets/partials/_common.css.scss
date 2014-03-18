@@ -172,7 +172,23 @@ body {
   border-top: forestgreen 1px solid;
 }
 
+.text-white {
+  color: white;
+}
+.bg-grey {
+  background-color: #444444;
+}
 
 //-----------------------------
 @import "page_header";
 @import "page_footer.css.scss";
+
+#sign-in-modal-box {
+  .modal-header {
+    padding: 0;
+  }
+  .modal-footer {
+    background-color: #F0F0F0;
+    text-align: center;
+  }
+}

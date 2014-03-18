@@ -2,33 +2,38 @@
   .modal-dialog
     .modal-content
       .modal-header.text-center
-        %h2.text-slim.text-primary.mbs.mts SIGN IN
+        .pal= image_tag 'tipster-logo-main.png'
+        .bg-grey.pts.pbs
+          %span.text-white SIGN IN
       .modal-body
-        .form-group
-          .col-md-6
-            %a.btn.btn-md.btn-block.btn-social.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
-              %i.fa.fa-facebook
-              Facebook
-          .col-md-6
-            %a.btn.btn-md.btn-block.btn-social.btn-google-plus{href: account_omniauth_authorize_path(:google_oauth2)}
-              %i.fa.fa-google-plus
-              Google plus
-        %p
-          %br
-        .text-center
-          %h4.text-muted OR
         .row
-          .col-md-10.col-md-offset-1
+          .col-sm-10.col-sm-offset-1
+            %a.btn.btn-lg.btn-social.btn-facebook.btn-block.mbl{href: account_omniauth_authorize_path(:facebook)}
+              %i.fa.fa-facebook
+              Connect with Facebook
+            %a.btn.btn-lg.btn-social.btn-google-plus.btn-block{href: account_omniauth_authorize_path(:google_oauth2)}
+              %i.fa.fa-google-plus
+              Connect with Google +
+            %p
+              %br
+            .text-center.pbl
+              %h5.text-muted OR
             = simple_form_for :account, url: account_session_path, html: {id: 'sign-in-form'} do |f|
               .form-group
-                = f.input_field :email, as: :email, placeholder: 'Email address',id: 'email', class: 'input-block input-md', autocomplete: 'off'
+                .input-group
+                  %span.input-group-addon
+                    %i(class="fa fa-envelope")
+                  = f.input_field :email, as: :email, placeholder: 'Email address',id: 'email', class: 'input-block input-md form-control', autocomplete: 'off'
               .form-group
-                = f.input_field :password, as: :password, placeholder: 'Password',id: 'password', class: 'input-block input-md'
+                .input-group
+                  %span.input-group-addon
+                    %i(class="fa fa-lock")
+                  = f.input_field :password, as: :password, placeholder: 'Password',id: 'password', class: 'input-block input-md'
+              .form-group.clearfix
+                %a{href: new_account_password_path, class: 'pull-right'} Forgot password?
               #sign-in-message-container
               .form-group
-                %button.btn.btn-success.btn-block.btn-md#submiter Sign In
-        .text-center
-          %a{href: new_account_password_path} Forgot password?
-          |
-          %a.lk-toggle-sign-up-box{href: '#'}
-            Sign Up
+                %button.btn.btn-success.btn-block.btn-lg#submiter Sign In
+      .modal-footer.text-center
+        %span.mrm Would you like to open account?
+        %a.lk-toggle-sign-up-box{href: '#'} Sign Up
