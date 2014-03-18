@@ -1,23 +1,16 @@
 require 'active_support/configurable'
-require 'open-uri'
 require 'nokogiri'
 
 module OptaSport
-
   API_ROOT_URL = 'http://api.core.optasports.com'
 
-  AVAILABLE_SPORTS = [
-      SOCCER = 'soccer',
-      BASEBALL = 'baseball',
-      BASKETBALL = 'basketball',
-      HANDBALL = 'handball',
-      HOCKEY = 'hockey',
-      TENNIS = 'tennis',
-      FOOTBALL_US = 'american_football'
-  ]
+  class Configuration
+    include ActiveSupport::Configurable
+    config_accessor :username
+    config_accessor :authkey
+  end
 
   class << self
-
     def configure(&block)
       yield @config ||= OptaSport::Configuration.new
     end
@@ -29,82 +22,107 @@ module OptaSport
     def authenticate_params
       "&username=#{self.config.username}&authkey=#{self.config.authkey}"
     end
+  end
 
-    def sport_functions
-      @@sport_functions ||= YAML.load_file(File.join(Rails.root, 'config', 'opta_sport_functions.yml'))
+  # ======================================================================
+  # Fetching Result Classes
+  # ======================================================================
+  module FetchResult
+    class Base
+      attr_accessor :xml_doc
+
+      def initialize(xml_doc)
+        @xml_doc = xml_doc
+      end
     end
-
-    def required_params_for(sport, function)
-      OptaSport.sport_functions[sport]['functions'][function.to_s]['required_params']
-    end
-
-    def optional_params_for(sport, function)
-      OptaSport.sport_functions[sport]['functions'][function.to_s]['optional_params']
-    end
-
-    AVAILABLE_SPORTS.each do |sport|
-      define_method sport.to_sym do
-        return "#{self.name}::Fetcher::#{sport.capitalize}".constantize.new
+    class SoccerMatch < Base
+      def all
+        # FIXME: change xpath
+        nodes = @xml_doc.xpath('//xxx')
+        matches = []
+        nodes.each do |node|
+          matches << {
+              competition_id: node['match'],
+              name: node['name'],
+              area_id: node['area_id'],
+              date: node['date_utc'],
+              time: node['time_utc'],
+              teams: {
+                  a: {
+                      id: node['team_A_id'],
+                      name: node['team_A_name'],
+                      country: node['team_A_country']
+                  },
+                  b: {
+                      id: node['team_B_id'],
+                      name: node['team_B_name'],
+                      country: node['team_B_country']
+                  },
+              },
+              status: node['status'],
+              winner: node['winner']
+          }
+        end
+        competitions
       end
     end
 
-    alias_method :football, :soccer
-
-    def get_football_areas
-      fetcher = Fetcher.new(
-          SOCCER,
-          function: 'get_areas'
-      )
-      xml_result = fetcher.go
-      nodes = xml_result.xpath('//area')
-      areas = []
-      nodes.each do |area|
-        areas << {
-            area_id: area['area_id'],
-            name: area['name'],
-            country_code: area['countrycode'],
-            parent_area_id: area.parent['area_id']
-        }
+    class SoccerCompetition < Base
+      def all
+        nodes = @xml_doc.xpath('//competition ')
+        competitions = []
+        nodes.each do |compt|
+          competitions << {
+              competition_id: compt['competition_id'],
+              name: compt['name'],
+              area_id: compt['area_id']
+          }
+        end
+        competitions
       end
-      areas
     end
 
-    def get_football_matches
-      fetcher = Fetcher.new(
-          SOCCER,
-          function: 'get_matches'
-      )
-      xml_result = fetcher.go
+    class SoccerArea < Base
+      def all
+        nodes = @xml_doc.xpath('//area')
+        areas = []
+        nodes.each do |area|
+          areas << {
+              area_id: area['area_id'],
+              name: area['name'],
+              country_code: area['countrycode'],
+              parent_area_id: area.parent['area_id']
+          }
+        end
+        areas
+      end
+    end
+
+    class SoccerSeason < Base
+    end
+    class SoccerMatchLive < Base
     end
   end
 
-  class Configuration
-    include ActiveSupport::Configurable
-    config_accessor :username
-    config_accessor :authkey
-  end
+  # ======================================================================
+  # Fetcher Classes
+  # ======================================================================
 
   module Fetcher
-    #SPORT_TYPE_TO_CLASS = {
-    #    'soccer' => Soccer,
-    #}
     class Base
-      #include ActiveRecord::ReadonlyAttributes
-      attr_accessor :function, :params, :options, :current_url
-
+      attr_accessor :function, :params, :options, :last_url
       class << self
-        def url_for(fetcher, method)
-          # Build path
+        def url_for(sport, method, params)
+          # Create path
           u = API_ROOT_URL
-          u += "/#{fetcher.sport}"
-          u += "/#{method}"
-          u += '?'
+          u += "/#{sport}/#{method}?"
+
           # Add parameters
-          unless fetcher.options.blank?
-            u += self.default_options.merge(fetcher.options).to_param
-            # sanitize params
+          unless params.blank?
+            u += params.to_param
           end
-          # After all: add authoriation info
+
+          # After all add authorization infors
           u += OptaSport.authenticate_params
         end
 
@@ -112,7 +130,9 @@ module OptaSport
           {lang: 'en'}
         end
 
-
+        def datetime_param_format
+          "%Y-%m-%d %H:%M:%S"
+        end
       end
 
       def sport
@@ -120,9 +140,9 @@ module OptaSport
       end
 
       # Send request and return response
-      def go(method)
-        @current_url = self.class.url_for(self, method)
-        uri = URI(@current_url)
+      def go(method, params, result_class)
+        @last_url = self.class.url_for(self.sport, method, params)
+        uri = URI(@last_url)
         response = Net::HTTP.get_response(uri)
         case response
           when Net::HTTPSuccess
@@ -132,42 +152,45 @@ module OptaSport
           else
             return false
         end
-        response.body
+        result_class.new(Nokogiri::XML(response.body))
       end
     end
 
-
-    # =========================================================================
-    # Fetcher Classes
-    # =========================================================================
     class Soccer < Base
-      def get_matches(params)
-        # Check required params
-        required_params = OptaSport.required_params_for(self.sport, __method__.to_s)
-        if required_params.any? { |key| params.stringify_keys.exclude?(key) }
-          raise "Error: missing params. Required #{required_params.join(',')}"
-        end
+      AVAILABLE_FUNCTIONS = {
+          'get_areas' => {
+              'required_params' => [],
+              'options_params' => %w(area_id),
+              'result_class' => OptaSport::FetchResult::SoccerArea
+          },
+          'get_competitions' => {
+              'required_params' => [],
+              'options_params' => %w(area_id authorized),
+              'result_class' => OptaSport::FetchResult::SoccerCompetition
+          },
+          'get_matches' => {
+              'required_params' => %w(id type),
+              'options_params' => %w(start_date end_date limit detailed last_updated),
+              'result_class' => OptaSport::FetchResult::SoccerMatch
+          },
+          'get_matches_live' => {
+              'required_params' => [],
+              'options_params' => %w(id now_playing date minutes detailed type),
+              'result_class' => OptaSport::FetchResult::SoccerMatchLive
+          },
+          'get_seasons' => {
+              'required_params' => %w(),
+              'options_params' => %w(authorized coverage active id type last_updated),
+              'result_class' => OptaSport::FetchResult::SoccerSeason
+          }
+      }
 
-        # 'yyyy-mm-dd hh:mm:ss'
-        if %w(start_date end_date).any? { |key| params.stringify_keys.exclude?(key) }
-          params.merge!(
-              start_date: Date.today.beginning_of_day.strftime("%Y-%m-%d %H:%M:%S"),
-              end_date: Date.today.end_of_day.strftime("%Y-%m-%d %H:%M:%S"))
-        end
-        if OptaSport.optional_params_for(self.sport, __method__.to_s)
-        end
-
-        @options = params
-        res = self.go(__method__.to_s)
-        if res
-          return SoccerMatchesResult.new(Nokogiri::XML(res))
-        else
-          return []
+      AVAILABLE_FUNCTIONS.each do |f_name, settings|
+        define_method f_name do |params = {}|
+          return self.go(f_name, params, settings['result_class'])
         end
       end
 
-      def get_areas
-      end
     end
     class Baseball < Base
     end
@@ -182,49 +205,25 @@ module OptaSport
     class FootballUS < Base
     end
 
-    # =========================================================================
-    # Result Classes
-    # =========================================================================
-    class SoccerMatchesResult
-      attr_accessor :xml_doc
-
-      def initialize(xml_doc)
-        @xml_doc = xml_doc
+    SPORT_TYPE_TO_CLASS = {
+        'soccer' => Soccer,
+        'football' => Soccer,
+        'tennis' => Tennis,
+        'baseball' => Baseball,
+        'basketball' => Basketball,
+        'hockey' => Hockey,
+        'football_us' => FootballUS,
+        'am_football' => FootballUS,
+    }
+    class << self
+      SPORT_TYPE_TO_CLASS.each do |sport_type, klass|
+        define_method sport_type do
+          return klass.new
+        end
       end
     end
 
-    class SoccerAreasResult
-    end
   end
 
-  def self.get_all_areas
-    uri = URI 'http://api.globalsportsmedia.com/soccer/get_areas?authkey=3f727da50764fd0fa31f6884a68cf75e431ee994&username=cportal'
-    xml_result = Nokogiri::XML(Net::HTTP.get_response(uri).body)
-    nodes = xml_result.xpath('//area')
-    areas = []
-    nodes.each do |area|
-      areas << Area.create(
-          area_id: area['area_id'],
-          name: area['name'],
-          country_code: area['countrycode'],
-          parent_area_id: area.parent['area_id']
-      )
-    end
-    areas
-  end
 
-  def self.get_all_competitions
-    uri = URI 'http://api.globalsportsmedia.com/soccer/get_competitions?authkey=3f727da50764fd0fa31f6884a68cf75e431ee994&username=cportal'
-    xml_result = Nokogiri::XML(Net::HTTP.get_response(uri).body)
-    nodes = xml_result.xpath('//competition ')
-    competitions = []
-    nodes.each do |compt|
-      competitions << Competition.create(
-          competition_id: compt['competition_id'],
-          name: compt['name'],
-          area_id: compt['area_id']
-      )
-    end
-    competitions
-  end
 end
