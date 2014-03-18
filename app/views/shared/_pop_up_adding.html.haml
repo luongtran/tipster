@@ -27,7 +27,7 @@
                       = simple_form_for :nothing,url: change_tipster_cart_path do
                         = hidden_field_tag :old_id,@choose_tipster.id
                         = hidden_field_tag :new_id,''
-                        = button_tag(type: 'submit', class: 'submitLink') do
+                        = button_tag(type: 'submit', class: 'submitLink',id: 'change-tipster') do
                           %i.glyphicon.glyphicon-play
                           Change tipster
                 - else
@@ -62,3 +62,94 @@
                         Choose subscription
       .modal-footer
         %a.btn.checkoutbtn{href: subscribe_checkout_path} Process checkout
+#modal-change-tipster.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h4 Change tipster
+      .modal-body
+      .step-content
+        .panel.panel-default
+          .panel-body.text-center
+            .tipster-list.registration#tipster_list
+              .tipster-list-inner.container
+                .tipster-list-line1
+                  %ul.list-inline
+                    %li
+                      %a{href: subscribe_choose_tipster_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
+                    - @sports.each do |sport|
+                      %li
+                        %a{href: subscribe_choose_tipster_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
+                .tipster-list-line2.clearfix
+                  .pull-left
+                    %ul.list-inline.list-unstyled.mbn.rank-ranges
+                      - Tipster::RANKING_RANGES.each do |range|
+                        %li
+                          %a{href: subscribe_choose_tipster_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
+                            = t("tipster.ranking.ranges.#{range}").titleize
+                .tipster-list-table#tipster-list-table
+                  .row
+                    .col-md-12
+                      %table.table.table-hover
+                        %thead
+                          %tr
+                            %th Tipster
+                            %th Profit
+                            %th Yield
+                            %th
+                              = ("N" + content_tag(:sup, 'o')).html_safe
+                              of tips
+                            %th Hit Rate
+                            %th Avg.Odds
+                            %th Profitable Months
+                            %th
+                        %tbody
+                          - @tipsters.each_with_index do |tipster,index|
+                            %tr
+                              %td
+                                = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar-mini'
+                                %a.tipster-name{href: tipster_path(tipster)}
+                                  = tipster.full_name
+                                .tipster-profit-chart
+                                  = image_tag profit_img_chart_url_for(tipster.profit_values_for_chart), alt: 'Profit chart'
+                              %td= tipster.profit
+                              %td= tipster.yield_in_string
+                              %td= tipster.number_of_tips
+                              %td= tipster.hit_rate_in_string
+                              %td= tipster.avg_odds
+                              %td= tipster.profitable_months
+                              %td.text-center
+                                %div.btn-group.btn-group-sm
+                                  - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
+                                    %button.btn.btn-sm.btn-default Already purchase
+                                  - else
+                                    %a.btn.btn-info{href: "javascript",onclick: "changeTipster(#{tipster.id})"}
+                      - if @tipsters.empty?
+                        .text-center.clearfix
+                          %br
+                          %p.text-warning
+                            Not found any tipsters match!
+              #top_tipsters_of_weeks
+                %h4.text-slim.text-success.text-center Top 3 of the week
+                %hr.mbs.mts
+                  .tipster-top-body.remote-data{data: {url: top_three_tipsters_path(sport: query_params[:sport]), 'error-msg' => 'Failed to load top 3 of the week.'}}
+              - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
+                = render 'shared/pop_up_adding',choose_tipster: @choose_tipster,select_plan: @select_plan
+      .modal-footer
+#modal-change-subscription.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+      .modal-body
+        - @plans = Plan.where.not(price: 0)
+        = render 'home/pricing',plans: @plans
+      .modal-footer
+:javascript
+  function changeTipster(id){
+    var old_id = $("#old_id").val();
+    var new_id = id;
+    //Validate
+    $.ajax({
+
+    });
+  }

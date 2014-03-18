@@ -43,6 +43,12 @@ $(document).ready(function () {
 
     /* Show confirm to checkout modal after add a tipster to cart */
     $('#modal-confirm-checkout').modal();
+    $('#change-tipster').on('click',function(){
+        $('#modal-change-tipster').modal();
+    });
+    $('#change-subscription').on('click',function(){
+        $('#modal-change-subscription').modal();
+    });
 
     $('.lk-toggle-sign-up-box').on('click', function () {
         $('.modal[aria-hidden="false"]').modal('hide');
