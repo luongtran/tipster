@@ -46,19 +46,19 @@
         .col-md-9.col-md-offset-3.pts
           %ul.list-inline
             %li
-              %a{href: '#'}
+              %a{href: tipster_path(@tipster)}
                 %i General statistics
             %li -
             %li
-              %a{href: '#'}
+              %a{href: detail_statistics_tipster_path(@tipster)}
                 %i Details statistics
             %li -
             %li
-              %a{href: '#'}
+              %a{href: last_tips_tipster_path(@tipster)}
                 %i Last tips
             %li -
             %li
-              %a{href: '#'}
+              %a{href: description_tipster_path(@tipster)}
                 %i Tipster's description
 #profile-overiew-page
   .container

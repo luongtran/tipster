@@ -22,30 +22,30 @@
               %a.lk-change-lang{href: 'javascript:;', class: class_for_link_to_change_lang('fr'), data: {lang: 'fr', url: select_language_path}}
                 Français
         %li
-          %a{:href=>"javascript:;"}
+          %a{href: "javascript:;"}
             %i.fa.fa-gear
             Settings
-
+  - current_menu = yield(:current_menu) || ''
   .menu
     .container
       %ul.list-inline.clearfix
         %li.pull-left
-          %a{href: '#'}
+          %a{href: '#', class: set_current_menu('statistics',current_menu)}
             Statistics
         %li.pull-left
-          %a{href: '#'}
+          %a{href: '#', class: set_current_menu('livescore',current_menu)}
             Livescore
         %li.pull-left
-          %a{href: tipsters_path}
+          %a{href: tipsters_path, class: set_current_menu('tipsters',current_menu)}
             = t('menu.tipster')
         %li.pull-left
-          %a{href: last_tips_path}
+          %a{href: last_tips_path, class: set_current_menu('last_tips',current_menu)}
             Last tips
         %li.pull-left
-          %a{href: '#'}
+          %a{href: '#', class: set_current_menu('news',current_menu)}
             News
         %li.pull-left
-          %a{href: pricing_path}
+          %a{href: pricing_path, class: set_current_menu('pricing',current_menu)}
             = t('menu.pricing')
         - if current_subscriber
           %li.dropdown.box-user-control

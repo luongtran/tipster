@@ -204,6 +204,10 @@ module ApplicationHelper
     I18n.locale == lang ? 'current' : ''
   end
 
+  def set_current_menu(menu_name, current)
+    menu_name == current ? 'current' : nil
+  end
+
   def genders_collection_for_select
     options = []
     options << [I18n.t('user.male'), true]
@@ -242,7 +246,7 @@ module ApplicationHelper
   end
 
 
-  def class_for_subscribe_step(step,current_step)
+  def class_for_subscribe_step(step, current_step)
     if step < current_step
       'complete'
     elsif step == current_step
@@ -252,7 +256,7 @@ module ApplicationHelper
     end
   end
 
-  def links_for_subscribe_step(step,current_step)
+  def links_for_subscribe_step(step, current_step)
     case step
       when 1
         current_step >= step ? link_to(I18n.t('menu.subscribe.step1'), subscribe_choose_offer_path) : I18n.t('menu.subscribe.step1')
@@ -269,7 +273,7 @@ module ApplicationHelper
     end
   end
 
-  def links_for_subscribe_free_step(step,current_step)
+  def links_for_subscribe_free_step(step, current_step)
     case step
       when 1
         current_step >= step ? link_to(I18n.t('menu.subscribe.step1'), subscribe_choose_offer_path) : I18n.t('menu.subscribe.step1')

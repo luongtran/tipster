@@ -345,3 +345,8 @@ ul.steps-container .step-name a:hover {
 .common-tipster-info select.statistics-range * {
     color: #000;
 }
+
+/* Main menu */
+.menu ul.list-inline > li > a.current {
+    background-color: #808080;
+}
