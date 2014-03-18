@@ -16,6 +16,7 @@ class CartController < ApplicationController
   end
 
   def add_tipster
+    session[:add_tipster_id] = params[:id]
     unless selected_plan.nil?
       count_after_added = tipster_ids_in_cart.size + 1
       if count_after_added > (selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS)
