@@ -36,7 +36,7 @@
                     %li.subscription-price= @selected_plan.price.to_s + " € / month"
                     %li
                       = hidden_field_tag :current_plan_id,@selected_plan.id
-                      = button_tag(class: 'submitLink',id: 'change-plan') do
+                      %a.submitLink{href: subscribe_choose_offer_path}
                         %i.glyphicon.glyphicon-play
                         Change subscription
             .col-md-2
@@ -67,7 +67,7 @@
                     %li.subscription-price= @selected_plan.price.to_s + " € / month"
                     %li
                       = hidden_field_tag :current_plan_id,@selected_plan.id
-                      = button_tag(class: 'submitLink',id: 'change-plan') do
+                      %a.submitLink{href: subscribe_choose_offer_path}
                         %i.glyphicon.glyphicon-play
                         Change subscription
       .modal-footer
