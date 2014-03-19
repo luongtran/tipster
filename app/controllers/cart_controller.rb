@@ -15,6 +15,10 @@ class CartController < ApplicationController
 
   def add_tipster
     unless selected_plan.nil?
+      if session[:old_id]
+        remove_tipster_from_cart(session[:old_id])
+        session[:old_id] = nil
+      end
       count_after_added = tipster_ids_in_cart.size + 1
       if count_after_added > (selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS)
         flash[:alert] = I18n.t('cart.limit_add_tipster', count: Subscription::MAX_ADDITIONAL_TIPSTERS)
@@ -32,10 +36,6 @@ class CartController < ApplicationController
         if tipster_ids_in_cart.include? tipster_id
           flash[:alert] = I18n.t('cart.already_in_cart')
         else
-          if session[:old_id]
-            remove_tipster_from_cart(session[:old_id])
-            session[:old_id] = nil
-          end
           add_tipster_to_cart(tipster_id)
           session[:add_tipster_id] = params[:id]
           flash[:show_checkout_dialog] = true
