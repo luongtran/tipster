@@ -70,5 +70,5 @@
               %h4.text-slim.text-success.text-center Top 3 of the week
               %hr.mbs.mts
                 .tipster-top-body.remote-data{data: {url: top_three_tipsters_path(sport: query_params[:sport]), 'error-msg' => 'Failed to load top 3 of the week.'}}
-            - if @show_checkout_dialog && !tipster_ids_in_cart.empty?
-              = render 'shared/pop_up_adding',choose_tipster: @choose_tipster,select_plan: @select_plan
+            - if @show_checkout_dialog
+              = render 'shared/pop_up_adding',choose_tipster: @choose_tipster,selected_plan: @selected_plan

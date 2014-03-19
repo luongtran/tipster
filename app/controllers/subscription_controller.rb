@@ -6,13 +6,20 @@ class SubscriptionController < ApplicationController
     max_cart_allow = selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS
     if tipster_ids_in_cart.size > max_cart_allow
       session[:cart][:tipster_ids].clear
+    else
+      if session[:failed_add_tipster_id]
+        add_tipster_to_cart(session[:failed_add_tipster_id])
+        session[:failed_add_tipster_id] = nil
+      end
     end
     session[:plan_id] = selected_plan.id
     if selected_plan.free?
       redirect_to subscribe_account_url
     elsif params[:return_path]
+      flash[:show_checkout_dialog] = true
       redirect_to subscribe_choose_offer_url
     else
+      flash[:show_checkout_dialog] = true
       redirect_to tipsters_url
     end
   end

@@ -2,7 +2,6 @@ class TipstersController < ApplicationController
   before_action :find_tipster, only: [:show, :detail_statistics, :last_tips, :description, :profile]
   # GET /tipsters
   def index
-
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
     @selected_plan = selected_plan
     @tipsters = Tipster.load_data(params)
@@ -14,6 +13,9 @@ class TipstersController < ApplicationController
     if session[:add_tipster_id]
       @choose_tipster = Tipster.find session[:add_tipster_id]
       session[:add_tipster_id] = nil
+    end
+    if session[:failed_add_tipster_id]
+      @choose_tipster = Tipster.find session[:failed_add_tipster_id]
     end
   end
 

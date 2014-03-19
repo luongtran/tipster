@@ -286,6 +286,46 @@ module ApplicationHelper
     end
   end
 
+
+  def header_menu_adding_popup(cart_size,tipster_first)
+    case cart_size
+      when 1
+        if tipster_first
+          {
+              left: 'Your Subscription',
+              right: 'Your SUPPER TIPSTERHERO'
+          }
+        else
+          {
+              left: 'Your SUPER TIPSTERHERO',
+              right: 'Your Subscription'
+          }
+        end
+      when 2
+          {
+              left: 'FIRST TIPSTERHERO',
+              right: 'SECOND TIPSTERHERO'
+          }
+      when 3
+          {
+              left: 'SECOND TIPSTERHERO',
+              right: 'THIRD TIPSTERHERO'
+          }
+      when 4
+          {
+              left: 'THIRD TIPSTERHERO',
+              right: 'FOURTH TIPSTERHERO'
+          }
+      when 5
+          {
+              left: 'FOURTH TIPSTERHERO',
+              right: 'FIFTH TIPSTERHERO'
+          }
+    end
+  end
+  def adding_price_show(price)
+    "#{(price * 0.4).round(3)} € / month"
+  end
   def abc
     OptaSport::Fetcher(
         'soccer',

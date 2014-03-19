@@ -49,7 +49,26 @@ $(document).ready(function () {
     $('#change-plan').on('click',function(){
         $('#modal-change-plan').modal();
     });
-
+    $('#confirm-adding').on('click',function(){
+        var show_popup = $("#show_adding_popup").val();
+        console.log(show_popup);
+        if(show_popup == 'true'){
+            $('#modal-confirm-checkout').modal('hide');
+            $('#modal-confirm-adding').modal();
+        }else{
+            var reason = $('#reason').val();
+            if(reason != null || reason != '')
+            {
+                if(reason == "unselect-plan"){
+                    Helper.alert_warning("Please choose plan first");
+                }
+            }
+            else
+            {   //hardcode
+                window.location = '/subscribe/checkout';
+            }
+        }
+    });
     $('.lk-toggle-sign-up-box').on('click', function () {
         $('.modal[aria-hidden="false"]').modal('hide');
         $('#sign-up-modal-box').modal({

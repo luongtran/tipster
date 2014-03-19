@@ -13,9 +13,90 @@
         .row.adding
           .adding-header
             .col-md-6
-              %p.text-center Your SUPER TIPSTERHERO
+              %p.text-center= header_menu_adding_popup(1, @selected_plan.present?)[:left]
             .col-md-6
-              %p.text-center Your Subscription
+              %p.text-center= header_menu_adding_popup(1, @selected_plan.present?)[:right]
+          .adding-info
+            .col-md-5
+              .tipster_info
+                - if @choose_tipster.present?
+                  %ul.list-unstyled
+                    %li.text-center= @choose_tipster.full_name
+                    %li.responsive-image= image_tag @choose_tipster.avatar.url(:thumb) || 'demo.jpg'
+                    %li
+                      = hidden_field_tag :old_id,@choose_tipster.id
+                      = button_tag(class: 'submitLink',id: 'change-tipster') do
+                        %i.glyphicon.glyphicon-play
+                        Change tipster
+                - elsif @selected_plan.present?
+                  %ul.list-unstyled
+                    %li.text-center= @selected_plan.title
+                    %li.responsive-image
+                      %image{src: path_to_image('select_subscription.png')}
+                    %li.subscription-price= @selected_plan.price.to_s + " € / month"
+                    %li
+                      = hidden_field_tag :current_plan_id,@selected_plan.id
+                      = button_tag(class: 'submitLink',id: 'change-plan') do
+                        %i.glyphicon.glyphicon-play
+                        Change subscription
+            .col-md-2
+              %image{src: path_to_image("example_narow.png"),height: '250px'}
+            .col-md-5
+              .subscription-info
+                - if @selected_plan.nil?
+                  %ul.list-unstyled
+                    %li.text-center Plan info
+                    %li.responsive-image
+                      %image{src: path_to_image('unselect_subscription.png')}
+                    %li
+                      %a.submitLink{href: subscribe_choose_offer_path}
+                        %i.glyphicon.glyphicon-play
+                        Choose subscription
+                - elsif @choose_tipster.nil?
+                  %ul.list-unstyled
+                    %li.text-center Tipster choose
+                    %li.responsive-image
+                      %image{src: path_to_image('unselect_tipster.jpg')}
+                    %li
+                      %a{href: tipsters_path} Choose tipster
+                - else
+                  %ul.list-unstyled
+                    %li.text-center= @selected_plan.title
+                    %li.responsive-image
+                      %image{src: path_to_image('select_subscription.png')}
+                    %li.subscription-price= @selected_plan.price.to_s + " € / month"
+                    %li
+                      = hidden_field_tag :current_plan_id,@selected_plan.id
+                      = button_tag(class: 'submitLink',id: 'change-plan') do
+                        %i.glyphicon.glyphicon-play
+                        Change subscription
+      .modal-footer
+        - if @selected_plan
+          = hidden_field_tag :show_adding_popup,(tipster_ids_in_cart.size + 1 <= (@selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS))
+          %a.btn.checkoutbtn#confirm-adding{href: 'javascript:void(0);'} Process checkout
+        - else
+          = hidden_field_tag :show_adding_popup,false
+          = hidden_field_tag :reason,'unselect-plan'
+#modal-confirm-adding.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
+        %h4.modal-title
+          %i.glyphicon.glyphicon-shopping-cart
+          = t('menu.cart')
+      .modal-body
+        .row
+          %p
+            Choose an addition TipsterHero:
+            %span.text-success
+              %strong 60% OFF
+        .row.adding
+          .adding-header
+            .col-md-6
+              %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @selected_plan.present?)[:left]
+            .col-md-6
+              %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @selected_plan.present?)[:right]
           .adding-info
             .col-md-5
               .tipster_info
@@ -28,190 +109,15 @@
                       = button_tag(class: 'submitLink',id: 'change-tipster') do
                         %i.glyphicon.glyphicon-play
                         Change tipster
-                - else
-                  %ul.list-unstyled
-                    %li.text-center Tipster choose
-                    %li.responsive-image
-                      %image{src: path_to_image('unselect_tipster.jpg')}
-                    %li
-                      %a{href: "#"} Choose tipster
             .col-md-2
               %image{src: path_to_image("example_narow.png"),height: '250px'}
             .col-md-5
               .subscription-info
-                - unless @selected_plan.nil?
-                  %ul.list-unstyled
-                    %li.text-center= @selected_plan.title
-                    %li.responsive-image
-                      %image{src: path_to_image('select_subscription.png')}
-                    %li.subscription-price= @selected_plan.price.to_s + " € / month"
-                    %li
-                      = hidden_field_tag :current_plan_id,@selected_plan.id
-                      = button_tag(class: 'submitLink',id: 'change-plan') do
-                        %i.glyphicon.glyphicon-play
-                        Change subscription
-                - else
-                  %ul.list-unstyled
-                    %li.text-center Plan info
-                    %li.responsive-image
-                      %image{src: path_to_image('unselect_subscription.png')}
-                    %li
-                      %a.submitLink{href: subscribe_choose_offer_path}
-                        %i.glyphicon.glyphicon-play
-                        Choose subscription
+                %ul.list-unstyled
+                  %li.text-center= adding_price_show(@selected_plan.price) if @selected_plan
+                  %li.responsive-image
+                    %image{src: path_to_image('unselect_tipster.jpg')}
+                  %li
+                    %a{href: tipsters_path} Choose tipster
       .modal-footer
-        %a.btn.checkoutbtn{href: subscribe_checkout_path} Process checkout
-#modal-change-tipster.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
-  .modal-dialog
-    .modal-content
-      .modal-header
-        %h4 Change tipster
-      .modal-body
-        .tipster-list-line1
-          %ul.list-inline
-            %li
-              %a{href: subscribe_choose_tipster_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
-            - @sports.each do |sport|
-              %li
-                %a{href: subscribe_choose_tipster_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
-        .tipster-list-line2.clearfix
-          .pull-left
-            %ul.list-inline.list-unstyled.mbn.rank-ranges
-              - Tipster::RANKING_RANGES.each do |range|
-                %li
-                  %a{href: subscribe_choose_tipster_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
-                    = t("tipster.ranking.ranges.#{range}").titleize
-        .tipster-list-table#tipster-list-table
-          .row
-            .col-md-12
-              %table.table.table-hover
-                %thead
-                  %tr
-                    %th Tipster
-                    %th Profit
-                    %th Yield
-                    %th
-                      = ("N" + content_tag(:sup, 'o')).html_safe
-                      of tips
-                    %th Hit Rate
-                    %th Avg.Odds
-                    %th Profitable Months
-                    %th
-                %tbody
-                  - @tipsters.each_with_index do |tipster,index|
-                    %tr
-                      %td
-                        = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar-mini'
-                        %a.tipster-name{href: tipster_path(tipster)}
-                          = tipster.full_name
-                        .tipster-profit-chart
-                          = image_tag profit_img_chart_url_for(tipster.profit_values_for_chart), alt: 'Profit chart'
-                      %td= tipster.profit
-                      %td= tipster.yield_in_string
-                      %td= tipster.number_of_tips
-                      %td= tipster.hit_rate_in_string
-                      %td= tipster.avg_odds
-                      %td= tipster.profitable_months
-                      %td.text-center
-                        %div.btn-group.btn-group-sm
-                          - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
-                            %button.btn.btn-sm.btn-default Already purchase
-                          - else
-                            - unless tipster_ids_in_cart.include?(tipster.id.to_s)
-                              %a.btn.btn-primary{href: "javascript:;",onclick: "changeTipster(#{tipster.id})"} Select
-              - if @tipsters.empty?
-                .text-center.clearfix
-                  %br
-                  %p.text-warning
-                    Not found any tipsters match!
-      .modal-footer
-#modal-change-plan.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
-  .modal-dialog
-    .modal-content
-      .modal-header
-      .modal-body
-        - @plans = Plan.where.not(price: 0)
-        - @plans.each do |plan|
-          .pricing-box-outer
-            .pricing_box{class: "#{@selected_plan && @selected_plan.id == plan.id ? 'large' : ''}"}
-              .header
-                %span= plan.title.capitalize
-              %ul.pricing-features
-                %li.even
-                  %strong.yes Free tips
-                %li.odd
-                  %strong{class: "#{plan.reception_delay == 0 ? 'yes' : 'no'}"} Real-time notice bet
-                %li.even
-                  %strong{class: "#{plan.free? ? 'no' : 'yes'}"} Follow professional tipster
-                %li.odd
-                  %strong{class: "#{plan.profit_guaranteed? ? 'yes' : 'no'}"} Profit guaranteed
-                %li.even
-                  %strong{class: "#{plan.switch_tipster_ability? ? 'yes' : 'no'}"} Change following tipster
-                %li.odd
-                  %strong{class: "#{(plan.number_tipster > 1) ? 'yes' : 'no'}"} Follow multi tipsters
-              %p
-              %h2
-                - if plan.free?
-                  FREE
-                - else
-                  %sup €
-                  = plan.price
-                  %sub /month
-              %hr
-              - if @selected_plan.id == plan.id
-                %a.btn.btn-warning{href: select_plan_path(plan.id)} Choosen
-              - else
-                %a.btn.btn-primary{href: "javascript:;",onclick: "changePlan(#{plan.id})"} Change
-      .modal-footer
-:javascript
-  function changeTipster(id){
-      var old_id = $("#old_id").val();
-      var new_id = id;
-      console.log("Change &id to &id",old_id,new_id);
-      //Validate
-      $.ajax({
-          url: '/subscribe/change_tipster',
-          type: 'post',
-          data: {old_id: old_id,new_id: new_id},
-          dataType: "json",
-          beforeSend: function(xhr){},
-          success: function(response){
-              if(response.success){
-                $('#modal-change-tipster').modal('hide');
-                $('#modal-confirm-checkout').modal('hide');
-                window.location = response.url;
-              }
-              else{
-                Helper.alert_warning('Error, tipster already removed from cart !!!');
-              }
-          },
-          error: function(){
-              console.log("Ajax error !!!!");
-          }
-      });
-      };
-  function changePlan(id){
-    var current_plan_id = $('#current_plan_id');
-    var new_plan_id = id;
-    console.log("Change &id to &id",old_id,new_id);
-    $.ajax({
-      url: '/subscribe/change_plan',
-      type: 'post',
-      data: {old_id: current_plan_id,new_id: new_plan_id},
-      dataType: "json",
-      beforeSend: function(xhr){},
-      success: function(response){
-          if(response.success){
-            $('#modal-change-plan').modal('hide');
-            $('#modal-confirm-checkout').modal('hide');
-            window.location = response.url;
-          }
-          else{
-            Helper.alert_warning('Error, change plan failer !!!');
-          }
-      },
-      error: function(){
-          console.log("Ajax error !!!!");
-      }
-  });
-}
+        %a.btn.checkoutbtn{href: subscribe_checkout_path} No thank! Process checkout

@@ -44,7 +44,7 @@ class SubscribeController < ApplicationController
   end
 
   def account
-    if @select_plan.free?
+    if selected_plan.free?
       @step = 2
       session[:step] = 2
     else
@@ -54,7 +54,7 @@ class SubscribeController < ApplicationController
     if account_signed_in?
       redirect_to subscribe_personal_information_url and return
     end
-    if @select_plan.nil?
+    if selected_plan.nil?
       flash[:alert] = I18n.t('errors.messages.unselect_plan')
       redirect_to pricing_path and return
     end
@@ -101,6 +101,21 @@ class SubscribeController < ApplicationController
         max_cart_allow = selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS
         if tipster_ids_in_cart.size > max_cart_allow
           session[:cart][:tipster_ids].clear
+        else
+          if session[:failed_add_tipster_id]
+            tipster_id = session[:failed_add_tipster_id]
+            if Tipster.exists?(tipster_id)
+              initial_cart_session if session[:cart].nil?
+              if tipster_ids_in_cart.include? tipster_id
+                flash[:alert] = I18n.t('cart.already_in_cart')
+              else
+                add_tipster_to_cart(tipster_id)
+                session[:add_tipster_id] = tipster_id
+              end
+            end
+            session[:failed_add_tipster_id] = nil
+          end
+          flash[:show_checkout_dialog] = true
         end
         session[:plan_id] = selected_plan.id
         if selected_plan.free?
@@ -115,10 +130,11 @@ class SubscribeController < ApplicationController
 
   # listing all tipster
   def choose_tipster
-    puts "Session add tipster id #{session[:add_tipster_id]}"
+    puts "Session add tipster id #{session[:add_tipster_id]} failer tipser id #{session[:failed_add_tipster_id]}"
     @step = 2
     session[:step] = 2 if session[:step] < 2
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
+    puts "SHOW CHECKOUT #{@show_checkout_dialog}"
     @selected_plan = selected_plan
     @tipsters = Tipster.load_data(params)
     @sports = Sport.all.order('position asc')
@@ -127,6 +143,8 @@ class SubscribeController < ApplicationController
     if session[:add_tipster_id]
       @choose_tipster = Tipster.find session[:add_tipster_id]
       session[:add_tipster_id] = nil
+    elsif session[:failed_add_tipster_id]
+      @choose_tipster = Tipster.find session[:failed_add_tipster_id]
     end
   end
 
