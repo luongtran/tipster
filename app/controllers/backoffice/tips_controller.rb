@@ -8,35 +8,8 @@ class Backoffice::TipsController < ApplicationController
 
   def new
     @tipster_sports = current_tipster.sports
-    @areas = Area.all
     # Get all matches
-    @all_matches = []
-    start_date = DateTime.now + 1.hours
-    end_date = 7.days.from_now.end_of_day.to_datetime
-    log = Logger.new 'log/get_matches.log'
-    %w(football basketball).each do |sport|
-      # matches in 7 days
-      fetcher = OptaSport::Fetcher.send(sport)
-      if fetcher.respond_to? :get_matches
-        logger.info "\n===> Start get matches ==> "
-        result = fetcher.get_matches(
-            id: '8318',
-            type: 'season',
-            start_date: start_date,
-            end_date: end_date
-        )
-        logger.info "- URL: #{fetcher.last_url}"
-        if result.is_a?(OptaSport::Error)
-          logger.info "===> Get matches error: #{result.message} "
-          render :text => "#{result.message}. URL: #{fetcher.last_url}"
-        else
-          @all_matches += result.all
-          logger.info "====> Get matches successed: #{@all_matches.count} matches\n"
-
-        end
-      end
-      log.info "\n Get matches: #{fetcher.last_url}"
-    end
+    @matches = Match.betable.includes(:competition)
 
   end
 

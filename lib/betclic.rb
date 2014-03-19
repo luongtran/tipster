@@ -35,6 +35,29 @@ module Betclic
     def find_matches_by_sport(sport)
       # football = 1
     end
+
+    def find_bets_on_match(match)
+      # 1. filter by sport
+      # 2. filter by event id, it's competition on the local db
+      # 3. find with name
+
+      if lang == 'fr'
+        uri = URI(FR_ODDS_URL)
+      else
+        uri = URI(EN_ODDS_URL)
+      end
+      response = Net::HTTP.get_response(uri)
+      xml_doc = Nokogiri::XML(response.body)
+      match_nodes = xml_doc.css('sport > event > match')
+      result_matches = []
+      match_nodes.each do |node|
+        result_matches << {
+            name: node['name'],
+            betclic_match_id: node['id'],
+            start_date: node['start_date'],
+        }
+      end
+    end
   end
 
 end

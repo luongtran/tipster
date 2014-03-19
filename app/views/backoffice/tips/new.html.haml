@@ -1,23 +1,20 @@
-.col-md-12.well
+.col-md-12
   %h4 Available matches listing:
-  %table.table.table-bordered
+  %table.table.table-bordered.table-hover
     %thead
       %tr
         %th Name
         %th Competition
-        %th Date UTC
-        %th Time UTC
+        %th Start Date (UTC)
         %th Status
-        %th
     %tbody
-      - @all_matches.each do |match|
-        - match = match.with_indifferent_access
-        %tr
-          %td= match[:name]
-          %td= match['competition_name']
-          %td= match['date_utc']
-          %td= match['time_utc']
-          %td= match['status']
+      - @matches.each do |match|
+        %tr.tr-details-toggable.text-bold{data: {id: match.match_id}}
+          %td= match.name
+          %td= match.competition.try :name
+          %td= match.start_at
+          %td= match.status
+
 
   -#  Choosen sport:
   -#  %span.text-success= @choosen_sport.name.titleize

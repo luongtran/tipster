@@ -50,6 +50,12 @@ class Match < ActiveRecord::Base
     def prepare_matches_today
     end
 
+    def get_bets_on_match(match)
+      Betclic.find_bets_on_match(match)
+    end
+
+
+    # TODO: after getmatches, try to find id on odds feed from betclic
     def update_matches
       # http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
       # Get matches by active seasons, limit 7 days
