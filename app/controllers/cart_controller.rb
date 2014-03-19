@@ -33,13 +33,17 @@ class CartController < ApplicationController
           flash[:alert] = I18n.t('cart.already_in_cart')
         else
           add_tipster_to_cart(tipster_id)
+          if session[:old_id]
+            remove_tipster_from_cart(session[:old_id])
+            session[:old_id] = nil
+          end
           session[:add_tipster_id] = params[:id]
           flash[:show_checkout_dialog] = true
         end
       end
     else
       flash[:show_checkout_dialog] = true
-      session[:failed_add_tipster_id] = params[:id]
+      session[:failed_add_tipster_id] =  session[:old_id] = params[:id]
     end
 
     unless params['step']

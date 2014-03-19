@@ -92,7 +92,11 @@ class SubscribeController < ApplicationController
   def choose_offer
     @step = 1
     session[:step] = 1 unless session[:step]
-    @plans = Plan.all
+    if session[:failed_add_tipster_id] || tipster_ids_in_cart.size > 0
+      @plans = Plan.where.not(price: 0)
+    else
+      @plans = Plan.all
+    end
     @selected_plan = selected_plan
     @choose_offer = true
     if request.post?
@@ -114,6 +118,7 @@ class SubscribeController < ApplicationController
               end
             end
             session[:failed_add_tipster_id] = nil
+            session[:old_id] = nil
           end
           flash[:show_checkout_dialog] = true
         end
@@ -135,7 +140,7 @@ class SubscribeController < ApplicationController
   def choose_tipster
     puts "Session add tipster id #{session[:add_tipster_id]} failer tipser id #{session[:failed_add_tipster_id]}"
     @step = 2
-    session[:step] = 2 if session[:step] < 2
+    session[:step] = 2 if !session[:step] || session[:step] < 2
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
     puts "SHOW CHECKOUT #{@show_checkout_dialog}"
     @selected_plan = selected_plan
@@ -153,17 +158,17 @@ class SubscribeController < ApplicationController
 
   def change_tipster
     @step = 2
-    session[:step] = 2 if session[:step] < 2
-    @show_checkout_dialog = !!flash[:show_checkout_dialog]
-    if tipster_ids_in_cart.include?(params[:old_id])
-      session[:cart][:tipster_ids].delete(params[:old_id])
-      add_tipster_to_cart(params[:new_id])
-      flash[:show_checkout_dialog] = true
-      session[:add_tipster_id] = params[:new_id]
-      render json: {success: true,url: subscribe_choose_tipster_path}
-    else
-      render json: {success: false}
-    end
+    session[:old_id] = params[:old_id]
+    redirect_to  subscribe_choose_tipster_path
+    #if tipster_ids_in_cart.include?(params[:old_id])
+    #  session[:cart][:tipster_ids].delete(params[:old_id])
+    #  add_tipster_to_cart(params[:new_id])
+    #  flash[:show_checkout_dialog] = true
+    #  session[:add_tipster_id] = params[:new_id]
+    #  render json: {success: true,url: subscribe_choose_tipster_path}
+    #else
+    #  render json: {success: false}
+    #end
   end
 
   # reg / input information

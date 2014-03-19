@@ -35,7 +35,11 @@ class HomeController < ApplicationController
   end
 
   def pricing
-    @plans = Plan.all
+    if session[:failed_add_tipster_id] || tipster_ids_in_cart.size > 0
+      @plans = Plan.where.not(price: 0)
+    else
+      @plans = Plan.all
+    end
     @selected_plan = selected_plan
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
   end

@@ -8,6 +8,11 @@
   width: (100% / 5);
   padding: 0 10px;
 }
+.pricing-box-outer4 {
+  float: left;
+  width: (100% / 4);
+  padding: 0 10px;
+}
 .pricing_box {
   @include transition(opacity 0.2s ease-in-out);
   cursor: pointer;
