@@ -5,7 +5,7 @@ class ProfileController < ApplicationController
   end
 
   def update
-    @user.bypass_humanizer = true
+    @user.bypass_humanizer = true if @user.respond_to?(:bypass_humanizer)
     if @user.update_attributes(user_params)
       flash[:notice] = I18n.t('user.account_update_successully')
       redirect_to after_update_profile_path
@@ -14,6 +14,7 @@ class ProfileController < ApplicationController
       render :show
     end
   end
+
 
   def change_password
     if @account.update_with_password(change_password_params)
