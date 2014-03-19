@@ -38,7 +38,6 @@ module OptaSport
     # Get all matches of Eng. Premier league now
     # http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
     class SoccerMatch < Base
-
       def all
         # FIXME: change xpath
         nodes = @xml_doc.css('competition > season > round > match')
@@ -134,9 +133,6 @@ module OptaSport
               end
             end
             u += sanitized_params.to_query
-            #sanitized_params.each do |key, val|
-            #  u += "&#{key}=#{val.}"
-            #end
           end
 
           # After all add authorization infors
@@ -161,13 +157,29 @@ module OptaSport
         @last_url = self.class.url_for(self.sport, method, params)
         uri = URI(@last_url)
         response = Net::HTTP.get_response(uri)
-        case response
-          when Net::HTTPSuccess
-            response
-          when Net::HTTPBadRequest
-            return false
-          else
-            return false
+        if !response.is_a? Net::HTTPSuccess
+        else
+          message = case response
+                      when Net::HTTPBadRequest
+                        'You have provided a parameter that the function does not support'
+                      when Net::HTTPUnauthorized
+                        'You have not provided a username/password or authkey'
+                      when Net::HTTPForbidden
+                        'You have not been authenticated or your subscription does not permit you to request the data you have requested'
+                      when Net::HTTPNotFound
+                        'You have requested nonexistent data'
+                      when Net::HTTPNotImplemented
+                        'The sport and/or function you have requested does not exist'
+                      when Net::HTTPServerError
+                        'Opta XML feed server error'
+                      else
+                        'Unknown error'
+                    end
+          return OptaSport::Error.new(
+              message: message,
+              time: Time.now,
+              url: @last_url
+          )
         end
         result_class.new(Nokogiri::XML(response.body))
       end
@@ -242,5 +254,16 @@ module OptaSport
 
   end
 
+  class Error
+    attr_accessor :message, :url, :time
+
+    def initialize(attrs = {})
+      attrs ||= {}
+      attrs.each do |key, value|
+        self.instance_variable_set("@#{key}", value)
+      end
+      return self
+    end
+  end
 
 end
