@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
 
     define_method "authenticate_#{klass.name.downcase}" do
       if !account_signed_in?
-        redirect_to_sign_in
+        redirect_to_sign_in(klass)
       elsif !current_account.rolable.is_a?(klass)
         sign_out current_account
       end
@@ -133,9 +133,11 @@ class ApplicationController < ActionController::Base
   end
 
 
-  def redirect_to_sign_in
-    flash[:sign_in_box] = true
-    redirect_to root_url
+  def redirect_to_sign_in(klass)
+    if klass == Subscriber
+      flash[:sign_in_box] = true
+      redirect_to root_url
+    end
   end
 
   private
