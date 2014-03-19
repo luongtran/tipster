@@ -97,5 +97,14 @@ $(document).ready(function () {
         }
     });
 
+    $('.tr-details-toggable').on('click', function () {
+        if (!$(this).hasClass('loaded')) {
+            var match_id = $(this).attr('data-id');
+            console.log('match id: ' + match_id);
+            var html = '<tr class="warning"> <td colspan="4"> Details here ... </td></tr>';
+            $(this).after(html);
+            $(this).addClass('loaded');
+        }
+    });
     /* Charts */
 });

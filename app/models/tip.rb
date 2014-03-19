@@ -2,25 +2,32 @@
 #
 # Table name: tips
 #
-#  id           :integer          not null, primary key
-#  author_id    :integer
-#  author_type  :string(255)
-#  event        :string(255)      not null
-#  expire_at    :string(255)      not null
-#  platform     :string(255)      not null
-#  bet_type     :integer          not null
-#  odds         :float            not null
-#  selection    :integer          not null
-#  line         :float
-#  advice       :text             not null
-#  amount       :integer          not null
-#  correct      :boolean          default(FALSE)
-#  status       :integer          not null
-#  free         :boolean          default(FALSE)
-#  published_by :integer
-#  published_at :datetime
-#  created_at   :datetime
-#  updated_at   :datetime
+#  id             :integer          not null, primary key
+#  author_id      :integer
+#  author_type    :string(255)
+#  sport_id       :integer
+#  event          :string(255)      not null
+#  event_start_at :datetime
+#  event_end_at   :datetime
+#  platform_id    :integer          not null
+#  bet_type_id    :integer          not null
+#  odds           :float            not null
+#  selection      :string(255)      not null
+#  line           :float
+#  advice         :text             not null
+#  amount         :integer          not null
+#  correct        :boolean          default(FALSE)
+#  status         :integer          not null
+#  free           :boolean          default(FALSE)
+#  published_by   :integer
+#  published_at   :datetime
+#  created_at     :datetime
+#  updated_at     :datetime
+#  match_id       :integer
+#  match_name     :string(255)
+#  match_date     :datetime
+#  league_id      :string(255)
+#  area_id        :string(255)
 #
 
 =begin

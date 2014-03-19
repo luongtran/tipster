@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140319073059) do
+ActiveRecord::Schema.define(version: 20140319155218) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -79,6 +79,7 @@ ActiveRecord::Schema.define(version: 20140319073059) do
     t.string  "name"
     t.integer "area_id"
     t.boolean "active",         default: true
+    t.string  "country_code"
   end
 
   create_table "coupon_codes", force: true do |t|
@@ -99,11 +100,12 @@ ActiveRecord::Schema.define(version: 20140319073059) do
     t.string   "fr_name"
     t.string   "betclic_match_id"
     t.string   "betclic_event_id"
-    t.string   "optasport_match_id"
     t.datetime "start_at"
-    t.boolean  "played"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "competition_id"
+    t.string   "match_id"
+    t.string   "status"
   end
 
   create_table "payments", force: true do |t|
@@ -152,6 +154,16 @@ ActiveRecord::Schema.define(version: 20140319073059) do
   create_table "platforms", force: true do |t|
     t.string "code", null: false
     t.string "name", null: false
+  end
+
+  create_table "seasons", force: true do |t|
+    t.string   "name"
+    t.string   "season_id"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string   "competition_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "sessions", force: true do |t|

@@ -11,6 +11,7 @@
 #  expired_at    :datetime
 #  created_at    :datetime
 #  updated_at    :datetime
+#  is_one_shoot  :boolean          default(FALSE)
 #
 
 class Subscription < ActiveRecord::Base
