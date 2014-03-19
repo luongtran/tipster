@@ -20,7 +20,7 @@ module OptaSport
     end
 
     def authenticate_params
-      "&username=#{self.config.username}&authkey=#{self.config.authkey}"
+      "&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3"
     end
   end
 
@@ -35,18 +35,21 @@ module OptaSport
         @xml_doc = xml_doc
       end
     end
+    # Get all matches of Eng. Premier league now
+    # http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
     class SoccerMatch < Base
+
       def all
         # FIXME: change xpath
-        nodes = @xml_doc.xpath('//xxx')
+        nodes = @xml_doc.css('competition > season > round > match')
         matches = []
         nodes.each do |node|
           matches << {
               competition_id: node['match'],
-              name: node['name'],
+              name: "#{node['team_A_name']} vs #{node['team_B_name']}",
               area_id: node['area_id'],
-              date: node['date_utc'],
-              time: node['time_utc'],
+              date_utc: node['date_utc'],
+              time_utc: node['time_utc'],
               teams: {
                   a: {
                       id: node['team_A_id'],
@@ -63,7 +66,7 @@ module OptaSport
               winner: node['winner']
           }
         end
-        competitions
+        matches
       end
     end
 
@@ -98,8 +101,11 @@ module OptaSport
       end
     end
 
+    # http://api.core.optasports.com/soccer/get_seasons?authorized=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
     class SoccerSeason < Base
+
     end
+
     class SoccerMatchLive < Base
     end
   end
@@ -119,7 +125,18 @@ module OptaSport
 
           # Add parameters
           unless params.blank?
-            u += params.to_param
+            sanitized_params = {}
+            params.each do |param, val|
+              if val.is_a? DateTime
+                sanitized_params[param] = val.strftime(datetime_param_format)
+              else
+                sanitized_params[param] = val
+              end
+            end
+            u += sanitized_params.to_query
+            #sanitized_params.each do |key, val|
+            #  u += "&#{key}=#{val.}"
+            #end
           end
 
           # After all add authorization infors
