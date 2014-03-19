@@ -84,7 +84,7 @@ class ApplicationController < ActionController::Base
   end
 
   def remove_tipster_from_cart(tipster_id)
-    session[:cart][:tipster_ids].delete(tipster_id)
+    session[:cart][:tipster_ids].delete(tipster_id.to_s)
   end
 
   def reset_cart_session
@@ -113,6 +113,8 @@ class ApplicationController < ActionController::Base
     session[:plan_id] = nil
     session[:using_coupon] = nil
     session[:step] = nil
+    session[:tipster_first] = nil
+    session[:failed_add_tipster_id] = nil
     # Maybe clear more session vars: coupon code, payment info ...
   end
 

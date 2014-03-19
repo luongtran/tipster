@@ -301,6 +301,19 @@ module ApplicationHelper
 
   def header_menu_adding_popup(cart_size,tipster_first)
     case cart_size
+      when 0
+        if tipster_first
+          {
+              left: 'Your SUPER TIPSTERHERO',
+              right: 'Your Subscription'
+
+          }
+        else
+          {
+              left: 'Your Subscription',
+              right: 'Your SUPPER TIPSTERHERO'
+          }
+        end
       when 1
         if tipster_first
           {
@@ -316,24 +329,19 @@ module ApplicationHelper
         end
       when 2
           {
-              left: 'FIRST TIPSTERHERO',
-              right: 'SECOND TIPSTERHERO'
-          }
-      when 3
-          {
               left: 'SECOND TIPSTERHERO',
               right: 'THIRD TIPSTERHERO'
           }
+      when 3
+        {
+            left: 'SECOND TIPSTERHERO',
+            right: 'THIRD TIPSTERHERO'
+        }
       when 4
-          {
-              left: 'THIRD TIPSTERHERO',
-              right: 'FOURTH TIPSTERHERO'
-          }
-      when 5
-          {
-              left: 'FOURTH TIPSTERHERO',
-              right: 'FIFTH TIPSTERHERO'
-          }
+        {
+            left: 'SECOND TIPSTERHERO',
+            right: 'THIRD TIPSTERHERO'
+        }
     end
   end
   def adding_price_show(price)

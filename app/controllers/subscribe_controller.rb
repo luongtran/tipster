@@ -138,11 +138,9 @@ class SubscribeController < ApplicationController
 
   # listing all tipster
   def choose_tipster
-    puts "Session add tipster id #{session[:add_tipster_id]} failer tipser id #{session[:failed_add_tipster_id]}"
     @step = 2
     session[:step] = 2 if !session[:step] || session[:step] < 2
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
-    puts "SHOW CHECKOUT #{@show_checkout_dialog}"
     @selected_plan = selected_plan
     @tipsters = Tipster.load_data(params)
     @sports = Sport.all.order('position asc')
@@ -154,6 +152,13 @@ class SubscribeController < ApplicationController
     elsif session[:failed_add_tipster_id]
       @choose_tipster = Tipster.find session[:failed_add_tipster_id]
     end
+    if tipster_ids_in_cart.second
+      @second_tipster = Tipster.find tipster_ids_in_cart.second
+    end
+    if tipster_ids_in_cart.third
+      @third_tipster = Tipster.find tipster_ids_in_cart.third
+    end
+    @tipster_first = session[:tipster_first].present?
   end
 
   def change_tipster
