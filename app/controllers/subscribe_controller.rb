@@ -1,5 +1,5 @@
 class SubscribeController < ApplicationController
-  before_action :authenticate_account!, only: [:get_coupon_code]
+  before_action :authenticate_subscriber, only: [:get_coupon_code]
 
   before_action :no_subscription_required, except: [:success]
 

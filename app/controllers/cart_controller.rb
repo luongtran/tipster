@@ -1,6 +1,4 @@
 class CartController < ApplicationController
-  before_action :subscriber_required
-
   def show
     reset_cart_session
     if tipster_ids_in_cart.empty?

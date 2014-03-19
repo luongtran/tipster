@@ -1,8 +1,6 @@
 class Backoffice::TipsController < ApplicationController
-  include Wicked::Wizard
-  steps :add_name, :add_price, :add_category
 
-  before_action :authenticate_account!, :tipster_required
+  before_action :authenticate_tipster
 
   def my_tips
     @tips = Tip.by_author(current_tipster, params)

@@ -132,11 +132,12 @@ class ApplicationController < ActionController::Base
     params.require(:account).permit(:email, :password, :password_confirmation)
   end
 
-
   def redirect_to_sign_in(klass)
     if klass == Subscriber
       flash[:sign_in_box] = true
       redirect_to root_url
+    elsif klass == Tipster
+      redirect_to backoffice_sign_in_url, alert: 'You need to signed in before continue'
     end
   end
 
