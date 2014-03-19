@@ -1,85 +1,169 @@
 -#Popup for confirm information when choose tipster or plan
 #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
-  .modal-dialog
-    .modal-content
-      .modal-header
-        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
-        %h4.modal-title
-          %i.glyphicon.glyphicon-shopping-cart
-          = t('menu.cart')
-      .modal-body
-        .row
-          %p= header_menu_adding(tipster_ids_in_cart.size,@choose_tipster,@selected_plan)
-        .row.adding
-          .adding-header
-            .col-md-6
-              %p.text-center= header_menu_adding_popup(1, @choose_tipster.present?)[:left]
-            .col-md-6
-              %p.text-center= header_menu_adding_popup(1, @choose_tipster.present?)[:right]
-          .adding-info
-            .col-md-5
-              .tipster_info
-                - if @choose_tipster.present?
-                  %ul.list-unstyled
-                    %li.text-center= @choose_tipster.full_name
-                    %li.responsive-image= image_tag @choose_tipster.avatar.url(:thumb) || 'demo.jpg'
-                    %li
-                      = simple_form_for :nothing,url: subscribe_change_tipster_path do
-                        = hidden_field_tag :old_id,@choose_tipster.id
-                        = button_tag(type: 'submit',class: 'submitLink',id: 'change-tipster') do
-                          %i.glyphicon.glyphicon-play
-                          Change tipster
+  - if tipster_ids_in_cart.size <= 1
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
+          %h4.modal-title
+            %i.glyphicon.glyphicon-shopping-cart
+            = t('menu.cart')
+        .modal-body
+          .row
+            %p= header_menu_adding(tipster_ids_in_cart.size,@choose_tipster,@selected_plan)
+          .row.adding
+            .adding-header
+              .col-md-6
+                %p.text-center= header_menu_adding_popup(1, @choose_tipster.present?)[:left]
+              .col-md-6
+                %p.text-center= header_menu_adding_popup(1, @choose_tipster.present?)[:right]
+            .adding-info
+              .col-md-5
+                - if @choose_tipster.present? && @tipster_first
+                  .tipster_info
+                    %ul.list-unstyled
+                      %li.text-center= @choose_tipster.full_name
+                      %li.responsive-image= image_tag @choose_tipster.avatar.url(:thumb) || 'demo.jpg'
+                      %li
+                        = simple_form_for :nothing,url: subscribe_change_tipster_path do
+                          = hidden_field_tag :old_id,@choose_tipster.id
+                          = button_tag(type: 'submit',class: 'submitLink',id: 'change-tipster') do
+                            %i.glyphicon.glyphicon-play
+                            Change tipster
                 - elsif @selected_plan.present?
-                  %ul.list-unstyled
-                    %li.text-center= @selected_plan.title
-                    %li.responsive-image
-                      %image{src: path_to_image('select_subscription.png')}
-                    %li.subscription-price= @selected_plan.price.to_s + " € / month"
-                    %li
-                      = hidden_field_tag :current_plan_id,@selected_plan.id
-                      %a.submitLink{href: subscribe_choose_offer_path}
-                        %i.glyphicon.glyphicon-play
-                        Change subscription
-            .col-md-2
-              %image{src: path_to_image("example_narow.png"),height: '250px'}
-            .col-md-5
-              .subscription-info
-                - if @selected_plan.nil?
-                  %ul.list-unstyled
-                    %li.text-center Plan info
-                    %li.responsive-image
-                      %image{src: path_to_image('unselect_subscription.png')}
-                    %li
-                      %a.submitLink{href: subscribe_choose_offer_path}
-                        %i.glyphicon.glyphicon-play
-                        Choose subscription
-                - elsif @choose_tipster.nil?
-                  %ul.list-unstyled
-                    %li.text-center Tipster choose
-                    %li.responsive-image
-                      %image{src: path_to_image('unselect_tipster.jpg')}
-                    %li
-                      %a.submitLink{href: tipsters_path}
-                        %i.glyphicon.glyphicon-play
-                        Choose tipster
+                  .subscription-info
+                    %ul.list-unstyled
+                      %li.text-center= @selected_plan.title
+                      %li.responsive-image
+                        %image{src: path_to_image('select_subscription.png')}
+                      %li.subscription-price= @selected_plan.price.to_s + " € / month"
+                      %li
+                        = hidden_field_tag :current_plan_id,@selected_plan.id
+                        %a.submitLink{href: subscribe_choose_offer_path}
+                          %i.glyphicon.glyphicon-play
+                          Change subscription
+              .col-md-2
+                %image{src: path_to_image("example_narow.png"),height: '250px'}
+              .col-md-5
+                - if @tipster_first
+                  - if @selected_plan.present?
+                    .subscription-info
+                      %ul.list-unstyled
+                        %li.text-center= @selected_plan.title
+                        %li.responsive-image
+                          %image{src: path_to_image('select_subscription.png')}
+                        %li.subscription-price= @selected_plan.price.to_s + " € / month"
+                        %li
+                          = hidden_field_tag :current_plan_id,@selected_plan.id
+                          %a.submitLink{href: subscribe_choose_offer_path}
+                            %i.glyphicon.glyphicon-play
+                            Change subscription
+                  - else
+                    .subscription-info
+                      %ul.list-unstyled
+                        %li.text-center Plan info
+                        %li.responsive-image
+                          %image{src: path_to_image('unselect_subscription.png')}
+                        %li
+                          %a.submitLink{href: subscribe_choose_offer_path}
+                            %i.glyphicon.glyphicon-play
+                            Choose subscription
                 - else
-                  %ul.list-unstyled
-                    %li.text-center= @selected_plan.title
-                    %li.responsive-image
-                      %image{src: path_to_image('select_subscription.png')}
-                    %li.subscription-price= @selected_plan.price.to_s + " € / month"
-                    %li
-                      = hidden_field_tag :current_plan_id,@selected_plan.id
-                      %a.submitLink{href: subscribe_choose_offer_path}
-                        %i.glyphicon.glyphicon-play
-                        Change subscription
-      .modal-footer
-        - if @selected_plan && @choose_tipster
-          = hidden_field_tag :show_adding_popup,(tipster_ids_in_cart.size + 1 <= (@selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS))
-          %a.btn.checkoutbtn#confirm-adding{href: 'javascript:void(0);'} Process checkout
-        - else
-          = hidden_field_tag :show_adding_popup,false
-          = hidden_field_tag :reason,'unselect-plan'
+                  - if @choose_tipster.nil?
+                    .tipster_info
+                      %ul.list-unstyled
+                        %li.text-center Tipster choose
+                        %li.responsive-image
+                          %image{src: path_to_image('unselect_tipster.jpg')}
+                        %li
+                          %a.submitLink{href: tipsters_path}
+                            %i.glyphicon.glyphicon-play
+                            Choose tipster
+                  - else
+                    .tipster_info
+                      %ul.list-unstyled
+                        %li.text-center= @choose_tipster.full_name
+                        %li.responsive-image= image_tag @choose_tipster.avatar.url(:thumb) || 'demo.jpg'
+                        %li
+                          = simple_form_for :nothing,url: subscribe_change_tipster_path do
+                            = hidden_field_tag :old_id,@choose_tipster.id
+                            = button_tag(type: 'submit',class: 'submitLink',id: 'change-tipster') do
+                              %i.glyphicon.glyphicon-play
+                              Change tipster
+        .modal-footer
+          - if (@selected_plan.present? && @choose_tipster.present?)
+            = hidden_field_tag :show_adding_popup,(tipster_ids_in_cart.size + 1 <= (@selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS))
+            %a.btn.checkoutbtn#confirm-adding{href: 'javascript:void(0);'} Process checkout
+          - else
+            = hidden_field_tag :show_adding_popup,false
+            = hidden_field_tag :reason,'unselect-plan'
+  - else
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", type: "button"} ×
+          %h4.modal-title
+            %i.glyphicon.glyphicon-shopping-cart
+            = t('menu.cart')
+        .modal-body
+          .row
+            %p
+              Choose an addition TipsterHero:
+              %span.text-success
+                %strong 60% OFF
+          .row.adding
+            .adding-header
+              .col-md-6
+                %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @selected_plan.present?)[:left]
+              .col-md-6
+                %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @selected_plan.present?)[:right]
+            .adding-info
+              .col-md-5
+                .tipster_info
+                  - unless @second_tipster.nil?
+                    %ul.list-unstyled
+                      %li.text-center= @second_tipster.full_name
+                      %li.responsive-image= image_tag @second_tipster.avatar.url(:thumb) || 'demo.jpg'
+                      %li
+                        = simple_form_for :nothing,url: subscribe_change_tipster_path do
+                          = hidden_field_tag :old_id,@second_tipster.id
+                          = button_tag(type: 'submit',class: 'submitLink',id: 'change-tipster') do
+                            %i.glyphicon.glyphicon-play
+                            Change tipster
+                  - else
+                    %ul.list-unstyled
+                      %li.text-center= adding_price_show(@selected_plan.price) if @selected_plan
+                      %li.responsive-image
+                        %image{src: path_to_image('unselect_tipster.jpg')}
+                      %li
+                        %a.submitLink{href: tipsters_path}
+                          %i.glyphicon.glyphicon-play
+                          Choose tipster
+              .col-md-2
+                %image{src: path_to_image("example_narow.png"),height: '250px'}
+              .col-md-5
+                .tipster_info
+                  - unless @third_tipster.nil?
+                    %ul.list-unstyled
+                      %li.text-center= @third_tipster.full_name
+                      %li.responsive-image= image_tag @third_tipster.avatar.url(:thumb) || 'demo.jpg'
+                      %li
+                        = simple_form_for :nothing,url: subscribe_change_tipster_path do
+                          = hidden_field_tag :old_id,@third_tipster.id
+                          = button_tag(type: 'submit',class: 'submitLink',id: 'change-tipster') do
+                            %i.glyphicon.glyphicon-play
+                            Change tipster
+                  - else
+                    %ul.list-unstyled
+                      %li.text-center= adding_price_show(@selected_plan.price) if @selected_plan
+                      %li.responsive-image
+                        %image{src: path_to_image('unselect_tipster.jpg')}
+                      %li
+                        %a.submitLink{href: tipsters_path}
+                          %i.glyphicon.glyphicon-play
+                          Choose tipster
+        .modal-footer
+          %a.btn.checkoutbtn{href: subscribe_checkout_path} No thank! Process checkout
 #modal-confirm-adding.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
   .modal-dialog
     .modal-content
@@ -103,27 +187,47 @@
           .adding-info
             .col-md-5
               .tipster_info
-                - unless @choose_tipster.nil?
+                - unless @second_tipster.nil?
                   %ul.list-unstyled
-                    %li.text-center= @choose_tipster.full_name
-                    %li.responsive-image= image_tag @choose_tipster.avatar.url(:thumb) || 'demo.jpg'
+                    %li.text-center= @second_tipster.full_name
+                    %li.responsive-image= image_tag @second_tipster.avatar.url(:thumb) || 'demo.jpg'
                     %li
                       = simple_form_for :nothing,url: subscribe_change_tipster_path do
-                        = hidden_field_tag :old_id,@choose_tipster.id
+                        = hidden_field_tag :old_id,@second_tipster.id
                         = button_tag(type: 'submit',class: 'submitLink',id: 'change-tipster') do
                           %i.glyphicon.glyphicon-play
                           Change tipster
+                - else
+                  %ul.list-unstyled
+                    %li.text-center= adding_price_show(@selected_plan.price) if @selected_plan
+                    %li.responsive-image
+                      %image{src: path_to_image('unselect_tipster.jpg')}
+                    %li
+                      %a.submitLink{href: tipsters_path}
+                        %i.glyphicon.glyphicon-play
+                        Choose tipster
             .col-md-2
               %image{src: path_to_image("example_narow.png"),height: '250px'}
             .col-md-5
-              .subscription-info
-                %ul.list-unstyled
-                  %li.text-center= adding_price_show(@selected_plan.price) if @selected_plan
-                  %li.responsive-image
-                    %image{src: path_to_image('unselect_tipster.jpg')}
-                  %li
-                    %a.submitLink{href: tipsters_path}
-                      %i.glyphicon.glyphicon-play
-                      Choose tipster
+              .tipster_info
+                - unless @third_tipster.nil?
+                  %ul.list-unstyled
+                    %li.text-center= @third_tipster.full_name
+                    %li.responsive-image= image_tag @third_tipster.avatar.url(:thumb) || 'demo.jpg'
+                    %li
+                      = simple_form_for :nothing,url: subscribe_change_tipster_path do
+                        = hidden_field_tag :old_id,@third_tipster.id
+                        = button_tag(type: 'submit',class: 'submitLink',id: 'change-tipster') do
+                          %i.glyphicon.glyphicon-play
+                          Change tipster
+                - else
+                  %ul.list-unstyled
+                    %li.text-center= adding_price_show(@selected_plan.price) if @selected_plan
+                    %li.responsive-image
+                      %image{src: path_to_image('unselect_tipster.jpg')}
+                    %li
+                      %a.submitLink{href: tipsters_path}
+                        %i.glyphicon.glyphicon-play
+                        Choose tipster
       .modal-footer
         %a.btn.checkoutbtn{href: subscribe_checkout_path} No thank! Process checkout

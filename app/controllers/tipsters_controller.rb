@@ -17,6 +17,13 @@ class TipstersController < ApplicationController
     if session[:failed_add_tipster_id]
       @choose_tipster = Tipster.find session[:failed_add_tipster_id]
     end
+    if tipster_ids_in_cart.second
+      @second_tipster = Tipster.find tipster_ids_in_cart.second
+    end
+    if tipster_ids_in_cart.third
+      @third_tipster = Tipster.find tipster_ids_in_cart.third
+    end
+    @tipster_first = session[:tipster_first].present?
   end
 
   def top_three

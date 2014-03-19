@@ -38,10 +38,12 @@
                 %li
                   %a{:href=>"javascript:;"}= node
             %ul.list-inline.man.text-slim
-              - @items = ['Home', 'Tipsters']
-              - @items.each do |node|
-                %li
-                  %a{:href=>"javascript:;"}= node
+              %a{href: 'http://www.facebook.com/'}
+                %image{src: image_url('social/t_btn.png')}
+              %a{href: 'http://www.facebook.com/'}
+                %image{src: image_url('social/f_btn.png')}
+              %a{href: 'http://www.facebook.com/'}
+                %image{src: image_url('social/g_btn.png')}
 
   #page-footer-bottom
     %p.text-center.man Copyright @ 2013 TipsterHero
