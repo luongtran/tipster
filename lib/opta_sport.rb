@@ -39,30 +39,16 @@ module OptaSport
     # http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
     class SoccerMatch < Base
       def all
-        # FIXME: change xpath
         nodes = @xml_doc.css('competition > season > round > match')
         matches = []
         nodes.each do |node|
+          competition = node.parent.parent.parent
           matches << {
-              competition_id: node['match'],
+              match_id: node['match_id'],
+              competition_id: competition['competition_id'],
               name: "#{node['team_A_name']} vs #{node['team_B_name']}",
-              area_id: node['area_id'],
-              date_utc: node['date_utc'],
-              time_utc: node['time_utc'],
-              teams: {
-                  a: {
-                      id: node['team_A_id'],
-                      name: node['team_A_name'],
-                      country: node['team_A_country']
-                  },
-                  b: {
-                      id: node['team_B_id'],
-                      name: node['team_B_name'],
-                      country: node['team_B_country']
-                  },
-              },
-              status: node['status'],
-              winner: node['winner']
+              start_at: "#{node['date_utc']} #{node['time_utc']}".to_datetime,
+              status: node['status']
           }
         end
         matches
@@ -71,13 +57,14 @@ module OptaSport
 
     class SoccerCompetition < Base
       def all
-        nodes = @xml_doc.xpath('//competition ')
+        nodes = @xml_doc.css('competition')
         competitions = []
         nodes.each do |compt|
           competitions << {
               competition_id: compt['competition_id'],
               name: compt['name'],
-              area_id: compt['area_id']
+              area_id: compt['area_id'],
+              country_code: compt['countrycode'],
           }
         end
         competitions
@@ -100,9 +87,22 @@ module OptaSport
       end
     end
 
-    # http://api.core.optasports.com/soccer/get_seasons?authorized=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
     class SoccerSeason < Base
-
+      def all
+        nodes = @xml_doc.css('competition > season')
+        seasons = []
+        nodes.each do |season|
+          competition = season.parent
+          seasons << {
+              season_id: season['season_id'],
+              name: season['name'],
+              start_date: season['start_date'].to_datetime,
+              end_date: season['end_date'].to_datetime,
+              competition_id: competition['competition_id'],
+          }
+        end
+        seasons
+      end
     end
 
     class SoccerMatchLive < Base
@@ -115,7 +115,7 @@ module OptaSport
 
   module Fetcher
     class Base
-      attr_accessor :function, :params, :options, :last_url
+      attr_accessor :function, :params, :options, :last_url, :success
       class << self
         def url_for(sport, method, params)
           # Create path
@@ -152,13 +152,19 @@ module OptaSport
         self.class.name.split('::').last.downcase
       end
 
+      def success?
+        !!@success
+      end
+
       # Send request and return response
       def go(method, params, result_class)
         @last_url = self.class.url_for(self.sport, method, params)
         uri = URI(@last_url)
         response = Net::HTTP.get_response(uri)
-        if !response.is_a? Net::HTTPSuccess
+        if response.is_a? Net::HTTPSuccess
+          @success = true
         else
+          @success = false
           message = case response
                       when Net::HTTPBadRequest
                         'You have provided a parameter that the function does not support'

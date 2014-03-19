@@ -18,15 +18,23 @@ class Backoffice::TipsController < ApplicationController
       # matches in 7 days
       fetcher = OptaSport::Fetcher.send(sport)
       if fetcher.respond_to? :get_matches
+        logger.info "\n===> Start get matches ==> "
         result = fetcher.get_matches(
             id: '8318',
             type: 'season',
             start_date: start_date,
             end_date: end_date
         )
-        @all_matches += result.all
-      end
+        logger.info "- URL: #{fetcher.last_url}"
+        if result.is_a?(OptaSport::Error)
+          logger.info "===> Get matches error: #{result.message} "
+          render :text => "#{result.message}. URL: #{fetcher.last_url}"
+        else
+          @all_matches += result.all
+          logger.info "====> Get matches successed: #{@all_matches.count} matches\n"
 
+        end
+      end
       log.info "\n Get matches: #{fetcher.last_url}"
     end
 
