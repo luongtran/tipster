@@ -57,11 +57,8 @@ $(document).ready(function () {
             $('#modal-confirm-adding').modal();
         }else{
             var reason = $('#reason').val();
-            if(reason != null || reason != '')
-            {
-                if(reason == "unselect-plan"){
-                    Helper.alert_warning("Please choose plan first");
-                }
+            if(reason == "unselect-plan"){
+                Helper.alert_warning("Please choose plan first");
             }
             else
             {   //hardcode
