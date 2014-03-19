@@ -1,23 +1,61 @@
-.well
-  %h4
-    Choosen sport:
-    %span.text-success= @choosen_sport.name.titleize
-  %h4 Tip information:
+.col-md-12.well
+  %h4 Available matches listing:
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th Name
+        %th Competition
+        %th Date UTC
+        %th Time UTC
+        %th Status
+        %th
+    %tbody
+      - @all_matches.each do |match|
+        - match = match.with_indifferent_access
+        %tr
+          %td= match[:name]
+          %td= match['competition_id']
+          %td= match['date_utc']
+          %td= match['time_utc']
+          %td= match['status']
 
-  = simple_form_for @tip, url: backoffice_tips_path(sport: @choosen_sport.name), html: {class: 'form-horizontal', id: 'form-new-tip'} do |f|
-    = f.input :sport_id, as: :hidden
-    = f.input :event, as: :select, collection: events_for_select(@events),
-          include_blank: '-- Choose one --', input_html: {class: 'select2able'}
-    = f.input :platform_id, as: :select, collection: platforms_for_select(@platforms),
-          include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true}
-    = f.association :bet_type, collection: bet_types_for_select(@bet_types),
-          include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true, id: 'bet-types-select-for-tip'}
-    = f.input :line, wrapper_html: {id: 'line-for-tip', class: "#{'hide' unless @tip.bet_type.try(:has_line?) }"}
-    = f.input :odds
-    = f.input :selection
-    = f.input :amount
-    = f.input :advice
-    .form-group
-      .col-sm-offset-4.col-sm-7
-        %button.btn.btn-primary{type: :submit} Submit
-        %a.btn.btn-default{href: backoffice_my_tips_path } Cancel
+  -#  Choosen sport:
+  -#  %span.text-success= @choosen_sport.name.titleize
+  -#%h4 Tip information:
+  -#
+  -#= simple_form_for @tip, url: backoffice_tips_path(sport: @choosen_sport.name), html: {class: 'form-horizontal', id: 'form-new-tip'} do |f|
+  -#  = f.input :sport_id, as: :hidden
+  -#  = f.input :event, as: :select, collection: events_for_select(@events),
+  -#        include_blank: '-- Choose one --', input_html: {class: 'select2able'}
+  -#  = f.input :platform_id, as: :select, collection: platforms_for_select(@platforms),
+  -#        include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true}
+  -#  = f.association :bet_type, collection: bet_types_for_select(@bet_types),
+  -#        include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true, id: 'bet-types-select-for-tip'}
+  -#  = f.input :line, wrapper_html: {id: 'line-for-tip', class: "#{'hide' unless @tip.bet_type.try(:has_line?) }"}
+  -#  = f.input :odds
+  -#  = f.input :selection
+  -#  = f.input :amount
+  -#  = f.input :advice
+  -#  .form-group
+  -#    .col-sm-offset-4.col-sm-7
+  -#      %button.btn.btn-primary{type: :submit} Submit
+  -#      %a.btn.btn-default{href: backoffice_my_tips_path } Cancel
+  -#= simple_form_for :nothing, url: get_matches_backoffice_tips_path, html:{ id: 'form-get-matches'} do |f|
+  -#  .col-lg-4.text-center
+  -#    %h4 Choose a sport
+  -#    = select_tag :sport,
+  -#        options_for_select(@tipster_sports.map {|s| [s.name.titleize, s.id, data: {'url-for-next-step' => get_areas_backoffice_tips_path(sport_id: s.id)}]}),
+  -#        id: 'select-sport-for-tip', prompt: '-- Choose one --', class: 'select2able',
+  -#         'data-no-search'=> true
+  -#  .col-lg-4.text-center
+  -#    %h4 Choose a country/area
+  -#    = select_tag :area, options_for_select([]), id: 'select-area-for-tip', prompt: '-- Choose one --', class: 'select2able'
+  -#  .col-lg-4.text-center
+  -#    %h4 Choose a League/Competition
+  -#    = select_tag :competition, options_for_select([]), id: 'select-competition-for-tip', prompt: '-- Choose one --', class: 'select2able'
+  -#  .clearfix
+  -#    .text-center
+  -#      %br
+  -#      %button.btn.btn-primary.disabled#btn-get-matches{type: :button} Show Matches
+
+

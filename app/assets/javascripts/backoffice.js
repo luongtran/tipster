@@ -9,14 +9,76 @@
  */
 $(document).ready(function () {
     $('.select2able').each(function () {
-        options = {};
+        options = {
+            width: 'resolve'
+        };
+
         if ($(this).attr('data-no-search'))
             options['minimumResultsForSearch'] = -1; // Hide the seach box
         $(this).select2(options);
     });
+
+    /* Step 1 */
     $('#select-sport-for-tip').on('change', function () {
         var $select_elm = $(this).children(':selected');
-        $('#lk-create-new-tip').attr('href', $select_elm.attr('data-url')).removeClass('disabled');
+        var url = $select_elm.attr('data-url-for-next-step');
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (response) {
+                console.log('Get areas successed');
+                $('#select-area-for-tip').empty();
+                for (i = 0; i < response.areas.length; i++) {
+                    var option_html = '<option value=' + response.areas[i].id + ' data-url-for-next-step=' + response.areas[i].url + '">'
+                        + response.areas[i].name + '</option>';
+                    $('#select-area-for-tip').append(option_html);
+                }
+                $('#select-area-for-tip').select2('destroy');
+                $('#select-area-for-tip').select2({
+                    width: 'resolve'
+                });
+            }
+        });
+    });
+
+    /* Step 2 */
+    $('#select-area-for-tip').on('change', function () {
+        var $select_elm = $(this).children(':selected');
+        var url = $select_elm.attr('data-url-for-next-step');
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (response) {
+
+                $('#btn-get-matches').removeClass('disabled');
+                console.log('Get areas competitions');
+                $('#select-competition-for-tip').empty();
+                for (i = 0; i < response.competitions.length; i++) {
+                    var option_html = '<option value="' + response.competitions[i].id + '">' + response.competitions[i].name + '</option>';
+                    $('#select-competition-for-tip').append(option_html);
+                }
+                $('#select-competition-for-tip').select2('destroy');
+                $('#select-competition-for-tip').select2({
+                    width: 'resolve'
+                });
+            }
+        });
+    });
+    $('#select-competition-for-tip').on('change', function () {
+        $('#btn-get-matches').removeClass('disabled');
+    });
+    $('#btn-get-matches').on('click', function () {
+        var $form = $('#form-get-matches');
+        $.ajax({
+            url: $form.attr('action'),
+            data: $form.serialize(),
+            type: 'GET',
+            success: function (response) {
+                console.log('get matches successed');
+            }
+        });
     });
 
     /* Auto hide red border after user typed*/

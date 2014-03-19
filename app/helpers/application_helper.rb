@@ -1,3 +1,4 @@
+# coding: utf-8
 module ApplicationHelper
   def my_devise_error_messages!
     return "" if resource.errors.empty?
