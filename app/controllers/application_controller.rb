@@ -18,7 +18,16 @@ class ApplicationController < ActionController::Base
         nil
       end
     end
+
     helper_method method_name
+
+    define_method "authenticate_#{klass.name.downcase}" do
+      if !account_signed_in?
+        redirect_to_sign_in
+      elsif !current_account.rolable.is_a?(klass)
+        sign_out current_account
+      end
+    end
   end
 
   protected
@@ -121,6 +130,12 @@ class ApplicationController < ActionController::Base
 
   def account_params
     params.require(:account).permit(:email, :password, :password_confirmation)
+  end
+
+
+  def redirect_to_sign_in
+    flash[:sign_in_box] = true
+    redirect_to root_url
   end
 
   private
