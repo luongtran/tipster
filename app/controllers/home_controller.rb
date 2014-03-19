@@ -37,6 +37,7 @@ class HomeController < ApplicationController
   def pricing
     @plans = Plan.all
     @selected_plan = selected_plan
+    @show_checkout_dialog = !!flash[:show_checkout_dialog]
   end
 
   def select_language

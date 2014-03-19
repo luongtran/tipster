@@ -121,6 +121,9 @@ class SubscribeController < ApplicationController
         if selected_plan.free?
           session[:cart][:tipster_ids].clear
           redirect_to subscribe_personal_information_path and return
+        elsif tipster_ids_in_cart.size == 0
+          flash[:show_checkout_dialog] = true
+          redirect_to pricing_path
         else
           redirect_to subscribe_choose_tipster_path and return
         end

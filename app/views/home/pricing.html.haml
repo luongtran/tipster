@@ -5,3 +5,5 @@
     = render 'home/pricing',selected_plan: @selected_plan
   .clearfix
   %br
+  - if @show_checkout_dialog
+    = render 'shared/pop_up_adding',selected_plan: @selected_plan
