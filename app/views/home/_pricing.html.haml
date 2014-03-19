@@ -1,5 +1,5 @@
 - @plans.each do |plan|
-  .pricing-box-outer
+  %div{class: "#{@plans.size == 4 ? "pricing-box-outer4" : "pricing-box-outer"}"}
     .pricing_box{class: "#{@selected_plan && @selected_plan.id == plan.id ? 'large' : ''}"}
       .header
         %span= plan.title.capitalize

@@ -10,6 +10,7 @@ class SubscriptionController < ApplicationController
       if session[:failed_add_tipster_id]
         add_tipster_to_cart(session[:failed_add_tipster_id])
         session[:failed_add_tipster_id] = nil
+        session[:old_id] = nil
       end
     end
     session[:plan_id] = selected_plan.id

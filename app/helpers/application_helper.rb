@@ -286,20 +286,32 @@ module ApplicationHelper
         I18n.t('menu.subscribe.step4_free')
     end
   end
-
+  def header_menu_adding(size,tipster,plan)
+    case size
+      when 0
+        if tipster
+          "Please choose your Subsctiption"
+        elsif plan
+          "Please choose your TIPSTERHERO"
+        end
+      else
+        "Your SUPER TipsterHero has been added in your shopping cart"
+    end
+  end
 
   def header_menu_adding_popup(cart_size,tipster_first)
     case cart_size
       when 1
         if tipster_first
           {
-              left: 'Your Subscription',
-              right: 'Your SUPPER TIPSTERHERO'
+              left: 'Your SUPER TIPSTERHERO',
+              right: 'Your Subscription'
+
           }
         else
           {
-              left: 'Your SUPER TIPSTERHERO',
-              right: 'Your Subscription'
+              left: 'Your Subscription',
+              right: 'Your SUPPER TIPSTERHERO'
           }
         end
       when 2

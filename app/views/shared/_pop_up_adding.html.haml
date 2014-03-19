@@ -9,13 +9,13 @@
           = t('menu.cart')
       .modal-body
         .row
-          %p Your SUPER TipsterHero has been added in your shopping cart
+          %p= header_menu_adding(tipster_ids_in_cart.size,@choose_tipster,@selected_plan)
         .row.adding
           .adding-header
             .col-md-6
-              %p.text-center= header_menu_adding_popup(1, @selected_plan.present?)[:left]
+              %p.text-center= header_menu_adding_popup(1, @choose_tipster.present?)[:left]
             .col-md-6
-              %p.text-center= header_menu_adding_popup(1, @selected_plan.present?)[:right]
+              %p.text-center= header_menu_adding_popup(1, @choose_tipster.present?)[:right]
           .adding-info
             .col-md-5
               .tipster_info
@@ -24,10 +24,11 @@
                     %li.text-center= @choose_tipster.full_name
                     %li.responsive-image= image_tag @choose_tipster.avatar.url(:thumb) || 'demo.jpg'
                     %li
-                      = hidden_field_tag :old_id,@choose_tipster.id
-                      = button_tag(class: 'submitLink',id: 'change-tipster') do
-                        %i.glyphicon.glyphicon-play
-                        Change tipster
+                      = simple_form_for :nothing,url: subscribe_change_tipster_path do
+                        = hidden_field_tag :old_id,@choose_tipster.id
+                        = button_tag(type: 'submit',class: 'submitLink',id: 'change-tipster') do
+                          %i.glyphicon.glyphicon-play
+                          Change tipster
                 - elsif @selected_plan.present?
                   %ul.list-unstyled
                     %li.text-center= @selected_plan.title
@@ -58,7 +59,9 @@
                     %li.responsive-image
                       %image{src: path_to_image('unselect_tipster.jpg')}
                     %li
-                      %a{href: tipsters_path} Choose tipster
+                      %a.submitLink{href: tipsters_path}
+                        %i.glyphicon.glyphicon-play
+                        Choose tipster
                 - else
                   %ul.list-unstyled
                     %li.text-center= @selected_plan.title
@@ -71,7 +74,7 @@
                         %i.glyphicon.glyphicon-play
                         Change subscription
       .modal-footer
-        - if @selected_plan
+        - if @selected_plan && @choose_tipster
           = hidden_field_tag :show_adding_popup,(tipster_ids_in_cart.size + 1 <= (@selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS))
           %a.btn.checkoutbtn#confirm-adding{href: 'javascript:void(0);'} Process checkout
         - else
@@ -105,10 +108,11 @@
                     %li.text-center= @choose_tipster.full_name
                     %li.responsive-image= image_tag @choose_tipster.avatar.url(:thumb) || 'demo.jpg'
                     %li
-                      = hidden_field_tag :old_id,@choose_tipster.id
-                      = button_tag(class: 'submitLink',id: 'change-tipster') do
-                        %i.glyphicon.glyphicon-play
-                        Change tipster
+                      = simple_form_for :nothing,url: subscribe_change_tipster_path do
+                        = hidden_field_tag :old_id,@choose_tipster.id
+                        = button_tag(type: 'submit',class: 'submitLink',id: 'change-tipster') do
+                          %i.glyphicon.glyphicon-play
+                          Change tipster
             .col-md-2
               %image{src: path_to_image("example_narow.png"),height: '250px'}
             .col-md-5
@@ -118,6 +122,8 @@
                   %li.responsive-image
                     %image{src: path_to_image('unselect_tipster.jpg')}
                   %li
-                    %a{href: tipsters_path} Choose tipster
+                    %a.submitLink{href: tipsters_path}
+                      %i.glyphicon.glyphicon-play
+                      Choose tipster
       .modal-footer
         %a.btn.checkoutbtn{href: subscribe_checkout_path} No thank! Process checkout
