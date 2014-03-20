@@ -112,7 +112,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def can_change_tipster?
-    self.active && self.active_at > 1.days.ago || (self.active_date.strftime('%d').to_i == Time.now.strftime('%d') && self.expired_at > Time.now)
+    self.active && self.active_at > 1.days.ago || (self.active_at.strftime('%d').to_i == Time.now.strftime('%d') && self.expired_at > Time.now)
   end
 
 
