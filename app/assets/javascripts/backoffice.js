@@ -97,14 +97,54 @@ $(document).ready(function () {
         }
     });
 
-    $('.tr-details-toggable').on('click', function () {
-        if (!$(this).hasClass('loaded')) {
-            var match_id = $(this).attr('data-id');
-            console.log('match id: ' + match_id);
-            var html = '<tr class="warning"> <td colspan="4"> Details here ... </td></tr>';
-            $(this).after(html);
-            $(this).addClass('loaded');
+    /* Loading bet from Betclic */
+    $('.match').on('click', '.summary', function () {
+        var $match_div = $(this).parent();
+        var $bets_wrapper = $match_div.children('.bets');
+        if (!$match_div.hasClass('loaded')) {
+            Helper.add_loading_indicator($bets_wrapper);
+            $.ajax({
+                url: $match_div.attr('data-url'),
+                type: 'GET',
+                dataType: 'JSON',
+                success: function (response) {
+                    Helper.destroy_loading_indicator($bets_wrapper);
+                    $bets_wrapper.html(response.html);
+                }
+            });
+            $match_div.addClass('loaded');
         }
+        // Toggle detail tr
+        $bets_wrapper.toggle(200);
+    });
+    $('.bets').on('mouseover', 'button', function () {
+        $(this).addClass('btn-success');
+    });
+    $('.bets').on('mouseleave', 'button', function () {
+        $(this).removeClass('btn-success');
+    });
+
+    /* Show popup confirm select odd*/
+    $('.match').on('click', '.choice-odd-button', function () {
+        var $modal = $('#confirm-select-odd-modal');
+        var $button = $(this)
+        var match_name = $button.attr('data-match-name');
+        var match_id = $button.attr('data-match-id');
+
+        var odd_selected = $button.attr('data-odd');
+        var choice_name = $button.attr('data-choice-name');
+        var bet_type_name = $button.attr('data-bet-type-name');
+        var $container = $modal.find('.selection-infor');
+        html = '<div class="text-center"> <strong class="match-name">'
+            + match_name + '</strong>'
+            + '<p>'
+            + '<b>' + bet_type_name + '</b>: ' + '<span class="text-danger">' + choice_name + '</span>'
+            + '<br>'
+            + '<b>Odds: </b>' + '<span class="text-danger">' + odd_selected + '</span>'
+            + '</p>'
+            + '</div>';
+        $container.html(html);
+        $modal.modal();
     });
     /* Charts */
 });

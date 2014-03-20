@@ -5,14 +5,15 @@ module Betclic
   class Fetcher
   end
   class << self
-    def fetch_odds(lang = 'en')
-      if lang == 'fr'
-        uri = URI(FR_ODDS_URL)
-      else
-        uri = URI(EN_ODDS_URL)
-      end
+    # Start feed xml and return Nokogiri::Document object
+    def go
+      uri = URI(EN_ODDS_URL)
       response = Net::HTTP.get_response(uri)
-      xml_doc = Nokogiri::XML(response.body)
+      Nokogiri::XML(response.body)
+    end
+
+    def fetch_odds(lang = 'en')
+      xml_doc = self.go
       match_nodes = xml_doc.css('sport > event > match')
       result_matches = []
       match_nodes.each do |node|
@@ -28,6 +29,7 @@ module Betclic
             start_date: node['start_date'],
         }
       end
+      result_matches
     end
 
 
@@ -37,26 +39,63 @@ module Betclic
     end
 
     def find_bets_on_match(match)
+
+      # TODO: do follow these steps for better performance:
       # 1. filter by sport
       # 2. filter by event id, it's competition on the local db
       # 3. find with name
-
-      if lang == 'fr'
-        uri = URI(FR_ODDS_URL)
-      else
-        uri = URI(EN_ODDS_URL)
-      end
-      response = Net::HTTP.get_response(uri)
-      xml_doc = Nokogiri::XML(response.body)
+      xml_doc = self.go
       match_nodes = xml_doc.css('sport > event > match')
       result_matches = []
       match_nodes.each do |node|
         result_matches << {
-            name: node['name'],
+            name: node['name'].downcase,
             betclic_match_id: node['id'],
             start_date: node['start_date'],
         }
       end
+      betclic_id_match = nil
+      result_matches.each do |m|
+        if match.name.downcase.include?(m[:name]) || m[:name].include?(match.name.downcase)
+          betclic_id_match = m[:betclic_match_id]
+
+          # TODO: update betclic_match_id for match
+          break
+        end
+      end
+      match_found = nil
+      bets_found = []
+      unless betclic_id_match.nil?
+        bet_nodes = xml_doc.css("match##{betclic_id_match} > bets > bet")
+        bet_nodes.each do |bet|
+          choices = bet.children
+          choices_found = []
+          choices.each do |choice|
+            choices_found << {
+                name: choice['name'],
+                odd: choice['odd']
+            }
+          end
+
+          bets_found << {
+              code: bet['code'],
+              name: bet['name'],
+              choices: choices_found
+          }
+        end
+      end
+      bets_found
+    end
+
+    # Find all available sports on betclic
+    def support_sports
+      xml_doc = self.go
+      sport_nodes = xml_doc.css('sport')
+
+      sport_nodes.each do |node|
+
+      end
+
     end
   end
 

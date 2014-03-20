@@ -17,3 +17,37 @@
  *= require select2-bootstrap
 
  */
+
+.bgw {
+    background-color: #fff;
+}
+
+.hide-tmp {
+    display: none;
+}
+
+.tr-details-toggable {
+    cursor: pointer;
+}
+
+.match .summary {
+    cursor: pointer;
+}
+
+.match .bets button:hover {
+
+}
+
+.bet-choice {
+    text-align: center;
+    width: 250px;
+    display: inline-block;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #dadada;
+}
+
+#confirm-select-odd-modal .match-name {
+    font-size: 35px;
+    margin-bottom: 5px;
+}

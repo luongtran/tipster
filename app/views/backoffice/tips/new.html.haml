@@ -1,20 +1,22 @@
-.col-md-12
-  %h4 Available matches listing:
-  %table.table.table-bordered.table-hover
-    %thead
-      %tr
-        %th Name
-        %th Competition
-        %th Start Date (UTC)
-        %th Status
-    %tbody
-      - @matches.each do |match|
-        %tr.tr-details-toggable.text-bold{data: {id: match.match_id}}
-          %td= match.name
-          %td= match.competition.try :name
-          %td= match.start_at
-          %td= match.status
-
+= image_tag 'circle_loading.gif', class: 'hide'
+.clearfix.mam.bgw
+  .pull-left
+    = select_tag :group_by, options_for_select(matches_group_by_for_select), class: 'select-as-links'
+  .pull-right
+    %strong Sport
+    = select_tag :sport, options_for_select(@tipster_sports.map{|sport| [sport.name.titleize, sport.id]})
+    %strong Competition:
+    = select_tag :competition, options_for_select(@competitions.map{|compt| [compt.name, compt.id]})
+.col-md-12.bgw
+  %h1 Available matches listing:
+  - @matches.each do |match|
+    .well.match{data: {url: find_bets_on_match_backoffice_tips_path(match_id: match.opta_match_id)}}
+      .summary
+        %h4.text-bold
+          = "#{match.competition.try(:name)} / #{match.name}"
+        %i= match.start_at
+        %hr
+      .bets.clearfix.hide-tmp
 
   -#  Choosen sport:
   -#  %span.text-success= @choosen_sport.name.titleize
@@ -55,4 +57,15 @@
   -#      %br
   -#      %button.btn.btn-primary.disabled#btn-get-matches{type: :button} Show Matches
 
+#confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog.modal-md
+    .modal-content
+      .modal-header.text-warning
+        %h4.modal-title Please confirm your selection
+      .modal-body
+        .selection-infor
+        .row.text-center
+          = form_tag url: '/', :method => 'post' do |f|
+            %button.btn.btn-success#submiter{type: :button} Confirm
+            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
 

@@ -2,19 +2,21 @@
 #
 # Table name: matches
 #
-#  id                 :integer          not null, primary key
-#  match_id           :string(255)
-#  sport_id           :integer
-#  name               :string(255)
-#  en_name            :string(255)
-#  fr_name            :string(255)
-#  betclic_match_id   :string(255)
-#  betclic_event_id   :string(255)
-#  start_at           :datetime
-#  status             :string(255)
-#  created_at         :datetime
-#  updated_at         :datetime
-#  competition_id     :string(255)
+#  id                  :integer          not null, primary key
+#  opta_competition_id :string(255)
+#  opta_match_id       :string(255)
+#  betclic_match_id    :string(255)
+#  betclic_event_id    :string(255)
+#  sport_id            :integer
+#  team_a              :string(255)
+#  team_b              :string(255)
+#  name                :string(255)
+#  en_name             :string(255)
+#  fr_name             :string(255)
+#  start_at            :datetime
+#  status              :string(255)
+#  created_at          :datetime
+#  updated_at          :datetime
 #
 
 class Match < ActiveRecord::Base
@@ -30,12 +32,13 @@ class Match < ActiveRecord::Base
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  belongs_to :competition, foreign_key: :competition_id
+  belongs_to :competition, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
 
+  belongs_to :sport
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-  validates :match_id, uniqueness: true
+  validates :opta_match_id, uniqueness: true
   validates_uniqueness_of :betclic_match_id, allow_blank: true
 
   # ==============================================================================
@@ -47,87 +50,96 @@ class Match < ActiveRecord::Base
   # CLASS METHODS
   # ==============================================================================
   class << self
-    def prepare_matches_today
-    end
 
     def get_bets_on_match(match)
       Betclic.find_bets_on_match(match)
     end
 
-
     # TODO: after getmatches, try to find id on odds feed from betclic
     def update_matches
       # http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-      # Get matches by active seasons, limit 7 days
-      matches = []
+      # Get matches on active seasons
+      sports = Sport.where(name: %w(football basketball))
       # Load active seasons
 
       from_date = DateTime.now
       to_date = from_date + DAY_INTERVAL.days
       seasons = Season.all
+
       seasons.each do |season|
-        %w(football tennis basketball).each do |sport|
-          fetcher = OptaSport::Fetcher.send(sport)
+        sports.each do |sport|
+          fetcher = OptaSport::Fetcher.send(sport.name)
           if fetcher.respond_to?(:get_matches)
             res = fetcher.get_matches(
-                id: season.season_id,
+                id: season.opta_season_id,
                 type: 'season',
                 start_date: from_date,
                 end_date: to_date
             )
             if fetcher.success?
-              matches += res.all
+              matches = res.all
+              matches.each do |match|
+                Match.create(match.merge(sport_id: sport.id))
+              end
             else
               puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
             end
           end
-
         end
       end
-      matches
-      matches.each do |match|
-        Match.create(match)
-      end
+
     end
 
     def update_seasons
       # http://api.core.optasports.com/soccer/get_seasons?authorized=yes&active=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-      seasons = []
-      %w(football tennis basketball).each do |sport|
-        fetcher = OptaSport::Fetcher.send(sport)
+      sports = Sport.where(name: %w(football basketball))
+
+      sports.each do |sport|
+        fetcher = OptaSport::Fetcher.send(sport.name)
         if fetcher.respond_to?(:get_seasons)
           res = fetcher.get_seasons(
               authorized: 'yes',
               active: 'yes'
           )
           if fetcher.success?
-            seasons += res.all
+            seasons = res.all
+            seasons.each do |season|
+              Season.create(season)
+            end
           end
         end
       end
-      seasons.each do |season|
-        Season.create(season)
-      end
+
     end
 
     def update_competitions
       # http://api.core.optasports.com/soccer/get_competitions?authorized=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-      competitions = []
-      %w(football tennis basketball).each do |sport|
-        fetcher = OptaSport::Fetcher.send(sport)
+      sports = Sport.where(name: %w(football basketball))
+      compts = []
+      sports.each do |sport|
+        fetcher = OptaSport::Fetcher.send(sport.name)
         if fetcher.respond_to?(:get_competitions)
           res = fetcher.get_competitions(
               authorized: 'yes'
           )
           if fetcher.success?
-            competitions += res.all
+            competitions = res.all
+            compts += competitions
+            competitions.each do |competition|
+              Competition.create(competition)
+            end
+          else
+            puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
           end
         end
 
       end
-      competitions.each do |competition|
-        Competition.create(competition)
-      end
+      compts
     end
+
+  end
+
+  def teams
+    self.name.split('vs')
   end
 end
