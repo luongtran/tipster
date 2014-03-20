@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 20140320031140) do
     t.datetime "updated_at"
   end
 
-  add_index "competitions", ["opta_competition_id"], name: "index_competitions_on_opta_competition_id"
+  add_index "competitions", ["opta_competition_id"], name: "index_competitions_on_opta_competition_id", using: :btree
 
   create_table "coupon_codes", force: true do |t|
     t.integer  "subscriber_id"
@@ -114,8 +114,8 @@ ActiveRecord::Schema.define(version: 20140320031140) do
     t.datetime "updated_at"
   end
 
-  add_index "matches", ["opta_match_id"], name: "index_matches_on_opta_match_id"
-  add_index "matches", ["sport_id"], name: "index_matches_on_sport_id"
+  add_index "matches", ["opta_match_id"], name: "index_matches_on_opta_match_id", using: :btree
+  add_index "matches", ["sport_id"], name: "index_matches_on_sport_id", using: :btree
 
   create_table "payments", force: true do |t|
     t.integer  "subscription_id"
@@ -175,7 +175,7 @@ ActiveRecord::Schema.define(version: 20140320031140) do
     t.datetime "updated_at"
   end
 
-  add_index "seasons", ["opta_season_id"], name: "index_seasons_on_opta_season_id"
+  add_index "seasons", ["opta_season_id"], name: "index_seasons_on_opta_season_id", using: :btree
 
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false

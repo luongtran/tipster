@@ -159,9 +159,7 @@
                       %li.responsive-image
                         %image{src: path_to_image('unselect_tipster.jpg')}
                       %li
-                        %a.submitLink{href: tipsters_path}
-                          %i.glyphicon.glyphicon-play
-                          Choose tipster
+                        %button.submitLink{"data-dismiss" => "modal", type: "button"} Choose tipster
         .modal-footer
           %a.btn.checkoutbtn{href: subscribe_checkout_path} No thank! Process checkout
 #modal-confirm-adding.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
@@ -203,9 +201,10 @@
                     %li.responsive-image
                       %image{src: path_to_image('unselect_tipster.jpg')}
                     %li
-                      %a.submitLink{href: tipsters_path}
-                        %i.glyphicon.glyphicon-play
-                        Choose tipster
+                      -#%a.submitLink{href: tipsters_path}
+                      -#  %i.glyphicon.glyphicon-play
+                      -#  Choose tipster
+                      %button.submitLink{"data-dismiss" => "modal", type: "button"} Choose tipster
             .col-md-2
               %image{src: path_to_image("example_narow.png"),height: '250px'}
             .col-md-5
@@ -226,8 +225,9 @@
                     %li.responsive-image
                       %image{src: path_to_image('unselect_tipster.jpg')}
                     %li
-                      %a.submitLink{href: tipsters_path}
-                        %i.glyphicon.glyphicon-play
-                        Choose tipster
+                      -#%a.submitLink{href: tipsters_path}
+                      -#  %i.glyphicon.glyphicon-play
+                      -#  Choose tipster
+                      %button.submitLink{"data-dismiss" => "modal", type: "button"} Choose tipster
       .modal-footer
         %a.btn.checkoutbtn{href: subscribe_checkout_path} No thank! Process checkout
