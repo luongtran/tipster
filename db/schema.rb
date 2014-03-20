@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140319155218) do
+ActiveRecord::Schema.define(version: 20140320031140) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -75,12 +75,16 @@ ActiveRecord::Schema.define(version: 20140319155218) do
   add_index "bet_types", ["sport_id"], name: "index_bet_types_on_sport_id"
 
   create_table "competitions", force: true do |t|
-    t.integer "competition_id"
-    t.string  "name"
-    t.integer "area_id"
-    t.boolean "active",         default: true
-    t.string  "country_code"
+    t.string   "opta_competition_id"
+    t.string   "name"
+    t.string   "opta_area_id"
+    t.string   "country_code"
+    t.boolean  "active",              default: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  add_index "competitions", ["opta_competition_id"], name: "index_competitions_on_opta_competition_id"
 
   create_table "coupon_codes", force: true do |t|
     t.integer  "subscriber_id"
@@ -94,19 +98,24 @@ ActiveRecord::Schema.define(version: 20140319155218) do
   add_index "coupon_codes", ["subscriber_id"], name: "index_coupon_codes_on_subscriber_id"
 
   create_table "matches", force: true do |t|
+    t.string   "opta_competition_id"
+    t.string   "opta_match_id"
+    t.string   "betclic_match_id"
+    t.string   "betclic_event_id"
     t.integer  "sport_id"
+    t.string   "team_a"
+    t.string   "team_b"
     t.string   "name"
     t.string   "en_name"
     t.string   "fr_name"
-    t.string   "betclic_match_id"
-    t.string   "betclic_event_id"
     t.datetime "start_at"
+    t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "competition_id"
-    t.string   "match_id"
-    t.string   "status"
   end
+
+  add_index "matches", ["opta_match_id"], name: "index_matches_on_opta_match_id"
+  add_index "matches", ["sport_id"], name: "index_matches_on_sport_id"
 
   create_table "payments", force: true do |t|
     t.integer  "subscription_id"
@@ -157,14 +166,16 @@ ActiveRecord::Schema.define(version: 20140319155218) do
   end
 
   create_table "seasons", force: true do |t|
+    t.string   "opta_season_id"
+    t.string   "opta_competition_id"
     t.string   "name"
-    t.string   "season_id"
     t.datetime "start_date"
     t.datetime "end_date"
-    t.string   "competition_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "seasons", ["opta_season_id"], name: "index_seasons_on_opta_season_id"
 
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
