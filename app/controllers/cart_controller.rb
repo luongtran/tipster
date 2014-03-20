@@ -46,7 +46,6 @@ class CartController < ApplicationController
       flash[:show_checkout_dialog] = true
       session[:failed_add_tipster_id] =  session[:old_id] = params[:id]
     end
-
     unless params['step']
       redirect_to tipsters_url
     else

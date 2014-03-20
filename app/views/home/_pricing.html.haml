@@ -27,52 +27,12 @@
               = plan.price
               %sub /month
         .price-foot
-          - if @choosed_plan == plan.id
-            %a.btn.btn-warning{href: select_plan_path(plan.id)} Choosen
-          - else @selected_plan == plan.id
-            = form_tag subscribe_choose_offer_path,method: 'post' do
-              = hidden_field_tag :plan_id, plan.id
-              = submit_tag "Subscribe", class: "btn btn-success"
-
-
-
-
-
-
-
-
-
-
-    -#%div{class: "#{@plans.size == 4 ? "pricing-box-outer4" : "pricing-box-outer"}"}
-      .pricing_box{class: "#{@selected_plan && @selected_plan.id == plan.id ? 'large' : ''}"}
-        .header
-          %span= plan.title.capitalize
-        %ul.pricing-features
-          %li.even
-            %strong.yes Free tips
-          %li.odd
-            %strong{class: "#{plan.reception_delay == 0 ? 'yes' : 'no'}"} Real-time notice bet
-          %li.even
-            %strong{class: "#{plan.free? ? 'no' : 'yes'}"} Follow professional tipster
-          %li.odd
-            %strong{class: "#{plan.profit_guaranteed? ? 'yes' : 'no'}"} Profit guaranteed
-          %li.even
-            %strong{class: "#{plan.switch_tipster_ability? ? 'yes' : 'no'}"} Change following tipster
-          %li.odd
-            %strong{class: "#{(plan.number_tipster > 1) ? 'yes' : 'no'}"} Follow multi tipsters
-        %p
-        %h2
-          - if plan.free?
-            FREE
+          - if plan.free? && @disable_free
+            %a.btn.btn-danger.disabled Suscribe
           - else
-            %sup €
-            = plan.price
-            %sub /month
-        %hr
-        - if @choosed_plan == plan.id
-          %a.btn.btn-warning{href: select_plan_path(plan.id)} Choosen
-        - else @selected_plan == plan.id
-          %p.button
-            = form_tag subscribe_choose_offer_path,method: 'post' do
-              = hidden_field_tag :plan_id, plan.id
-              = submit_tag "Subscribe", class: "btn btn-default"
+            - if params[:action] == 'pricing'
+              %a.btn.btn-success{href: select_plan_path(plan.id)} Subscribe
+            - else
+              = form_tag subscribe_choose_offer_path,method: 'post' do
+                = hidden_field_tag :plan_id, plan.id
+                = submit_tag "Subscribe", class: "btn btn-success"

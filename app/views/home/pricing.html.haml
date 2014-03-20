@@ -2,7 +2,7 @@
 - content_for :current_menu, 'pricing'
 .container
   .pricing-wrapper
-    = render 'home/pricing',selected_plan: @selected_plan
+    = render 'home/pricing',selected_plan: @selected_plan,disable_free: @disable_free
   .clearfix
   %br
   - if @show_checkout_dialog

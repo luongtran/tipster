@@ -8,10 +8,20 @@ class SubscriptionController < ApplicationController
       session[:cart][:tipster_ids].clear
     else
       if session[:failed_add_tipster_id]
-        add_tipster_to_cart(session[:failed_add_tipster_id])
+        tipster_id = session[:failed_add_tipster_id]
+        if Tipster.exists?(tipster_id)
+          initial_cart_session if session[:cart].nil?
+          if tipster_ids_in_cart.include? tipster_id
+            flash[:alert] = I18n.t('cart.already_in_cart')
+          else
+            add_tipster_to_cart(tipster_id)
+            session[:add_tipster_id] = tipster_id
+          end
+        end
         session[:failed_add_tipster_id] = nil
         session[:old_id] = nil
       end
+      flash[:show_checkout_dialog] = true
     end
     session[:plan_id] = selected_plan.id
     if selected_plan.free?
