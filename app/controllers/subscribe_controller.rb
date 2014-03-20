@@ -36,7 +36,7 @@ class SubscribeController < ApplicationController
   # ========== NEW ==================================================
   # Request checkout the cart
   def checkout
-    if current_account && session[:step] > 2
+    if current_subscriber && session[:step] && session[:step] > 2
       go_to_current_steps
     else
       redirect_to subscribe_personal_information_url
@@ -51,7 +51,7 @@ class SubscribeController < ApplicationController
       @step = 3
       session[:step] = 3
     end
-    if account_signed_in?
+    if current_subscriber
       redirect_to subscribe_personal_information_url and return
     end
     if selected_plan.nil?
@@ -131,7 +131,7 @@ class SubscribeController < ApplicationController
           flash[:show_checkout_dialog] = true
           redirect_to pricing_path
         else
-          redirect_to subscribe_choose_tipster_path and return
+          redirect_to tipsters_path and return
         end
       end
     end
@@ -171,7 +171,7 @@ class SubscribeController < ApplicationController
     #  add_tipster_to_cart(params[:new_id])
     #  flash[:show_checkout_dialog] = true
     #  session[:add_tipster_id] = params[:new_id]
-    #  render json: {success: true,url: subscribe_choose_tipster_path}
+    #  render json: {success: true,url: tipsters_path}
     #else
     #  render json: {success: false}
     #end
@@ -179,7 +179,7 @@ class SubscribeController < ApplicationController
 
   # reg / input information
   def personal_information
-    unless account_signed_in?
+    unless current_subscriber
       redirect_to subscribe_account_url and return
     end
     if @select_plan
@@ -298,7 +298,7 @@ class SubscribeController < ApplicationController
       when 6
         redirect_to subscribe_payment_path
       else
-        redirect_to subscribe_choose_offer_path
+        redirect_to pricing_path
     end
   end
 

@@ -28,11 +28,6 @@
               %sub /month
         .price-foot
           - if plan.free? && @disable_free
-            %a.btn.btn-danger.disabled Suscribe
+            %a.btn.btn-danger.disabled Not Available
           - else
-            - if params[:action] == 'pricing'
-              %a.btn.btn-success{href: select_plan_path(plan.id)} Subscribe
-            - else
-              = form_tag subscribe_choose_offer_path,method: 'post' do
-                = hidden_field_tag :plan_id, plan.id
-                = submit_tag "Subscribe", class: "btn btn-success"
+            %a.btn.btn-success{href: select_plan_path(plan.id)} Subscribe

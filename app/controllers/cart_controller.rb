@@ -27,7 +27,7 @@ class CartController < ApplicationController
       if selected_plan.price == 0
         unless params["step"]
           session[:failed_add_tipster_id] = params[:id]
-          redirect_to subscribe_choose_offer_path, alert: I18n.t('cart.free_plan_alert') and return
+          redirect_to pricing_path, alert: I18n.t('cart.free_plan_alert') and return
         end
       end
       tipster_id = params[:id]
@@ -49,7 +49,7 @@ class CartController < ApplicationController
     unless params['step']
       redirect_to tipsters_url
     else
-      redirect_to subscribe_choose_tipster_path and return
+      redirect_to tipsters_path and return
     end
   end
 

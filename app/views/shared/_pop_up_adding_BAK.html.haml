@@ -56,7 +56,7 @@
                     %li.responsive-image
                       %image{src: path_to_image('unselect_subscription.png')}
                     %li
-                      %a.submitLink{href: subscribe_choose_offer_path}
+                      %a.submitLink{href: pricing_path}
                         %i.glyphicon.glyphicon-play
                         Choose subscription
       .modal-footer
@@ -70,16 +70,16 @@
         .tipster-list-line1
           %ul.list-inline
             %li
-              %a{href: subscribe_choose_tipster_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
+              %a{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
             - @sports.each do |sport|
               %li
-                %a{href: subscribe_choose_tipster_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
+                %a{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
         .tipster-list-line2.clearfix
           .pull-left
             %ul.list-inline.list-unstyled.mbn.rank-ranges
               - Tipster::RANKING_RANGES.each do |range|
                 %li
-                  %a{href: subscribe_choose_tipster_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
+                  %a{href: tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
                     = t("tipster.ranking.ranges.#{range}").titleize
         .tipster-list-table#tipster-list-table
           .row
