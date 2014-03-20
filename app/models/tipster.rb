@@ -149,6 +149,34 @@ class Tipster < ActiveRecord::Base
       start_date..end_date
     end
 
+    # Return LazayHightChart object for draw profile chart
+    def profit_chart_for_tipster(tipster)
+      chart = LazyHighCharts::HighChart.new('graph') do |f|
+        f.title(
+            :text => "Profit on " + I18n.t("tipster.ranking.ranges.#{tipster.current_statistics_range}")
+        )
+        f.xAxis(
+            :categories => tipster.profit_dates_for_chart,
+            tickInterval: 5
+        )
+        f.series(
+            :name => 'Profit',
+            :yAxis => 0,
+            :color => '#AABF46',
+            :data => tipster.profit_values_for_chart,
+            showInLegend: false
+        )
+        f.yAxis [
+                    :title => {
+                        :text => "Profit in Euro",
+                        :margin => 20
+                    }
+                ]
+        f.chart({:defaultSeriesType => "line"})
+      end
+      chart
+    end
+
     # ==============================================================================
     # PROTECTED CLASS METHODS
     # ==============================================================================

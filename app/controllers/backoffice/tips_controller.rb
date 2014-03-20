@@ -27,14 +27,16 @@ class Backoffice::TipsController < ApplicationController
     prepare_data_for_new_tip
     @matches = Match.betable.load_data(params)
     success = true
-    html = render_to_string(partial: 'backoffice/tips/available_matches_list', locals: {matches: @matches}).html_safe
+    html = render_to_string(
+        partial: 'backoffice/tips/available_matches_list',
+        locals: {matches: @matches}
+    ).html_safe
     render json: {
         success: success, html: html
     }
   end
 
   # GET
-  # AJAX
   # Find bets on the given match from Betclic XML feed
   def find_bets_on_match
     match_id = params[:match_id]

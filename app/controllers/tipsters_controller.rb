@@ -33,7 +33,7 @@ class TipstersController < ApplicationController
 
   def show
     @tipster.get_statistics(params)
-    @chart = Charter.tipster_profit_chart(@tipster)
+    @chart = Tipster.profit_chart_for_tipster(@tipster)
   end
 
   def detail_statistics

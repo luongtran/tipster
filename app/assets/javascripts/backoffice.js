@@ -90,13 +90,16 @@ $(document).ready(function () {
                 type: 'GET',
                 dataType: 'JSON',
                 success: function (response) {
-                    Helper.destroy_loading_indicator($bets_wrapper);
-                    $bets_wrapper.html(response.html);
+                    if (response.success) {
+                        $bets_wrapper.html(response.html);
+                    } else {
+                        Helper.alert_server_error();
+                    }
                 }
             });
             $match_div.addClass('loaded');
         }
-        // Toggle detail tr
+        // Toggle result
         $bets_wrapper.toggle(200);
     });
 

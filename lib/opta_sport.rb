@@ -35,8 +35,10 @@ module OptaSport
         @xml_doc = xml_doc
       end
     end
-    # Get all matches of Eng. Premier league now
-    # http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
+
+    # Example URL: http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
+    # Response XML structure: / > competition > season > round > match
+    # Return array of matches found
     class SoccerMatch < Base
       def all
         nodes = @xml_doc.css('competition > season > round > match')
@@ -46,7 +48,7 @@ module OptaSport
           matches << {
               opta_match_id: node['match_id'],
               opta_competition_id: competition['competition_id'],
-              name: "#{node['team_A_name']} - #{node['team_B_name']}",
+              name: "#{node['team_A_name']} #{Match::TEAM_NAMES_SEPERATOR} #{node['team_B_name']}",
               team_a: node['team_A_name'],
               team_b: node['team_B_name'],
               start_at: "#{node['date_utc']} #{node['time_utc']}".to_datetime,

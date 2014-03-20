@@ -20,7 +20,7 @@
 #
 
 class Match < ActiveRecord::Base
-  DAY_INTERVAL = 7
+  TEAM_NAMES_SEPERATOR = '-'
 
   STATUS_PLAYING = 'Playing' # Match is still playing (live)
   STATUS_FIXTURE = 'Fixture' # Match has not yet started
@@ -51,7 +51,7 @@ class Match < ActiveRecord::Base
   # ==============================================================================
   class << self
 
-    def load_data(params, relation = self)
+    def load_data(params = {}, relation = self)
       if params[:sport_id].present?
         relation = relation.where(sport_id: params[:sport_id])
       end
@@ -61,97 +61,18 @@ class Match < ActiveRecord::Base
       relation.includes(:competition, :sport)
     end
 
-
+    # Find bets and odds from Betclic for the given match
     def get_bets_on_match(match)
       Betclic.find_bets_on_match(match)
     end
 
-    # TODO: after getmatches, try to find id on odds feed from betclic
-    def update_matches
-      # http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-      # Get matches on active seasons
-      sports = Sport.where(name: %w(football basketball))
-      # Load active seasons
-
-      from_date = DateTime.now
-      to_date = from_date + DAY_INTERVAL.days
-      seasons = Season.all
-
-      seasons.each do |season|
-        sports.each do |sport|
-          fetcher = OptaSport::Fetcher.send(sport.name)
-          if fetcher.respond_to?(:get_matches)
-            res = fetcher.get_matches(
-                id: season.opta_season_id,
-                type: 'season',
-                start_date: from_date,
-                end_date: to_date
-            )
-            if fetcher.success?
-              matches = res.all
-              matches.each do |match|
-                Match.create(match.merge(sport_id: sport.id))
-              end
-            else
-              puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
-            end
-          end
-        end
-      end
-
-    end
-
-    def update_seasons
-      # http://api.core.optasports.com/soccer/get_seasons?authorized=yes&active=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-      sports = Sport.where(name: %w(football basketball))
-
-      sports.each do |sport|
-        fetcher = OptaSport::Fetcher.send(sport.name)
-        if fetcher.respond_to?(:get_seasons)
-          res = fetcher.get_seasons(
-              authorized: 'yes',
-              active: 'yes'
-          )
-          if fetcher.success?
-            seasons = res.all
-            seasons.each do |season|
-              Season.create(season)
-            end
-          end
-        end
-      end
-
-    end
-
-    def update_competitions
-      # http://api.core.optasports.com/soccer/get_competitions?authorized=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-      sports = Sport.where(name: %w(football basketball))
-      compts = []
-      sports.each do |sport|
-        fetcher = OptaSport::Fetcher.send(sport.name)
-        if fetcher.respond_to?(:get_competitions)
-          res = fetcher.get_competitions(
-              authorized: 'yes'
-          )
-          if fetcher.success?
-            competitions = res.all
-            compts += competitions
-            competitions.each do |competition|
-              Competition.create(competition)
-            end
-          else
-            puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
-          end
-        end
-
-      end
-      compts
-    end
-
   end
 
+  # ==============================================================================
+  # INSTANCE METHODS
+  # ==============================================================================
   def teams
-    self.name.split('vs')
+    self.name.split(TEAM_NAMES_SEPERATOR)
   end
 
   def start_date

@@ -2,27 +2,15 @@ require 'nokogiri'
 module Betclic
   EN_ODDS_URL = 'http://xml.cdn.betclic.com/odds_en.xml'
   FR_ODDS_URL = 'http://xml.cdn.betclic.com/odds_frfr.xml'
-  class Fetcher
-  end
-  class << self
-    # Start feed xml and return Nokogiri::Document object
-    def go
-      uri = URI(EN_ODDS_URL)
-      response = Net::HTTP.get_response(uri)
-      Nokogiri::XML(response.body)
-    end
 
+  # Response XML structure: sports > sport > event > match > bets > bet > choice
+
+  class << self
     def fetch_odds(lang = 'en')
       xml_doc = self.go
       match_nodes = xml_doc.css('sport > event > match')
       result_matches = []
       match_nodes.each do |node|
-        # a match tag attributes in example:
-        # name="Brazil - Croatia"
-        # id="656485"
-        # start_date="2014-06-12T21:00:00"
-        # live_id=""
-        # streaming="0"
         result_matches << {
             name: node['name'],
             betclic_match_id: node['id'],
@@ -32,14 +20,11 @@ module Betclic
       result_matches
     end
 
-
-    # sport param must be id of sport on betclic
+    # Sport param must be id of sport on betclic
     def find_matches_by_sport(sport)
-      # football = 1
     end
 
     def find_bets_on_match(match)
-
       # TODO: do follow these steps for better performance:
       # 1. filter by sport
       # 2. filter by event id, it's competition on the local db
@@ -58,8 +43,7 @@ module Betclic
       result_matches.each do |m|
         if match.name.downcase.include?(m[:name]) || m[:name].include?(match.name.downcase)
           betclic_id_match = m[:betclic_match_id]
-
-          # TODO: update betclic_match_id for match
+          # TODO: update betclic_match_id for match here
           break
         end
       end
@@ -95,7 +79,16 @@ module Betclic
       sport_nodes.each do |node|
 
       end
+    end
 
+    protected
+    # Start to feed xml
+    # Return Nokogiri::Document object
+    def go
+      uri = URI(EN_ODDS_URL)
+      response = Net::HTTP.get_response(uri)
+      # TODO: catch timeout error
+      Nokogiri::XML(response.body)
     end
   end
 
