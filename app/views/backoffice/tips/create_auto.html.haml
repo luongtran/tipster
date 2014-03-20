@@ -1,14 +1,23 @@
 = image_tag 'circle_loading.gif', class: 'hide'
-.clearfix.mam.bgw
-  .pull-right
-    .col-sm-4
+.mam
+.clearfix.bgw.pam
+  .mal
+    .col-md-3
       %strong Sport
+      %br
       = select_tag :sport, options_for_select(sport_filter_for_matches(@tipster_sports)), class: 'select2able available-matches-filter'
-    .col-sm-5
+    .col-md-3
       %strong Competition:
+      %br
       = select_tag :competition, options_for_select(competition_filter_for_matches(@competitions)), class: 'select2able available-matches-filter'
+    .col-md-3
+      %strong Search:
+      %br
+      %input{type: :text}
+.clearfix.bgw
+  %hr
 .col-md-12.bgw
-  %h2 Available matches listing:
+  %h2 Available matches:
   #available-matches-wrapper
     = render 'available_matches_list', matches: @matches
 #confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}

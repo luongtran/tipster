@@ -6,7 +6,9 @@ class Backoffice::HomeController < ApplicationController
   end
 
   def dashboard
+
     @tipster = current_tipster
     @tipster.get_statistics
+    @chart = Charter.tipster_profit_chart(@tipster)
   end
 end

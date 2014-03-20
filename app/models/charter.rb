@@ -2,7 +2,7 @@ class Charter
   def self.tipster_profit_chart(tipster)
     @chart2 = LazyHighCharts::HighChart.new('graph') do |f|
       f.title(
-          :text => "Overall profit"
+          :text => "Profit on " + I18n.t("tipster.ranking.ranges.#{tipster.current_statistics_range}")
       )
       f.xAxis(
           :categories => tipster.profit_dates_for_chart,

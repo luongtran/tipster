@@ -11,10 +11,8 @@ class Backoffice::TipsController < ApplicationController
     prepare_data_for_new_tip
     @competitions = Competition.all
     if m == 'auto'
-      # Get all available matches
       @matches = Match.betable.includes(:competition, :sport)
-
-      render 'available_matches'
+      render 'create_auto'
     else
       @tip = current_tipster.tips.new
     end
@@ -35,62 +33,9 @@ class Backoffice::TipsController < ApplicationController
     }
   end
 
-  def get_areas
-    sport_id = params[:sport_id]
-    @areas = Area.all
-    respond_to do |f|
-      f.json do
-        render json: {
-            areas: @areas.map do |area|
-              {
-                  id: area.area_id,
-                  name: area.name,
-                  url: get_competitions_backoffice_tips_path(area_id: area.area_id)}
-            end
-        }
-      end
-    end
-  end
-
-  def get_competitions
-    # Current Premier League session id : 8318
-    # &start_date=2014-03-20%2000:00:00&end_date=2014-04-27%2023:59:59
-    area_id = params[:area_id]
-    @competitions = Competition.where(area_id: area_id)
-    respond_to do |f|
-      f.json do
-        render json: {
-            competitions: @competitions.map { |compt| {id: compt.competition_id, name: compt.name} }
-        }
-      end
-    end
-  end
-
-  def get_matches
-    log = Logger.new 'log/get_matches.log'
-    sport_id = params[:sport]
-    area_id = params[:area]
-    competition_id = params[:competition]
-    sport_name = Sport.find_by(id: sport_id).name
-    fetcher = OptaSport::Fetcher.send(sport_name)
-
-    result = fetcher.get_matches(
-        id: area_id,
-        type: 'area',
-        start_date: Date.today.beginning_of_day.to_datetime,
-        end_date: Date.today.end_of_day.to_datetime,
-    )
-    log.info result.class
-    log.info "Last url:" + fetcher.last_url
-
-    respond_to do |f|
-      f.json do
-        render json: {
-        }
-      end
-    end
-  end
-
+  # GET
+  # AJAX
+  # Find bets on the given match from Betclic XML feed
   def find_bets_on_match
     match_id = params[:match_id]
     match = Match.find_by(opta_match_id: match_id)

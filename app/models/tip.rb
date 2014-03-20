@@ -30,36 +30,6 @@
 #  area_id        :string(255)
 #
 
-=begin
-  ==> This is a example of tip information
-  bet_type: "Asian handicap"
-  bookmaker: "Bet365"
-  bookmaker_key: "bet365"
-  category_slug: "european-cups"
-  comment: "A Madrid are one of the best teams in Europe right now and Costa
-  can cause so many problems for an inconsistent defence like Milan"
-  created_at: "2014-02-19 09:30:08"
-  created_at_ts: 1392798608
-  event_date: "19/02 20:45"
-  event_date_ts: 1392839100
-  id: "300993"
-  is_qualified: true
-  liability: "16% bankroll (325 units)"
-  login: "soccerpix"
-  name: "AC MILAN vs ATLETICO MADRID"
-  odds: "4.25"
-  profit: "-100"
-  result: "l"
-  result_txt: ""
-  score: "0:1"
-  selection: "ATLETICO MADRID -1.50"
-  sport_slug: "football"
-  sportk: "football"
-  stake: "5% bankroll (100 units)"
-  tipster: "soccerpix"
-  tournament_name: "UEFA Champions League"
-=end
-
 class Tip < ActiveRecord::Base
 
   STATUS_WAITING_FOR_APPROVED = 0

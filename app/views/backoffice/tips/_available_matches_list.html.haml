@@ -1,7 +1,7 @@
 - matches_grouped = matches.group_by(&:start_date)
 - matches_grouped.each do |date,matches|
   .text-center
-    %button.btn.btn-default= date.strftime("%b %d, %Y")
+    %button.btn.btn-default= date.strftime("%A, %b %d, %Y")
   - matches.each do |m|
     .match{data: {url: find_bets_on_match_backoffice_tips_path(match_id: m.opta_match_id)}}
       .summary
@@ -11,14 +11,6 @@
       .bets.clearfix.hide-tmp
         %hr
 
--#- matches.each do |match|
--#  .match{data: {url: find_bets_on_match_backoffice_tips_path(match_id: match.opta_match_id)}}
--#    .summary
--#      %h4.text-bold.text-info
--#        = "#{match.competition.try(:name)} / #{match.name}"
--#      %i.text-warning= match.start_at
--#    .bets.clearfix.hide-tmp
--#      %hr
 - if matches.empty?
   .text-danger.text-center
     %h4 Not found any matches!

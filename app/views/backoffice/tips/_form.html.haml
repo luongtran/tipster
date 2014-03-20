@@ -1,8 +1,0 @@
-= simple_form_for @tip, url: backoffice_tips_path, html: {class: 'form-horizontal', id: 'form-new-tip'} do |f|
-  = f.input :event,as: :select, collection: events_for_select(@events), include_blank: 'Select one'
-  = f.input :platform_id, as: :select, collection: platforms_for_select(@platforms), include_blank: false
-  = f.input :bet_type_id, as: :select, collection: bet_types_for_select(@bet_types), include_blank: false
-  = f.input :sport_id ,as: :select,collection: sports_for_select(@sports), include_blank: false
-  = f.input :odds
-  = f.input :selection
-  = f.input :advice

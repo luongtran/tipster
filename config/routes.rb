@@ -120,12 +120,8 @@ TipsterHero::Application.routes.draw do
     get 'my_tips', to: 'tips#my_tips'
     resources :tips, except: [:index] do
       collection do
-        get :get_areas
-        get :get_competitions
         post :confirm
-        get :get_matches
         get :find_bets_on_match
-
         get :filter_matches
       end
     end

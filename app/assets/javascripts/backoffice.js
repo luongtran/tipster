@@ -5,18 +5,11 @@
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
  = require helper
  = require select2
+ = require highcharts/highcharts
+ = require common
  = require turbolinks
  */
 $(document).ready(function () {
-    $('.select2able').each(function () {
-        options = {
-            width: 'resolve'
-        };
-
-        if ($(this).attr('data-no-search'))
-            options['minimumResultsForSearch'] = -1; // Hide the seach box
-        $(this).select2(options);
-    });
 
     /* Step 1 */
     $('#select-sport-for-tip').on('change', function () {
@@ -70,7 +63,7 @@ $(document).ready(function () {
         $('#btn-get-matches').removeClass('disabled');
     });
 
-    /* Auto hide red border after user typed*/
+    /* Auto hide red border after user typed */
     $('.form-group.has-error .form-control').on('keydown', function () {
         $(this).closest('.form-group.has-error').removeClass('has-error');
         $(this).next('.help-block').fadeOut(500);
@@ -108,11 +101,11 @@ $(document).ready(function () {
     });
 
     /* Some effet when hovered on buttons */
-    $('.bets').on('mouseover', 'button', function () {
+    $('#available-matches-wrapper').on('mouseover', '.choice-odd-button', function () {
         $(this).removeClass('btn-default');
         $(this).addClass('btn-primary');
     });
-    $('.bets').on('mouseleave', 'button', function () {
+    $('#available-matches-wrapper').on('mouseleave', 'button', function () {
         $(this).addClass('btn-default');
         $(this).removeClass('btn-primary');
     });
