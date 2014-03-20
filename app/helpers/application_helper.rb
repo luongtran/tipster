@@ -286,7 +286,8 @@ module ApplicationHelper
         I18n.t('menu.subscribe.step4_free')
     end
   end
-  def header_menu_adding(size,tipster,plan)
+
+  def header_menu_adding(size, tipster, plan)
     case size
       when 0
         if tipster
@@ -299,7 +300,7 @@ module ApplicationHelper
     end
   end
 
-  def header_menu_adding_popup(cart_size,tipster_first)
+  def header_menu_adding_popup(cart_size, tipster_first)
     case cart_size
       when 0
         if tipster_first
@@ -328,10 +329,10 @@ module ApplicationHelper
           }
         end
       when 2
-          {
-              left: 'SECOND TIPSTERHERO',
-              right: 'THIRD TIPSTERHERO'
-          }
+        {
+            left: 'SECOND TIPSTERHERO',
+            right: 'THIRD TIPSTERHERO'
+        }
       when 3
         {
             left: 'SECOND TIPSTERHERO',
@@ -344,13 +345,16 @@ module ApplicationHelper
         }
     end
   end
+
   def adding_price_show(price)
     "#{(price * 0.4).round(3)} € / month"
   end
-  def abc
-    OptaSport::Fetcher(
-        'soccer',
-        function: 'get_matches'
-    )
+
+  def matches_group_by_for_select
+    options = []
+    options << ['Date', 'date']
+    options << ['Sport', 'date']
+    options
   end
+
 end

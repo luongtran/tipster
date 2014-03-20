@@ -44,9 +44,11 @@ module OptaSport
         nodes.each do |node|
           competition = node.parent.parent.parent
           matches << {
-              match_id: node['match_id'],
-              competition_id: competition['competition_id'],
-              name: "#{node['team_A_name']} vs #{node['team_B_name']}",
+              opta_match_id: node['match_id'],
+              opta_competition_id: competition['competition_id'],
+              name: "#{node['team_A_name']} - #{node['team_B_name']}",
+              team_a: node['team_A_name'],
+              team_b: node['team_B_name'],
               start_at: "#{node['date_utc']} #{node['time_utc']}".to_datetime,
               status: node['status']
           }
@@ -61,10 +63,10 @@ module OptaSport
         competitions = []
         nodes.each do |compt|
           competitions << {
-              competition_id: compt['competition_id'],
+              opta_competition_id: compt['competition_id'],
+              opta_area_id: compt['area_id'],
               name: compt['name'],
-              area_id: compt['area_id'],
-              country_code: compt['countrycode'],
+              country_code: compt['countrycode']
           }
         end
         competitions
@@ -94,11 +96,11 @@ module OptaSport
         nodes.each do |season|
           competition = season.parent
           seasons << {
-              season_id: season['season_id'],
+              opta_season_id: season['season_id'],
+              opta_competition_id: competition['competition_id'],
               name: season['name'],
               start_date: season['start_date'].to_datetime,
               end_date: season['end_date'].to_datetime,
-              competition_id: competition['competition_id'],
           }
         end
         seasons
@@ -106,6 +108,61 @@ module OptaSport
     end
 
     class SoccerMatchLive < Base
+    end
+
+    class BasketballArea < Base
+
+    end
+    class BasketballCompetition < Base
+      def all
+        nodes = @xml_doc.css('competition')
+        competitions = []
+        nodes.each do |compt|
+          competitions << {
+              opta_competition_id: compt['competition_id'],
+              opta_area_id: compt['area_id'],
+              name: compt['name'],
+              country_code: compt['countrycode']
+          }
+        end
+        competitions
+      end
+    end
+    class BasketballMatch < Base
+      def all
+        nodes = @xml_doc.css('competition > season > round > match')
+        matches = []
+        nodes.each do |node|
+          competition = node.parent.parent.parent
+          matches << {
+              opta_match_id: node['match_id'],
+              opta_competition_id: competition['competition_id'],
+              name: "#{node['team_A_name']} - #{node['team_B_name']}",
+              team_a: node['team_A_name'],
+              team_b: node['team_B_name'],
+              start_at: "#{node['date_utc']} #{node['time_utc']}".to_datetime,
+              status: node['status']
+          }
+        end
+        matches
+      end
+    end
+    class BasketballSeason < Base
+      def all
+        nodes = @xml_doc.css('competition > season')
+        seasons = []
+        nodes.each do |season|
+          competition = season.parent
+          seasons << {
+              opta_season_id: season['season_id'],
+              opta_competition_id: competition['competition_id'],
+              name: season['name'],
+              start_date: season['start_date'].to_datetime,
+              end_date: season['end_date'].to_datetime,
+          }
+        end
+        seasons
+      end
     end
   end
 
@@ -230,6 +287,34 @@ module OptaSport
     class Baseball < Base
     end
     class Basketball < Base
+      AVAILABLE_FUNCTIONS = {
+          'get_areas' => {
+              'required_params' => [],
+              'options_params' => %w(area_id),
+              'result_class' => OptaSport::FetchResult::BasketballArea
+          },
+          'get_competitions' => {
+              'required_params' => [],
+              'options_params' => %w(area_id authorized),
+              'result_class' => OptaSport::FetchResult::BasketballCompetition
+          },
+          'get_matches' => {
+              'required_params' => %w(id type),
+              'options_params' => %w(start_date end_date limit detailed last_updated),
+              'result_class' => OptaSport::FetchResult::BasketballMatch
+          },
+          'get_seasons' => {
+              'required_params' => %w(),
+              'options_params' => %w(authorized coverage active id type last_updated),
+              'result_class' => OptaSport::FetchResult::BasketballSeason
+          }
+      }
+
+      AVAILABLE_FUNCTIONS.each do |f_name, settings|
+        define_method f_name do |params = {}|
+          return self.go(f_name, params, settings['result_class'])
+        end
+      end
     end
     class Handball < Base
     end

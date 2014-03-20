@@ -1,0 +1,21 @@
+.col-lg-11.col-sm-offset-1
+  - if bets.empty?
+    %p.text-center.text-danger
+      Not found any bets on this match!
+  - else
+    - bets.each do |bet|
+      %h4
+        %span.text-info= "#{bet[:name]}"
+      %p
+        - bet[:choices].each do |choice|
+          .bet-choice
+            %span.text-bold
+              - choice_name = choice[:name]
+              - choice_name.gsub!('%1%',match.team_a)
+              - choice_name.gsub!('%2%',match.team_b)
+              = choice_name
+            %button.btn.btn-default.choice-odd-button{data: {'bet-code' => bet[:code], odd: choice[:odd],
+                'choice-name' => choice_name, 'match-id' => match.opta_match_id, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
+              = choice[:odd]
+      %hr
+

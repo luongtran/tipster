@@ -9,8 +9,8 @@ class Backoffice::TipsController < ApplicationController
   def new
     @tipster_sports = current_tipster.sports
     # Get all matches
-    @matches = Match.betable.includes(:competition)
-
+    @matches = Match.betable.includes(:competition, :sport)
+    @competitions = Competition.all
   end
 
   def submit
@@ -72,6 +72,23 @@ class Backoffice::TipsController < ApplicationController
     end
   end
 
+  def find_bets_on_match
+    match_id = params[:match_id]
+    match = Match.find_by(opta_match_id: match_id)
+
+    success = true
+    bets = []
+    if match
+      bets = Betclic.find_bets_on_match(match)
+    else
+      success = false
+    end
+
+    html = render_to_string(partial: 'backoffice/tips/bets_on_matches', locals: {match: match, bets: bets}).html_safe
+    render json: {
+        success: success, html: html
+    }
+  end
 
   def create
     @tip = current_tipster.tips.new(tip_params)

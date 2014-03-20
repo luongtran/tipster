@@ -124,6 +124,8 @@ TipsterHero::Application.routes.draw do
         get :get_competitions
         post :submit
         get :get_matches
+        get :find_bets_on_match
+
       end
     end
   end
