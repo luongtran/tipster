@@ -26,9 +26,12 @@ class SubscriptionController < ApplicationController
     session[:plan_id] = selected_plan.id
     if selected_plan.free?
       redirect_to subscribe_account_url
-    elsif params[:return_path]
+    #elsif params[:return_path]
+    #  flash[:show_checkout_dialog] = true
+    #  redirect_to subscribe_choose_offer_url
+    elsif tipster_ids_in_cart.size == 0
       flash[:show_checkout_dialog] = true
-      redirect_to subscribe_choose_offer_url
+      redirect_to pricing_path
     else
       flash[:show_checkout_dialog] = true
       redirect_to tipsters_url
