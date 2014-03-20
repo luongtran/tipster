@@ -2,14 +2,13 @@
   = render 'top_tipster', :tipsters => @tipsters
 - content_for :title do
   Home
+%link{href: "http://fonts.googleapis.com/css?family=Montserrat", rel: "stylesheet", type: "text/css"}/
 #values-intro
   .container
     .row
-      .col-md-3
-        .value-intro-1
-          %h1 How it work
-          %br
-          %span Lorem ipsum dolor sit amet, nsectetuer adipiscing elit, sed diam nonummy ibh euismod tincidunt ut laoreet dolore magna iquam erat volutpat.
+      .col-md-2
+        .value-intro-1.pull-right
+          %h1 How it works
       .col-md-3
         .value-intro-2
           .value-intro-avatar

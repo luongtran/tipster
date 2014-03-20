@@ -164,7 +164,7 @@ class SubscribeController < ApplicationController
   def change_tipster
     @step = 2
     session[:old_id] = params[:old_id]
-    redirect_to  subscribe_choose_tipster_path
+    redirect_to  tipsters_path
     #if tipster_ids_in_cart.include?(params[:old_id])
     #  session[:cart][:tipster_ids].delete(params[:old_id])
     #  add_tipster_to_cart(params[:new_id])

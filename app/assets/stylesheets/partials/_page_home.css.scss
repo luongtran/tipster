@@ -2,21 +2,30 @@
 
 #values-intro {
   background: url(/assets/granit.jpg) repeat;
-  padding-top: 70px;
-  padding-bottom: 70px;
+  padding-top: 44px;
+  padding-bottom: 50px;
+  .col-md-3{
+    width:27%;
+  }
   .value-intro-1 {
     span {
       font-size: 18px;
+    }
+    h1{
+      font-family: 'Alternate-Gothic';
+      text-transform: uppercase;
     }
   }
   .value-intro-2 {
     background: url('/assets/dash-arrow.png') no-repeat left center;
     padding-left: 30px;
     .value-intro-text {
+      font-family: 'BebasNeue';
+      font-weight: normal;
+      font-size: 20px;
       text-transform: uppercase;
       color: black;
       text-align: center;
-      font-weight: bold;
       line-height: 1.4;
       padding-top: 15px;
     }
@@ -26,6 +35,10 @@
 #Nos-abonnaments {
   padding: 20px 0 40px;
   background-color: shade($gray-dark, 50%);
+  .col-md-4{
+    width:31%;
+    margin-right:3.33%;
+  }
   .abonnaments {
     padding-top: 20px;
     padding-bottom: 20px;
