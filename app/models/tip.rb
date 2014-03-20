@@ -72,6 +72,8 @@ class Tip < ActiveRecord::Base
   scope :paid, -> { where(free: false) }
   scope :free, -> { where(free: true) }
   scope :correct, -> { where(correct: true) }
+  scope :finished, -> { where(status: STATUS_FINISHED) }
+  scope :moneyable, -> { where(free: false, status: STATUS_FINISHED) }
 
   delegate :name, to: :sport, prefix: true
 
