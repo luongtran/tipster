@@ -68,4 +68,4 @@
     %hr.mbs.mts
       .tipster-top-body.remote-data{data: {url: top_three_tipsters_path(sport: query_params[:sport]), 'error-msg' => 'Failed to load top 3 of the week.'}}
   - if @show_checkout_dialog
-    = render 'shared/pop_up_adding', choose_tipster: @choose_tipster,selected_plan: @selected_plan,second_tipster: @second_tipster,third_tipster: @third_tipster
+    = render 'shared/pop_up_adding', choose_tipster: @choose_tipster,selected_plan: @selected_plan,second_tipster: @second_tipster,third_tipster: @third_tipster,tipster_first: @tipster_first

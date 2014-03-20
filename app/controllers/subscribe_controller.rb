@@ -93,10 +93,11 @@ class SubscribeController < ApplicationController
     @step = 1
     session[:step] = 1 unless session[:step]
     if session[:failed_add_tipster_id] || tipster_ids_in_cart.size > 0
-      @plans = Plan.where.not(price: 0)
+      @disable_free = true
     else
-      @plans = Plan.all
+      @disable_free = false
     end
+    @plans = Plan.all
     @selected_plan = selected_plan
     @choose_offer = true
     if request.post?

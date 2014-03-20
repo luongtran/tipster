@@ -39,7 +39,7 @@
                       %li.subscription-price= @selected_plan.price.to_s + " € / month"
                       %li
                         = hidden_field_tag :current_plan_id,@selected_plan.id
-                        %a.submitLink{href: subscribe_choose_offer_path}
+                        %a.submitLink{href: pricing_path}
                           %i.glyphicon.glyphicon-play
                           Change subscription
               .col-md-2
@@ -55,7 +55,7 @@
                         %li.subscription-price= @selected_plan.price.to_s + " € / month"
                         %li
                           = hidden_field_tag :current_plan_id,@selected_plan.id
-                          %a.submitLink{href: subscribe_choose_offer_path}
+                          %a.submitLink{href: pricing_path}
                             %i.glyphicon.glyphicon-play
                             Change subscription
                   - else
@@ -65,7 +65,7 @@
                         %li.responsive-image
                           %image{src: path_to_image('unselect_subscription.png')}
                         %li
-                          %a.submitLink{href: subscribe_choose_offer_path}
+                          %a.submitLink{href: pricing_path}
                             %i.glyphicon.glyphicon-play
                             Choose subscription
                 - else

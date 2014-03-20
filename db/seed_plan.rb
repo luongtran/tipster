@@ -39,12 +39,4 @@ p4 = Plan.create!(
 )
 puts " -> Created plan: #{p4.title}"
 
-p5 = Plan.create!(
-    title: 'Multi tipster',
-    :price => 59.90,
-    :number_tipster => 5,
-    :switch_tipster_ability => false,
-    :period => 1
-)
-puts " -> Created plan: #{p5.title}"
 puts "Seed plans completed!"
