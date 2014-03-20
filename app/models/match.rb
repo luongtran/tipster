@@ -51,6 +51,17 @@ class Match < ActiveRecord::Base
   # ==============================================================================
   class << self
 
+    def load_data(params, relation = self)
+      if params[:sport_id].present?
+        relation = relation.where(sport_id: params[:sport_id])
+      end
+      if params[:competition_id].present?
+        relation = relation.where(opta_competition_id: params[:competition_id])
+      end
+      relation.includes(:competition, :sport)
+    end
+
+
     def get_bets_on_match(match)
       Betclic.find_bets_on_match(match)
     end
@@ -141,5 +152,9 @@ class Match < ActiveRecord::Base
 
   def teams
     self.name.split('vs')
+  end
+
+  def start_date
+    self.start_at.to_date
   end
 end

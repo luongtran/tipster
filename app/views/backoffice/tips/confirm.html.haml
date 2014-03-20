@@ -1,0 +1,42 @@
+.row
+  .clearfix.mam.bgw
+    .text-center
+      %h3 Please enter more infor to continue:
+    = simple_form_for @tip, url: backoffice_tips_path, html: {class: 'form-horizontal', id: 'form-new-tip'} do |f|
+      .form-group
+        %label.col-md-4.control-label
+          Match:
+        .col-md-7
+          .form-control
+            = @tip.match_name
+
+      .form-group
+        %label.col-md-4.control-label
+          Type of bet:
+        .col-md-7
+          .form-control
+            = @tip.bet_type_name
+
+      .form-group
+        %label.col-md-4.control-label
+          Selection:
+        .col-md-7
+          .form-control
+            = @tip.choice_name
+      .form-group
+        %label.col-md-4.control-label
+          Odds:
+        .col-md-7
+          .form-control
+            = @tip.odds
+
+      = f.input :amount
+      = f.input :advice
+      .form-group
+        .col-sm-offset-4.col-sm-7
+          %button.btn.btn-primary{type: :button} Submit
+          %a.btn.btn-default{href: backoffice_my_tips_path } Cancel
+
+
+
+

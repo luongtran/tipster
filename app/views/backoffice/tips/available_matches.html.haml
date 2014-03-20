@@ -1,0 +1,24 @@
+= image_tag 'circle_loading.gif', class: 'hide'
+.clearfix.mam.bgw
+  .pull-right
+    .col-sm-4
+      %strong Sport
+      = select_tag :sport, options_for_select(sport_filter_for_matches(@tipster_sports)), class: 'select2able available-matches-filter'
+    .col-sm-5
+      %strong Competition:
+      = select_tag :competition, options_for_select(competition_filter_for_matches(@competitions)), class: 'select2able available-matches-filter'
+.col-md-12.bgw
+  %h2 Available matches listing:
+  #available-matches-wrapper
+    = render 'available_matches_list', matches: @matches
+#confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog.modal-md
+    .modal-content
+      .modal-header.text-warning
+        %h4.modal-title Please confirm your selection
+      .modal-body
+        .selection-infor
+        .row.text-center
+          = form_for :nothing, url: confirm_backoffice_tips_path, :method => 'post' do |f|
+            %button.btn.btn-success#submiter{type: :submit} Confirm
+            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel

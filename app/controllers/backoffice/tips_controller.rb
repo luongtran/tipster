@@ -7,13 +7,32 @@ class Backoffice::TipsController < ApplicationController
   end
 
   def new
-    @tipster_sports = current_tipster.sports
-    # Get all matches
-    @matches = Match.betable.includes(:competition, :sport)
+    m = params[:m]
+    prepare_data_for_new_tip
     @competitions = Competition.all
+    if m == 'auto'
+      # Get all available matches
+      @matches = Match.betable.includes(:competition, :sport)
+
+      render 'available_matches'
+    else
+      @tip = current_tipster.tips.new
+    end
+
   end
 
-  def submit
+  def confirm
+    @tip = Tip.new(tip_params)
+  end
+
+  def filter_matches
+    prepare_data_for_new_tip
+    @matches = Match.betable.load_data(params)
+    success = true
+    html = render_to_string(partial: 'backoffice/tips/available_matches_list', locals: {matches: @matches}).html_safe
+    render json: {
+        success: success, html: html
+    }
   end
 
   def get_areas
@@ -95,7 +114,7 @@ class Backoffice::TipsController < ApplicationController
     if @tip.save
       redirect_to backoffice_tip_url(@tip), notice: I18n.t('tip.created_successfully')
     else
-      prepare_data_for_sport(name: params[:sport])
+      prepare_data_for_new_tip
       render :new
     end
   end
@@ -105,18 +124,19 @@ class Backoffice::TipsController < ApplicationController
   end
 
   private
+  def prepare_data_for_new_tip
+    @competitions = Competition.all
+    @tipster_sports = current_tipster.sports
+    @platforms = Platform.all
+    @bet_types = BetType.all
+  end
+
   def get_available_matches
     sports = current_tipster.sports
   end
 
-  def prepare_data_for_sport(sport)
-    @choosen_sport ||= current_tipster.sports.find_by!(sport)
-    @bet_types = @choosen_sport.bet_types
-    @events = Event.fetch(@choosen_sport.name)
-    @platforms = Platform.all
-  end
-
   def tip_params
-    params.require(:tip).permit(Tip::CREATE_PARAMS)
+    #params.require(:tip).permit(Tip::CREATE_PARAMS)
+    params.require(:tip).permit!
   end
 end

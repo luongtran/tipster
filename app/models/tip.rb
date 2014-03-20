@@ -69,6 +69,8 @@ class Tip < ActiveRecord::Base
 
   CREATE_PARAMS = [:event, :platform_id, :bet_type_id, :odds, :selection, :advice, :amount, :sport_id, :line]
 
+  attr_accessor :match_name, :match_id, :choice_name, :bet_type_name
+
   # ===========================================================================
   # ASSOCIATIONS
   # ===========================================================================

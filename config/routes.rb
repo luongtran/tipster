@@ -122,10 +122,11 @@ TipsterHero::Application.routes.draw do
       collection do
         get :get_areas
         get :get_competitions
-        post :submit
+        post :confirm
         get :get_matches
         get :find_bets_on_match
 
+        get :filter_matches
       end
     end
   end
