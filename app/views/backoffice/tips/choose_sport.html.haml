@@ -1,9 +1,0 @@
-.container
-  .well.text-center
-    %h4 Choose a sport
-    = select_tag :sport,
-        options_for_select(@tipster_sports.map {|s| [s.name.titleize, s.name, data: {url: new_backoffice_tip_path(sport: s.name)}]}),
-        id: 'select-sport-for-tip', prompt: '-- Choose one --', class: 'select2able', 'data-no-search'=> true
-    %p
-      %br
-      %a.btn.btn-primary.disabled#lk-create-new-tip{href: ''} Next >>

@@ -5,18 +5,11 @@
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
  = require helper
  = require select2
+ = require highcharts/highcharts
+ = require common
  = require turbolinks
  */
 $(document).ready(function () {
-    $('.select2able').each(function () {
-        options = {
-            width: 'resolve'
-        };
-
-        if ($(this).attr('data-no-search'))
-            options['minimumResultsForSearch'] = -1; // Hide the seach box
-        $(this).select2(options);
-    });
 
     /* Step 1 */
     $('#select-sport-for-tip').on('change', function () {
@@ -69,19 +62,8 @@ $(document).ready(function () {
     $('#select-competition-for-tip').on('change', function () {
         $('#btn-get-matches').removeClass('disabled');
     });
-    $('#btn-get-matches').on('click', function () {
-        var $form = $('#form-get-matches');
-        $.ajax({
-            url: $form.attr('action'),
-            data: $form.serialize(),
-            type: 'GET',
-            success: function (response) {
-                console.log('get matches successed');
-            }
-        });
-    });
 
-    /* Auto hide red border after user typed*/
+    /* Auto hide red border after user typed */
     $('.form-group.has-error .form-control').on('keydown', function () {
         $(this).closest('.form-group.has-error').removeClass('has-error');
         $(this).next('.help-block').fadeOut(500);
@@ -98,7 +80,7 @@ $(document).ready(function () {
     });
 
     /* Loading bet from Betclic */
-    $('.match').on('click', '.summary', function () {
+    $('#available-matches-wrapper').on('click', '.summary', function () {
         var $match_div = $(this).parent();
         var $bets_wrapper = $match_div.children('.bets');
         if (!$match_div.hasClass('loaded')) {
@@ -108,43 +90,99 @@ $(document).ready(function () {
                 type: 'GET',
                 dataType: 'JSON',
                 success: function (response) {
-                    Helper.destroy_loading_indicator($bets_wrapper);
-                    $bets_wrapper.html(response.html);
+                    if (response.success) {
+                        $bets_wrapper.html(response.html);
+                    } else {
+                        Helper.alert_server_error();
+                    }
                 }
             });
             $match_div.addClass('loaded');
         }
-        // Toggle detail tr
+        // Toggle result
         $bets_wrapper.toggle(200);
     });
-    $('.bets').on('mouseover', 'button', function () {
-        $(this).addClass('btn-success');
+
+    /* Some effet when hovered on buttons */
+    $('#available-matches-wrapper').on('mouseover', '.choice-odd-button', function () {
+        $(this).removeClass('btn-default');
+        $(this).addClass('btn-primary');
     });
-    $('.bets').on('mouseleave', 'button', function () {
-        $(this).removeClass('btn-success');
+    $('#available-matches-wrapper').on('mouseleave', 'button', function () {
+        $(this).addClass('btn-default');
+        $(this).removeClass('btn-primary');
+    });
+    $('.lk-select-create-tip-method').on('mouseover', function () {
+        $(this).removeClass('btn-default');
+        $(this).addClass('btn-primary');
+    });
+    $('.lk-select-create-tip-method').on('mouseleave', function () {
+        $(this).addClass('btn-default');
+        $(this).removeClass('btn-primary');
     });
 
-    /* Show popup confirm select odd*/
-    $('.match').on('click', '.choice-odd-button', function () {
+    /* Show popup to confirm select odd*/
+    $('#available-matches-wrapper').on('click', '.choice-odd-button', function () {
         var $modal = $('#confirm-select-odd-modal');
-        var $button = $(this)
-        var match_name = $button.attr('data-match-name');
-        var match_id = $button.attr('data-match-id');
+        var $form = $modal.find('form');
 
-        var odd_selected = $button.attr('data-odd');
+        var $button = $(this);
+
+        var match_name = $button.attr('data-match-name');
+        $form.append('<input type="hidden" name="tip[match_name]" value="' + match_name + '"/>');
+        var match_id = $button.attr('data-match-id');
+        $form.append('<input type="hidden" name="tip[match_id]" value="' + match_id + '"/>');
+
+        var odds_selected = $button.attr('data-odd');
+        $form.append('<input type="hidden" name="tip[odds]" value="' + odds_selected + '"/>');
+
         var choice_name = $button.attr('data-choice-name');
+        $form.append('<input type="hidden" name="tip[choice_name]" value="' + choice_name + '"/>');
+
         var bet_type_name = $button.attr('data-bet-type-name');
+        $form.append('<input type="hidden" name="tip[bet_type_name]" value="' + bet_type_name + '"/>');
+
         var $container = $modal.find('.selection-infor');
-        html = '<div class="text-center"> <strong class="match-name">'
+
+        html = '<div class="text-center"> <strong class="match-name text-success">'
             + match_name + '</strong>'
             + '<p>'
             + '<b>' + bet_type_name + '</b>: ' + '<span class="text-danger">' + choice_name + '</span>'
             + '<br>'
-            + '<b>Odds: </b>' + '<span class="text-danger">' + odd_selected + '</span>'
+            + '<b>Odds: </b>' + '<span class="text-danger">' + odds_selected + '</span>'
             + '</p>'
             + '</div>';
+
         $container.html(html);
         $modal.modal();
     });
-    /* Charts */
+
+    /* Toggle modal box for select method for create new tip*/
+    $('#lk-toggle-select-create-tip-method').on('click', function () {
+        $('#select-create-tip-method-modal').modal();
+        return false;
+    });
+    /* Load the link of select box as links */
+    $('.select-as-links').on('change', function () {
+        var url = $(this).children('option:selected').attr('data-url');
+        return false;
+    });
+
+
+    /* Available matches filtering */
+    $('.available-matches-filter').on('change', function () {
+        var url = $(this).children('option:selected').attr('data-url');
+        var $result_wrapper = $('#available-matches-wrapper');
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function (response) {
+                if (response.success) {
+                    $result_wrapper.html('');
+                    $result_wrapper.html(response.html);
+                }
+            }
+        });
+    });
 });

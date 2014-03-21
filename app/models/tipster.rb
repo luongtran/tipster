@@ -40,10 +40,17 @@ class Tipster < ActiveRecord::Base
   # ASSOCIATIONS
   # ==============================================================================
   has_one :account, as: :rolable
-  has_many :tips, as: :author
-  has_and_belongs_to_many :sports
-  accepts_nested_attributes_for :account
 
+  has_many :tips, as: :author
+  has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author do
+    def in_range(range)
+      proxy_association.owner.tips.where(published_at: range)
+    end
+  end
+
+  has_and_belongs_to_many :sports
+
+  accepts_nested_attributes_for :account
   mount_uploader :avatar, AvatarUploader
 
   # ==============================================================================
@@ -67,7 +74,7 @@ class Tipster < ActiveRecord::Base
   # CLASS METHODS
   # ==============================================================================
   class << self
-    def load_data(params = {})
+    def load_data(params = {}, get_statistics = true)
       relation = perform_filter_params(params)
       sorting_info = parse_sort_params(params)
       # paging_info = parse_paging_params(params)
@@ -77,7 +84,13 @@ class Tipster < ActiveRecord::Base
       #.page(paging_info.page)
       #.per(paging_info.page_size)
 
-      result = relation.includes([:account])
+      ranking_range = parse_range_param(params)
+      range = range_paser(ranking_range)
+
+      result = relation.includes(:finished_tips).
+          where("tips.published_at BETWEEN ? AND ?", range.first, range.last).
+          references(:tips)
+
       result.each do |tipster|
         tipster.get_statistics(params)
       end
@@ -130,7 +143,7 @@ class Tipster < ActiveRecord::Base
     end
 
     # Return the start & end date specify by given range
-    def range_paser(range, tipster)
+    def range_paser(range)
       end_date = Date.today
       start_date = case range
                      when LAST_MONTH
@@ -142,11 +155,39 @@ class Tipster < ActiveRecord::Base
                      when LAST_12_MONTHS
                        365.days.ago
                      when OVERALL
-                       tipster.created_at.to_date
+                       self.order("created_at asc").first.created_at.to_date
                      else
                        90.days.ago
                    end
       start_date..end_date
+    end
+
+    # Return LazayHightChart object for draw profile chart
+    def profit_chart_for_tipster(tipster)
+      chart = LazyHighCharts::HighChart.new('graph') do |f|
+        f.title(
+            :text => "Profit on " + I18n.t("tipster.ranking.ranges.#{tipster.current_statistics_range}")
+        )
+        f.xAxis(
+            :categories => tipster.profit_dates_for_chart,
+            tickInterval: 5
+        )
+        f.series(
+            :name => 'Profit',
+            :yAxis => 0,
+            :color => '#AABF46',
+            :data => tipster.profit_values_for_chart,
+            showInLegend: false
+        )
+        f.yAxis [
+                    :title => {
+                        :text => "Profit in Euro",
+                        :margin => 20
+                    }
+                ]
+        f.chart({:defaultSeriesType => "line"})
+      end
+      chart
     end
 
     # ==============================================================================
@@ -213,15 +254,17 @@ class Tipster < ActiveRecord::Base
   end
 
   def get_statistics(params = {})
-    range = self.class.parse_range_param(params)
-
-    @current_statistics_range = range
-
-    range = self.class.range_paser(range, self)
-    tips = self.tips.paid.where(published_at: range)
+    tips = nil
+    if self.finished_tips.loaded?
+      tips = self.finished_tips
+    else
+      ranking_range = self.class.parse_range_param(params)
+      @current_statistics_range = ranking_range
+      tips = self.finished_tips.in_range(self.class.range_paser(ranking_range))
+    end
 
     # Save the number of tip
-    @number_of_tips = tips.count
+    @number_of_tips = tips.length
 
     # Grouping by published date
     date_with_tips = tips.group_by(&:published_date)
@@ -235,7 +278,7 @@ class Tipster < ActiveRecord::Base
     total_amount = 0
 
     date_with_tips.each do |date, tips|
-      @tips_per_dates << {date: date, tips_count: tips.count}
+      @tips_per_dates << {date: date, tips_count: tips.size}
       tips.each do |tip|
         odds += tip.odds
         total_amount += tip.amount

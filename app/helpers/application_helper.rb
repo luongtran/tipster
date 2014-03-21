@@ -355,4 +355,23 @@ module ApplicationHelper
     options
   end
 
+
+  def sport_filter_for_matches(sports)
+    options = []
+    options << ['All', 0, 'data-url' => filter_matches_backoffice_tips_path(query_params.merge(sport_id: nil))]
+    #filter_matches_backoffice_tips_path
+    sports.each do |sport|
+      options << [sport.name.titleize, sport.id, 'data-url' => filter_matches_backoffice_tips_path(query_params.merge(sport_id: sport.id))]
+    end
+    options
+  end
+
+  def competition_filter_for_matches(competitions)
+    options = []
+    options << ['All', 0, 'data-url' => filter_matches_backoffice_tips_path(query_params.merge(competition_id: nil))]
+    competitions.each do |compt|
+      options << ["#{compt.name.titleize} (#{compt.country_code})", compt.id, 'data-url' => filter_matches_backoffice_tips_path(query_params.merge(competition_id: compt.opta_competition_id))]
+    end
+    options
+  end
 end

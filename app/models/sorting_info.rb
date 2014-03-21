@@ -1,4 +1,3 @@
-# Include information for sorting.
 class SortingInfo
   INCREASE = 'asc'
   DECREASE = 'desc'
