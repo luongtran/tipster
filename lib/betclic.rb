@@ -75,10 +75,29 @@ module Betclic
     def support_sports
       xml_doc = self.go
       sport_nodes = xml_doc.css('sport')
-
+      re_sports = []
       sport_nodes.each do |node|
-
+        re_sports << {
+            name: node['name'],
+            id: node['id']
+        }
       end
+      re_sports
+    end
+
+    def bet_types
+      xml_doc = self.go
+      bet_nodes = xml_doc.css('bet')
+      re_bet_types = []
+      bet_nodes.each do |bet|
+        sport = bet.parent.parent.parent.parent
+        re_bet_types << {
+            name: bet['name'],
+            code: bet['code'],
+            sport_id: sport['id']
+        }
+      end
+      re_bet_types.uniq
     end
 
     protected
