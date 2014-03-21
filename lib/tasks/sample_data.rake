@@ -1,5 +1,5 @@
 def load_seed_file(file)
-  seed_file = File.join(Rails.root, 'db', file)
+  seed_file = File.join(Rails.root, 'db', 'seeds', file)
   load(seed_file) if File.exist?(seed_file)
 end
 
