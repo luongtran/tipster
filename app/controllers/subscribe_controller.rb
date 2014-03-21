@@ -123,39 +123,47 @@ class SubscribeController < ApplicationController
       if current_subscriber
         @subscriber = current_subscriber
       else
-
         @subscriber ||= Subscriber.new
         @account = @subscriber.build_account
       end
 
       if request.post?
-        if current_subscriber
-          1.toAAA
-          current_subscriber.validate_with_paid_account = !selected_plan.free?
-            if current_subscriber.update_attributes(profile_params)
-              if selected_plan.free?
-                current_subscriber.apply_plan(selected_plan)
-                empty_cart_session
-                @subscriber.account.resend_confirmation_instructions unless @subscriber.account.confirmed?
+        if params[:i_token] == 'DdM26nAJNTyuaMRXjnrF8vP8'
+          if current_subscriber
+            current_subscriber.validate_with_paid_account = !selected_plan.free?
+              if current_subscriber.update_attributes(profile_params)
+                if selected_plan.free?
+                  current_subscriber.apply_plan(selected_plan)
+                  empty_cart_session
+                  @subscriber.account.resend_confirmation_instructions unless @subscriber.account.confirmed?
+                end
+                redirect_to subscribe_shared_url
               end
+          else
+            s_params = subscriber_params
+            account_params = s_params.delete :account
+            @subscriber = Subscriber.new(s_params)
+            @subscriber.validate_with_paid_account = !selected_plan.free?
+            @account = Account.new(account_params)
+
+            valid = @subscriber.valid?
+            valid = @account.valid?  && valid
+            if valid
+              @subscriber.save
+              @account.rolable = @subscriber
+              @account.save
+              sign_in @account
               redirect_to subscribe_shared_url
             end
-        else
-          s_params = subscriber_params
-          account_params = s_params.delete :account
-          @subscriber = Subscriber.new(s_params)
-          @subscriber.validate_with_paid_account = !selected_plan.free?
-          @account = Account.new(account_params)
-
-          valid = @subscriber.valid?
-          valid = @account.valid?  && valid
-          if valid
-            @subscriber.save
-            @account.rolable = @subscriber
-            @account.save
-            sign_in @account
+          end
+        elsif params[:i_token] == 'KCWUzKdK7b2s9CXBDyKjFTcG'
+          @account2 = Account.find_by_email(params[:account][:email])
+          if @account2 && @account2.valid_password?(params[:account][:password])
+            sign_in @account2
             redirect_to subscribe_shared_url
           end
+        else
+          render_404
         end
       end
     else

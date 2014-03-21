@@ -24,35 +24,30 @@
               .col-lg-4.col-lg-offet-1
                 %h2 Amount
                 %div{style: 'padding: 10px; border: 1px solid #ccc'}
-                  \- Plan price:
-                  %strong.text-info= @selected_plan.price_in_string
-                  %br
-                  \- Plan limit number tipster:
-                  %strong= @selected_plan.number_tipster
-                  %br
-                  \- Adder tipster price:
-                  %strong= @subscription.adder_tipster
-                  %br
-                  \- Need to paid per month:
-                  %strong.text-info €#{@subscription.monthly_price}
-                  %br
-                  \_______________________
-                  - if @subscription.is_one_shoot
-                    %br
-                    \ * #{@selected_plan.period} Month
-                    %br
-                    \_______________________
-                    %br
-                  - if session[:using_coupon]
-                    %br
-                    \- Total before:
-                    %strong.text-info= "€#{@subscription.calculator_price}"
-                    %br
-                    \- Discount:
-                    %strong - €3
-                  %br
-                  \- Total
-                  %strong.text-info €#{@subscription.calculator_price}
+                  %table.table.table-bordered
+                    %tr
+                      %td Plan amount
+                      %td= @selected_plan.price_in_string
+                    - if @subscription.added_tipster > 0
+                      %tr
+                        %td Total ddded tipsters
+                        %td= @subscription.added_tipster
+                      %tr
+                        %td Added tipsters amount
+                        %td= @subscription.added_price
+                    - if @subscription.is_one_shoot
+                      %tr
+                        %td One shoot amount
+                        %td= @subscription.one_shoot_price.to_s + " €/ #{@subscription.plan.period} month"
+                    - else
+                      %tr
+                        %td Monthly amount
+                        %td= @subscription.monthly_price.to_s + " €/ month"
+                    %tr
+                      %td
+                        %trong Total
+                      %td
+                        %trong= @subscription.calculator_price.to_s + " €"
               .col-lg-8
                 %h3 Select your payment method
                 %ul.inline
@@ -73,11 +68,5 @@
                           I agree with terms for sale
                       = hidden_field_tag :method, Payment::BY_PAYPAL
                       = image_submit_tag("paypal-express-checkout-button.png")
-                  -#%li
-                    = simple_form_for :nothing, url: subscribe_payment_path do |f|
-                      = hidden_field_tag :method, Payment::BY_FRENCH_BANK
-                      %button.btn.btn-default.btn-lg{type: :submit}
-                        %img{src: '/assets/lang_fr_ico.png'}
-                        French Bank
                 #payment
                 %h3

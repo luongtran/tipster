@@ -18,7 +18,7 @@ $(document).ready(function () {
                         Helper.dialog_message({
                             type: 'success',
                             title: 'Information',
-                            content: "Thank you! You will get up to $3 discount when payment."
+                            content: "“Well done, you have now a voucher of 3€"
                         });
                     } else {
                         $('#message_return').text(response.message);

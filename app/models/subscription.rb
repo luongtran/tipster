@@ -65,7 +65,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def one_shoot_price
-    price = (self.plan.price.to_f * self.plan.period)  + adder_tipster * self.plan.adding_price
+    price = (self.plan.price.to_f * self.plan.period)  + added_tipster * self.plan.adding_price
     if self.using_coupon
       price -= 3
     end
@@ -73,22 +73,19 @@ class Subscription < ActiveRecord::Base
   end
 
   def monthly_price
-    price = (self.plan.price.to_f + adder_tipster * (self.plan.price * ADDING_TIPSTER_PERCENT))
+    price = self.plan.price.to_f + added_tipster * self.plan.adding_price
     if self.using_coupon
       price -= 3
     end
-    return price.round(3)
+    return price.round(2)
   end
 # =========NEED TO CALCULATING AGAIN  =======
-  def adder_price
-    price = self.adder_tipster * (self.plan.price * ADDING_TIPSTER_PERCENT) * self.plan.period
-    if self.using_coupon
-      price -= 3
-    end
-    return price.round(3)
+  def added_price
+    price = self.added_tipster * self.plan.adding_price
+    return price.round(2)
   end
 
-  def adder_tipster
+  def added_tipster
     if self.active? && !self.plan.free?
       add = self.tipsters.size > [self.active_tipsters.size, self.plan.number_tipster].max ? self.tipsters.size - [self.active_tipsters.size, self.plan.number_tipster].max : 0
     else

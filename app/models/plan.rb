@@ -28,6 +28,6 @@ class Plan < ActiveRecord::Base
   end
 
   def price_in_string(currency = '€')
-    "#{currency}#{self.price}"
+    "#{self.price} #{currency}"
   end
 end

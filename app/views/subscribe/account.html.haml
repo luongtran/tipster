@@ -39,14 +39,3 @@
                       = t('user.sign_in')
           .clearfix
           %hr
-          .tipster-form
-            %p Connect from social networks
-            .form-group
-              .col-md-6
-                %a.btn.btn-md.btn-block.btn-social.btn-facebook{href: account_omniauth_authorize_path(:facebook)}
-                  %i.fa.fa-facebook
-                  Facebook
-              .col-md-6
-                %a.btn.btn-md.btn-block.btn-social.btn-google-plus{href: account_omniauth_authorize_path(:google_oauth2)}
-                  %i.fa.fa-google-plus
-                  Google plus
