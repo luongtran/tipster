@@ -125,8 +125,8 @@ class SubscribeController < ApplicationController
       else
         @subscriber ||= Subscriber.new
         @account = @subscriber.build_account
+        @account2 ||= Account.new
       end
-      @account2 ||= Account.new
       if request.post?
         if params[:i_token] == 'DdM26nAJNTyuaMRXjnrF8vP8'
           if current_subscriber
@@ -156,11 +156,15 @@ class SubscribeController < ApplicationController
               redirect_to subscribe_shared_url
             end
           end
+        #  Sign in
         elsif params[:i_token] == 'KCWUzKdK7b2s9CXBDyKjFTcG'
           @account2 = Account.find_by_email(params[:account][:email])
           if @account2 && @account2.valid_password?(params[:account][:password])
             sign_in @account2
             redirect_to subscribe_shared_url
+          else
+            @error = true
+            @account2 ||= Account.new
           end
         else
           render_404

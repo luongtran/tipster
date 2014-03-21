@@ -11,11 +11,15 @@
           .col-md-5
             %h3.text-success.text-center Sign in
             .login-form
-              - @account2 ||= Account.new
-              = simple_form_for @account2,as: :account, :url => subscribe_personal_information_path , :html => {class: 'form-horizontal'} do |f|
+              = simple_form_for @account2, :url => subscribe_personal_information_path , :html => {class: 'form-horizontal'} do |f|
                 = hidden_field_tag :i_token,'KCWUzKdK7b2s9CXBDyKjFTcG'
                 = f.input :email, :required => false, :autofocus => true, input_html: {autocomplete: 'off'}
                 = f.input :password, :required => false
+                - if @error
+                  .form-group
+                    .alert.fade.in.alert-danger{"data-alert" => "alert"}
+                      %a.close{"data-dismiss" => "alert", href: "#"}> ×
+                      = t('account.invalid')
                 .form-group
                   .col-sm-offset-4.col-sm-7
                     %button.btn.btn-primary.btn-block{type: :submit}
@@ -72,7 +76,7 @@
               = f.input :humanizer_question_id, as: :hidden
               .form-group
                 .col-md-offset-4.col-md-7
-                  %button.btn.btn-success.text-slim{type: :submit}
+                  %button.btn.btn-success.text-slim.btn-block{type: :submit}
                     %i.typcn.typcn-world.mrs
                     - if current_subscriber
                       = t('user.update_profile')
