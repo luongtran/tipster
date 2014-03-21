@@ -1,5 +1,4 @@
 class Backoffice::SessionsController < SessionsController
-  before_action :tipster_required
 
   def create
     super do
@@ -20,4 +19,9 @@ class Backoffice::SessionsController < SessionsController
     backoffice_root_path
   end
 
+  def require_no_authentication
+    if current_tipster
+      redirect_to backoffice_dashboard_url, alert: I18n.t('devise.failure.already_authenticated')
+    end
+  end
 end

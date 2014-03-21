@@ -81,11 +81,12 @@ class Tip < ActiveRecord::Base
   # Class METHODS
   # ===========================================================================
   class << self
+    # Find tips by given author and also search and filter
     def by_author(author, params)
       where(author_id: author, author_type: author.class.name).load_data(params)
     end
 
-    def load_data(params, relation = self)
+    def load_data(params = {}, relation = self)
       relation = perform_filter_params(params)
       result = relation.includes([:author, :sport, :bet_type])
     end
@@ -104,6 +105,7 @@ class Tip < ActiveRecord::Base
       relation
     end
 
+    # Search tips created on the given date
     def perform_date_param(date, relation = self)
       begin
         date = date.to_date
@@ -122,7 +124,7 @@ class Tip < ActiveRecord::Base
     "#{self.id}-#{self.event.parameterize}"
   end
 
-  # Send tip and subtract bankroll
+  # Call after admin validate the tip. Send tip and subtract bankroll
   def published!
   end
 
@@ -132,10 +134,6 @@ class Tip < ActiveRecord::Base
 
   def published_date
     self.published_at.to_date
-  end
-
-  def free?
-    [false, true].sample
   end
 
   def expired?
