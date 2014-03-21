@@ -126,7 +126,7 @@ class SubscribeController < ApplicationController
         @subscriber ||= Subscriber.new
         @account = @subscriber.build_account
       end
-
+      @account2 ||= Account.new
       if request.post?
         if params[:i_token] == 'DdM26nAJNTyuaMRXjnrF8vP8'
           if current_subscriber
