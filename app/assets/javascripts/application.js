@@ -12,7 +12,6 @@
 
  = require jquery
  = require jquery_ujs
- = require jquery.Jcrop
  = require flash_message.js
  = require dev
  = require ajaxify

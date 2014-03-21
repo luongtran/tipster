@@ -1,4 +1,4 @@
-class Subscribers::SessionsController < SessionsController
+class Subscribers::SessionsController < Devise::SessionsController
 
   def create
     if request.xhr?

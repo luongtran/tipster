@@ -1,8 +1,8 @@
 .mam
-  = simple_form_for resource, :as => resource_name, :url => backoffice_sign_in_path, :html => {class: 'form-horizontal', novalidate: true} do |f|
-    = f.input :email, :required => false, :autofocus => true
-    = f.input :password, :required => false
-    = f.input :remember_me, :as => :boolean if devise_mapping.rememberable?
+  = simple_form_for @account, :url => backoffice_sign_in_path,method: 'POST', html: {class: 'form-horizontal', novalidate: true} do |f|
+    = f.input :email, required: false, autofocus: true
+    = f.input :password, required: false
+    = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
     .form-group
       .col-sm-offset-4.col-sm-7
         %button.btn.btn-primary{type: :submit} Submit
