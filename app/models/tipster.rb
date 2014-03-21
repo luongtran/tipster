@@ -13,6 +13,8 @@
 #
 
 class Tipster < ActiveRecord::Base
+  include Accountable
+
   DEFAULT_PAGE_SIZE = 20
   DEFAULT_SORT_FIELD = 'profit'
 
@@ -31,15 +33,20 @@ class Tipster < ActiveRecord::Base
   ]
 
   DEFAULT_RANKING_RANGE = LAST_3_MONTHS
-  attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
+
+  # ==============================================================================
+  # ATTRIBUTES
+  # ==============================================================================
+  PROFILE_ATTRS = [:display_name, :full_name]
+
+  # This is list of attributes for saving the statistics data
   attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield,
-                :profit_per_months, :profit_per_dates, :current_statistics_range, :tips_per_dates,
-                :profitable_months, :profit_on_previous_week
+                :profit_per_months, :profit_per_dates, :current_statistics_range,
+                :tips_per_dates, :profitable_months, :profit_on_previous_week
 
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  has_one :account, as: :rolable
 
   has_many :tips, as: :author
   has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author do
@@ -49,8 +56,6 @@ class Tipster < ActiveRecord::Base
   end
 
   has_and_belongs_to_many :sports
-
-  accepts_nested_attributes_for :account
   mount_uploader :avatar, AvatarUploader
 
   # ==============================================================================
@@ -67,8 +72,6 @@ class Tipster < ActiveRecord::Base
   # CALLBACKS
   # ==============================================================================
   after_update :crop_avatar
-
-  delegate :email, to: :account, prefix: false
 
   # ==============================================================================
   # CLASS METHODS
@@ -255,18 +258,11 @@ class Tipster < ActiveRecord::Base
   def subtract_bankroll(amount)
   end
 
-  def profit_in_string(include_unit = false)
-    sign = '+' if @profit > 0
-    "#{sign}#@profit #{I18n.t('tipster.units') if include_unit}"
-  end
-
-  def yield_in_string
-    "#@yield%"
-  end
-
   # Calculate statistics for ranking
   def get_statistics(params = {})
     tips = nil
+
+    # The finished tips already loaded when query from multiple tipsters
     if self.finished_tips.loaded?
       tips = self.finished_tips
     else
@@ -275,20 +271,22 @@ class Tipster < ActiveRecord::Base
       tips = self.finished_tips.in_range(self.class.range_paser(ranking_range))
     end
 
-    # Save the number of tip
-    @number_of_tips = tips.length
     prev_week_range = DateUtils.previous_week_date_range
 
+    # Save the number of tip
+    @number_of_tips = tips.length
+
     @profit_per_dates = [] # save profit after each date
-    @profit_on_previous_week = 0 # save profit on previous week to find "top 3 of the week"
-    @tips_per_dates = [] # tips counter for each date
+    @profit_on_previous_week = 0 # save profit on previous week to find "top n of the week"
+    @tips_per_dates = [] # tips counter per every date
     @yield = 0 # incremental
     @profit = 0 # incremental
-    correct_tips = 0
-    odds = 0
-    total_amount = 0
+    correct_tips = 0 # incremental
+    total_odds = 0 # incremental
+    total_amount = 0 # incremental
 
     # Grouping by published date
+    # FIXME: it's should be finished date
     date_with_tips = tips.group_by(&:published_date)
 
     date_with_tips.each do |date, tips|
@@ -299,7 +297,7 @@ class Tipster < ActiveRecord::Base
 
       tips.each do |tip|
         money_of_the_tip = 0
-        odds += tip.odds
+        total_odds += tip.odds
         total_amount += tip.amount
         if tip.correct?
           correct_tips += 1
@@ -324,16 +322,20 @@ class Tipster < ActiveRecord::Base
       @hit_rate, @avg_odds, @yield = 0, 0, 0
     else
       @hit_rate = (correct_tips*100/@number_of_tips.to_f).round(1)
-      @avg_odds = (odds/@number_of_tips.to_f).round(1)
+      @avg_odds = (total_odds/@number_of_tips.to_f).round(1)
       @yield = (@profit*100/total_amount.to_f).round(0)
     end
     self
   end
 
-  #def statistics_by_month
-  #  #self.tips.size
-  #  dates = first_dates_of_months_since_join
-  #end
+  def profit_in_string(include_unit = false)
+    sign = '+' if @profit > 0
+    "#{sign}#@profit #{I18n.t('tipster.units') if include_unit}"
+  end
+
+  def yield_in_string
+    "#@yield%"
+  end
 
   def profit_values_for_chart
     @profit_per_dates.map { |ppd| ppd[:profit] }
@@ -347,9 +349,8 @@ class Tipster < ActiveRecord::Base
     "#@hit_rate%"
   end
 
-  # The ratio between the number of profit months per active months
-  # Return example:
-  # 3/6
+  # The ratio of the number of profitable months per overall months
+  # Example return: 3/6
   def profitable_months
     "#{rand(3..6)}/#{first_dates_of_months_since_join.count}"
   end
@@ -359,11 +360,8 @@ class Tipster < ActiveRecord::Base
     self.tips.includes([:author, :sport]).order('created_at desc').limit(quantity)
   end
 
-  def win_rate
-  end
-
-  # Return an array of the first date of the months from tipster join date to today
-  # Ex: ['2013-02-01','2013-02-01' ...]
+  # Get all first date of the months from join date to today
+  # Example return: ['2013-02-01','2013-02-01' ...]
   def first_dates_of_months_since_join
     dates = []
     first_date_of_first_month = self.created_at.to_date.beginning_of_month
@@ -374,11 +372,6 @@ class Tipster < ActiveRecord::Base
       tmp_date = tmp_date.next_month
     end
     dates
-  end
-
-  protected
-  def crop_avatar
-    avatar.recreate_versions! if crop_x.present?
   end
 
 end

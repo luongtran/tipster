@@ -27,13 +27,11 @@
 #
 
 class Subscriber < ActiveRecord::Base
+  include Accountable
   include Humanizer
   require_human_on :update, :unless => :bypass_humanizer
 
 
-  PROFILE_ATTRS = [:first_name, :last_name, :nickname, :gender, :receive_tip_methods, :birthday, :address, :city, :country, :zip_code, :mobile_phone,
-                   :telephone, :favorite_beting_website, :know_website_from, :secret_question, :answer_secret_question, :receive_info_from_partners,
-                   :humanizer_answer, :humanizer_question_id]
   DEFAULT_BIRTHDAY = '1990-01-01'
   KNOW_WEBSITE_FROM_LIST = %w(other sponsoring advertising social_network)
 
@@ -52,17 +50,23 @@ class Subscriber < ActiveRecord::Base
       SQ_MOTHER_MAIDEN_NAME => 'What is the maiden name of your mother?'
   }
 
+  # ==============================================================================
+  # ATTRIBUTES
+  # ==============================================================================
+  PROFILE_ATTRS = [:first_name, :last_name, :nickname, :gender, :receive_tip_methods, :birthday, :address, :city,
+                   :country, :zip_code, :mobile_phone, :telephone, :favorite_beting_website, :know_website_from,
+                   :secret_question, :answer_secret_question, :receive_info_from_partners,
+                   :humanizer_answer, :humanizer_question_id]
+
   # Indicator to validate more attributes if subscriber is paid account
   attr_accessor :validate_with_paid_account, :create_with_only_account, :bypass_humanizer
 
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  has_one :account, as: :rolable
   has_one :subscription
   has_many :authorizations, dependent: :destroy
   has_many :coupon_codes
-  accepts_nested_attributes_for :account
 
   # ==============================================================================
   # VALIDATIONS
@@ -74,8 +78,7 @@ class Subscriber < ActiveRecord::Base
   # ==============================================================================
   # CALLBACKS
   # ==============================================================================
-  #before_validation :format_phone_number, on: :update
-  delegate :email, to: :account, prefix: false
+
   # ==============================================================================
   # CLASS METHODS
   # ==============================================================================
@@ -134,10 +137,6 @@ class Subscriber < ActiveRecord::Base
     "#{self.first_name} #{self.last_name}".titleize
   end
 
-  def profile_completed?
-    self.profile && self.profile.valid?
-  end
-
   def already_has_subscription?
     self.subscription && !self.subscription.plan.free? && self.subscription.active == true
   end
@@ -147,14 +146,12 @@ class Subscriber < ActiveRecord::Base
     self.authorizations << Authorization.build_from_oauth(auth)
   end
 
-  #Check user using coupon code
-
+  # Check user using coupon code
   def using_coupon?
     self.coupon_codes.present? && self.subscription
   end
 
   private
   def format_phone_number
-
   end
 end
