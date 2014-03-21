@@ -3,7 +3,7 @@ sports = Sport.all
 if sports.empty?
   raise 'Cannot create bet types without any sports.'
 else
-  BetType.destroy_all
+  BetType.delete_all
   bts = YAML.load_file("#{Rails.root}/db/bet_types.yml").symbolize_keys
   sports.each do |sport|
     puts "\n--- Create bet types for #{sport.name.titleize}"
@@ -18,7 +18,9 @@ else
           sport: sport,
           code: bet_type_attrs[:code],
           name: bet_type_attrs[:name],
-          has_line: has_line
+          has_line: has_line,
+          betclic_code: bet_type_attrs[:betclic_code],
+          other_name: bet_type_attrs[:other_name]
       )
       new_bet_type.save!
       puts "----- #{new_bet_type.name}"

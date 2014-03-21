@@ -94,7 +94,8 @@ module Betclic
         re_bet_types << {
             name: bet['name'],
             code: bet['code'],
-            sport_id: sport['id']
+            sport_id: sport['id'],
+            sport_name: sport['name']
         }
       end
       re_bet_types.uniq

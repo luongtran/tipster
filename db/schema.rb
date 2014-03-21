@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140320031140) do
+ActiveRecord::Schema.define(version: 20140321085726) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -69,7 +69,8 @@ ActiveRecord::Schema.define(version: 20140320031140) do
     t.string  "other_name"
     t.string  "definition"
     t.string  "example"
-    t.boolean "has_line",   default: true
+    t.boolean "has_line",     default: true
+    t.string  "betclic_code"
   end
 
   add_index "bet_types", ["sport_id"], name: "index_bet_types_on_sport_id"
