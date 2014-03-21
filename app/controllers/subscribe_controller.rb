@@ -165,6 +165,10 @@ class SubscribeController < ApplicationController
         else
           render_404
         end
+      else
+        if current_subscriber
+          redirect_to subscribe_shared_url
+        end
       end
     else
       redirect_to pricing_url, notice: 'Please choose a plan'
