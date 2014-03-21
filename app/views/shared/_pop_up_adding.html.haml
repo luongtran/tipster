@@ -91,7 +91,7 @@
                               %i.glyphicon.glyphicon-play
                               Change tipster
         .modal-footer
-          - if (@selected_plan.present? && @choose_tipster.present?)
+          - if (selected_plan.present? && @choose_tipster.present?)
             = hidden_field_tag :show_adding_popup,(tipster_ids_in_cart.size + 1 <= (@selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS))
             %a.btn.checkoutbtn#confirm-adding{href: 'javascript:void(0);'} Process checkout
           - else

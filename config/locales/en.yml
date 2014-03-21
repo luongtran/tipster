@@ -16,13 +16,16 @@ en:
     my_profile: "My Profile"
     my_subscription: "My Subscription"
     subscribe:
-      step1: "Choose your offer"
-      step2: "Choose your tipster"
-      step3: "Personal Information"
-      step4: "Share on social network"
-      step4_free: "Confirmation"
-      step5: "Receive your tips"
-      step6: "Payment"
+      paid:
+        step1: "Shopping cart"
+        step2: "Personal Information"
+        step3: "Share on social network"
+        step4: "Receive your tips"
+        step5: "Payment"
+      free:
+        step1: "Personal Information"
+        step2: "Share on social network"
+        step3: "Welcome"
   account:
     invalid: "Email or password is invalid!"
   views:

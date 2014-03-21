@@ -3,8 +3,8 @@
   Registration
 .container
   .row
-    .subscribe-steps{class: "#{@select_plan.free? ? 'four-steps' : ''}"}
-      = render 'step_header',step: @step,select_plan: @select_plan
+    .subscribe-steps{class: "#{@selected_plan.free? ? 'three-steps' : ''}"}
+      = render 'step_header',step: @step,selected_plan: @selected_plan
   .row
     .step-content
       .panel.panel-default
@@ -14,7 +14,7 @@
             .col-md-3
               %h2.text-center.text-info Plan selected
               .well
-                = render 'plan_selected',selected_plan: @select_plan
+                = render 'plan_selected',selected_plan: @selected_plan
             .col-md-9
               %h2.text-center.text-info Tipsters selected
               = render 'tipsters_selected',tipsters: @tipsters
@@ -25,10 +25,10 @@
                 %h2 Amount
                 %div{style: 'padding: 10px; border: 1px solid #ccc'}
                   \- Plan price:
-                  %strong.text-info= @select_plan.price_in_string
+                  %strong.text-info= @selected_plan.price_in_string
                   %br
                   \- Plan limit number tipster:
-                  %strong= @select_plan.number_tipster
+                  %strong= @selected_plan.number_tipster
                   %br
                   \- Adder tipster price:
                   %strong= @subscription.adder_tipster
@@ -39,7 +39,7 @@
                   \_______________________
                   - if @subscription.is_one_shoot
                     %br
-                    \ * #{@select_plan.period} Month
+                    \ * #{@selected_plan.period} Month
                     %br
                     \_______________________
                     %br

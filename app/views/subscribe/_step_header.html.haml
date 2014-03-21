@@ -4,7 +4,7 @@
       %p
         %span.step-number 1
       %p
-        %span.step-name= links_for_subscribe_step(1,session[:step])
+        %span.step-name= (@selected_plan && @selected_plan.free?) ? links_for_subscribe_free_step(1,session[:step]) : links_for_subscribe_step(1,session[:step])
   %li.step-seperator-container
     .step-seperator
   %li{class: class_for_subscribe_step(2,@step)}
@@ -12,7 +12,7 @@
       %p
         %span.step-number 2
       %p
-        %span.step-name= (@select_plan && @select_plan.free?) ? links_for_subscribe_free_step(2,session[:step]) : links_for_subscribe_step(2,session[:step])
+        %span.step-name= (@selected_plan && @selected_plan.free?) ? links_for_subscribe_free_step(2,session[:step]) : links_for_subscribe_step(2,session[:step])
   %li.step-seperator-container
     .step-seperator
   %li{class: class_for_subscribe_step(3,@step)}
@@ -20,16 +20,16 @@
       %p
         %span.step-number 3
       %p
-        %span.step-name= (@select_plan && @select_plan.free?) ? links_for_subscribe_free_step(3,session[:step]) : links_for_subscribe_step(3,session[:step])
-  %li.step-seperator-container
-    .step-seperator
-  %li{class: class_for_subscribe_step(4,@step)}
-    .text-center
-      %p
-        %span.step-number 4
-      %p
-        %span.step-name= (@select_plan && @select_plan.free?) ? links_for_subscribe_free_step(4,session[:step]) : links_for_subscribe_step(4,session[:step])
-  - unless (@select_plan && @select_plan.free?)
+        %span.step-name= (@selected_plan && @selected_plan.free?) ? links_for_subscribe_free_step(3,session[:step]) : links_for_subscribe_step(3,session[:step])
+  - unless (@selected_plan && @selected_plan.free?)
+    %li.step-seperator-container
+      .step-seperator
+    %li{class: class_for_subscribe_step(4,@step)}
+      .text-center
+        %p
+          %span.step-number 4
+        %p
+          %span.step-name= links_for_subscribe_step(4,session[:step])
     %li.step-seperator-container
       .step-seperator
     %li{class: class_for_subscribe_step(5,@step)}
@@ -38,11 +38,3 @@
           %span.step-number 5
         %p
           %span.step-name= links_for_subscribe_step(5,session[:step])
-    %li.step-seperator-container
-      .step-seperator
-    %li{class: class_for_subscribe_step(6,@step)}
-      .text-center
-        %p
-          %span.step-number 6
-        %p
-          %span.step-name= links_for_subscribe_step(6,session[:step])

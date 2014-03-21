@@ -2,21 +2,26 @@
   Registration
 .container
   .row
-    .subscribe-steps{class: "#{@select_plan.free? ? 'four-steps' : ''}"}
-      = render 'step_header',step: @step,select_plan: @select_plan
+    .subscribe-steps{class: "#{@selected_plan && @selected_plan.free? ? 'three-steps' : ''}"}
+      = render 'step_header',step: @step,selected_plan: @selected_plan
   .row
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
         .panel-body.text-center
           .col-md-8.col-md-offset-2
             = simple_form_for @subscriber, url: subscribe_personal_information_path, method: 'POST', html: {class: 'form-horizontal tipster-form-style', novalidate: true} do |f|
+              - unless current_subscriber
+                = f.simple_fields_for @subscriber.account do |acc|
+                  = acc.input :email, required: true
+                  = acc.input :password, required: true
+                  = acc.input :password_confirmation, required: true
               = f.input :first_name
               = f.input :last_name
               = f.input :nickname
               - max_date = 16.years.ago.to_date.to_s
               = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy-mm-dd (16 years old require)', class: 'date-picker limited', 'data-max-date' => max_date}
               = f.input :gender, as: :radio_buttons, collection: genders_collection_for_select, :item_wrapper_class => 'radio-inline', html_wrapper: {class: 'col-md-3'}
-              - unless @select_plan.free?
+              - unless @selected_plan.free?
                 = f.input :address, :required => false, input_html: {placeholder: '123 Main Street'}
                 = f.input :city, :required => false
                 = f.input :country, as: :country, required: true, :priority => ['France'], include_blank: false, input_html: {class: 'form-control'}
@@ -27,7 +32,7 @@
                 = f.input :know_website_from, as: :select, collection: know_website_from_for_select, include_blank: false
                 = f.input :secret_question, as: :select, collection: secret_questions_for_select, include_blank: false
                 = f.input :answer_secret_question,:required => true
-                = f.input :receive_info_from_partners, :as => :boolean, :inline_label => 'Receive info from our partners', label: '&nbsp;'.html_safe
+                = f.input :receive_info_from_partners, :as => :boolean, :inline_label => 'Receive info from our partners', label: '&nbsp;'.html_safe,checked: true
               .form-group
                 %label.col-md-4.control-label Anti-robot question *
                 .col-md-7
@@ -43,4 +48,8 @@
               .form-group
                 .col-md-offset-4.col-md-7
                   %button.btn.btn-success.text-slim{type: :submit}
-                    = t('user.update_profile')
+                    %i.typcn.typcn-world.mrs
+                    - if current_subscriber
+                      = t('user.update_profile')
+                    - else
+                      = t('user.sign_up')

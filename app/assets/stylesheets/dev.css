@@ -101,7 +101,7 @@ ul.steps-container {
 }
 
 ul.steps-container li {
-    width: 102px;
+    width: 120px;
     float: left;
     min-height: 65px;
     display: inline-block;
@@ -159,8 +159,8 @@ li.step-seperator-container {
     display: inline-block;
 }
 
-.subscribe-steps.four-steps {
-    margin-left: 15%;
+.subscribe-steps.three-steps {
+    margin-left: 20%;
 }
 
 .help-block {

@@ -122,7 +122,7 @@ class ApplicationController < ActionController::Base
   def selected_plan
     if session[:plan_id]
       Plan.find_by_id(session[:plan_id])
-    elsif current_subscriber && current_subscriber.subscription
+    elsif current_subscriber && current_subscriber.subscription && current_subscriber.subscription.plan
       session[:plan_id] = current_subscriber.subscription.plan.id
       current_subscriber.subscription.plan
     else
@@ -144,6 +144,11 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def load_subscribe_data
+    @selected_plan = selected_plan
+  end
+
   def find_layout
     'backoffice' if self.class.name.split("::").first == 'Backoffice'
   end

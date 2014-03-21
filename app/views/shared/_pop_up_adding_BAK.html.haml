@@ -39,14 +39,14 @@
               %image{src: path_to_image("example_narow.png"),height: '250px'}
             .col-md-5
               .subscription-info
-                - unless @selected_plan.nil?
+                - unless selected_plan.nil?
                   %ul.list-unstyled
-                    %li.text-center= @selected_plan.title
+                    %li.text-center= selected_plan.title
                     %li.responsive-image
                       %image{src: path_to_image('select_subscription.png')}
-                    %li.subscription-price= @selected_plan.price.to_s + " € / month"
+                    %li.subscription-price= selected_plan.price.to_s + " € / month"
                     %li
-                      = hidden_field_tag :current_plan_id,@selected_plan.id
+                      = hidden_field_tag :current_plan_id,selected_plan.id
                       = button_tag(class: 'submitLink',id: 'change-plan') do
                         %i.glyphicon.glyphicon-play
                         Change subscription
@@ -133,7 +133,7 @@
         - @plans = Plan.where.not(price: 0)
         - @plans.each do |plan|
           .pricing-box-outer
-            .pricing_box{class: "#{@selected_plan && @selected_plan.id == plan.id ? 'large' : ''}"}
+            .pricing_box{class: "#{selected_plan && selected_plan.id == plan.id ? 'large' : ''}"}
               .header
                 %span= plan.title.capitalize
               %ul.pricing-features
@@ -158,7 +158,7 @@
                   = plan.price
                   %sub /month
               %hr
-              - if @selected_plan && @selected_plan.id == plan.id
+              - if selected_plan && selected_plan.id == plan.id
                 %a.btn.btn-warning{href: select_plan_path(plan.id)} Choosen
               - else
                 %a.btn.btn-primary{href: "javascript:;",onclick: "changePlan(#{plan.id})"} Change

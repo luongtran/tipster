@@ -16,13 +16,17 @@ fr:
     my_profile: "Mon profil"
     my_subscription: "Mon cotisation"
     subscribe:
-      step1: "Compte"
-      step2: "Choisir offre"
-      step3: "Personnels"
-      step4: "Share on social network"
-      step4_free: "Confirmation"
-      step5: "Recevoir tips"
-      step6: "Paiement"
+      paid:
+        step1: "Compte"
+        step2: "Choisir offre"
+        step3: "Personnels"
+        step4: "Share on social network"
+        step5: "Recevoir tips"
+        step6: "Paiement"
+      free:
+        step1: "Personnels"
+        step2: "Share on social network"
+        step3: "Pas de problème"
   account:
     invalid: "Email ou mot de passe est invalide!"
   views:

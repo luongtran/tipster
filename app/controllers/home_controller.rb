@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  before_action :load_subscribe_data
   def index
     @tipsters = Tipster.limit(4)
     if flash[:sign_in_box]
@@ -41,7 +42,6 @@ class HomeController < ApplicationController
       @disable_free = false
     end
     @plans = Plan.all
-    @selected_plan = selected_plan
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
   end
 

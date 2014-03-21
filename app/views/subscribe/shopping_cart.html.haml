@@ -1,0 +1,42 @@
+- content_for :title do
+  Registration
+.container
+  .row
+    .subscribe-steps{class: "#{@selected_plan && @selected_plan.free? ? 'three-steps' : ''}"}
+      = render 'step_header',step: @step,selected_plan: @selected_plan
+  .row
+    .step-content.col-md-10.col-md-offset-1
+      .panel.panel-default
+        .panel-body.text-center
+          %h4 List tipsters in your shopping cart
+          %table.table.table-bordered.bgw.bxshd
+            %thead
+              %tr
+                %th Name
+                %th Profit
+                %th Yield
+                %th NO of tip
+                %th Hit Rate
+                %th Avg.Odds
+                %th Profitable Months
+                %td Action
+            %tbody
+              - if @tipsters.nil?
+                %p There are no any tipster found.
+              - else
+                - @tipsters.each do |tipster|
+                  %tr
+                    %td
+                      %a.tipster-name{href: tipster_path(tipster)}
+                        = tipster.full_name
+                    %td= tipster.profit
+                    %td= tipster.yield
+                    %td= tipster.number_of_tips
+                    %td= tipster.win_rate || '25%'
+                    %td= tipster.avg_odds
+                    %td= tipster.profitable_months
+                    %td
+                      = render 'shared/remove_from_cart_form', tipster_id: tipster.id
+        .text-center
+          %a.btn.btn-success.btn-large{href: tipsters_path} + Add more tipster
+          %a.btn.btn-primary.btn-large{href: subscribe_checkout_path} Proceed to checkout

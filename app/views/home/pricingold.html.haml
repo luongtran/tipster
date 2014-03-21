@@ -32,9 +32,9 @@
           %hr.divider
           .text-center.row
             - unless @selected_plan.nil?
-              - if plan.id < @selected_plan
+              - if plan.id < @selected_plan.id
                 = link_to 'Downgrade', select_plan_path(plan.id),class: 'btn btn-warning'
-              - elsif plan.id > @selected_plan
+              - elsif plan.id > @selected_plan.id
                 = link_to 'Upgrade', select_plan_path(plan.id),class: 'btn btn-success'
               - else
                 %a.btn.btn-danger Current

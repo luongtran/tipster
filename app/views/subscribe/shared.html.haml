@@ -3,8 +3,8 @@
   Registration
 .container
   .row
-    .subscribe-steps{class: "#{@select_plan.free? ? 'four-steps' : ''}"}
-      = render 'step_header',step: @step,select_plan: @select_plan
+    .subscribe-steps{class: "#{@selected_plan.free? ? 'three-steps' : ''}"}
+      = render 'step_header',step: @step,selected_plan: @selected_plan
   .row
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
@@ -21,7 +21,7 @@
               = tweet_button url: 'https://twitter.com/tipsterhero', lang: 'en', text: 'Check out this site', via: 'tipsterhero'
           .text-center
             %br
-            - if @select_plan.free?
+            - if @selected_plan.free?
               %a.btn.btn-success{href: subscribe_welcome_path} Next >>
             - else
               %a.btn.btn-success{href: subscribe_receive_methods_path} Next >>

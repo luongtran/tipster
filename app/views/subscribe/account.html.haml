@@ -2,8 +2,8 @@
   Registration
 .container
   .row
-    .subscribe-steps{class: "#{@select_plan.free? ? 'four-steps' : ''}"}
-      = render 'step_header',step: @step,select_plan: @select_plan
+    .subscribe-steps{class: "#{selected_plan.free? ? 'three-steps' : ''}"}
+      = render 'step_header',step: @step,select_plan: selected_plan
   .row
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
