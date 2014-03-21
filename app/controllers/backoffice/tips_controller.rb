@@ -7,16 +7,19 @@ class Backoffice::TipsController < ApplicationController
   end
 
   def new
-    m = params[:m]
+    #m = params[:m]
+    #prepare_data_for_new_tip
+    #@competitions = Competition.all
+    #if m == 'auto'
+    #  @matches = Match.betable.includes(:competition, :sport)
+    #  render 'create_auto'
+    #else
+    #  @tip = current_tipster.tips.new
+    #end
     prepare_data_for_new_tip
     @competitions = Competition.all
-    if m == 'auto'
-      @matches = Match.betable.includes(:competition, :sport)
-      render 'create_auto'
-    else
-      @tip = current_tipster.tips.new
-    end
-
+    @matches = Match.betable.includes(:competition, :sport)
+    @tip = current_tipster.tips.new
   end
 
   def confirm

@@ -1,15 +1,46 @@
-- matches_grouped = matches.group_by(&:start_date)
-- matches_grouped.each do |date,matches|
-  .text-center
-    %button.btn.btn-default= date.strftime("%A, %b %d, %Y")
-  - matches.each do |m|
-    .match{data: {url: find_bets_on_match_backoffice_tips_path(match_id: m.opta_match_id)}}
-      .summary
-        %h4.text-bold.text-info
-          = "#{m.competition.try(:name)} / #{m.name}"
-        %i.text-warning= m.start_at.strftime("%H:%M")
-      .bets.clearfix.hide-tmp
-        %hr
+.mam
+- matches_grouped = matches.group_by {|match| match.start_date}
+- matches_grouped = matches_grouped.sort_by {|date,matches| date}
+#matches-on-date.panel-group
+  - index = 0
+  - matches_grouped.each do |date, matches|
+    - index += 1
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title
+          %a{"data-parent" => "#matches-on-date", "data-toggle" => "collapse", href: "#abcxya-panel-#{index}"}
+            %h4
+              %span.text-bold
+                = date.strftime("%A, %b %d, %Y")
+              %span.text-muted
+                = "(#{matches.count})"
+      .panel-collapse.collapse{id: "abcxya-panel-#{index}", class: "#{'in' if index == 1}" }
+        .panel-body
+          - matches.each do |m|
+            .match.clearfix{data: {url: find_bets_on_match_backoffice_tips_path(match_id: m.opta_match_id)}}
+              .summary
+                %h4.text-info
+                  = "#{m.competition.try(:name)} / #{m.name}"
+                  %span.text-muted
+                    %i= m.start_at.strftime("%H:%M")
+                .pull-right
+                  %button.btn.btn-default View Bets
+              .bets.clearfix.hide-tmp
+                %hr
+
+  -#.text-left
+  -#  %h3
+  -#    %i= date.strftime("%A, %b %d, %Y")
+  -#- matches.each do |m|
+  -#  .match.clearfix{data: {url: find_bets_on_match_backoffice_tips_path(match_id: m.opta_match_id)}}
+  -#    .summary
+  -#      %h4.text-bold.text-info
+  -#        = "#{m.competition.try(:name)} / #{m.name}"
+  -#      %i.text-warning= m.start_at.strftime("%H:%M")
+  -#      .pull-right
+  -#        %button.btn.btn-default View Bets
+  -#    .bets.clearfix.hide-tmp
+  -#      %hr
 
 - if matches.empty?
   .text-danger.text-center

@@ -1,17 +1,8 @@
+/*
+ = require common
+ */
 $(document).ready(function () {
-    /* Datepicker for birthday all other */
-    $.fn.datepicker.defaults.format = "yyyy-mm-dd";
-    for (i = 0; i < $('.date-picker').length; i++) {
-        var endDate = '';
-        var $picker = $($('.date-picker')[i]);
-        if ($picker.hasClass('limited')) {
-            endDate = $picker.attr('data-max-date');
-        }
-        $picker.datepicker({
-            forceParse: false,
-            endDate: endDate
-        });
-    }
+
 
     /* Require checked term & conditions */
     $('form.form-register').on('submit', function () {

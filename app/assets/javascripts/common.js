@@ -12,4 +12,18 @@ $(document).ready(function () {
             options['minimumResultsForSearch'] = -1; // Hide the seach box
         $(this).select2(options);
     });
+
+    /* Datepicker */
+    $.fn.datepicker.defaults.format = "yyyy-mm-dd";
+    for (i = 0; i < $('.date-picker').length; i++) {
+        var endDate = '';
+        var $picker = $($('.date-picker')[i]);
+        if ($picker.hasClass('limited')) {
+            endDate = $picker.attr('data-max-date');
+        }
+        $picker.datepicker({
+            forceParse: false,
+            endDate: endDate
+        });
+    }
 });
