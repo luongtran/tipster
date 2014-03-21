@@ -43,25 +43,24 @@ $(document).ready(function () {
 
     /* Show confirm to checkout modal after add a tipster to cart */
     $('#modal-confirm-checkout').modal();
-    $('#change-tipster').on('click',function(){
+    $('#change-tipster').on('click', function () {
         $('#modal-change-tipster').modal();
     });
-    $('#change-plan').on('click',function(){
+    $('#change-plan').on('click', function () {
         $('#modal-change-plan').modal();
     });
-    $('#confirm-adding').on('click',function(){
+    $('#confirm-adding').on('click', function () {
         var show_popup = $("#show_adding_popup").val();
         console.log(show_popup);
-        if(show_popup == 'true'){
+        if (show_popup == 'true') {
             $('#modal-confirm-checkout').modal('hide');
             $('#modal-confirm-adding').modal();
-        }else{
+        } else {
             var reason = $('#reason').val();
-            if(reason == "unselect-plan"){
+            if (reason == "unselect-plan") {
                 Helper.alert_warning("Please choose plan first");
             }
-            else
-            {   //hardcode
+            else {   //hardcode
                 window.location = '/subscribe/checkout';
             }
         }
@@ -204,15 +203,29 @@ $(document).ready(function () {
             return false;
         }
     });
-    $('#form-select-payment').on('submit', function () {
 
+    $('#form-select-payment').on('submit', function () {
         var valid = $('#cb-term-and-conditions').is(':checked');
         if (!valid) {
             Helper.alert_warning("Please accept term and conditions about paypal payment .... !");
             return false;
         }
 
-    })
+    });
+
+    /* Add to cart button */
+    $('.btn-add-to-cart').on('mouseover', function () {
+        $(this).addClass('btn-success');
+    });
+    $('.btn-add-to-cart').on('mouseleave', function () {
+        $(this).removeClass('btn-success');
+    });
+    $('.btn-add-to-cart:not(.disabled)').on('click', function () {
+        var $form = $('#add-to-cart-form');
+        var tipster_id = $(this).attr('data-tipster-id');
+        $form.find('input[name=id]').val(tipster_id);
+        $form.trigger('submit');
+    });
 
 
     /* Background switching */
@@ -255,47 +268,5 @@ $(document).ready(function () {
             current_url_index++;
         }, 8000
     );
-    var AvatarCropper,
-        __bind = function (fn, me) {
-            return function () {
-                return fn.apply(me, arguments);
-            };
-        };
 
-    jQuery(function () {
-        return new AvatarCropper();
-    });
-
-    AvatarCropper = (function () {
-        function AvatarCropper() {
-            this.updatePreview = __bind(this.updatePreview, this);
-            this.update = __bind(this.update, this);
-            $('#cropbox').Jcrop({
-                aspectRatio: 1,
-                setSelect: [0, 0, 600, 600],
-                onSelect: this.update,
-                onChange: this.update
-            });
-        }
-
-        AvatarCropper.prototype.update = function (coords) {
-            $('#user_crop_x').val(coords.x);
-            $('#user_crop_y').val(coords.y);
-            $('#user_crop_w').val(coords.w);
-            $('#user_crop_h').val(coords.h);
-            return this.updatePreview(coords);
-        };
-
-        AvatarCropper.prototype.updatePreview = function (coords) {
-            return $('#preview').css({
-                width: Math.round(100 / coords.w * $('#cropbox').width()) + 'px',
-                height: Math.round(100 / coords.h * $('#cropbox').height()) + 'px',
-                marginLeft: '-' + Math.round(100 / coords.w * coords.x) + 'px',
-                marginTop: '-' + Math.round(100 / coords.h * coords.y) + 'px'
-            });
-        };
-
-        return AvatarCropper;
-
-    })();
 });
