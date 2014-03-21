@@ -65,9 +65,6 @@ TipsterHero::Application.routes.draw do
       get :last_tips
       get :description
     end
-    collection do
-      get :top_three
-    end
   end
   resource :subscription, controller: 'subscription', only: [:show] do
     match :add_tipster, via: [:get, :post]

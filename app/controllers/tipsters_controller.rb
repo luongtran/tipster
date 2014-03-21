@@ -4,9 +4,10 @@ class TipstersController < ApplicationController
   before_action :load_subscribe_data
   def index
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
+    @selected_plan = selected_plan
     @tipsters = Tipster.load_data(params)
-    @sports = Sport.all.order('position asc')
-    @top_tipsters = Tipster.find_top_3_last_week(params)
+    @top_3 = Tipster.top_3_of_previous_week
+    @sports = Sport.order('position asc')
     if current_subscriber && current_subscriber.has_active_subscription?
       @tipsters_in_subscription = current_subscriber.subscription.active_tipsters
     end
@@ -24,11 +25,6 @@ class TipstersController < ApplicationController
       @third_tipster = Tipster.find tipster_ids_in_cart.third
     end
     @tipster_first = session[:tipster_first].present?
-  end
-
-  def top_three
-    tipsters = Tipster.find_top_3_last_week(params)
-    render partial: 'top_three', locals: {tipsters: tipsters}
   end
 
   def show

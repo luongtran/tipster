@@ -53,11 +53,12 @@
                   %td= tipster.avg_odds
                   %td= tipster.profitable_months
                   %td.text-center
-                    %div.btn-group.btn-group-sm
-                      - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
-                        %button.btn.btn-sm.btn-default Already purchase
-                      - else
-                        = render 'shared/add_to_cart_form', {tipster_id: tipster.id, disable: tipster_ids_in_cart.include?(tipster.id.to_s)}
+                    - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
+                      %button.btn.btn-sm.btn-default Already purchase
+                    - else
+                      %button.btn.btn-sm.btn-default.btn-add-to-cart{data: {'tipster-id' => tipster.id}, class: "#{'disabled' if tipster_ids_in_cart.include?(tipster.id.to_s)}"}
+                        %i.glyphicon.glyphicon-plus.mrs
+                        Subscribe
           - if @tipsters.empty?
             .text-center.clearfix
               %br
@@ -66,6 +67,17 @@
   #top_tipsters_of_weeks
     %h4.text-slim.text-success.text-center Top 3 of the week
     %hr.mbs.mts
-      .tipster-top-body.remote-data{data: {url: top_three_tipsters_path(sport: query_params[:sport]), 'error-msg' => 'Failed to load top 3 of the week.'}}
+
+      -#.tipster-top-body.remote-data{data: {url: top_three_tipsters_path(sport: query_params[:sport]), 'error-msg' => 'Failed to load top 3 of the week.'}}
+      .tipster-top-body
+        - @top_3.each do |tipster|
+          %a{href: tipster_path(tipster)}
+            .tipster-top-unit.text-center
+              = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar'
+              .tipster-top-name.text-success.text-bold
+                = tipster.full_name
   - if @show_checkout_dialog
     = render 'shared/pop_up_adding', choose_tipster: @choose_tipster,selected_plan: @selected_plan,second_tipster: @second_tipster,third_tipster: @third_tipster,tipster_first: @tipster_first
+
+= simple_form_for :nothing, url: add_tipster_cart_path, html: {id: 'add-to-cart-form'} do
+  = hidden_field_tag :id
