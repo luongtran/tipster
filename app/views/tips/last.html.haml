@@ -46,7 +46,7 @@
                   %td= tip.odds
                   %td
                     %a.text-warning{href: tipster_path(tip.author)}= tip.author.full_name
-                  %td= tip.sport.name.titleize
+                  %td= tip.sport_name.titleize
                   %td= tip.published_at
                   %td= tip.amount
                   %td
@@ -75,5 +75,4 @@
             .clearfix
               .text-center.text-danger
                 Not found !
-
 

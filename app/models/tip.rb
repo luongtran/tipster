@@ -148,6 +148,10 @@ class Tip < ActiveRecord::Base
     ((self.amount) * (self.odds - 1)).round(0)
   end
 
+  def status_in_string
+
+  end
+
   # ===========================================================================
   # PRIVATE METHODS
   # ===========================================================================

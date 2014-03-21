@@ -48,7 +48,12 @@ class Tipster < ActiveRecord::Base
   # ASSOCIATIONS
   # ==============================================================================
 
-  has_many :tips, as: :author
+  has_many :tips, as: :author do
+    def recent(count = 10)
+      proxy_association.owner.tips.includes(:sport).order('created_at desc').limit(count)
+    end
+  end
+
   has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author do
     def in_range(range)
       proxy_association.owner.tips.where(published_at: range)
