@@ -4,7 +4,6 @@
   .mal
     .col-md-3
       %strong Sport
-      %br
       = select_tag :sport, options_for_select(sport_filter_for_matches(@tipster_sports)), class: 'select2able available-matches-filter'
     .col-md-3
       %strong Competition:
