@@ -2,9 +2,11 @@ football:
   -
     code: 'match_odds'
     name: 'Match odds'
+    betclic_code: 'Ftb_Mr3'
     line: 'no'
   -
     code: 'over_under'
+    betclic_code: 'Ftb_10'
     name: 'Over/Under'
   -
     code: 'european_handicap'
@@ -12,92 +14,68 @@ football:
   -
     code: 'asian_handicap'
     name: 'Asian Handicap'
-  -
-    code: 'match_odds_ht'
-    name: 'Match odds HT'
-  -
-    code: 'european_handicap_ht'
-    name: 'European Handicap HT'
-  -
-    code: 'over_under_ht'
-    name: 'Over/Under_HT'
-  -
-    code: 'asian_handicap_ht'
-    name: 'Asian Handicap HT'
 tennis:
   -
     code: 'two_way'
     name: 'Two way'
+    betclic_code: 'Ten_Mr2'
     line: 'no'
-  -
-    code: 'handicap_games'
-    name: 'Handicap games'
-  -
-    code: 'handicap_sets'
-    name: 'Handicap sets'
-  -
+  -  # games total
     code: 'over_under_games'
     name: 'Over/Under games'
-  -
+  -  # Over or Under total sets
     code: 'over_under_sets'
     name: 'Over/Under sets'
 basketball:
-  -
+  - # Match winner
     code: 'two_way'
     name: 'Two way'
+    betclic_code: 'Bkb_Mr2'
     line: 'no'
   -
     code: 'handicap'
     name: 'Handicap'
-  -
+    betclic_code: 'Bkb_Han'
+  - # Over or Under total points
     code: 'over_under'
     name: 'Over/Under'
+    betclic_code: 'Bkb_Tpt'
 handball:
   -
     code: 'match_odds'
     name: 'Match odds'
+    betclic_code: 'Hdb_Mr2'
     line: 'no'
   -
     code: 'asian_handicap'
     name: 'Asian Handicap'
-  -
+  - # Over or Under total goals
     code: 'over_under'
     name: 'Over/Under'
-rugby:
-  -
+    betclic_code: 'Hdb_Tgt'
+rugby:  # union
+  - # Match result:
     code: 'match_odds'
     name: 'Match odds'
+    betclic_code: 'Match Result'
     line: 'no'
-  -
-    code: 'asian_handicap'
-    name: 'Asian Handicap'
   -
     code: 'european_handicap'
     name: 'European Handicap'
-  -
+  -  # Over or Under total points
     code: 'over_under'
     name: 'Over/Under'
-  -
-    code: 'match_odds_ht'
-    name: 'Match odds HT'
-    line: 'no'
-  -
-    code: 'asian_handicap_ht'
-    name: 'Asian Handicap HT'
-  -
-    code: 'european_handicap_ht'
-    name: 'European Handicap HT'
-  -
-    code: 'over_under_ht'
-    name: 'Over/Under HT'
+    betclic_code: 'Rgb_Tpt'
 hockey:
-  -
+  - # Match result
     code: 'match_odds'
     name: 'Match odds'
+    betclic_code: 'Ihk_Mrs'
     line: 'no'
-  -
+  -  # Match winner
     code: 'two_way'
     name: 'Two way'
+    betclic_code: 'Ihk_Mnl'
     line: 'no'
   -
     code: 'over_under'
@@ -131,16 +109,17 @@ football_us:
     name: 'Two way'
     line: 'no'
     other_name: 'Money line'
-  -
+  - # total points
     code: 'over_under'
     name: 'Over/Under'
   -
     code: 'handicap'
     name: 'Handicap'
 baseball:
-  -
+  -  # Match winner
     code: 'two_way'
     name: 'Two way'
+    betclic_code: 'Bsb_Win'
     line: 'no'
   -
     code: 'over_under'

@@ -1,13 +1,12 @@
 class Backoffice::HomeController < ApplicationController
-  before_action :tipster_required
-  before_action :authenticate_account!, only: [:dashboard]
+  before_action :authenticate_tipster, only: [:dashboard]
 
   def index
+    redirect_to backoffice_dashboard_url if current_tipster
   end
 
   def dashboard
-    @tipster = current_tipster
-    @tipster.get_statistics
+    @tipster = current_tipster.get_statistics
     @chart = Tipster.profit_chart_for_tipster(@tipster)
   end
 end
