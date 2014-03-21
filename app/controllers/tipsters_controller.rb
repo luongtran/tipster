@@ -2,12 +2,15 @@ class TipstersController < ApplicationController
   before_action :find_tipster, only: [:show, :detail_statistics, :last_tips, :description, :profile]
   # GET /tipsters
   def index
-    @tipsters = Tipster.load_data(params)
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
     @selected_plan = selected_plan
+
     @tipsters = Tipster.load_data(params)
-    @sports = Sport.all.order('position asc')
+
+    @sports = Sport.order('position asc')
+
     @top_tipsters = Tipster.find_top_3_last_week(params)
+
     if current_subscriber && current_subscriber.has_active_subscription?
       @tipsters_in_subscription = current_subscriber.subscription.active_tipsters
     end

@@ -87,13 +87,13 @@ class Tipster < ActiveRecord::Base
       ranking_range = parse_range_param(params)
       range = range_paser(ranking_range)
 
-      result = relation.includes(:finished_tips).
-          where("tips.published_at BETWEEN ? AND ?", range.first, range.last).
-          references(:tips)
+      result = relation.includes(:finished_tips)
+      .where("tips.published_at" => range).references(:tips)
 
       result.each do |tipster|
         tipster.get_statistics(params)
       end
+
       if sorting_info.increase?
         result.sort_by { |tipster| tipster.send("#{sorting_info.sort_by}") }
       else
