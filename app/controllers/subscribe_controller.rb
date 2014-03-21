@@ -91,7 +91,7 @@ class SubscribeController < ApplicationController
   def change_tipster
     @step = 2
     session[:old_id] = params[:old_id]
-    redirect_to  tipsters_path
+    redirect_to tipsters_path
     #if tipster_ids_in_cart.include?(params[:old_id])
     #  session[:cart][:tipster_ids].delete(params[:old_id])
     #  add_tipster_to_cart(params[:new_id])
@@ -102,11 +102,13 @@ class SubscribeController < ApplicationController
     #  render json: {success: false}
     #end
   end
+
   def shopping_cart
     @step = 1
     session[:step] = 1 if (session[:step].nil? || session[:step] < 1)
     @tipsters = Tipster.where(id: tipster_ids_in_cart)
   end
+
   # reg / input information
   def personal_information
     if selected_plan
@@ -117,22 +119,20 @@ class SubscribeController < ApplicationController
         @step = 2
         session[:step] = 2 if (session[:step].nil? || session[:step] < 2)
       end
+
       if current_subscriber
         @subscriber = current_subscriber
       else
-        @subscriber = Subscriber.new
-        @subscriber.build_account
+
+        @subscriber ||= Subscriber.new
+        @account = @subscriber.build_account
       end
 
       if request.post?
-        if params[:subscriber][:account]
-          @account = Account.build_with_rolable(account_params, Subscriber)
-          if @account.save
-            sign_in @account
-            @subscriber = @account.rolable
-            @subscriber.validate_with_paid_account = !selected_plan.free?
-            if @subscriber.update_attributes(profile_params)
-              # Apply free plan
+        if current_subscriber
+          1.toAAA
+          current_subscriber.validate_with_paid_account = !selected_plan.free?
+            if current_subscriber.update_attributes(profile_params)
               if selected_plan.free?
                 current_subscriber.apply_plan(selected_plan)
                 empty_cart_session
@@ -140,16 +140,20 @@ class SubscribeController < ApplicationController
               end
               redirect_to subscribe_shared_url
             end
-          end
         else
+          s_params = subscriber_params
+          account_params = s_params.delete :account
+          @subscriber = Subscriber.new(s_params)
           @subscriber.validate_with_paid_account = !selected_plan.free?
-          if @subscriber.update_attributes(profile_params)
-            # Apply free plan
-            if selected_plan.free?
-              current_subscriber.apply_plan(selected_plan)
-              empty_cart_session
-              @subscriber.account.resend_confirmation_instructions unless @subscriber.account.confirmed?
-            end
+          @account = Account.new(account_params)
+
+          valid = @subscriber.valid?
+          valid = @account.valid?  && valid
+          if valid
+            @subscriber.save
+            @account.rolable = @subscriber
+            @account.save
+            sign_in @account
             redirect_to subscribe_shared_url
           end
         end
@@ -181,7 +185,7 @@ class SubscribeController < ApplicationController
     @subscriber = @account.rolable
     if request.post?
       @subscriber.update_receive_tips_method(params[:receive_tip_methods])
-      session[:step] = 6
+      session[:step] = 5
       redirect_to subscribe_payment_url
     end
   end
@@ -233,9 +237,14 @@ class SubscribeController < ApplicationController
 
 
   private
+  def subscriber_params
+    params.require(:subscriber).permit(Subscriber::PROFILE_ATTRS << {account: [:email, :password, :password_confirmation]})
+  end
 
   def go_to_current_steps
     case session[:step]
+      when 1
+        redirect_to subscribe_shopping_cart_path
       when 2
         redirect_to subscribe_personal_information_path
       when 3
@@ -256,11 +265,7 @@ class SubscribeController < ApplicationController
   end
 
   def profile_params
-    params.require(:subscriber).permit(
-        :first_name, :last_name, :nickname, :gender, :receive_tip_methods, :birthday, :address, :city, :country, :zip_code, :mobile_phone,
-        :telephone, :favorite_beting_website, :know_website_from, :secret_question, :answer_secret_question, :receive_info_from_partners,
-        :humanizer_answer, :humanizer_question_id,:account
-    )
+    params.require(:subscriber).permit((Subscriber::PROFILE_ATTRS << :account))
   end
 
   def account_params

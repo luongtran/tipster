@@ -11,13 +11,13 @@
           .col-md-8.col-md-offset-2
             = simple_form_for @subscriber, url: subscribe_personal_information_path, method: 'POST', html: {class: 'form-horizontal tipster-form-style', novalidate: true} do |f|
               - unless current_subscriber
-                = f.simple_fields_for @subscriber.account do |acc|
-                  = acc.input :email, required: true
+                = f.simple_fields_for @account do |acc|
+                  = acc.input :email, required: true, input_html: {autocomplete: 'off'}
                   = acc.input :password, required: true
                   = acc.input :password_confirmation, required: true
-              = f.input :first_name
-              = f.input :last_name
-              = f.input :nickname
+              = f.input :first_name, :required => true
+              = f.input :last_name, :required => true
+              = f.input :nickname , :required => false
               - max_date = 16.years.ago.to_date.to_s
               = f.input :birthday, as: :string, input_html: {placeholder: 'yyyy-mm-dd (16 years old require)', class: 'date-picker limited', 'data-max-date' => max_date}
               = f.input :gender, as: :radio_buttons, collection: genders_collection_for_select, :item_wrapper_class => 'radio-inline', html_wrapper: {class: 'col-md-3'}

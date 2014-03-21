@@ -132,7 +132,7 @@
                             Change tipster
                   - else
                     %ul.list-unstyled
-                      %li.text-center= adding_price_show(@selected_plan.price) if @selected_plan
+                      %li.text-center= adding_price_show(@selected_plan.adding_price) if @selected_plan
                       %li.responsive-image
                         %image{src: path_to_image('unselect_tipster.jpg')}
                       %li
@@ -155,13 +155,13 @@
                             Change tipster
                   - else
                     %ul.list-unstyled
-                      %li.text-center= adding_price_show(@selected_plan.price) if @selected_plan
+                      %li.text-center= adding_price_show(@selected_plan.adding_price) if @selected_plan
                       %li.responsive-image
                         %image{src: path_to_image('unselect_tipster.jpg')}
                       %li
                         %button.submitLink{"data-dismiss" => "modal", type: "button"} Choose tipster
         .modal-footer
-          %a.btn.checkoutbtn{href: subscribe_checkout_path} No thank! Process checkout
+          %a.btn.checkoutbtn{href: subscribe_checkout_path} Process checkout
 #modal-confirm-adding.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
   .modal-dialog
     .modal-content
@@ -197,7 +197,7 @@
                           Change tipster
                 - else
                   %ul.list-unstyled
-                    %li.text-center= adding_price_show(@selected_plan.price) if @selected_plan
+                    %li.text-center= adding_price_show(@selected_plan.adding_price) if @selected_plan
                     %li.responsive-image
                       %image{src: path_to_image('unselect_tipster.jpg')}
                     %li
@@ -221,7 +221,7 @@
                           Change tipster
                 - else
                   %ul.list-unstyled
-                    %li.text-center= adding_price_show(@selected_plan.price) if @selected_plan
+                    %li.text-center= adding_price_show(@selected_plan.adding_price) if @selected_plan
                     %li.responsive-image
                       %image{src: path_to_image('unselect_tipster.jpg')}
                     %li
@@ -230,4 +230,4 @@
                       -#  Choose tipster
                       %button.submitLink{"data-dismiss" => "modal", type: "button"} Choose tipster
       .modal-footer
-        %a.btn.checkoutbtn{href: subscribe_checkout_path} No thank! Process checkout
+        %a.btn.checkoutbtn{href: subscribe_checkout_path} Process checkout

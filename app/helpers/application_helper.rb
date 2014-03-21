@@ -343,7 +343,7 @@ module ApplicationHelper
   end
 
   def adding_price_show(price)
-    "#{(price * 0.4).round(3)} € / month"
+    "#{price}  € / month"
   end
 
   def matches_group_by_for_select

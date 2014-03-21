@@ -48,6 +48,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
+
   def subscriber_required
     if account_signed_in? && !current_subscriber
       sign_out current_account

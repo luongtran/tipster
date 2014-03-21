@@ -65,11 +65,11 @@ class Subscription < ActiveRecord::Base
   end
 
   def one_shoot_price
-    price = (self.plan.price.to_f + adder_tipster * (self.plan.price * ADDING_TIPSTER_PERCENT)) * self.plan.period
+    price = (self.plan.price.to_f * self.plan.period)  + adder_tipster * self.plan.adding_price
     if self.using_coupon
       price -= 3
     end
-    return price.round(3)
+    return price.round(2)
   end
 
   def monthly_price

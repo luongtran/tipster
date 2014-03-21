@@ -30,6 +30,10 @@ class Subscriber < ActiveRecord::Base
   include Humanizer
   require_human_on :update, :unless => :bypass_humanizer
 
+
+  PROFILE_ATTRS = [:first_name, :last_name, :nickname, :gender, :receive_tip_methods, :birthday, :address, :city, :country, :zip_code, :mobile_phone,
+                   :telephone, :favorite_beting_website, :know_website_from, :secret_question, :answer_secret_question, :receive_info_from_partners,
+                   :humanizer_answer, :humanizer_question_id]
   DEFAULT_BIRTHDAY = '1990-01-01'
   KNOW_WEBSITE_FROM_LIST = %w(other sponsoring advertising social_network)
 
@@ -49,7 +53,7 @@ class Subscriber < ActiveRecord::Base
   }
 
   # Indicator to validate more attributes if subscriber is paid account
-  attr_accessor :validate_with_paid_account, :bypass_humanizer
+  attr_accessor :validate_with_paid_account, :create_with_only_account, :bypass_humanizer
 
   # ==============================================================================
   # ASSOCIATIONS
@@ -64,8 +68,8 @@ class Subscriber < ActiveRecord::Base
   # VALIDATIONS
   # ==============================================================================
   validates_date :birthday, :before => lambda { 16.years.ago + 1.day }, allow_blank: true
-  validates :first_name, :last_name, :birthday, presence: true, length: {minimum: 2}, on: :update
-  validates_presence_of :mobile_phone, :telephone, :secret_question, :answer_secret_question, :country, on: :update, if: :validate_with_paid_account
+  validates :first_name, :last_name, :birthday, presence: true, length: {minimum: 2}, unless: :create_with_only_account
+  validates_presence_of :mobile_phone, :telephone, :secret_question, :answer_secret_question, :country, if: :validate_with_paid_account
 
   # ==============================================================================
   # CALLBACKS

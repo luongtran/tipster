@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140320031140) do
+ActiveRecord::Schema.define(version: 20140321045327) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 20140320031140) do
     t.integer  "period"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "adding_price"
   end
 
   create_table "platforms", force: true do |t|
