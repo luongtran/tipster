@@ -78,4 +78,9 @@ class Subscribers::RegistrationsController < Devise::RegistrationsController
     params.require(:subscriber).permit(:first_name, :last_name, account_attributes: [:email, :password, :password_confirmation])
   end
 
+  def require_no_authentication
+    if current_subscriber
+      redirect_to root_url, alert: I18n.t('devise.failure.already_authenticated')
+    end
+  end
 end

@@ -158,10 +158,10 @@ $(document).ready(function () {
     });
 
     /* Toggle modal box for select method for create new tip*/
-    $('#lk-toggle-select-create-tip-method').on('click', function () {
-        $('#select-create-tip-method-modal').modal();
-        return false;
-    });
+//    $('#lk-toggle-select-create-tip-method').on('click', function () {
+//        $('#select-create-tip-method-modal').modal();
+//        return false;
+//    });
     /* Load the link of select box as links */
     $('.select-as-links').on('change', function () {
         var url = $(this).children('option:selected').attr('data-url');

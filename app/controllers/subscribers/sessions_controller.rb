@@ -24,6 +24,7 @@ class Subscribers::SessionsController < SessionsController
       super
     end
   end
+
   protected
 
   def after_sign_in_path_for(resource)
@@ -42,4 +43,9 @@ class Subscribers::SessionsController < SessionsController
     root_path
   end
 
+  def require_no_authentication
+    if current_subscriber
+      redirect_to root_url, alert: I18n.t('devise.failure.already_authenticated')
+    end
+  end
 end
