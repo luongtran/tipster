@@ -27,16 +27,16 @@
               .form-group
                 .input-group
                   %span.input-group-addon
-                    %i(class="fa fa-lock")
+                    %i(class="fa fa-lock fa-lg")
                   = f.input_field :password, as: :password, placeholder: 'Password',id: 'password', class: 'input-block input-md'
               .form-group
                 .input-group
                   %span.input-group-addon
-                    %i(class="fa fa-lock")
+                    %i(class="fa fa-lock fa-lg")
                   = f.input_field :password_confirmation, as: :password, placeholder: 'Re-type password',id: 'password_confirmation', class: 'input-block input-md'
               .form-group
                 %button.btn.btn-success.btn-block.btn-md#submiter Sign Up
         .text-center
           Already registered?
-          %a.lk-toggle-sign-in-box{href: '#'}
+          %a.lk-toggle-sign-in-box{href: 'javascript:void(0);'}
             Sign In

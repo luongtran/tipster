@@ -18,6 +18,7 @@ class SubscribeController < ApplicationController
   def get_coupon_code
     cc = CouponCode.create_for_user(current_subscriber, coupon_params[:source])
     if cc
+      current_subscriber.build_subscription unless current_subscriber.subscription
       current_subscriber.subscription.update_attributes(using_coupon: true)
       session[:using_coupon] = cc.id
       render :json => {
@@ -92,15 +93,6 @@ class SubscribeController < ApplicationController
     @step = 2
     session[:old_id] = params[:old_id]
     redirect_to tipsters_path
-    #if tipster_ids_in_cart.include?(params[:old_id])
-    #  session[:cart][:tipster_ids].delete(params[:old_id])
-    #  add_tipster_to_cart(params[:new_id])
-    #  flash[:show_checkout_dialog] = true
-    #  session[:add_tipster_id] = params[:new_id]
-    #  render json: {success: true,url: tipsters_path}
-    #else
-    #  render json: {success: false}
-    #end
   end
 
   def shopping_cart
@@ -161,7 +153,12 @@ class SubscribeController < ApplicationController
           @account2 = Account.find_by_email(params[:account][:email])
           if @account2 && @account2.valid_password?(params[:account][:password])
             sign_in @account2
-            redirect_to subscribe_shared_url
+            @subscriber = @account2.rolable
+            if @subscriber.valid_profile?
+              redirect_to subscribe_shared_url
+            else
+              flash[:notice] = "Please update your profile"
+            end
           else
             @error = true
             @account2 ||= Account.new
@@ -170,9 +167,6 @@ class SubscribeController < ApplicationController
           render_404
         end
       else
-        if current_subscriber
-          redirect_to subscribe_shared_url
-        end
       end
     else
       redirect_to pricing_url, notice: 'Please choose a plan'

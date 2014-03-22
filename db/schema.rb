@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140321085726) do
+ActiveRecord::Schema.define(version: 20140322091644) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -223,6 +223,7 @@ ActiveRecord::Schema.define(version: 20140321085726) do
     t.boolean  "created_by_omniauth",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "phone_indicator"
   end
 
   create_table "subscription_tipsters", force: true do |t|
@@ -231,6 +232,7 @@ ActiveRecord::Schema.define(version: 20140321085726) do
     t.boolean  "active",          default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type"
   end
 
   add_index "subscription_tipsters", ["subscription_id"], name: "index_subscription_tipsters_on_subscription_id"

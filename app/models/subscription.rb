@@ -34,6 +34,14 @@ class Subscription < ActiveRecord::Base
            :class_name => "Tipster",
            :source => :tipster,
            :conditions => ['subscription_tipsters.active = ?', false]
+  has_one :primary_tipster,:through =>  :subscription_tipsters,
+          :class_name => "Tipster",
+          :source => :tipster,
+          :conditions => ['subscription_tipster.type = ?','primary']
+  has_many :additional_tipsters,:through =>  :subscription_tipsters,
+          :class_name => "Tipster",
+          :source => :tipster,
+          :conditions => ['subscription_tipster.type = ?','additional']
 
   # ==============================================================================
   # VALIDATIONS

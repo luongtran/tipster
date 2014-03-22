@@ -43,9 +43,9 @@ class Subscribers::SessionsController < Devise::SessionsController
     root_path
   end
 
-  def require_no_authentication
-    if current_subscriber
-      redirect_to root_url, alert: I18n.t('devise.failure.already_authenticated')
-    end
-  end
+  #def require_no_authentication
+  #  if current_subscriber
+  #    redirect_to root_url, alert: I18n.t('devise.failure.already_authenticated')
+  #  end
+  #end
 end
