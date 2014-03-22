@@ -10,7 +10,8 @@
 class Sport < ActiveRecord::Base
   has_and_belongs_to_many :tipsters
   has_many :bet_types
-
+  has_many :competitions
+  has_many :seasons, through: :competitions
   validates :name, presence: true, uniqueness: {case_sensitive: false}
 
   after_create :auto_position
@@ -66,6 +67,10 @@ class Sport < ActiveRecord::Base
           }
       ]
   }
+
+  def icon_path
+    "/assets/sport-icons/i_#{self.name}.png"
+  end
 
   private
   def auto_position

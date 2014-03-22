@@ -3,38 +3,42 @@
     .text-center
       %h3 Please complete information for the tip:
     = simple_form_for @tip, url: backoffice_tips_path, html: {class: 'form-horizontal', id: 'form-new-tip'} do |f|
+      = hidden_field_tag :act, 'confirm'
+      = f.input_field :match_id, as: :hidden
+      = f.input_field :bet_type_id, as: :hidden
+      = f.input_field :odds, as: :hidden
+      = f.input_field :selection, as: :hidden
+      = f.input_field :sport_id, as: :hidden
+      = f.input_field :platform_id, as: :hidden
       .form-group
         %label.col-md-4.control-label
           Match:
         .col-md-7
           .form-control
             = @tip.match_name
-
       .form-group
         %label.col-md-4.control-label
           Type of bet:
         .col-md-7
           .form-control
             = @tip.bet_type_name
-
       .form-group
         %label.col-md-4.control-label
           Selection:
         .col-md-7
           .form-control
-            = @tip.choice_name
+            = @tip.selection
       .form-group
         %label.col-md-4.control-label
           Odds:
         .col-md-7
           .form-control
             = @tip.odds
-
       = f.input :amount
       = f.input :advice
       .form-group
         .col-sm-offset-4.col-sm-7
-          %button.btn.btn-primary{type: :button} Submit
+          %button.btn.btn-primary{type: :submit} Submit
           %a.btn.btn-default{href: backoffice_my_tips_path } Cancel
 
 

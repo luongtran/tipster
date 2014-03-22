@@ -40,7 +40,7 @@ TipsterHero::Application.routes.draw do
   scope path: '/subscribe', as: :subscribe do
     controller :subscribe do
       match :account, via: [:get, :post]
-      match :shopping_cart, via: [:get,:post]
+      match :shopping_cart, via: [:get, :post]
       match :change_tipster, via: [:get, :post]
       match :personal_information, via: [:get, :post]
       match :shared, via: [:get, :post]
@@ -113,14 +113,18 @@ TipsterHero::Application.routes.draw do
       post :change_avatar
       post :crop_avatar
     end
+
     get 'my_tips', to: 'tips#my_tips'
     resources :tips, except: [:index] do
       collection do
         post :confirm
         get :find_bets_on_match
-        get :filter_matches
+        post :filter_matches
+        get :available_matches
       end
     end
+
+
   end
 
   # ==============================================================================

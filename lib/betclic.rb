@@ -29,8 +29,15 @@ module Betclic
       # 1. filter by sport
       # 2. filter by event id, it's competition on the local db
       # 3. find with name
+      # 4. filter by bet types on local db
+
+      sport = match.sport
+      bet_type_codes_filter = sport.bet_types.on_betclic.pluck(:betclic_code)
+
       xml_doc = self.go
       match_nodes = xml_doc.css('sport > event > match')
+
+      # Start find match by name ==============================================
       result_matches = []
       match_nodes.each do |node|
         result_matches << {
@@ -39,6 +46,7 @@ module Betclic
             start_date: node['start_date'],
         }
       end
+
       betclic_id_match = nil
       result_matches.each do |m|
         if match.name.downcase.include?(m[:name]) || m[:name].include?(match.name.downcase)
@@ -47,25 +55,31 @@ module Betclic
           break
         end
       end
-      match_found = nil
+
+      # Start get bets on match  ==============================================
       bets_found = []
       unless betclic_id_match.nil?
         bet_nodes = xml_doc.css("match##{betclic_id_match} > bets > bet")
+
+
         bet_nodes.each do |bet|
-          choices = bet.children
-          choices_found = []
-          choices.each do |choice|
-            choices_found << {
-                name: choice['name'],
-                odd: choice['odd']
+          if bet_type_codes_filter.include?(bet['code'])
+            # Get choices on current bet
+            choices = bet.children
+            choices_found = []
+            choices.each do |choice|
+              choices_found << {
+                  name: choice['name'],
+                  odd: choice['odd']
+              }
+            end
+            # Save bets
+            bets_found << {
+                code: bet['code'],
+                name: bet['name'],
+                choices: choices_found
             }
           end
-
-          bets_found << {
-              code: bet['code'],
-              name: bet['name'],
-              choices: choices_found
-          }
         end
       end
       bets_found

@@ -1,47 +1,48 @@
-.mam
-- matches_grouped = matches.group_by {|match| match.start_date}
-- matches_grouped = matches_grouped.sort_by {|date,matches| date}
+- if group_by == 'sport'
+  - matches_grouped = matches.group_by {|match| match.sport_id}
+- else # Group by date
+  - matches_grouped = matches.group_by {|match| match.start_date}
+  -# Sort by start date asc
+  - matches_grouped = matches_grouped.sort_by {|date, matches| date}
 #matches-on-date.panel-group
   - index = 0
-  - matches_grouped.each do |date, matches|
+  - matches_grouped.each do |group, matches|
+    - if group_by == 'sport'
+      - sport = matches.first.sport
+      - group_title = "#{image_tag sport.icon_path} #{sport.name.titleize}".html_safe
+    - else
+      - group_title = group.strftime("%A, %b %d, %Y")
+
     - index += 1
-    .panel.panel-default
+    .panel{class: "#{index == 1 ? 'panel-success' : 'panel-default'}"}
       .panel-heading
         %h4.panel-title
-          %a{"data-parent" => "#matches-on-date", "data-toggle" => "collapse", href: "#abcxya-panel-#{index}"}
-            %h4
-              %span.text-bold
-                = date.strftime("%A, %b %d, %Y")
-              %span.text-muted
-                = "(#{matches.count})"
-      .panel-collapse.collapse{id: "abcxya-panel-#{index}", class: "#{'in' if index == 1}" }
+          %a{"data-parent" => "#matches-on-date", "data-toggle" => "collapse", href: "#abcxyz-panel-#{index}"}
+            %span.text-bold
+              = group_title
+            %span.text-muted
+              = "(#{matches.count})"
+      .panel-collapse.collapse{id: "abcxyz-panel-#{index}", class: "#{'in' if index == 1}" }
         .panel-body
           - matches.each do |m|
             .match.clearfix{data: {url: find_bets_on_match_backoffice_tips_path(match_id: m.opta_match_id)}}
               .summary
-                %h4.text-info
-                  = "#{m.competition.try(:name)} / #{m.name}"
-                  %span.text-muted
-                    %i= m.start_at.strftime("%H:%M")
+                .match-hour
+                  = m.start_at.strftime("%H:%M")
+                .match-name
+                  .text-muted
+                    - unless group_by == 'sport'
+                      = image_tag m.sport.icon_path
+                      = m.sport.name.titleize
+                      \/
+                    = m.competition.try(:name)
+                    \/
+                    %span.text-info.text-bold
+                      = m.name
                 .pull-right
-                  %button.btn.btn-default View Bets
+                  %button.btn.btn-default.btn-xs View Bets
               .bets.clearfix.hide-tmp
-                %hr
-
-  -#.text-left
-  -#  %h3
-  -#    %i= date.strftime("%A, %b %d, %Y")
-  -#- matches.each do |m|
-  -#  .match.clearfix{data: {url: find_bets_on_match_backoffice_tips_path(match_id: m.opta_match_id)}}
-  -#    .summary
-  -#      %h4.text-bold.text-info
-  -#        = "#{m.competition.try(:name)} / #{m.name}"
-  -#      %i.text-warning= m.start_at.strftime("%H:%M")
-  -#      .pull-right
-  -#        %button.btn.btn-default View Bets
-  -#    .bets.clearfix.hide-tmp
-  -#      %hr
-
-- if matches.empty?
-  .text-danger.text-center
-    %h4 Not found any matches!
+.text-center
+  - if matches.empty?
+    .text-danger.text-center
+      %i Not found any matches!

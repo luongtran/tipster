@@ -46,19 +46,41 @@ class Match < ActiveRecord::Base
   # ==============================================================================
   scope :betable, -> { where(status: STATUS_FIXTURE) }
 
+
+  delegate :name, to: :competition, prefix: true
   # ==============================================================================
   # CLASS METHODS
   # ==============================================================================
   class << self
 
     def load_data(params = {}, relation = self)
-      if params[:sport_id].present?
-        relation = relation.where(sport_id: params[:sport_id])
+
+      if params[:sport].present?
+        sport = Sport.find_by(name: params[:sport])
+        relation = relation.where(sport_id: sport.id) if sport
+        relation
       end
-      if params[:competition_id].present?
-        relation = relation.where(opta_competition_id: params[:competition_id])
+      # Filter competition
+      if params[:competition].present?
+        relation = relation.where(opta_competition_id: params[:competition])
       end
-      relation.includes(:competition, :sport)
+
+      # Filter start date
+      if params[:date].present?
+        begin
+          date = params[:date].to_date
+        rescue => e
+          date = Date.today
+        end
+        relation = relation.where('start_at >= ?', date)
+      end
+
+      # Search in name
+      if params[:search].present?
+        relation = relation.where('name like ?', "%#{params[:search]}%")
+      end
+
+      relation.includes(:sport, :competition => [:area])
     end
 
     # Find bets and odds from Betclic for the given match
@@ -71,6 +93,10 @@ class Match < ActiveRecord::Base
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+  def to_s
+    "#{self.opta_match_id}-#{self.team_a}-#{self.team_b}"
+  end
+
   def teams
     self.name.split(TEAM_NAMES_SEPERATOR)
   end
@@ -78,4 +104,9 @@ class Match < ActiveRecord::Base
   def start_date
     self.start_at.to_date
   end
+
+  def find_bets
+    Betclic.find_bets_on_match(self)
+  end
+
 end

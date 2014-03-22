@@ -26,14 +26,12 @@ class Subscription < ActiveRecord::Base
   has_many :subscription_tipsters, dependent: :destroy
   has_many :tipsters, :through => :subscription_tipsters
 
-  has_many :active_tipsters, :through => :subscription_tipsters,
+  has_many :active_tipsters, -> { where('subscription_tipsters.active = ?', false) }, :through => :subscription_tipsters,
            :class_name => "Tipster",
-           :source => :tipster,
-           :conditions => ['subscription_tipsters.active = ?', true]
-  has_many :inactive_tipsters, :through => :subscription_tipsters,
+           :source => :tipster
+  has_many :inactive_tipsters, -> { where('subscription_tipsters.active = ?', false) }, :through => :subscription_tipsters,
            :class_name => "Tipster",
-           :source => :tipster,
-           :conditions => ['subscription_tipsters.active = ?', false]
+           :source => :tipster
 
   # ==============================================================================
   # VALIDATIONS
@@ -65,7 +63,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def one_shoot_price
-    price = (self.plan.price.to_f * self.plan.period)  + added_tipster * self.plan.adding_price
+    price = (self.plan.price.to_f * self.plan.period) + added_tipster * self.plan.adding_price
     if self.using_coupon
       price -= 3
     end
@@ -79,7 +77,8 @@ class Subscription < ActiveRecord::Base
     end
     return price.round(2)
   end
-# =========NEED TO CALCULATING AGAIN  =======
+
+  # =========NEED TO CALCULATING AGAIN  =======
   def added_price
     price = self.added_tipster * self.plan.adding_price
     return price.round(2)

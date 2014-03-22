@@ -277,7 +277,7 @@ module ApplicationHelper
       when 1
         current_step >= step ? link_to(I18n.t('menu.subscribe.free.step1'), subscribe_personal_information_path) : I18n.t('menu.subscribe.free.step1')
       when 2
-        current_step >= step ? link_to(I18n.t('menu.subscribe.free.step2'),subscribe_shared_path ) : I18n.t('menu.subscribe.free.step2')
+        current_step >= step ? link_to(I18n.t('menu.subscribe.free.step2'), subscribe_shared_path) : I18n.t('menu.subscribe.free.step2')
       when 3
         I18n.t('menu.subscribe.free.step3')
     end
@@ -356,10 +356,12 @@ module ApplicationHelper
 
   def sport_filter_for_matches(sports)
     options = []
-    options << ['All', 0, 'data-url' => filter_matches_backoffice_tips_path(query_params.merge(sport_id: nil))]
-    #filter_matches_backoffice_tips_path
+    options << ['All', 0]
     sports.each do |sport|
-      options << [sport.name.titleize, sport.id, 'data-url' => filter_matches_backoffice_tips_path(query_params.merge(sport_id: sport.id))]
+      options << [
+          sport.name.titleize,
+          sport.name
+      ]
     end
     options
   end

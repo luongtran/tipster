@@ -108,7 +108,7 @@ $(document).ready(function () {
         $(this).removeClass('btn-default');
         $(this).addClass('btn-primary');
     });
-    $('#available-matches-wrapper').on('mouseleave', 'button', function () {
+    $('#available-matches-wrapper').on('mouseleave', '.choice-odd-button', function () {
         $(this).addClass('btn-default');
         $(this).removeClass('btn-primary');
     });
@@ -134,7 +134,7 @@ $(document).ready(function () {
         $(this).parents('.panel:first').removeClass('panel-success');
     });
 
-    /* Show popup to confirm select odd*/
+    /* Create Post data and show popup to confirm select odd*/
     $('#available-matches-wrapper').on('click', '.choice-odd-button', function () {
         console.log('choice');
         var $modal = $('#confirm-select-odd-modal');
@@ -151,10 +151,13 @@ $(document).ready(function () {
         $form.append('<input type="hidden" name="tip[odds]" value="' + odds_selected + '"/>');
 
         var choice_name = $button.attr('data-choice-name');
-        $form.append('<input type="hidden" name="tip[choice_name]" value="' + choice_name + '"/>');
+        $form.append('<input type="hidden" name="tip[selection]" value="' + choice_name + '"/>');
 
         var bet_type_name = $button.attr('data-bet-type-name');
         $form.append('<input type="hidden" name="tip[bet_type_name]" value="' + bet_type_name + '"/>');
+
+        var bet_type_code = $button.attr('data-bet-type-code');
+        $form.append('<input type="hidden" name="tip[bet_type_code]" value="' + bet_type_code + '"/>');
 
         var $container = $modal.find('.selection-infor');
 
@@ -203,15 +206,15 @@ $(document).ready(function () {
         return false;
     });
 
+    /* Prevent double submit */
     $('#form-filter-available-matches').on('change', 'input, select', function () {
         if (!$('#form-filter-available-matches').hasClass('submiting')) {
             $('#form-filter-available-matches').trigger('submit');
         }
     });
 
-    /* Load the link of select box as links */
-    $('.available-matches-filter').on('change', function () {
-        var url = $(this).children('option:selected').attr('data-url');
-        return false;
-    });
+    $('#form-new-tip').on('submit', function () {
+//        console.log('submit');
+//        return false;
+    }) ;
 });

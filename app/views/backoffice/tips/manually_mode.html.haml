@@ -1,0 +1,45 @@
+-#-# Trick for preload image
+-#= image_tag 'circle_loading.gif', class: 'hide'
+-#.row
+-#  .mam
+-#    %h3 Select your match or event
+-#    %hr
+-#    .clearfix
+-#      = simple_form_for :nothing, url: filter_matches_backoffice_tips_path, html: {id: 'form-filter-available-matches'} do |f|
+-#        .col-lg-3
+-#          %strong Sport:
+-#          = select_tag :sport, options_for_select(sport_filter_for_matches(@tipster_sports)),
+-#              class: 'select2able', 'data-no-search' => true
+-#        .col-lg-3
+-#          %strong Group by:
+-#          #available-matches-group-by.btn-group{"data-toggle" => "buttons"}
+-#            %label.btn.btn-default.active.btn-sm
+-#              %input{name: "group_by", type: "radio", value: 'date', checked: true}/
+-#              Date
+-#            %label.btn.btn-default.btn-sm
+-#              %input{name: "group_by", type: "radio", value: 'competition'}/
+-#              Competitions
+-#        .col-lg-3
+-#          %strong Date:
+-#          %input.text-center.date-picker{type: :text, value: '2014/03/23', name: 'date'}
+-#      .col-lg-3
+-#        %strong Search:
+-#        %input{type: :text, placeholder: 'match or event ...'}
+-#    .clearfix
+-#      #available-matches-wrapper
+-#        = render 'available_matches_list', matches: @matches, group_by: 'date'
+-#
+-#-# The hidden dialog to confirm select odd
+-##confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+-#  .modal-dialog.modal-md
+-#    .modal-content
+-#      .modal-header.text-warning
+-#        %h4.modal-title Please confirm your selection
+-#      .modal-body
+-#        .selection-infor
+-#        .row.text-center
+-#          = form_for :nothing, url: confirm_backoffice_tips_path, :method => 'post' do |f|
+-#            %button.btn.btn-success#submiter{type: :submit} Confirm
+-#            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
+.text-center
+  %h2 Underconstruction
