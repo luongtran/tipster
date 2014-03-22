@@ -26,10 +26,12 @@ class Subscription < ActiveRecord::Base
   has_many :subscription_tipsters, dependent: :destroy
   has_many :tipsters, :through => :subscription_tipsters
 
-  has_many :active_tipsters, -> { where('subscription_tipsters.active = ?', false) }, :through => :subscription_tipsters,
+  has_many :active_tipsters, -> { where('subscription_tipsters.active = ?', false) },
+           :through => :subscription_tipsters,
            :class_name => "Tipster",
            :source => :tipster
-  has_many :inactive_tipsters, -> { where('subscription_tipsters.active = ?', false) }, :through => :subscription_tipsters,
+  has_many :inactive_tipsters, -> { where('subscription_tipsters.active = ?', false) },
+           :through => :subscription_tipsters,
            :class_name => "Tipster",
            :source => :tipster
 

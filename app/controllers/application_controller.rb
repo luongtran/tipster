@@ -102,6 +102,9 @@ class ApplicationController < ActionController::Base
 
   def empty_cart_session
     session[:cart] = nil
+    session[:tipster_first] = nil
+    session[:failed_add_tipster_id] = nil
+    session[:old_id] = nil
   end
 
 # Return an array of tipster's id in cart from session

@@ -15,6 +15,11 @@ class CartController < ApplicationController
 
   def add_tipster
     unless selected_plan.nil?
+      if selected_plan.price == 0
+        empty_cart_session
+        flash[:alert] = I18n.t('cart.free_plan_alert')
+        redirect_to pricing_path and return
+      end
       if session[:old_id]
         remove_tipster_from_cart(session[:old_id])
         session[:old_id] = nil
@@ -24,12 +29,7 @@ class CartController < ApplicationController
         flash[:alert] = I18n.t('cart.limit_add_tipster', count: Subscription::MAX_ADDITIONAL_TIPSTERS)
         redirect_to cart_url and return
       end
-      if selected_plan.price == 0
-        unless params["step"]
-          session[:failed_add_tipster_id] = params[:id]
-          redirect_to pricing_path, alert: I18n.t('cart.free_plan_alert') and return
-        end
-      end
+
       tipster_id = params[:id]
       if Tipster.exists?(tipster_id)
         initial_cart_session if session[:cart].nil?
@@ -37,20 +37,16 @@ class CartController < ApplicationController
           flash[:alert] = I18n.t('cart.already_in_cart')
         else
           add_tipster_to_cart(tipster_id)
-          session[:add_tipster_id] = params[:id]
-          flash[:show_checkout_dialog] = true
+          session[:add_tipster_id] = tipster_id
+          session[:failed_add_tipster_id] = nil
         end
       end
     else
       session[:tipster_first] = true
-      flash[:show_checkout_dialog] = true
-      session[:failed_add_tipster_id] =  session[:old_id] = params[:id]
+      session[:failed_add_tipster_id] =  params[:id]
     end
-    unless params['step']
-      redirect_to tipsters_url
-    else
-      redirect_to tipsters_path and return
-    end
+    flash[:show_checkout_dialog] = true
+    redirect_to tipsters_path and return
   end
 
   def drop_tipster

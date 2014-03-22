@@ -54,7 +54,7 @@ class Subscriber < ActiveRecord::Base
   # ATTRIBUTES
   # ==============================================================================
   PROFILE_ATTRS = [:first_name, :last_name, :nickname, :gender, :receive_tip_methods, :birthday, :address, :city,
-                   :country, :zip_code, :mobile_phone, :telephone, :favorite_beting_website, :know_website_from,
+                   :country, :zip_code, :phone_indicator,:mobile_phone, :telephone, :favorite_beting_website, :know_website_from,
                    :secret_question, :answer_secret_question, :receive_info_from_partners,
                    :humanizer_answer, :humanizer_question_id]
 
@@ -73,8 +73,7 @@ class Subscriber < ActiveRecord::Base
   # ==============================================================================
   validates_date :birthday, :before => lambda { 16.years.ago + 1.day }, allow_blank: true
   validates :first_name, :last_name, :birthday, presence: true, length: {minimum: 2}, unless: :create_with_only_account
-  validates_presence_of :mobile_phone, :telephone, :secret_question, :answer_secret_question, :country, if: :validate_with_paid_account
-
+  validates_presence_of :mobile_phone, :secret_question, :answer_secret_question, :country, if: :validate_with_paid_account
   # ==============================================================================
   # CALLBACKS
   # ==============================================================================
@@ -135,6 +134,11 @@ class Subscriber < ActiveRecord::Base
 
   def full_name
     "#{self.first_name} #{self.last_name}".titleize
+  end
+
+  def valid_profile?
+    self.bypass_humanizer = true
+    self.valid?
   end
 
   def already_has_subscription?

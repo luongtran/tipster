@@ -27,7 +27,7 @@
               .form-group
                 .input-group
                   %span.input-group-addon
-                    %i(class="fa fa-lock")
+                    %i(class="fa fa-lock fa-lg")
                   = f.input_field :password, as: :password, placeholder: 'Password',id: 'password', class: 'input-block input-md'
               .form-group.clearfix
                 %a{href: new_account_password_path, class: 'pull-right'} Forgot password?
@@ -36,4 +36,4 @@
                 %button.btn.btn-success.btn-block.btn-lg#submiter Sign In
       .modal-footer.text-center
         %span.mrm Would you like to open account?
-        %a.lk-toggle-sign-up-box{href: '#'} Sign Up
+        %a.lk-toggle-sign-up-box{href: 'javascript:void(0);'} Sign Up

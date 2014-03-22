@@ -23,8 +23,8 @@
           .panel-body
             = simple_form_for @account, as: :account, url: change_password_path_for(@user), method: 'POST', html: {class: 'form-horizontal tipster-form-style'} do |f|
               = f.input :current_password, required: true
-              = f.input :password, required: true
-              = f.input :password_confirmation, required: true
+              = f.input :password,input_html: {required: true}
+              = f.input :password_confirmation,input_html: {required: true}
               .form-group
                 .col-md-offset-4.col-md-7
                   %button{type: "submit", class: 'text-slim btn btn-default'}

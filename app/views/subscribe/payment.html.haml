@@ -43,6 +43,10 @@
                       %tr
                         %td Monthly amount
                         %td= @subscription.monthly_price.to_s + " €/ month"
+                    - if @subscription.using_coupon
+                      %tr
+                        %td Coupon discount
+                        %td 3 &#128;
                     %tr
                       %td
                         %trong Total

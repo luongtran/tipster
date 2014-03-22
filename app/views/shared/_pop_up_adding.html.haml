@@ -14,9 +14,9 @@
           .row.adding
             .adding-header
               .col-md-6
-                %p.text-center= header_menu_adding_popup(1, @choose_tipster.present?)[:left]
+                %p.text-center= header_menu_adding_popup(1, @tipster_first)[:left]
               .col-md-6
-                %p.text-center= header_menu_adding_popup(1, @choose_tipster.present?)[:right]
+                %p.text-center= header_menu_adding_popup(1, @tipster_first)[:right]
             .adding-info
               .col-md-5
                 - if @choose_tipster.present? && @tipster_first
@@ -114,9 +114,9 @@
           .row.adding
             .adding-header
               .col-md-6
-                %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @selected_plan.present?)[:left]
+                %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @tipster_first)[:left]
               .col-md-6
-                %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @selected_plan.present?)[:right]
+                %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @tipster_first)[:right]
             .adding-info
               .col-md-5
                 .tipster_info
@@ -179,9 +179,9 @@
         .row.adding
           .adding-header
             .col-md-6
-              %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @selected_plan.present?)[:left]
+              %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @tipster_first)[:left]
             .col-md-6
-              %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @selected_plan.present?)[:right]
+              %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @tipster_first)[:right]
           .adding-info
             .col-md-5
               .tipster_info

@@ -3,38 +3,32 @@ class SubscriptionController < ApplicationController
 
   def select_plan
     selected_plan = Plan.find(params[:id])
-    max_cart_allow = selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS
-    if tipster_ids_in_cart.size > max_cart_allow
-      session[:cart][:tipster_ids].clear
-    else
-      if session[:failed_add_tipster_id]
-        tipster_id = session[:failed_add_tipster_id]
-        if Tipster.exists?(tipster_id)
-          initial_cart_session if session[:cart].nil?
-          if tipster_ids_in_cart.include? tipster_id
-            flash[:alert] = I18n.t('cart.already_in_cart')
-          else
-            add_tipster_to_cart(tipster_id)
-            session[:add_tipster_id] = tipster_id
+    if selected_plan
+      session[:plan_id] = selected_plan.id
+      if selected_plan.free?
+        empty_cart_session
+        redirect_to subscribe_personal_information_url and return
+      else
+        if session[:failed_add_tipster_id]
+          tipster_id = session[:failed_add_tipster_id]
+          if Tipster.exists?(tipster_id)
+            initial_cart_session if session[:cart].nil?
+            unless tipster_ids_in_cart.include? tipster_id
+              add_tipster_to_cart(tipster_id)
+              session[:add_tipster_id] = tipster_id
+            end
           end
+          session[:failed_add_tipster_id] = nil
         end
-        session[:failed_add_tipster_id] = nil
-        session[:old_id] = nil
+        flash[:show_checkout_dialog] = true
+        if tipster_ids_in_cart.size == 0
+            redirect_to pricing_path
+        else
+            redirect_to tipsters_path
+        end
       end
-      flash[:show_checkout_dialog] = true
-    end
-    session[:plan_id] = selected_plan.id
-    if selected_plan.free?
-      redirect_to subscribe_personal_information_url
-    #elsif params[:return_path]
-    #  flash[:show_checkout_dialog] = true
-    #  redirect_to subscribe_choose_offer_url
-    elsif tipster_ids_in_cart.size == 0
-      flash[:show_checkout_dialog] = true
-      redirect_to pricing_path
     else
-      flash[:show_checkout_dialog] = true
-      redirect_to tipsters_url
+      render_404
     end
   end
 

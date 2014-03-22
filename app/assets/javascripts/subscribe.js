@@ -21,7 +21,7 @@ $(document).ready(function () {
                             content: "“Well done, you have now a voucher of 3€"
                         });
                     } else {
-                        $('#message_return').text(response.message);
+                        Helper.alert_warning(response.message);
                     }
                 }
             });

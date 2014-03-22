@@ -13,7 +13,6 @@ class TipstersController < ApplicationController
     end
     if session[:add_tipster_id]
       @choose_tipster = Tipster.find session[:add_tipster_id]
-      session[:add_tipster_id] = nil
     end
     if session[:failed_add_tipster_id]
       @choose_tipster = Tipster.find session[:failed_add_tipster_id]
