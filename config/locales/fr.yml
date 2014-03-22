@@ -15,6 +15,7 @@ fr:
     term: "Terms of use"
     my_profile: "Mon profil"
     my_subscription: "Mon cotisation"
+    stay_connect: "Rester connecté"
     subscribe:
       paid:
         step1: "Compte"

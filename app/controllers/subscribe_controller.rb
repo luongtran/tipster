@@ -44,51 +44,6 @@ class SubscribeController < ApplicationController
     end
   end
 
-  #def account
-  #  if selected_plan.free?
-  #    @step = 2
-  #    session[:step] = 2
-  #  else
-  #    @step = 3
-  #    session[:step] = 3
-  #  end
-  #  if current_subscriber
-  #    redirect_to subscribe_personal_information_url and return
-  #  end
-  #  if selected_plan.nil?
-  #    flash[:alert] = I18n.t('errors.messages.unselect_plan')
-  #    redirect_to pricing_path and return
-  #  end
-  #  if request.get?
-  #    @account = Account.new
-  #    @account2 = Account.new
-  #  else
-  #    # Create account
-  #    case params[:act]
-  #      when 'sign_in'
-  #        @account2 = Account.find_by_email(params[:account][:email])
-  #        if @account2 && @account2.valid_password?(params[:account][:password])
-  #          sign_in @account2
-  #          redirect_to subscribe_personal_information_url
-  #        else
-  #          # Render error !
-  #          @account = Account.new
-  #          @account2 = Account.new
-  #          @error = true
-  #        end
-  #      when 'sign_up'
-  #        @account = Account.build_with_rolable(account_params, Subscriber)
-  #        if @account.save
-  #          sign_in @account
-  #          redirect_to subscribe_personal_information_url
-  #        else
-  #          # Render error !
-  #          @account2 = Account.new
-  #        end
-  #    end
-  #  end
-  #end
-
   def change_tipster
     @step = 2
     session[:old_id] = params[:old_id]

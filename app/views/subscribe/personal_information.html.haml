@@ -20,6 +20,7 @@
                   = hidden_field_tag :i_token,'KCWUzKdK7b2s9CXBDyKjFTcG'
                   = f.input :email, :required => false, :autofocus => true, input_html: {autocomplete: 'off'}
                   = f.input :password, :required => false
+                  = f.input :remember_me, :as => :boolean
                   - if @error
                     .form-group
                       .alert.fade.in.alert-danger{"data-alert" => "alert"}

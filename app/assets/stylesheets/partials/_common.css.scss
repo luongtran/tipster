@@ -198,3 +198,12 @@ body {
     padding-bottom:20px;
   }
 }
+.btn-black{
+  font: 600 16px/18px 'Source Sans Pro',sans-serif;
+  padding: 5px 20px;
+  color: #fff;
+  background-color: #424242;
+  &:hover{
+    color: #DD4B39 !important;
+  }
+}
