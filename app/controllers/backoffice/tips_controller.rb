@@ -7,32 +7,52 @@ class Backoffice::TipsController < ApplicationController
   end
 
   def new
-    #m = params[:m]
-    #prepare_data_for_new_tip
-    #@competitions = Competition.all
-    #if m == 'auto'
-    #  @matches = Match.betable.includes(:competition, :sport)
-    #  render 'create_auto'
-    #else
-    #  @tip = current_tipster.tips.new
-    #end
+    @match = Match.includes(sport: [:bet_types]).find_by(opta_match_id: params[:match].to_i)
+    @bet_types = @match.sport.bet_types
     prepare_data_for_new_tip
-    @competitions = Competition.all
-    @matches = Match.betable.includes(:competition, :sport)
-    @tip = current_tipster.tips.new
+    @tip = current_tipster.tips.new(
+        match_id: @match.opta_match_id,
+        sport_id: @match.sport.id
+    )
+  end
+
+  def available_matches
+    @matches = Match.betable.load_data
+    if params[:mode] == 'manual'
+      @tip = current_tipster.tips.new
+      prepare_data_for_new_tip
+      render 'manually_mode'
+    else
+      render 'automatically_mode'
+    end
   end
 
   def confirm
-    @tip = Tip.new(tip_params)
+    @match = Match.includes(sport: [:bet_types]).find_by!(opta_match_id: params[:tip][:match_id])
+    @bet_type = @match.sport.bet_types.find_by!(betclic_code: params[:bet_type_code])
+    platform = Platform.find_by!(code: 'betclic')
+    @tip = Tip.new(tip_params.merge(
+                       bet_type_id: @bet_type.id,
+                       sport_id: @match.sport.id,
+                       platform_id: platform.id
+                   ))
   end
 
+  def submit
+
+  end
+
+  # POST from AJAX
   def filter_matches
     prepare_data_for_new_tip
     @matches = Match.betable.load_data(params)
     success = true
     html = render_to_string(
         partial: 'backoffice/tips/available_matches_list',
-        locals: {matches: @matches}
+        locals: {
+            matches: @matches,
+            group_by: params[:group_by]
+        }
     ).html_safe
     render json: {
         success: success, html: html
@@ -43,17 +63,10 @@ class Backoffice::TipsController < ApplicationController
   # Find bets on the given match from Betclic XML feed
   def find_bets_on_match
     match_id = params[:match_id]
-    match = Match.find_by(opta_match_id: match_id)
-
+    match = Match.includes(:sport).find_by(opta_match_id: match_id)
+    bets = match.find_bets
     success = true
-    bets = []
-    if match
-      bets = Betclic.find_bets_on_match(match)
-    else
-      success = false
-    end
-
-    html = render_to_string(partial: 'backoffice/tips/bets_on_matches', locals: {match: match, bets: bets}).html_safe
+    html = render_to_string(partial: 'backoffice/tips/bets_on_match', locals: {match: match, bets: bets}).html_safe
     render json: {
         success: success, html: html
     }
@@ -62,11 +75,19 @@ class Backoffice::TipsController < ApplicationController
   def create
     @tip = current_tipster.tips.new(tip_params)
     if @tip.save
-      redirect_to backoffice_tip_url(@tip), notice: I18n.t('tip.created_successfully')
+      redirect_to backoffice_my_tips_url, notice: I18n.t('tip.created_successfully')
     else
-      prepare_data_for_new_tip
-      render :new
+      if params[:act] == 'confirm'
+        @tip.match_name = @tip.match.name
+        @tip.bet_type_name = @tip.bet_type.name
+        render 'confirm'
+      else
+        @bet_types = @tip.match.sport.bet_types
+        prepare_data_for_new_tip
+        render 'new'
+      end
     end
+
   end
 
   def show
@@ -78,7 +99,6 @@ class Backoffice::TipsController < ApplicationController
     @competitions = Competition.all
     @tipster_sports = current_tipster.sports
     @platforms = Platform.all
-    @bet_types = BetType.all
   end
 
   def get_available_matches

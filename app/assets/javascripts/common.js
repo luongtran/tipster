@@ -17,13 +17,17 @@ $(document).ready(function () {
     $.fn.datepicker.defaults.format = "yyyy-mm-dd";
     for (i = 0; i < $('.date-picker').length; i++) {
         var endDate = '';
+        var startDate = '';
         var $picker = $($('.date-picker')[i]);
         if ($picker.hasClass('limited')) {
             endDate = $picker.attr('data-max-date');
+            startDate = $picker.attr('data-min-date');
         }
+
         $picker.datepicker({
             forceParse: false,
-            endDate: endDate
+            endDate: endDate,
+            startDate: startDate
         });
     }
 });

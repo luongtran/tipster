@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140322091644) do
+ActiveRecord::Schema.define(version: 20140322110636) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 20140322091644) do
     t.boolean  "active",              default: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "sport_id"
   end
 
   add_index "competitions", ["opta_competition_id"], name: "index_competitions_on_opta_competition_id"
@@ -257,7 +258,7 @@ ActiveRecord::Schema.define(version: 20140322091644) do
     t.integer  "author_id"
     t.string   "author_type"
     t.integer  "sport_id"
-    t.string   "event",                          null: false
+    t.string   "event"
     t.datetime "event_start_at"
     t.datetime "event_end_at"
     t.integer  "platform_id",                    null: false

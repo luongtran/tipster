@@ -39,7 +39,7 @@ class Tip < ActiveRecord::Base
 
   CREATE_PARAMS = [:event, :platform_id, :bet_type_id, :odds, :selection, :advice, :amount, :sport_id, :line]
 
-  attr_accessor :match_name, :match_id, :choice_name, :bet_type_name
+  attr_accessor :match_name, :bet_type_name, :bet_type_code
 
   # ===========================================================================
   # ASSOCIATIONS
@@ -48,13 +48,14 @@ class Tip < ActiveRecord::Base
   belongs_to :sport
   belongs_to :bet_type
   belongs_to :platform
+  belongs_to :match, foreign_key: :match_id, primary_key: :opta_match_id
 
   # ===========================================================================
   # VALIDATIONS
   # ===========================================================================
   validates :author, :odds, :selection, :advice, :sport, :platform, :bet_type,
             :amount, presence: true
-  validates_presence_of :bet_type_id, :platform_id, :event,
+  validates_presence_of :bet_type_id, :platform_id,
                         message: 'Choose at least one'
   validates_length_of :event, :advice, minimum: 10, allow_blank: true
   validates_numericality_of :amount, greater_than_or_equal_to: 10, less_than_or_equal_to: 100, only_integer: true
@@ -121,7 +122,7 @@ class Tip < ActiveRecord::Base
   # INSTANCE METHODS
   # ===========================================================================
   def to_param
-    "#{self.id}-#{self.event.parameterize}"
+    "#{self.id}-#{self.event.try(:parameterize)}"
   end
 
   # Call after admin validate the tip. Send tip and subtract bankroll
@@ -149,7 +150,6 @@ class Tip < ActiveRecord::Base
   end
 
   def status_in_string
-
   end
 
   # ===========================================================================

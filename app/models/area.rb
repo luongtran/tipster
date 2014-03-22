@@ -11,5 +11,6 @@
 #
 
 class Area < ActiveRecord::Base
+  has_many :competitions, foreign_key: :opta_area_id, primary_key: :area_id
   validates_uniqueness_of :area_id, :country_code
 end

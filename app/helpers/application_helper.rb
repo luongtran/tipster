@@ -356,10 +356,12 @@ module ApplicationHelper
 
   def sport_filter_for_matches(sports)
     options = []
-    options << ['All', 0, 'data-url' => filter_matches_backoffice_tips_path(query_params.merge(sport_id: nil))]
-    #filter_matches_backoffice_tips_path
+    options << ['All', 0]
     sports.each do |sport|
-      options << [sport.name.titleize, sport.id, 'data-url' => filter_matches_backoffice_tips_path(query_params.merge(sport_id: sport.id))]
+      options << [
+          sport.name.titleize,
+          sport.name
+      ]
     end
     options
   end

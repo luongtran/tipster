@@ -76,7 +76,6 @@ class Tipster < ActiveRecord::Base
   # ==============================================================================
   # CALLBACKS
   # ==============================================================================
-  after_update :crop_avatar
 
   # ==============================================================================
   # CLASS METHODS
@@ -161,7 +160,7 @@ class Tipster < ActiveRecord::Base
           references(:tips)
     end
 
-    # Return the start & end date specify by given range
+    # Return the start & end date specify by given range string
     def range_paser(range)
       end_date = Date.today
       start_date = case range

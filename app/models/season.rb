@@ -14,6 +14,6 @@
 
 class Season < ActiveRecord::Base
   belongs_to :competition, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
-  validates :opta_season_id, uniqueness: true
+  validates :opta_season_id, :competition, uniqueness: true
 
 end

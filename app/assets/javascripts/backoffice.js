@@ -108,7 +108,7 @@ $(document).ready(function () {
         $(this).removeClass('btn-default');
         $(this).addClass('btn-primary');
     });
-    $('#available-matches-wrapper').on('mouseleave', 'button', function () {
+    $('#available-matches-wrapper').on('mouseleave', '.choice-odd-button', function () {
         $(this).addClass('btn-default');
         $(this).removeClass('btn-primary');
     });
@@ -121,8 +121,22 @@ $(document).ready(function () {
         $(this).removeClass('btn-primary');
     });
 
-    /* Show popup to confirm select odd*/
+    $('body').on('click', '.panel-title a.collapsed', function () {
+        $('body').find('.panel').removeClass('panel-success');
+        $('body').find('.panel').addClass('panel-default');
+
+        $(this).parents('.panel:first').removeClass('panel-default');
+        $(this).parents('.panel:first').addClass('panel-success');
+    });
+
+    $('body').on('click', '.panel-title a:not(.collapsed)', function () {
+        $('body').find('.panel').addClass('panel-default');
+        $(this).parents('.panel:first').removeClass('panel-success');
+    });
+
+    /* Create Post data and show popup to confirm select odd*/
     $('#available-matches-wrapper').on('click', '.choice-odd-button', function () {
+        console.log('choice');
         var $modal = $('#confirm-select-odd-modal');
         var $form = $modal.find('form');
 
@@ -137,10 +151,13 @@ $(document).ready(function () {
         $form.append('<input type="hidden" name="tip[odds]" value="' + odds_selected + '"/>');
 
         var choice_name = $button.attr('data-choice-name');
-        $form.append('<input type="hidden" name="tip[choice_name]" value="' + choice_name + '"/>');
+        $form.append('<input type="hidden" name="tip[selection]" value="' + choice_name + '"/>');
 
         var bet_type_name = $button.attr('data-bet-type-name');
         $form.append('<input type="hidden" name="tip[bet_type_name]" value="' + bet_type_name + '"/>');
+
+        var bet_type_code = $button.attr('data-bet-type-code');
+        $form.append('<input type="hidden" name="tip[bet_type_code]" value="' + bet_type_code + '"/>');
 
         var $container = $modal.find('.selection-infor');
 
@@ -158,31 +175,46 @@ $(document).ready(function () {
     });
 
     /* Toggle modal box for select method for create new tip*/
-//    $('#lk-toggle-select-create-tip-method').on('click', function () {
-//        $('#select-create-tip-method-modal').modal();
-//        return false;
-//    });
-    /* Load the link of select box as links */
-    $('.select-as-links').on('change', function () {
-        var url = $(this).children('option:selected').attr('data-url');
+    $('#lk-toggle-select-create-tip-method').on('click', function () {
+        $('#select-create-tip-method-modal').modal();
         return false;
     });
 
 
-    /* Available matches filtering */
-    $('.available-matches-filter').on('change', function () {
-        var url = $(this).children('option:selected').attr('data-url');
-        var $result_wrapper = $('#available-matches-wrapper');
+    /* Available matches filtering and grouping */
+    $('#form-filter-available-matches').on('submit', function () {
+        $result_wrapper = $('#available-matches-wrapper');
+        var $_this = $(this);
+        $_this.addClass('submiting');
         $.ajax({
-            url: url,
-            type: 'GET',
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: $(this).serialize(),
             dataType: 'JSON',
             success: function (response) {
                 if (response.success) {
                     $result_wrapper.html('');
                     $result_wrapper.html(response.html);
+                } else {
+                    Helper.alert_server_error();
                 }
+            },
+            complete: function () {
+                $_this.removeClass('submiting');
             }
         });
+        return false;
     });
+
+    /* Prevent double submit */
+    $('#form-filter-available-matches').on('change', 'input, select', function () {
+        if (!$('#form-filter-available-matches').hasClass('submiting')) {
+            $('#form-filter-available-matches').trigger('submit');
+        }
+    });
+
+    $('#form-new-tip').on('submit', function () {
+//        console.log('submit');
+//        return false;
+    }) ;
 });

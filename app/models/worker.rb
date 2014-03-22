@@ -8,8 +8,9 @@ class Worker
       # Load active seasons
       from_date = DateTime.now
       to_date = from_date + DAY_INTERVAL.days
-      seasons = Season.all
+
       sports.each do |sport|
+        seasons = sport.seasons
         seasons.each do |season|
           fetcher = OptaSport::Fetcher.send(sport.name)
           if fetcher.respond_to?(:get_matches)
@@ -29,12 +30,14 @@ class Worker
             end
           end
         end
+
       end
     end
 
     def update_seasons
       # http://api.core.optasports.com/soccer/get_seasons?authorized=yes&active=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-      sports = Sport.where(name: %w(football basketball))
+      # Option: id=13&type=competition
+      sports = Sport.where(name: %w(football basketball tennis))
       sports.each do |sport|
         fetcher = OptaSport::Fetcher.send(sport.name)
         if fetcher.respond_to?(:get_seasons)
@@ -55,7 +58,7 @@ class Worker
 
     def update_competitions
       # http://api.core.optasports.com/soccer/get_competitions?authorized=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-      sports = Sport.where(name: %w(football basketball))
+      sports = Sport.where(name: %w(football basketball tennis))
       compts = []
       sports.each do |sport|
         fetcher = OptaSport::Fetcher.send(sport.name)
@@ -67,13 +70,14 @@ class Worker
             competitions = res.all
             compts += competitions
             competitions.each do |competition|
-              Competition.create(competition)
+              Competition.create(
+                  competition.merge(sport_id: sport.id)
+              )
             end
           else
             puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
           end
         end
-
       end
       compts
     end
