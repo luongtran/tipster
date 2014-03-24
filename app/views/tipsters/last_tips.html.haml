@@ -62,3 +62,72 @@
                 %i Tipster's description
 #profile-overiew-page
   .container
+    .panel.panel-default
+      .panel-body
+        .row.clearfix
+          %ul.sports-filter
+            %li
+              %a.btn.btn-default{href: last_tips_tipster_path(sport_filter_param(nil)), class: class_for_sport_filter('all')}
+                All sports
+            - @tipster_sports.each do |sport|
+              %li
+                %a.btn.btn-default.btn-sm{href: last_tips_tipster_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}
+                  = sport.name.titleize
+          .text-center
+            %ul.list-inline.list-unstyled.mbn.dates-list
+              %li
+                %a{href: last_tips_tipster_path(date_filter_param(nil)), class: class_for_date_filter('today')}
+                  Today
+              - date_range_filter_for_tips.each do |date|
+                %li
+                  %a{href: last_tips_tipster_path(date_filter_param(date[:value])), class: class_for_date_filter(date[:value])}
+                    = date[:label]
+        .clearfix.mam
+          %table.table.table-bordered.table-hover
+            %thead
+              %tr
+                %th Event
+                %th Odds
+                %th Tipster
+                %th Sport
+                %th Published at
+                %th Stake
+                %th Profit
+                %th Result
+            %tbody
+              - @tips.each do |tip|
+                %tr
+                  %td.text-info
+                    %a{href: tip_path(tip)}= tip.event || tip.match.try(:name)
+                  %td= tip.odds
+                  %td
+                    %a.text-warning{href: tipster_path(tip.author)}= tip.author.full_name
+                  %td= tip.sport_name.titleize
+                  %td= tip.published_at
+                  %td= tip.amount
+                  %td
+                    - if tip.published?
+                      - if tip.correct?
+                        %span.text-success
+                          \+
+                          = tip.profit
+                      - else
+                        %span.text-danger
+                          \-
+                          = tip.amount
+                    - else
+                      \---
+                  %td
+                    - if tip.published?
+                      - if tip.correct?
+                        %span.text-success
+                          &#x2714;
+                      - else
+                        %span.text-danger
+                          &#x2718;
+                    - else
+                      \---
+          - if @tips.empty?
+            .clearfix
+              .text-center.text-danger
+                Not found !
