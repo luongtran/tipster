@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140324065820) do
+ActiveRecord::Schema.define(version: 20140324065821) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -242,8 +242,8 @@ ActiveRecord::Schema.define(version: 20140324065820) do
     t.string   "type"
     t.boolean  "is_primary",      default: false
     t.integer  "payment_id"
-    t.datetime "expired_at"
     t.datetime "active_at"
+    t.datetime "expired_at"
   end
 
   add_index "subscription_tipsters", ["subscription_id"], name: "index_subscription_tipsters_on_subscription_id"
