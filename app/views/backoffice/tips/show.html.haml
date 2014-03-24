@@ -1,6 +1,24 @@
-.well
-  %h2 Tip details
-  %ul
-    %li
-      Event:
-      = @tip.event
+%h2.text-info
+  = image_tag @tip.sport.icon_path
+  = @tip.match.name
+-#.form-horizontal
+-#  .form-group
+-#    %label.control-label.col-sm-4
+-#      Created at:
+-#    .col-sm-7
+-#      .form-control
+-#        = @tip.created_at
+
+%ul
+  %li
+    Created at:
+    = @tip.created_at
+  %li
+    Odds:
+    = @tip.odds
+  %li
+    Type of bet:
+    = @tip.bet_type.name
+  %li
+    Selection:
+    = @tip.selection

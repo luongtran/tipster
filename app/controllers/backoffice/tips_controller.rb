@@ -17,10 +17,10 @@ class Backoffice::TipsController < ApplicationController
   end
 
   def available_matches
-    @matches = Match.betable.load_data
+    prepare_data_for_new_tip
+    @matches = Match.betable.load_data(date: Date.today)
     if params[:mode] == 'manual'
       @tip = current_tipster.tips.new
-      prepare_data_for_new_tip
       render 'manually_mode'
     else
       render 'automatically_mode'
@@ -29,7 +29,7 @@ class Backoffice::TipsController < ApplicationController
 
   def confirm
     @match = Match.includes(sport: [:bet_types]).find_by!(opta_match_id: params[:tip][:match_id])
-    @bet_type = @match.sport.bet_types.find_by!(betclic_code: params[:bet_type_code])
+    @bet_type = @match.sport.bet_types.find_by!(betclic_code: params[:tip][:bet_type_code])
     platform = Platform.find_by!(code: 'betclic')
     @tip = Tip.new(tip_params.merge(
                        bet_type_id: @bet_type.id,
@@ -39,19 +39,19 @@ class Backoffice::TipsController < ApplicationController
   end
 
   def submit
-
   end
 
   # POST from AJAX
   def filter_matches
-    prepare_data_for_new_tip
+
     @matches = Match.betable.load_data(params)
     success = true
     html = render_to_string(
         partial: 'backoffice/tips/available_matches_list',
         locals: {
             matches: @matches,
-            group_by: params[:group_by]
+            group_by: params[:group_by],
+            mode: params[:mode]
         }
     ).html_safe
     render json: {
@@ -91,7 +91,7 @@ class Backoffice::TipsController < ApplicationController
   end
 
   def show
-    @tip = current_tipster.tips.find(params[:id])
+    @tip = current_tipster.tips.includes(:match, :bet_type, :sport).find(params[:id])
   end
 
   private

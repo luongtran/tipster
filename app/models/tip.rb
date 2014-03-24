@@ -60,10 +60,12 @@ class Tip < ActiveRecord::Base
   validates_length_of :event, :advice, minimum: 10, allow_blank: true
   validates_numericality_of :amount, greater_than_or_equal_to: 10, less_than_or_equal_to: 100, only_integer: true
   validates_numericality_of :odds, greater_than_or_equal_to: 1.0
+  #validates_presence_of :line, :if => Proc.new { self.bet_type && self.bet_type.has_line? }
 
   # ===========================================================================
   # CALLBACKS
   # ===========================================================================
+  before_validation :valid_beting
   before_create :init_status
 
   # ===========================================================================
@@ -89,7 +91,7 @@ class Tip < ActiveRecord::Base
 
     def load_data(params = {}, relation = self)
       relation = perform_filter_params(params)
-      result = relation.includes([:author, :sport, :bet_type])
+      result = relation.includes([:author, :sport, :bet_type]).order('created_at desc')
     end
 
     def perform_filter_params(params, relation = self)
@@ -162,5 +164,11 @@ class Tip < ActiveRecord::Base
 
   def init_expire_time
     #self.expire_at = Time.now + 2.days
+  end
+
+  def valid_beting
+    if self.bet_type && self.bet_type.has_line?
+      self.errors[:line] = "can't be blank" unless self[:line].present?
+    end
   end
 end
