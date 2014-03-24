@@ -1,0 +1,52 @@
+-# Trick for preload image
+= image_tag 'circle_loading.gif', class: 'hide'
+.row
+  .mam
+    %h3 Available matches and events
+    %hr
+    .clearfix
+      = simple_form_for :nothing, url: filter_matches_backoffice_tips_path, html: {id: 'form-filter-available-matches', class: 'form-horizontal'} do |f|
+        .col-lg-4
+          .form-group
+            %label.control-label.col-sm-5 Group by:
+            .col-sm-7
+              .radio-inline
+                %label
+                  %input{type: :radio, name: :group_by, 'checked' => true, value: 'date'}
+                  Date
+              .radio-inline
+                %label
+                  %input{type: :radio, name: :group_by, value: 'sport'}
+                  Sport
+        .col-lg-4
+          - max_date = 7.days.from_now.to_date.to_s
+          - min_date = Date.today.to_s
+          .form-group
+            .col-sm-5.input-group
+              %input.input-sm.form-control.date-picker.limited{type: :text, name: 'date', placeholder: 'from', value: min_date,
+                  'data-max-date' => max_date, 'data-min-date' => min_date}
+              %span.input-group-addon
+                %i.fa.fa-calendar
+        .col-lg-4
+          .form-group
+            .col-sm-7.input-group
+              %input.input-sm.form-control{type: :text, placeholder: 'match or event ...', name: 'search'}
+              %span.input-group-btn
+                %button.btn.btn-default.btn-sm
+                  %i.fa.fa-search
+    .clearfix
+      #available-matches-wrapper
+        = render 'available_matches_list', matches: @matches, group_by: 'date'
+
+-# The hidden dialog to confirm select odd
+#confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog.modal-md
+    .modal-content
+      .modal-header.text-warning
+        %h4.modal-title Please confirm your selection
+      .modal-body
+        .selection-infor
+        .row.text-center
+          = form_for :nothing, url: confirm_backoffice_tips_path, :method => 'post' do |f|
+            %button.btn.btn-success#submiter{type: :submit} Confirm
+            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
