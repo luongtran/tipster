@@ -33,6 +33,7 @@
           %tr
             %th Full Name
             %th Email
+            %th Type
             %th Status
             %th Start at
             %th Next time purchase
@@ -43,20 +44,37 @@
                 There are no any tipster found.
           - else
             - if @subscription.active_tipsters.present?
-              - @subscription.active_tipsters.each do |tipster|
-                %tr
-                  %td
-                    = tipster.full_name
-                  %td
-                    = tipster.email
-                  %td
-                    %span.label.label-success Active
-                  %td
-                    = @subscription.active_at.strftime("%m/%d/%Y")
-                  %td
-                    = @subscription.expired_at.strftime("%m/%d/%Y")
-                    - if @subscription.can_change_tipster?
-                      = link_to "Unfollow", remove_inactive_tipster_path(tipster.id),method: 'delete',data:{confirm: "Are your sure !"} ,class: "btn btn-sm btn-danger"
+              - @subscription.subscription_tipsters.each do |subscription_tipster|
+                - if subscription_tipster.is_primary
+                  %tr.primary
+                    %td
+                      = subscription_tipster.tipster.full_name
+                    %td
+                      = subscription_tipster.tipster.email
+                    %td Primary
+                    %td
+                      %span.label.label-success= subscription_tipster.active_string
+                    %td
+                      = subscription_tipster.active_at.strftime("%m/%d/%Y")
+                    %td
+                      = subscription_tipster.expired_at.strftime("%m/%d/%Y")
+                      - if @subscription.can_change_tipster?
+                        = link_to "Unfollow", remove_inactive_tipster_path(subscription_tipster.tipster.id),method: 'delete',data:{confirm: "Are your sure !"} ,class: "btn btn-sm btn-danger"
+                - else
+                  %tr.additional
+                    %td
+                      = subscription_tipster.tipster.full_name
+                    %td
+                      = subscription_tipster.tipster.email
+                    %td Additional
+                    %td
+                      %span.label.label-success= subscription_tipster.active_string
+                    %td
+                      = subscription_tipster.active_at.strftime("%m/%d/%Y")
+                    %td
+                      = subscription_tipster.expired_at.strftime("%m/%d/%Y")
+                      - if @subscription.can_change_tipster?
+                        = link_to "Unfollow", remove_inactive_tipster_path(subscription_tipster.tipster.id),method: 'delete',data:{confirm: "Are your sure !"} ,class: "btn btn-sm btn-danger"
       %table.table.table-bordered
         %caption
           %strong Your payment history
@@ -70,10 +88,11 @@
             %th Payment description
         %tbody
           - @subscription.payments.each_with_index do |payment,index|
+            - next if payment.mc_gross.nil?
             %tr
               %td= index
               %td= payment.txn_id
-              %td= "€#{payment.mc_gross}"
+              %td= "€ #{'%.2f' % payment.mc_gross}"
               %td= payment.payment_date
               %td= payment.payment_status
               %td N/A

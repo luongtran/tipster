@@ -68,8 +68,10 @@ TipsterHero::Application.routes.draw do
   end
   resource :subscription, controller: 'subscription', only: [:show] do
     match :add_tipster, via: [:get, :post]
+    match :change, via: [:get, :post]
     post :update
     post :upgrade
+    post :set_primary
   end
 
   get '/pricing' => 'home#pricing', as: :pricing

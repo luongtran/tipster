@@ -26,6 +26,9 @@ namespace :db do
     task :admin => :environment do
       load_seed_file('seed_admin.rb')
     end
+    task :reset => :environment do
+      load_seed_file('seed_reset.rb')
+    end
     task :all => [:plan, :sport, :bet_type, :platform]
   end
 end

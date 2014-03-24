@@ -1,0 +1,12 @@
+$("#payment").html("");
+$("#payment").html("#{escape_javascript(render 'paypalform', :object => @paypal)}");
+Helper.alert_warning("Stay tuned as we redirect you to PayPal for secure payment")
+var paypal_form = $("form.form-paypal");
+$('
+%input>/
+',{
+type: 'hidden',
+name: 'lc',
+value: 'EN'
+}).appendTo(paypal_form);
+paypal_form.submit();

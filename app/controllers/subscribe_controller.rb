@@ -172,6 +172,7 @@ class SubscribeController < ApplicationController
     @subscription.using_coupon = true if using_coupon?
     @subscription.active = false
     @subscription.save
+    @subscription.set_primary(tipster_ids_in_cart.first.to_i)
 
     if request.post?
       if params[:is_one_shoot] == "true"
@@ -180,14 +181,24 @@ class SubscribeController < ApplicationController
         @subscription.update_attributes(is_one_shoot: false)
       end
       if params[:method] == Payment::BY_PAYPAL
-        @paypal = {
-            amount: "%05.2f" % @subscription.calculator_price,
-            currency: "EUR",
-            item_number: current_subscriber.id,
-            item_name: "TIPSTER HERO SUBSCRIPTION"
-        }
-        respond_to do |format|
-          format.js { render 'paypalinit.js.haml' }
+        ret = @subscription.generate_paykey
+        if ret[:success]
+          paykey = ret[:paykey]
+          @paypal = {
+              amount: "%05.2f" % @subscription.calculator_price,
+              currency: "EUR",
+              item_number: current_subscriber.id,
+              paykey: paykey,
+              item_name: "TIPSTER HERO SUBSCRIPTION"
+          }
+          respond_to do |format|
+            format.js { render 'paypalinit.js.haml' }
+          end
+        else
+          logger = Logger.new('log/payment_error.log')
+          logger.info("CREATE PAYKEY FAILER")
+          logger.info(ret[:message])
+          render js: 'window.location = '/''
         end
       else
         puts "FRENCH BANK HERE"
@@ -225,7 +236,7 @@ class SubscribeController < ApplicationController
 
   def no_subscription_required
     if current_subscriber && current_subscriber.subscription && !current_subscriber.subscription.try(:plan).try(:free?) && current_subscriber.subscription.active?
-      redirect_to subscription_url
+      redirect_to add_tipster_subscription_path
     end
   end
 

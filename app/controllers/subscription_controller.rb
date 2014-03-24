@@ -1,5 +1,5 @@
 class SubscriptionController < ApplicationController
-  before_filter :authenticate_subscriber, only: [:show, :remove_inactive_tipster]
+  before_filter :authenticate_subscriber, only: [:show, :remove_inactive_tipster, :set_primary]
 
   def select_plan
     selected_plan = Plan.find(params[:id])
@@ -22,9 +22,9 @@ class SubscriptionController < ApplicationController
         end
         flash[:show_checkout_dialog] = true
         if tipster_ids_in_cart.size == 0
-            redirect_to pricing_path
+          redirect_to pricing_path
         else
-            redirect_to tipsters_path
+          redirect_to tipsters_path
         end
       end
     else
@@ -33,7 +33,8 @@ class SubscriptionController < ApplicationController
   end
 
   def show
-    @subscription = Subscription.includes(:plan).where(subscriber_id: current_subscriber.id).first
+    #@subscription = Subscription.includes(:plan).where(subscriber_id: current_subscriber.id).first
+    @subscription = current_subscriber.subscription
   end
 
   def remove_inactive_tipster
@@ -58,18 +59,29 @@ class SubscriptionController < ApplicationController
     select_tipsters = Tipster.where(id: tipster_ids_in_cart)
     if request.post?
       if current_subscription.active? && current_subscription.able_to_add_more_tipsters?(select_tipsters.size)
-        select_tipsters.each do |tipster|
-          if current_subscription.tipsters.include?(tipster)
-            puts "TH1"
-            current_subscription.change_tipster(tipster)
-          else
-            puts "TH2"
-            current_subscription.insert_tipster(tipster)
+        current_subscription.insert_tipster(select_tipsters)
+        ret = current_subscription.generate_paykey
+        if ret[:success]
+          paykey = ret[:paykey]
+          @paypal = {
+              amount: "%05.2f" % current_subscription.need_to_paid,
+              currency: "EUR",
+              item_number: current_subscriber.id,
+              paykey: paykey,
+              item_name: "TIPSTER HERO ADDITION TIPSTER"
+          }
+          respond_to do |format|
+            format.js { render 'paypalinit.js.haml' }
           end
+        else
+          logger = Logger.new('log/payment_error.log')
+          logger.info("CREATE PAYKEY FAILER")
+          logger.info(ret[:message])
+          flash[:alert] = "You've already reached subscription limit"
+          render js: 'window.location = "/subscription"'
         end
-        redirect_to subscription_path and return
       else
-        flash[:alert] = "SYSTEM ERROR !!!!"
+        flash[:alert] = "Over limit tipsters!"
         redirect_to subscription_path and return
       end
     else
@@ -79,6 +91,16 @@ class SubscriptionController < ApplicationController
           select_plan: select_plan,
           select_tipsters: select_tipsters
       }
+    end
+  end
+
+  def set_primary
+    @subscription = current_subscriber.subscription
+    response = @subscription.set_primary(params[:id])
+    if response.success
+      render json: {success: true}
+    else
+      render json: {success: false, error: response.error}
     end
   end
 

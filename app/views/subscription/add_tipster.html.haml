@@ -49,5 +49,6 @@
             %td= ['Football','Hourse', 'Tennis', 'Baseball'].sample
             %td= "#{['12.15','20.14','10.3'].sample} %"
             %td= "+ #{(1000..5000).to_a.sample}"
-    = form_tag subscribe_add_tipster_path do
+    = form_tag add_tipster_subscription_path,remote: true do
       = submit_tag "Confirm Adding",class: "btn btn-success"
+    #payment

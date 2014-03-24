@@ -248,6 +248,7 @@ module ApplicationHelper
 
 
   def class_for_subscribe_step(step, current_step)
+    current_step = current_step || 1
     if step < current_step
       'complete'
     elsif step == current_step

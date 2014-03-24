@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140322110636) do
+ActiveRecord::Schema.define(version: 20140324065820) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -142,6 +142,12 @@ ActiveRecord::Schema.define(version: 20140322110636) do
     t.float    "mc_gross"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "paykey"
+    t.float    "amount"
+    t.string   "paid_for"
+    t.string   "tipster_ids"
+    t.boolean  "enable_history",    default: false
+    t.boolean  "is_recurring",      default: false
   end
 
   add_index "payments", ["coupon_code_id"], name: "index_payments_on_coupon_code_id"
@@ -234,6 +240,10 @@ ActiveRecord::Schema.define(version: 20140322110636) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
+    t.boolean  "is_primary",      default: false
+    t.integer  "payment_id"
+    t.datetime "expired_at"
+    t.datetime "active_at"
   end
 
   add_index "subscription_tipsters", ["subscription_id"], name: "index_subscription_tipsters_on_subscription_id"
@@ -242,13 +252,14 @@ ActiveRecord::Schema.define(version: 20140322110636) do
   create_table "subscriptions", force: true do |t|
     t.integer  "subscriber_id"
     t.integer  "plan_id"
-    t.boolean  "using_coupon",  default: false
-    t.boolean  "active",        default: false
+    t.boolean  "using_coupon",   default: false
+    t.boolean  "active",         default: false
     t.datetime "active_at"
     t.datetime "expired_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_one_shoot",  default: false
+    t.boolean  "is_one_shoot",   default: false
+    t.string   "payment_status"
   end
 
   add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id"
