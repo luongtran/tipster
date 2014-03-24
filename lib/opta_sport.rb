@@ -113,7 +113,6 @@ module OptaSport
     end
 
     class BasketballArea < Base
-
     end
     class BasketballCompetition < Base
       def all
@@ -165,6 +164,36 @@ module OptaSport
         end
         seasons
       end
+    end
+
+    # ======================================================================
+    # Tennis Result Classes
+    # ======================================================================
+
+    # Ex: WTA Tour, Sony Open, United States
+    # http://api.core.optasports.com/tennis/get_matches?id=2389&type=season&detailed=yes&statistics=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
+    class TennisSeason < Base
+      def all
+        nodes = @xml_doc.css('competition > season')
+        seasons = []
+        nodes.each do |season|
+          if season['end_date'].to_datetime > Date.today
+            competition = season.parent
+            seasons << {
+                opta_season_id: season['season_id'],
+                opta_competition_id: competition['competition_id'],
+                name: season['name'],
+                start_date: season['start_date'].to_datetime,
+                end_date: season['end_date'].to_datetime,
+            }
+          end
+        end
+        seasons
+      end
+    end
+    class TennisCompetition < Base
+    end
+    class TennisMatch < Base
     end
   end
 
@@ -286,8 +315,7 @@ module OptaSport
       end
 
     end
-    class Baseball < Base
-    end
+
     class Basketball < Base
       AVAILABLE_FUNCTIONS = {
           'get_areas' => {
@@ -318,14 +346,40 @@ module OptaSport
         end
       end
     end
+
+    class Tennis < Base
+      AVAILABLE_FUNCTIONS = {
+          'get_competitions' => {
+              'required_params' => [],
+              'options_params' => %w(area_id authorized),
+              'result_class' => OptaSport::FetchResult::TennisCompetition
+          },
+          'get_matches' => {
+              'required_params' => %w(id type),
+              'options_params' => %w(start_date end_date limit detailed last_updated),
+              'result_class' => OptaSport::FetchResult::TennisMatch
+          },
+          'get_seasons' => {
+              'required_params' => %w(),
+              'options_params' => %w(authorized coverage active id type last_updated),
+              'result_class' => OptaSport::FetchResult::TennisSeason
+          }
+      }
+      AVAILABLE_FUNCTIONS.each do |f_name, settings|
+        define_method f_name do |params = {}|
+          return self.go(f_name, params, settings['result_class'])
+        end
+      end
+    end
+    class Baseball < Base
+    end
     class Handball < Base
     end
     class Hockey < Base
     end
-    class Tennis < Base
-    end
     class FootballUS < Base
     end
+
 
     SPORT_TYPE_TO_CLASS = {
         'soccer' => Soccer,

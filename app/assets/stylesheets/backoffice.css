@@ -5,6 +5,7 @@
  *= require font-awesome.min
  *= require select2
  *= require select2-bootstrap
+ *= require bootsy
  *= require flags
  */
 
@@ -68,4 +69,8 @@ label.control-label {
 
 .select2able {
     width: 100%;
+}
+.wysihtml5-sandbox {
+    width: 100% !important;
+    min-height: 400px;
 }

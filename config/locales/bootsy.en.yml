@@ -1,0 +1,139 @@
+en:
+  hello: "Hello world"
+  language:
+    text: 'Language'
+    icon: '/assets/lang_en_ico.png'
+  menu:
+    pricing: "Pricing"
+    tipster: "Tipsters"
+    tips: "Tips"
+    connect: "Connect"
+    cart: "Shopping Cart"
+    home: "Home"
+    about_us: "About us"
+    policy: "Private Policy"
+    term: "Terms of use"
+    my_profile: "My Profile"
+    my_subscription: "My Subscription"
+    stay_connect: "Stay connected"
+    subscribe:
+      paid:
+        step1: "Shopping cart"
+        step2: "Personal Information"
+        step3: "Share on social network"
+        step4: "Receive your tips"
+        step5: "Payment"
+      free:
+        step1: "Personal Information"
+        step2: "Share on social network"
+        step3: "Welcome"
+  account:
+    invalid: "Email or password is invalid!"
+  views:
+    pagination:
+      first: "&laquo;"
+      last: "&raquo;"
+      previous: "&lsaquo;"
+      next: "&rsaquo;"
+      truncate: "&hellip;"
+  paypal_pending_reasons:
+    none: "No pending reason."
+    address: "The payment is pending because your buyer did not include a confirmed shipping address and your Payment Receiving Preferences is set such that you want to manually accept or deny each of these payments. To change your preference, go to the Preferences section of your Profile."
+    authorization: "The payment is pending because it has been authorized but not settled. You must capture the funds first."
+    echeck: "The payment is pending because it was made by an eCheck that has not yet cleared."
+    intl: "The payment is pending because you hold a non-U.S. account and do not have a withdrawal mechanism. You must manually accept or deny this payment from your Account Overview."
+    multi_currency: "You do not have a balance in the currency sent, and you do not have your Payment Receiving Preferences set to automatically convert and accept this payment. You must manually accept or deny this payment."
+    order: "The payment is pending because it is part of an order that has been authorized but not settled."
+    paymentreview: "The payment is pending while it is being reviewed by PayPal for risk."
+    unilateral: "The payment is pending because it was made to an email address that is not yet registered or confirmed."
+    verify: "The payment is pending because you are not yet verified. You must verify your account before you can accept this payment."
+    other: "The payment is pending for a reason other than those listed above. For more information, contact PayPal customer service"
+  coupon:
+    success_using: "Coupon using successfully, You has been receiver discount %{discount}"
+    invalid: "Your coupon is invalid, Please try again !"
+    is_using: "Your coupon is has been using !"
+    created_successfully: 'Coupon created successfully'
+    applied_successfully: 'Applied counpon successfully'
+    request_denied: 'You can get more coupon.'
+  user:
+    email: "Email"
+    first_name: "First Name"
+    last_name: "Last Name"
+    nick_name: "Nick Name"
+    gender: 'Gender'
+    male: 'Male'
+    female: 'Female'
+    birthday: "Birthday"
+    civility: "Civility"
+    country: "Country"
+    city: "City"
+    address: "Address"
+    zip_code: "Zip code"
+    change_password: "Change Password"
+    password_changed_successfully: "Your password was changed successfully."
+    password_changed_failed: "Change password failed."
+    change_password_fail: "Cannot change your password."
+    update_profile: "Update Profile"
+    last_sign_in: "Last sign in"
+    update_account: "Update account"
+    update_avatar: "Update avatar"
+    account_update_successully: "Your profile was updated successfully."
+    account_update_failed: "Update profile failed."
+    sign_in: "Log in"
+    sign_up: "Sign up"
+    sign_out: "Sign out"
+    account_info: "Account information"
+    my_profile: 'My profile'
+    upgrade: "Upgrade account"
+  tipster_statuses:
+    all: 'All'
+    active: 'Active'
+    inactive: 'Inactive'
+  tipster:
+    description: 'Description'
+    ranking:
+      ranges:
+        last-12-months: 'Last 12 months'
+        last-6-months: 'Last 6 months'
+        last-3-months: 'Last 3 months'
+        last-month: 'Last month'
+        overall: 'Overall'
+      sort_by:
+        yield: 'Yield'
+        profit: 'Profit'
+    units: 'Units'
+  cart:
+    empty: 'Your cart is empty'
+    already_in_cart: 'The tipster already in your cart'
+    free_plan_alert: 'You cannot follow any tipsters with Free plan, please choose another.'
+    limit_add_tipster: "You can add only addtional %{count} tipsters."
+  tip:
+    created_successfully: 'A tip created successfully!'
+  errors:
+    messages:
+      invalid_date: "is not a valid date"
+      before: "must be before %{restriction}"
+      unselect_plan: "Please choose a plan"
+  activerecord:
+    attributes:
+      account:
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Re-type password"
+        submit: "Create Account"
+        subscriber:
+          email: "Email:"
+          password: "Password:"
+          current_password: "Current password:"
+          password_confirmation: "Password confirmation:"
+          remember_me: "Remember me:"
+          first_name: "First name:"
+          last_name: "Last name:"
+      profile:
+        birthday: "Birthday:"
+        address: "Address:"
+        city: "City:"
+        country: "Country:"
+        zip_code: "Zip code:"
+        mobile_phone: "Mobile phone:"
+        telephone: "Telephone:"

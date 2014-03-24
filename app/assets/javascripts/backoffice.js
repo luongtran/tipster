@@ -6,8 +6,10 @@
  = require helper
  = require select2
  = require highcharts/highcharts
+ = require bootsy
  = require common
  = require turbolinks
+
  */
 $(document).ready(function () {
 

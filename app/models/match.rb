@@ -60,6 +60,7 @@ class Match < ActiveRecord::Base
         relation = relation.where(sport_id: sport.id) if sport
         relation
       end
+
       # Filter competition
       if params[:competition].present?
         relation = relation.where(opta_competition_id: params[:competition])
@@ -68,17 +69,18 @@ class Match < ActiveRecord::Base
 
       # Do filter date
       # Filter start date
-      date = Date.today
+
       if params[:date].present?
+        date = Date.today
         begin
           date = params[:date].to_date
           date = Date.today if date < Date.today
         rescue => e
           date = Date.today
         end
-
+        relation = relation.where(start_at: date.beginning_of_day..date.end_of_day)
       end
-      relation = relation.where('start_at >= ?', date)
+
       # Search in name
       if params[:search].present?
         relation = relation.where('name like ?', "%#{params[:search]}%")
