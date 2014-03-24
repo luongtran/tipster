@@ -42,7 +42,7 @@
         %tbody
           - @recent_tips.each do |tip|
             %tr
-              %td= tip.event
+              %td= tip.match.try :name
               %td= tip.sport_name.titleize
               %td= tip.created_at
               %td= tip.odds
@@ -56,3 +56,17 @@
     .panel-heading
       %strong Followers
     .panel-body
+      %table.table.table-bordered.table-hover
+        %thead
+          %tr
+            %th Full Name
+            %th Follow from date
+            %th Status
+        %tbody
+          - @subscribers.each do |subscriber|
+            %tr
+              %td= subscriber.full_name
+              %td= subscriber.created_at
+              %td ...
+
+

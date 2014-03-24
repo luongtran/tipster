@@ -12,6 +12,11 @@ class Backoffice::ProfileController < ProfileController
     end
   end
 
+  def update_description
+    current_tipster.update_description(params[:user][:description])
+    redirect_to after_update_profile_path, notice: I18n.t('user.account_update_successully')
+  end
+
   protected
   def user_params
     params.require(:user).permit Tipster::PROFILE_ATTRS

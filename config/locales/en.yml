@@ -90,6 +90,7 @@ en:
     active: 'Active'
     inactive: 'Inactive'
   tipster:
+    description: 'Description'
     ranking:
       ranges:
         last-12-months: 'Last 12 months'

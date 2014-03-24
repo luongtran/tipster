@@ -1,6 +1,6 @@
 %h2.text-info
   = image_tag @tip.sport.icon_path
-  = @tip.match.name
+  = @tip.match.try(:name) || @tip.event
 -#.form-horizontal
 -#  .form-group
 -#    %label.control-label.col-sm-4
@@ -18,7 +18,7 @@
     = @tip.odds
   %li
     Type of bet:
-    = @tip.bet_type.name
+    = @tip.bet_type.try(:name)
   %li
     Selection:
     = @tip.selection
