@@ -12,7 +12,7 @@ class SubscribeController < ApplicationController
     flash[:alert] = I18n.t("paypal_pending_reasons.#{params[:pending_reason]}") if params[:pending_reason]
     empty_subscribe_session
     # Critial error when IPN not working !!!
-    @payment = current_subscriber.subscription.payments.last
+    @payment = Payment.find_by_paykey(params[:paykey])
   end
 
   def get_coupon_code

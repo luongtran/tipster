@@ -1,7 +1,7 @@
 - payment_service_for  object[:item_number], PAYPAL_ACCOUNT, :amount => object[:amount],:currency => object[:currency], :service => :paypal, :html => {:class=>"form-paypal"} do |service|
   - service.item_name object[:item_name]
   - service.notify_url notify_payment_url(paykey: object[:paykey])
-  - service.return_url subscribe_success_url
+  - service.return_url subscribe_success_url(paykey: object[:paykey])
   - service.cancel_return_url subscribe_payment_url
   - hidden_field_tag :user_id, object[:user_id]
   = submit_tag "",class: 'hidden'

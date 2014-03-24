@@ -46,12 +46,13 @@
             - if @subscription.active_tipsters.present?
               - @subscription.subscription_tipsters.each do |subscription_tipster|
                 - if subscription_tipster.is_primary
-                  %tr.primary
+                  %tr.success
                     %td
                       = subscription_tipster.tipster.full_name
                     %td
                       = subscription_tipster.tipster.email
-                    %td Primary
+                    %td
+                      %span.label.label-primary Primary
                     %td
                       %span.label.label-success= subscription_tipster.active_string
                     %td
@@ -61,12 +62,13 @@
                       - if @subscription.can_change_tipster?
                         = link_to "Unfollow", remove_inactive_tipster_path(subscription_tipster.tipster.id),method: 'delete',data:{confirm: "Are your sure !"} ,class: "btn btn-sm btn-danger"
                 - else
-                  %tr.additional
+                  %tr.info
                     %td
                       = subscription_tipster.tipster.full_name
                     %td
                       = subscription_tipster.tipster.email
-                    %td Additional
+                    %td
+                      %span.label.label-warning Additional
                     %td
                       %span.label.label-success= subscription_tipster.active_string
                     %td
@@ -87,7 +89,7 @@
             %th Payment status
             %th Payment description
         %tbody
-          - @subscription.payments.each_with_index do |payment,index|
+          - @subscription.payments.where(enable_history: true).each_with_index do |payment,index|
             - next if payment.mc_gross.nil?
             %tr
               %td= index

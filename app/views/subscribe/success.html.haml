@@ -1,13 +1,12 @@
 .container
   .row
-    .subscribe-steps{class: "#{@selected_plan.free? ? 'three-steps' : ''}"}
-      = render 'step_header',step: @step,selected_plan: @selected_plan
-  .row
+    .step-header
+      %h1.text-center.text-danger PAYMENT RETURN PAGE !!!
     .step-content.col-md-10.col-md-offset-1
       .panel.panel-default
         .panel-body.text-center
           %h3 Congratulation! Your subscription has been created successfully.
-          %a.btn.btn-primary{href: subscription_path} Go to my subscription
+          %a.btn.btn-success{href: subscription_path} Go to my subscription
           %hr
           %h3 Your payment information
           %table.table.table-bordered

@@ -77,14 +77,18 @@ class SubscriptionController < ApplicationController
           logger = Logger.new('log/payment_error.log')
           logger.info("CREATE PAYKEY FAILER")
           logger.info(ret[:message])
-          flash[:alert] = "You've already reached subscription limit"
           render js: 'window.location = "/subscription"'
         end
       else
-        flash[:alert] = "Over limit tipsters!"
+        flash[:alert] = I18n.t('cart.limit_add_tipster',count: 2)
         redirect_to subscription_path and return
       end
     else
+      if current_subscription.active? && current_subscription.able_to_add_more_tipsters?(select_tipsters.size)
+      else
+        flash[:alert] = I18n.t('cart.limit_add_tipster',count: 2)
+        redirect_to subscription_path and return
+      end
       @return = {
           has_subscription: true,
           current_subscription: current_subscription,
