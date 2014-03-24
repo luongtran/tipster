@@ -80,8 +80,8 @@ $(document).ready(function () {
     });
 
     /* Loading bet from Betclic */
-    $('#available-matches-wrapper').on('click', '.summary', function () {
-        var $match_div = $(this).parent();
+    $('#available-matches-wrapper').on('click', '.btn-view-bets', function () {
+        var $match_div = $(this).closest('.match');
         var $bets_wrapper = $match_div.children('.bets');
         if (!$match_div.hasClass('loaded')) {
             Helper.add_loading_indicator($bets_wrapper);
@@ -181,15 +181,13 @@ $(document).ready(function () {
     });
 
 
-    /* Available matches filtering and grouping */
-    $('#form-filter-available-matches').on('submit', function () {
+    function doFilterMatches(form) {
         $result_wrapper = $('#available-matches-wrapper');
-        var $_this = $(this);
-        $_this.addClass('submiting');
+        form.addClass('submiting');
         $.ajax({
-            url: $(this).attr('action'),
+            url: form.attr('action'),
             type: 'POST',
-            data: $(this).serialize(),
+            data: form.serialize(),
             dataType: 'JSON',
             success: function (response) {
                 if (response.success) {
@@ -200,21 +198,44 @@ $(document).ready(function () {
                 }
             },
             complete: function () {
-                $_this.removeClass('submiting');
+                form.removeClass('submiting');
             }
         });
+    };
+
+    /* Available matches filtering and grouping */
+    $('#form-advanced-search, #form-group-method').on('submit', function () {
+        doFilterMatches($(this));
         return false;
     });
 
     /* Prevent double submit */
-    $('#form-filter-available-matches').on('change', 'input, select', function () {
-        if (!$('#form-filter-available-matches').hasClass('submiting')) {
-            $('#form-filter-available-matches').trigger('submit');
+    $('#form-advanced-search').on('change', 'input, select', function () {
+        if (!$('#form-advanced-search').hasClass('submiting')) {
+            $('#form-advanced-search').trigger('submit');
         }
     });
 
-    $('#form-new-tip').on('submit', function () {
-//        console.log('submit');
-//        return false;
-    }) ;
+    $('#form-group-method').on('change', 'input[name=group_by]', function () {
+        if ($(this).attr('id') !== 'switch-advanced-search-form') {
+            var $form = $('#form-group-method');
+            if (!$form.hasClass('submiting')) {
+                $form.trigger('submit');
+            }
+        }
+        return false;
+    });
+
+    $('.btn-filter-mode').on('click', function () {
+        var $advanced_search_form = $('#form-advanced-search');
+        if ($('#switch-advanced-search-form').is(':checked')) {
+            if (!$advanced_search_form.is(':visible')) {
+                $advanced_search_form.removeClass('hide');
+            }
+        } else {
+            if ($advanced_search_form.is(':visible')) {
+                $advanced_search_form.addClass('hide');
+            }
+        }
+    });
 });

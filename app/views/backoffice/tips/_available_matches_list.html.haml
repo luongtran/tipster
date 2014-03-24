@@ -40,7 +40,12 @@
                     %span.text-info.text-bold
                       = m.name
                 .pull-right
-                  %button.btn.btn-default.btn-xs View Bets
+                  - if mode == 'auto'
+                    %button.btn.btn-default.btn-xs.btn-view-bets
+                      View bets
+                  - else
+                    %a.btn.btn-default.btn-xs{href: new_backoffice_tip_path(match: m.to_s)}
+                      Create tip
               .bets.clearfix.hide-tmp
 .text-center
   - if matches.empty?

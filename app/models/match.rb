@@ -65,16 +65,20 @@ class Match < ActiveRecord::Base
         relation = relation.where(opta_competition_id: params[:competition])
       end
 
+
+      # Do filter date
       # Filter start date
+      date = Date.today
       if params[:date].present?
         begin
           date = params[:date].to_date
+          date = Date.today if date < Date.today
         rescue => e
           date = Date.today
         end
-        relation = relation.where('start_at >= ?', date)
-      end
 
+      end
+      relation = relation.where('start_at >= ?', date)
       # Search in name
       if params[:search].present?
         relation = relation.where('name like ?', "%#{params[:search]}%")

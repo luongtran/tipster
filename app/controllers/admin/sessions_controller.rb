@@ -1,4 +1,4 @@
-class Admin::SessionsController < SessionsController
+class Admin::SessionsController < Devise::SessionsController
   layout 'admin'
 
   def create

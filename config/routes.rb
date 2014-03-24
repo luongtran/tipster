@@ -114,6 +114,7 @@ TipsterHero::Application.routes.draw do
       post :change_password
       post :change_avatar
       post :crop_avatar
+      post :update_description
     end
 
     get 'my_tips', to: 'tips#my_tips'

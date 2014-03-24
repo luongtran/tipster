@@ -27,7 +27,7 @@
       %table.table.table-bordered.table-hover.bgw
         %thead
           %tr
-            %th Event
+            %th Match
             %th Odds
             %th Sport
             %th Type of bet
@@ -42,7 +42,7 @@
                 %a{href: backoffice_tip_path(tip)}= tip.event || tip.match.name
               %td= tip.odds
               %td= tip.sport.name.titleize
-              %td= tip.bet_type.name
+              %td= tip.bet_type.try :name
               %td= tip.selection
               %td= tip.created_at
               %td

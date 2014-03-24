@@ -255,7 +255,14 @@ class Tipster < ActiveRecord::Base
     self.full_name.split(' ').try(:second).try(:capitalize)
   end
 
-  def create_new_tip!(params)
+  def followers
+    subscriptions_tipsters = SubscriptionTipster.where(tipster_id: self.id)
+    subscriptions = subscriptions_tipsters.map { |s_t| s_t.subscription } unless subscriptions_tipsters.empty?
+    subscribers = []
+    unless subscriptions.nil? || subscriptions.empty?
+      subscriber_ids = subscriptions.map { |subscription| subscription.subscriber }
+    end
+    subscribers
   end
 
   # Substract tipster's bankroll after published a tip
@@ -332,6 +339,10 @@ class Tipster < ActiveRecord::Base
     self
   end
 
+  def get_monthy_statistics
+
+  end
+
   def profit_in_string(include_unit = false)
     sign = '+' if @profit > 0
     "#{sign}#@profit #{I18n.t('tipster.units') if include_unit}"
@@ -378,4 +389,7 @@ class Tipster < ActiveRecord::Base
     dates
   end
 
+  def update_description(text)
+    self.update_column :description, text
+  end
 end
