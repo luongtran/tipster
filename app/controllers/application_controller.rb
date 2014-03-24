@@ -113,6 +113,15 @@ class ApplicationController < ActionController::Base
     session[:cart][:tipster_ids].uniq
   end
 
+  def total_tipster
+    if current_subscriber && current_subscriber.subscription
+      total = tipster_ids_in_cart.size + current_subscriber.subscription.tipsters_size
+    else
+      total = tipster_ids_in_cart.size
+    end
+    total
+  end
+
   def empty_subscribe_session
     empty_cart_session
     session[:plan_id] = nil

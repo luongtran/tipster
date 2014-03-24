@@ -17,13 +17,24 @@ class TipstersController < ApplicationController
     if session[:failed_add_tipster_id]
       @choose_tipster = Tipster.find session[:failed_add_tipster_id]
     end
-    if tipster_ids_in_cart.second
-      @second_tipster = Tipster.find tipster_ids_in_cart.second
-    end
-    if tipster_ids_in_cart.third
-      @third_tipster = Tipster.find tipster_ids_in_cart.third
+    if tipster_ids_in_cart.size == total_tipster
+      if tipster_ids_in_cart.second
+        @second_tipster = Tipster.find tipster_ids_in_cart.second
+      end
+      if tipster_ids_in_cart.third
+        @third_tipster = Tipster.find tipster_ids_in_cart.third
+      end
+    else
+      if total_tipster - tipster_ids_in_cart.size == 1
+        @second_tipster = Tipster.find tipster_ids_in_cart.first if tipster_ids_in_cart.first
+        @third_tipster = Tipster.find tipster_ids_in_cart.second if tipster_ids_in_cart.second
+      elsif total_tipster - tipster_ids_in_cart.size == 2
+        @second_tipster = current_subscriber.subscription.active_tipsters.second
+        @third_tipster = Tipster.find tipster_ids_in_cart.first if tipster_ids_in_cart.first
+      end
     end
     @tipster_first = session[:tipster_first].present?
+    @total = total_tipster
   end
 
   def show

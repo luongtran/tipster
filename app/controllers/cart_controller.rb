@@ -24,10 +24,14 @@ class CartController < ApplicationController
         remove_tipster_from_cart(session[:old_id])
         session[:old_id] = nil
       end
-      count_after_added = tipster_ids_in_cart.size + 1
+      count_after_added = total_tipster + 1
       if count_after_added > (selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS)
         flash[:alert] = I18n.t('cart.limit_add_tipster', count: Subscription::MAX_ADDITIONAL_TIPSTERS)
-        redirect_to cart_url and return
+        if tipster_ids_in_cart.size > 0
+          redirect_to cart_url and return
+        else
+          redirect_to subscription_path and return
+        end
       end
 
       tipster_id = params[:id]

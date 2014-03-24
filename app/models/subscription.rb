@@ -91,7 +91,9 @@ class Subscription < ActiveRecord::Base
     return price.round(2)
   end
 
-
+  def tipsters_size
+    self.active_tipsters.size
+  end
   def need_to_paid
     if self.active
       expires = self.inactive_tipsters.size

@@ -1,6 +1,6 @@
 -#Popup for confirm information when choose tipster or plan
 #modal-confirm-checkout.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
-  - if tipster_ids_in_cart.size <= 1
+  - if @total <= 1
     .modal-dialog
       .modal-content
         .modal-header
@@ -10,7 +10,7 @@
             = t('menu.cart')
         .modal-body
           .row
-            %p= header_menu_adding(tipster_ids_in_cart.size,@choose_tipster,@selected_plan)
+            %p= header_menu_adding(@total,@choose_tipster,@selected_plan)
           .row.adding
             .adding-header
               .col-md-6
@@ -92,7 +92,7 @@
                               Change tipster
         .modal-footer
           - if (selected_plan.present? && @choose_tipster.present?)
-            = hidden_field_tag :show_adding_popup,(tipster_ids_in_cart.size + 1 <= (@selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS))
+            = hidden_field_tag :show_adding_popup,(@total + 1 <= (@selected_plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS))
             %a.btn.checkoutbtn#confirm-adding{href: 'javascript:void(0);'} Process checkout
           - else
             = hidden_field_tag :show_adding_popup,false
@@ -114,9 +114,9 @@
           .row.adding
             .adding-header
               .col-md-6
-                %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @tipster_first)[:left]
+                %p.text-center= header_menu_adding_popup(@total + 1, @tipster_first)[:left]
               .col-md-6
-                %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @tipster_first)[:right]
+                %p.text-center= header_menu_adding_popup(@total + 1, @tipster_first)[:right]
             .adding-info
               .col-md-5
                 .tipster_info
@@ -161,7 +161,7 @@
                       %li
                         %button.submitLink{"data-dismiss" => "modal", type: "button"} Choose tipster
         .modal-footer
-          %a.btn.checkoutbtn{href: subscribe_checkout_path} Process checkout
+          %a.btn.checkoutbtn{href: subscribe_checkout_path} No thanks,Process checkout
 #modal-confirm-adding.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", role: "dialog", tabindex: "-1"}
   .modal-dialog
     .modal-content
@@ -179,9 +179,9 @@
         .row.adding
           .adding-header
             .col-md-6
-              %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @tipster_first)[:left]
+              %p.text-center= header_menu_adding_popup(@total + 1, @tipster_first)[:left]
             .col-md-6
-              %p.text-center= header_menu_adding_popup(tipster_ids_in_cart.size + 1, @tipster_first)[:right]
+              %p.text-center= header_menu_adding_popup(@total + 1, @tipster_first)[:right]
           .adding-info
             .col-md-5
               .tipster_info
@@ -230,4 +230,4 @@
                       -#  Choose tipster
                       %button.submitLink{"data-dismiss" => "modal", type: "button"} Choose tipster
       .modal-footer
-        %a.btn.checkoutbtn{href: subscribe_checkout_path} Process checkout
+        %a.btn.checkoutbtn{href: subscribe_checkout_path} No thanks,Process checkout

@@ -15,7 +15,7 @@
                     = fal.first
                     %br
                     = fal.last
-                  = image_tag(tipster.avatar_url || 'demo.jpg', width: '210', class: 'avatar img-responsive')
+                  = image_tag(tipster.avatar_url || 'demo.jpg', width: '162', class: 'avatar img-responsive')
                 .hotTipster-foot
                   .hotTipster-info
                     %span.proofed
@@ -28,7 +28,7 @@
                       %b
                         = "#{rand(0..100)}%"
                   %a{href: "#{tipster_path(tipster)}",class: "see-profile-link" } See Profile
-            = image_tag  'headads.png',style: "height: 360px"
+            = image_tag  'headads.png',style: "height: 360px;float:left"
   #board-gray
     .board-gray-inner.container.clearfix
       %h4.text-slim.man.pull-left Stop gambling, invest...  get tips from <br>proven proffesional tipsters

@@ -56,7 +56,7 @@
                     %td
                       %span.label.label-success= subscription_tipster.active_string
                     %td
-                      = subscription_tipster.active_at.strftime("%m/%d/%Y")
+                      -#= subscription_tipster.active_at.strftime("%m/%d/%Y")
                     %td
                       = subscription_tipster.expired_at.strftime("%m/%d/%Y")
                       - if @subscription.can_change_tipster?
@@ -72,7 +72,7 @@
                     %td
                       %span.label.label-success= subscription_tipster.active_string
                     %td
-                      = subscription_tipster.active_at.strftime("%m/%d/%Y")
+                      -#= subscription_tipster.active_at.strftime("%m/%d/%Y")
                     %td
                       = subscription_tipster.expired_at.strftime("%m/%d/%Y")
                       - if @subscription.can_change_tipster?
