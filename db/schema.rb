@@ -242,8 +242,8 @@ ActiveRecord::Schema.define(version: 20140324065821) do
     t.string   "type"
     t.boolean  "is_primary",      default: false
     t.integer  "payment_id"
-    t.datetime "expired_at"
     t.datetime "active_at"
+    t.datetime "expired_at"
   end
 
   add_index "subscription_tipsters", ["subscription_id"], name: "index_subscription_tipsters_on_subscription_id"

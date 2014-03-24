@@ -10,14 +10,14 @@
         .col-lg-3
           .form-group
             %label.control-label.col-sm-3
-              Sport:
+              Sport
             .col-sm-7
               = select_tag :sport, options_for_select(sport_filter_for_matches(@tipster_sports)), class: 'select2able', 'data-no-search' => true
         .col-lg-3
           - max_date = 7.days.from_now.to_date.to_s
-          - min_date = (Date.today + 1.day).to_s
+          - min_date = Date.today.to_s
           .form-group
-            %label.control-label.col-sm-3 Date:
+            %label.control-label.col-sm-3 Date
             .col-sm-7
               %input.text-center.date-picker.limited{type: :text, name: 'date', 'data-max-date' => max_date, 'data-min-date' => min_date}
         .col-lg-3

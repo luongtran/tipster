@@ -6,6 +6,7 @@ class ActionDispatch::Routing::Mapper
 end
 
 TipsterHero::Application.routes.draw do
+  mount Bootsy::Engine => '/bootsy', as: 'bootsy'
   root 'home#index'
 
   devise_for :accounts, controllers: {

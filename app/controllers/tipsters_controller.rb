@@ -2,6 +2,7 @@ class TipstersController < ApplicationController
   before_action :find_tipster, only: [:show, :detail_statistics, :last_tips, :description, :profile]
   # GET /tipsters
   before_action :load_subscribe_data
+
   def index
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
     @selected_plan = selected_plan
@@ -48,6 +49,8 @@ class TipstersController < ApplicationController
 
   def last_tips
     @tipster.get_statistics(ranking: Tipster::OVERALL)
+    @tipster_sports = @tipster.sports
+    @tips = @tipster.tips.load_data(params)
   end
 
   def description

@@ -30,4 +30,7 @@ $(document).ready(function () {
             startDate: startDate
         });
     }
+
+    /* Text editor with bootstrap-wysiwyg: http://mindmup.github.io/bootstrap-wysiwyg/*/
+
 });
