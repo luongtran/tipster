@@ -39,7 +39,7 @@
           - @tips.each do |tip|
             %tr
               %td.text-info
-                %a{href: backoffice_tip_path(tip)}= tip.event || tip.match.name
+                %a{href: backoffice_tip_path(tip)}= tip.match.name
               %td= tip.odds
               %td= tip.sport.name.titleize
               %td= tip.bet_type.try :name

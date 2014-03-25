@@ -119,7 +119,7 @@ class Tip < ActiveRecord::Base
   # INSTANCE METHODS
   # ===========================================================================
   def to_param
-    "#{self.id}-#{self.event.try(:parameterize)}"
+    "#{self.id}-#{self.match.try(:name)}"
   end
 
   # Call after admin validate the tip. Send tip and subtract bankroll

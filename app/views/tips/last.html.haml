@@ -42,7 +42,7 @@
               - @tips.each do |tip|
                 %tr
                   %td.text-info
-                    %a{href: tip_path(tip)}= tip.event
+                    %a{href: tip_path(tip)}= tip.match.try(:name)
                   %td= tip.odds
                   %td
                     %a.text-warning{href: tipster_path(tip.author)}= tip.author.full_name
