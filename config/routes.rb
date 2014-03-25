@@ -128,7 +128,8 @@ TipsterHero::Application.routes.draw do
       end
     end
 
-
+    resources :matches, only: [:show] do
+    end
   end
 
   # ==============================================================================

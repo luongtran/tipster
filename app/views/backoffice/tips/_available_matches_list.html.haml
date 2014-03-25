@@ -11,12 +11,13 @@
       - sport = matches.first.sport
       - group_title = "#{image_tag sport.icon_path} #{sport.name.titleize}".html_safe
     - else
-      - group_title = group.strftime("%A, %b %d, %Y")
+      - group_title = group.strftime("%A,%d %b,%Y")
 
     - index += 1
     .panel{class: "#{index == 1 ? 'panel-success' : 'panel-default'}"}
       .panel-heading
         %h4.panel-title
+
           %a{"data-parent" => "#matches-on-date", "data-toggle" => "collapse", href: "#abcxyz-panel-#{index}"}
             %span.text-bold
               = group_title
@@ -25,11 +26,13 @@
       .panel-collapse.collapse{id: "abcxyz-panel-#{index}", class: "#{'in' if index == 1}" }
         .panel-body
           - matches.each do |m|
+
             .match.clearfix{data: {url: find_bets_on_match_backoffice_tips_path(match_id: m.opta_match_id)}}
               .summary
                 .match-hour
                   = m.start_at.strftime("%H:%M")
                 .match-name
+
                   .text-muted
                     - unless group_by == 'sport'
                       = image_tag m.sport.icon_path
@@ -37,16 +40,17 @@
                       \/
                     = m.competition.try(:name)
                     \/
-                    %span.text-info.text-bold
-                      = m.name
-                .pull-right
-                  - if mode == 'auto'
-                    %button.btn.btn-default.btn-xs.btn-view-bets
-                      View bets
-                  - else
-                    %a.btn.btn-default.btn-xs{href: new_backoffice_tip_path(match: m.to_s)}
-                      Create tip
-              .bets.clearfix.hide-tmp
+                    %a{href: backoffice_match_path(m), target: '_blank'}
+                      %span.text-info.text-bold
+                        = m.name
+                -#.pull-right
+                -#  - if mode == 'auto'
+                -#    %button.btn.btn-default.btn-xs.btn-view-bets
+                -#      View bets
+                -#  - else
+                -#    %a.btn.btn-default.btn-xs{href: new_backoffice_tip_path(match: m.to_s)}
+                -#      Create tip
+              -#.bets.clearfix.hide-tmp
 .text-center
   - if matches.empty?
     .text-danger.text-center

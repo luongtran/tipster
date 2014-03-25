@@ -1,27 +1,19 @@
 - if bets.empty?
-  %p.text-center.text-danger
-    %i Not found any available bets on Betclic bookmarker!
+  %p.text-danger
+    %i Not found any bets on Betclic for this match!
 - else
   #bets-on-match
-    %ul.nav.nav-tabs
-      - bets.each_with_index do |bet,index|
-        %li{class: "#{'active' if index == 0}"}
-          %a{"data-toggle" => "tab", href: "#bet-type-#{bet[:code]}"}= bet[:name]
-    .tab-content
-      - bets.each_with_index do |bet, index|
-        .tab-pane.fade{id: "bet-type-#{bet[:code]}", class: "#{'active in' if index == 0}" }
-          - bet[:choices].each do |choice|
-            .bet-choice
-              %span.text-bold
-                - choice_name = choice[:name]
-                - choice_name.gsub!('%1%',match.team_a)
-                - choice_name.gsub!('%2%',match.team_b)
-                = choice_name
-              %button.btn.btn-sm.btn-default.choice-odd-button{data: {'bet-type-code' => bet[:code], odd: choice[:odd],
-                  'choice-name' => choice_name, 'match-id' => match.opta_match_id, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
-                = choice[:odd]
-.mam.text-center
-  %hr
-  %a.btn.btn-sm.btn-warning{href: new_backoffice_tip_path(match: match.to_s)}
-    Create tip with your own bet
+    - bets.each_with_index do |bet, index|
+      %h4= bet[:name]
+      - bet[:choices].each do |choice|
+        .bet-choice
+          %span.text-bold
+            - choice_name = choice[:name]
+            - choice_name.gsub!('%1%',match.team_a)
+            - choice_name.gsub!('%2%',match.team_b)
+            = choice_name
+          %button.btn.btn-sm.btn-default.choice-odd-button{data: {'bet-type-code' => bet[:code], odd: choice[:odd],
+              'choice-name' => choice_name, 'match-id' => match.opta_match_id, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
+            = choice[:odd]
+      %hr
 

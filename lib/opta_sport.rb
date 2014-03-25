@@ -35,7 +35,7 @@ module OptaSport
         @xml_doc = xml_doc
       end
     end
-
+    # Old matches: http://api.core.optasports.com/soccer/get_matches?end_date=2014-03-25&id=8318&type=season&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
     # Example URL: http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
     # Response XML structure: / > competition > season > round > match
     # Return array of matches found

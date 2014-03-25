@@ -1,0 +1,36 @@
+= image_tag 'circle_loading.gif', class: 'hide'
+.row
+  .pull-right
+    %a.btn.btn-link.btn-xs{href: available_matches_backoffice_tips_path(mode: 'auto')} << Back to Available Matches
+  .mam
+    .text-muted
+      = image_tag @match.sport.icon_path
+      = @match.sport.name.titleize
+      \/
+      = @match.competition.try(:name)
+    %h2.text-info= @match.name
+    %p
+      Start at:
+      %span.text-bold= @match.start_at.strftime("%A %d %b %Y - %H:%M")
+    %p
+      Stadium:
+      %span.text-bold Xyz
+  .mam
+    %a.btn.btn-sm.btn-warning{href: new_backoffice_tip_path(match: @match)} Create tip with your own bet
+.row.clearfix
+  %hr
+  %h3.text-info Available bets
+  .mal
+    .bets-on-match.remote-data{'data-url' => find_bets_on_match_backoffice_tips_path(match_id: @match.opta_match_id)}
+-# The hidden dialog to confirm select odd
+#confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog.modal-md
+    .modal-content
+      .modal-header.text-warning
+        %h4.modal-title Please confirm your selection
+      .modal-body
+        .selection-infor
+        .row.text-center
+          = form_for :nothing, url: confirm_backoffice_tips_path, :method => 'post' do |f|
+            %button.btn.btn-success#submiter{type: :submit} Confirm
+            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
