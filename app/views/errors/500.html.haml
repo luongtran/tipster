@@ -1,0 +1,12 @@
+- content_for :title do
+  Server Error
+
+.container.bgw.text-center.error-500
+  .mam
+    %h1{style: 'font-size: 150px'} 500
+    %h4.text-danger
+      Internal Server Error.
+    %h4.text-danger
+      Sorry, something went wrong.
+    %a.btn.btn-default.btn-sm{href: root_path} Return to HomePage
+

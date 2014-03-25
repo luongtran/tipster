@@ -89,4 +89,3 @@ TipsterHero::Application.configure do
       :enable_starttls_auto => true
   }
 end
-API_AUTHENTICATION = 'username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3'
