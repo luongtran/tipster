@@ -2,6 +2,7 @@ class Worker
   DAY_INTERVAL = 7
   class << self
     # Get matches on active seasons
+    # http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
     def update_matches
       # TODO: after get matches, try to find id on odds feed from betclic
       sports = Sport.where(name: %w(football basketball))
@@ -37,20 +38,29 @@ class Worker
     def update_seasons
       # http://api.core.optasports.com/soccer/get_seasons?authorized=yes&active=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
       # Option: id=13&type=competition
-      sports = Sport.where(name: %w(football basketball tennis))
-      sports.each do |sport|
+
+      founded_seasons = []
+      competitions = Competition.all
+
+      competitions.each do |competition|
+        sport = competition.sport
         fetcher = OptaSport::Fetcher.send(sport.name)
+
         if fetcher.respond_to?(:get_seasons)
           res = fetcher.get_seasons(
+              id: competition.opta_competition_id,
+              type: 'competition',
               authorized: 'yes',
               active: 'yes'
           )
           if fetcher.success?
-            seasons = res.all
-            seasons.each do |season|
-              Season.create(season)
-            end
+            founded_seasons += res.all
           end
+        end
+
+        # Saving to DB
+        founded_seasons.each do |season_attrs|
+          Season.create(season_attrs)
         end
       end
 
@@ -81,5 +91,36 @@ class Worker
       end
       compts
     end
-  end
+
+    def old_soccer_matches
+      require 'csv'
+      sport = Sport.find_by!(name: 'football')
+      # Load active seasons
+      end_date = Date.today
+      founded_matches = []
+      fetcher = OptaSport::Fetcher.send(sport.name)
+      sport.seasons.each do |season|
+        # Initial fetcher
+        # Start fetching
+        if fetcher.respond_to?(:get_matches)
+          res = fetcher.get_matches(
+              id: season.opta_season_id,
+              type: 'season',
+              end_date: end_date.to_s
+          )
+          if fetcher.success?
+            founded_matches += res.all.map do |match_attrs|
+              match_attrs.merge(sport_name: sport.name)
+            end
+          else
+            puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
+          end
+        end
+
+      end # End seasons
+      founded_matches
+    end
+
+  end # End class block
+
 end

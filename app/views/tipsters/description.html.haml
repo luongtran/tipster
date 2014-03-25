@@ -64,5 +64,5 @@
   .container
     .panel.panel-default
       .panel-body
-        %p= @tipster.description.html_safe
+        %p= @tipster.description.try :html_safe
 

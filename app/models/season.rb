@@ -3,6 +3,7 @@
 # Table name: seasons
 #
 #  id                  :integer          not null, primary key
+#  competition_id      :integer
 #  opta_season_id      :string(255)
 #  opta_competition_id :string(255)
 #  name                :string(255)
@@ -14,6 +15,5 @@
 
 class Season < ActiveRecord::Base
   belongs_to :competition, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
-  validates :opta_season_id, :competition, uniqueness: true
-
+  validates_uniqueness_of :opta_season_id, scope: [:opta_competition_id]
 end

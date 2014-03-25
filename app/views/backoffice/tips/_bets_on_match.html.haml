@@ -1,6 +1,9 @@
 - if bets.empty?
   %p.text-danger
     %i Not found any bets on Betclic for this match!
+  %p
+    %a.btn.btn-warning.btn-xs{href: new_backoffice_tip_path(match: match)}
+      Create tip with your own bet
 - else
   #bets-on-match
     - bets.each_with_index do |bet, index|

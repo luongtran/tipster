@@ -22,26 +22,6 @@ Helper = {
         return $(div);
     },
 
-    /* Maintain
-     confirm_delete_modal: function (message, delete_url) {
-     var html =
-     '<div class="modal fade"> \
-     <div class="modal-header"> \
-     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> \
-     <h3 class="text-warning"> Confirmation </h4> \
-     </div> \
-     <div class="modal-body text-center">  \
-     <p style="font-size: 16px;">An error has occurred. The operation could not be completed.</p> \
-     </div> \
-     <div class="modal-footer"> \
-     <form url="' + delete_url '" method="POST">\
-     \
-     <a href="#" class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</a> \
-     </form>\
-     </div> \
-     </div>';
-     },
-     */
     // Append a message panel to #flash element.
     flash_message: function (type, message, delay_time, container, append) {
         var msg = this.create_message_panel(type, message);
@@ -62,8 +42,7 @@ Helper = {
             }, delay_time);
         }
     },
-    // To prevent double submit on some old browsers like Safari,...
-    // This script can combine with Rails option :disable_with => ""
+    // To prevent double submit form
     prevent_double_submit: function () {
         $("form").on("submit", function (e) {
             if ($(this).hasClass("submitting")) {

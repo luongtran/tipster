@@ -59,7 +59,7 @@ TipsterHero::Application.configure do
 
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-  # config.assets.precompile += %w( search.js )
+  config.assets.precompile += %w( backoffice.js backoffice.css )
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -78,4 +78,3 @@ TipsterHero::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 end
-API_AUTHENTICATION = 'username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3'

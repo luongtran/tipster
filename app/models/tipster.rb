@@ -60,7 +60,7 @@ class Tipster < ActiveRecord::Base
     end
   end
 
-  has_and_belongs_to_many :sports
+  has_and_belongs_to_many :sports, uniq: true
   mount_uploader :avatar, AvatarUploader
 
   # ==============================================================================

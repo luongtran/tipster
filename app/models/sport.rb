@@ -8,7 +8,7 @@
 #
 
 class Sport < ActiveRecord::Base
-  has_and_belongs_to_many :tipsters
+  has_and_belongs_to_many :tipsters, uniq: true
   has_many :bet_types
   has_many :competitions
   has_many :seasons, through: :competitions

@@ -2,6 +2,7 @@ football:
   -
     code: 'match_odds'
     name: 'Match odds'
+    other_name: 'Match result, 1X2, Three ways'
     betclic_code: 'Ftb_Mr3'
     line: 'no'
   -

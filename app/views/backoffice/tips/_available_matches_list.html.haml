@@ -11,7 +11,7 @@
       - sport = matches.first.sport
       - group_title = "#{image_tag sport.icon_path} #{sport.name.titleize}".html_safe
     - else
-      - group_title = group.strftime("%A,%d %b,%Y")
+      - group_title = group.strftime("%A %d %b %Y")
 
     - index += 1
     .panel{class: "#{index == 1 ? 'panel-success' : 'panel-default'}"}
@@ -43,14 +43,14 @@
                     %a{href: backoffice_match_path(m), target: '_blank'}
                       %span.text-info.text-bold
                         = m.name
-                -#.pull-right
-                -#  - if mode == 'auto'
-                -#    %button.btn.btn-default.btn-xs.btn-view-bets
-                -#      View bets
-                -#  - else
-                -#    %a.btn.btn-default.btn-xs{href: new_backoffice_tip_path(match: m.to_s)}
-                -#      Create tip
-              -#.bets.clearfix.hide-tmp
+                .pull-right
+                  - if mode == 'auto'
+                    %button.btn.btn-default.btn-xs.btn-view-bets
+                      View bets
+                  - else
+                    %a.btn.btn-warning.btn-xs{href: new_backoffice_tip_path(match: m.to_s)}
+                      Create tip with your own bet
+              .bets.clearfix.hide-tmp
 .text-center
   - if matches.empty?
     .text-danger.text-center
