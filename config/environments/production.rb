@@ -83,8 +83,8 @@ TipsterHero::Application.configure do
       :address => "smtp.gmail.com",
       :port => "587",
       :domain => "gmail.com",
-      :user_name => "fsrteam.demo",
-      :password => "mE5[+7(]5V'>ZC9y",
+      :user_name => "tipsterhero.demo",
+      :password => "123qwe!@#",
       :authentication => "plain",
       :enable_starttls_auto => true
   }
