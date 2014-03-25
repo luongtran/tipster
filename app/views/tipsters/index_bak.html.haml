@@ -1,0 +1,83 @@
+= content_for(:title, "Tipster Ranking")
+- content_for :current_menu, 'tipsters'
+.tipster-list#tipster_list
+  .tipster-list-inner.container
+    .tipster-list-line1
+      %ul.list-inline
+        %li
+          %a{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
+        - @sports.each do |sport|
+          %li
+            %a{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
+    .tipster-list-line2.clearfix
+      .pull-left
+        %ul.list-inline.list-unstyled.mbn.rank-ranges
+          - Tipster::RANKING_RANGES.each do |range|
+            %li
+              %a{href: tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
+                = t("tipster.ranking.ranges.#{range}").titleize
+      .pull-right
+        %span.mrs.text-muted Sort by
+        = select_tag :sort, options_for_select(ranking_sort_by_for_select), class: 'select-as-links'
+        %span.mrs.text-muted Filter by status
+        = select_tag :status, options_for_select(tipster_statuses_for_select(tipsters_path)), class: 'select-as-links'
+    .tipster-list-table#tipster-list-table
+      .row
+        .col-md-12
+          %table.table.table-hover
+            %thead
+              %tr
+                %th Tipster
+                %th Profit
+                %th Yield
+                %th
+                  = ("N" + content_tag(:sup, 'o')).html_safe
+                  of tips
+                %th Hit Rate
+                %th Avg.Odds
+                %th Profitable Months
+                %th
+            %tbody
+              - @tipsters.each_with_index do |tipster,index|
+                %tr
+                  %td
+                    = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar-mini'
+                    %a.tipster-name{href: tipster_path(tipster)}
+                      = tipster.full_name
+                    .tipster-profit-chart
+                      = image_tag profit_img_chart_url_for(tipster.profit_values_for_chart), alt: 'Profit chart'
+                  %td= tipster.profit_in_string
+                  %td= tipster.yield_in_string
+                  %td= tipster.number_of_tips
+                  %td= tipster.hit_rate_in_string
+                  %td= tipster.avg_odds
+                  %td= tipster.profitable_months
+                  %td.text-center
+                    - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
+                      %button.btn.btn-sm.btn-default Already purchase
+                    - else
+                      %button.btn.btn-sm.btn-default.btn-add-to-cart{data: {'tipster-id' => tipster.id}, class: "#{'disabled' if tipster_ids_in_cart.include?(tipster.id.to_s)}"}
+                        %i.glyphicon.glyphicon-plus.mrs
+                        Subscribe
+          - if @tipsters.empty?
+            .text-center.clearfix
+              %br
+              %p.text-warning
+                Not found any tipsters match!
+  #top_tipsters_of_weeks
+    %h4.text-slim.text-success.text-center Top 3 of the week
+    %hr.mbs.mts
+
+      -#.tipster-top-body.remote-data{data: {url: top_three_tipsters_path(sport: query_params[:sport]), 'error-msg' => 'Failed to load top 3 of the week.'}}
+      .tipster-top-body
+        - @top_3.each do |tipster|
+          %a{href: tipster_path(tipster)}
+            .tipster-top-unit.text-center
+              = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar'
+              .tipster-top-name.text-success.text-bold
+                = tipster.full_name
+  - if @show_checkout_dialog
+    = render 'shared/pop_up_adding', choose_tipster: @choose_tipster,selected_plan: @selected_plan,second_tipster: @second_tipster,third_tipster: @third_tipster,tipster_first: @tipster_first
+
+= simple_form_for :nothing, url: add_tipster_cart_path, html: {id: 'add-to-cart-form'} do
+  = hidden_field_tag :id

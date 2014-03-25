@@ -6,7 +6,8 @@ class TipstersController < ApplicationController
   def index
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
     @selected_plan = selected_plan
-    @tipsters = Tipster.load_data(params)
+    #@tipsters = Tipster.load_data(params)
+    @tipsters = Tipster.all
     @top_3 = Tipster.top_3_of_previous_week
     @sports = Sport.order('position asc')
     if current_subscriber && current_subscriber.has_active_subscription?

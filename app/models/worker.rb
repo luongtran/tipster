@@ -92,7 +92,7 @@ class Worker
       compts
     end
 
-    def old_soccer_matches
+    def old_matches
       require 'csv'
       sports = Sport.where("code in (?)", ['soccer', 'basketball'])
       # Load active seasons
@@ -111,7 +111,7 @@ class Worker
             )
             if fetcher.success?
               founded_matches += res.all.map do |match_attrs|
-                match_attrs.merge(sport_name: sport.name)
+                match_attrs.merge(sport_id: sport.id)
               end
             else
               puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
@@ -121,6 +121,9 @@ class Worker
         end # End seasons
       end
 
+      founded_matches.each do |match_attrs|
+        Match.create! match_attrs
+      end
       founded_matches
     end
 
