@@ -34,6 +34,7 @@ group :doc do
 end
 
 gem "thin"
+gem "therubyracer"
 
 # For authentication
 gem 'devise'
