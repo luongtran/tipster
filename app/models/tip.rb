@@ -86,7 +86,7 @@ class Tip < ActiveRecord::Base
 
     def load_data(params = {}, relation = self)
       relation = perform_filter_params(params)
-      result = relation.includes([:author, :sport, :bet_type]).order('created_at desc')
+      result = relation.includes([:author, :sport, :bet_type, :match]).order('created_at desc')
     end
 
     def perform_filter_params(params, relation = self)
