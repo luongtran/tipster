@@ -23,7 +23,7 @@
                   .tipster_info
                     %ul.list-unstyled
                       %li.text-center= @choose_tipster.full_name
-                      %li.responsive-image= image_tag @choose_tipster.avatar.url(:thumb) || 'demo.jpg'
+                      %li.responsive-image= image_tag 'demo.jpg'
                       %li
                         = simple_form_for :nothing,url: subscribe_change_tipster_path do
                           = hidden_field_tag :old_id,@choose_tipster.id

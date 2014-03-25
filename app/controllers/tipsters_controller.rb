@@ -8,7 +8,7 @@ class TipstersController < ApplicationController
     @selected_plan = selected_plan
     #@tipsters = Tipster.load_data(params)
     @tipsters = Tipster.all
-    @top_3 = Tipster.top_3_of_previous_week
+    @top_3 = Tipster.top_3_of_previous_week || []
     @sports = Sport.order('position asc')
     if current_subscriber && current_subscriber.has_active_subscription?
       @tipsters_in_subscription = current_subscriber.subscription.active_tipsters

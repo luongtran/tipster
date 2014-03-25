@@ -45,8 +45,8 @@
                     %a.tipster-name{href: tipster_path(tipster)}
                       = tipster.full_name
                     .tipster-profit-chart
-                      = image_tag profit_img_chart_url_for(tipster.profit_values_for_chart), alt: 'Profit chart'
-                  %td= tipster.profit_in_string
+                      = image_tag profit_img_chart_url_for([]), alt: 'Profit chart'
+                  %td= rand(-300..1500)
                   %td= tipster.yield_in_string
                   %td= tipster.number_of_tips
                   %td= tipster.hit_rate_in_string
