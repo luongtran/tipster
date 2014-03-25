@@ -14,6 +14,7 @@ class Sport < ActiveRecord::Base
   has_many :competitions
   has_many :seasons, through: :competitions
 
+  has_many :matches
   validates :code, presence: true, uniqueness: {case_sensitive: false}
 
   after_create :auto_position
