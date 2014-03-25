@@ -8,7 +8,7 @@
           %a{href: tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
         - @sports.each do |sport|
           %li
-            %a{href: tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
+            %a{href: tipsters_path(sport_filter_param(sport.code)), class: class_for_sport_filter(sport.code)}= sport.name.titleize
     .tipster-list-line2.clearfix
       .pull-left
         %ul.list-inline.list-unstyled.mbn.rank-ranges
@@ -45,8 +45,8 @@
                     %a.tipster-name{href: tipster_path(tipster)}
                       = tipster.full_name
                     .tipster-profit-chart
-                      = image_tag profit_img_chart_url_for([]), alt: 'Profit chart'
-                  %td= rand(-300..1500)
+                      = image_tag profit_img_chart_url_for(tipster.profit_values_for_chart), alt: 'Profit chart'
+                  %td= tipster.profit_in_string
                   %td= tipster.yield_in_string
                   %td= tipster.number_of_tips
                   %td= tipster.hit_rate_in_string

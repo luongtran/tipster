@@ -36,10 +36,10 @@ tipsters.each do |tipster|
           advice: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy.',
           odds: rand(1..5.5).round(1),
           free: false,
-          status: Tip::STATUS_PUBLISHED,
+          status: Tip::STATUS_FINISHED,
           correct: [false, true].sample,
           published_at: created_at + rand(1..3).hours + rand(10..30).minutes,
-          published_by: admins.sample,
+          published_by: admins.sample.try :id,
           created_at: created_at,
           updated_at: created_at,
       )

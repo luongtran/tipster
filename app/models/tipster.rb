@@ -125,7 +125,7 @@ class Tipster < ActiveRecord::Base
     end
 
     def perform_sport_param(sport, relation = self)
-      sport = Sport.find_by(name: sport)
+      sport = Sport.find_by(code: sport)
       relation = relation.where(id: sport.tipster_ids) if sport
       relation
     end
