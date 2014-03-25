@@ -13,6 +13,7 @@ else
     end_date = Date.today - 3.days
     sports_of_tipsters = tipster.sports
     date_have_tip = start_date
+
     while date_have_tip < end_date
       number_tips_on_the_date = rand(1..2)
       sport_of_tip = sports_of_tipsters.sample
@@ -25,7 +26,6 @@ else
         event = events.sample
         unless event.nil?
           tip = Tip.new(
-              event: event.name,
               sport_id: sport_of_tip.id,
               author_id: tipster.id,
               author_type: tipster.class.name,

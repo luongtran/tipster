@@ -13,7 +13,7 @@
 
 class Competition < ActiveRecord::Base
 
-  belongs_to :area, foreign_key: :opta_area_id, primary_key: :area_id
+  belongs_to :area, foreign_key: :opta_area_id, primary_key: :opta_area_id
 
   belongs_to :sport
 
@@ -22,6 +22,7 @@ class Competition < ActiveRecord::Base
   has_many :matches, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
 
   validates :sport_id, presence: true
+
   validates_uniqueness_of :opta_competition_id, scope: :opta_area_id
 
 

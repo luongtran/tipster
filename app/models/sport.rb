@@ -71,12 +71,18 @@ class Sport < ActiveRecord::Base
   }
 
   def icon_path
-    "/assets/sport-icons/i_#{self.name}.png"
+    code = self.code
+    if code == 'soccer'
+      code = 'football'
+    end
+    "/assets/sport-icons/i_#{code}.png"
   end
 
   private
   def auto_position
-    self.position ||= self.id
-    self.save
+    if  self.position.nil?
+      self.position = self.id
+      self.save
+    end
   end
 end

@@ -67,8 +67,7 @@ module OptaSport
           competitions << {
               opta_competition_id: compt['competition_id'],
               opta_area_id: compt['area_id'],
-              name: compt['name'],
-              country_code: compt['countrycode']
+              name: compt['name']
           }
         end
         competitions
@@ -81,10 +80,10 @@ module OptaSport
         areas = []
         nodes.each do |area|
           areas << {
-              area_id: area['area_id'],
+              opta_area_id: area['area_id'],
               name: area['name'],
               country_code: area['countrycode'],
-              parent_area_id: area.parent['area_id']
+              parent_id: area.parent['area_id']
           }
         end
         areas
@@ -122,8 +121,7 @@ module OptaSport
           competitions << {
               opta_competition_id: compt['competition_id'],
               opta_area_id: compt['area_id'],
-              name: compt['name'],
-              country_code: compt['countrycode']
+              name: compt['name']
           }
         end
         competitions

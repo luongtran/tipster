@@ -371,7 +371,7 @@ module ApplicationHelper
     options = []
     options << ['All', nil]
     competitions.each do |compt|
-      options << ["#{compt.name.titleize} #{"(#{compt.country_code})" if compt.country_code.present?}", compt.opta_competition_id]
+      options << ["#{compt.name.titleize} #{"(#{compt.area.name})"}", compt.opta_competition_id]
     end
     options
   end
