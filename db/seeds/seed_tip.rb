@@ -39,7 +39,7 @@ tipsters.each do |tipster|
           status: Tip::STATUS_FINISHED,
           correct: [false, true].sample,
           published_at: created_at + rand(1..3).hours + rand(10..30).minutes,
-          published_by: admins.sample.try :id,
+          published_by: admins.sample.try(:id),
           created_at: created_at,
           updated_at: created_at,
       )
