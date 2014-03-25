@@ -94,6 +94,7 @@ class Subscriber < ActiveRecord::Base
           created_by_omniauth: true
       )
       subscriber.account.skip_confirmation!
+      subscriber.create_with_only_account = true
       subscriber.save!
       subscriber
     end
