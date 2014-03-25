@@ -98,7 +98,7 @@ class Tip < ActiveRecord::Base
     end
 
     def perform_sport_param(sport, relation = self)
-      sport = Sport.find_by(name: sport)
+      sport = Sport.find_by(code: sport)
       relation = relation.where(sport_id: sport.id) if sport
       relation
     end
@@ -119,7 +119,7 @@ class Tip < ActiveRecord::Base
   # INSTANCE METHODS
   # ===========================================================================
   def to_param
-    "#{self.id}-#{self.match.try(:name)}"
+    "#{self.id}-#{self.match.try(:name)}".parameterize
   end
 
   # Call after admin validate the tip. Send tip and subtract bankroll

@@ -33,6 +33,7 @@ class Match < ActiveRecord::Base
   belongs_to :competition, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
 
   belongs_to :sport
+  has_many :tips, foreign_key: :match_id, primary_key: :opta_match_id
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================

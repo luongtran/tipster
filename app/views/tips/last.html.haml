@@ -11,7 +11,7 @@
             All sports
         - @sports.each do |sport|
           %li
-            %a.btn{href: last_tips_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}
+            %a.btn{href: last_tips_path(sport_filter_param(sport.code)), class: class_for_sport_filter(sport.code)}
               = sport.name.titleize
       %hr
       .text-center

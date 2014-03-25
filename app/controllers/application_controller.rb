@@ -1,12 +1,12 @@
 class ApplicationController < ActionController::Base
   layout :find_layout
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
   before_action :set_locale
 
   helper_method :tipster_ids_in_cart
+
+  rescue_from Exception, :with => :write_log if Rails.env.production?
 
   # Define 3 helper methods: current_{subscriber|tipster|admin}
   [Tipster, Admin, Subscriber].each do |klass|
@@ -49,7 +49,6 @@ class ApplicationController < ActionController::Base
   end
 
 
-
   def subscriber_required
     if account_signed_in? && !current_subscriber
       sign_out current_account
@@ -63,6 +62,11 @@ class ApplicationController < ActionController::Base
 
   def render_404
     render nothing: true, status: 404
+  end
+
+  def render_500
+    # TODO: write response for js
+    render 'errors/500'
   end
 
   def set_locale
@@ -167,4 +171,15 @@ class ApplicationController < ActionController::Base
     'backoffice' if self.class.name.split("::").first == 'Backoffice'
   end
 
+  def write_log(exception)
+    Thread.new do
+      file_path = File.join(Rails.root, 'public', 'errors.txt')
+      File.open(file_path, "a") do |f|
+        f.puts "=================================================== #{Time.now} ========================================\n"
+        f.puts(exception.backtrace.join("\n"))
+        f.puts "=================================================================================\n"
+      end
+    end
+    render_500
+  end
 end
