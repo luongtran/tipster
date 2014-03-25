@@ -79,6 +79,8 @@ class Match < ActiveRecord::Base
           date = Date.today
         end
         relation = relation.where(start_at: date.beginning_of_day..date.end_of_day)
+      else
+        relation = relation.where("start_at >= ?", Date.today)
       end
 
       # Search in name
@@ -93,12 +95,15 @@ class Match < ActiveRecord::Base
     def get_bets_on_match(match)
       Betclic.find_bets_on_match(match)
     end
-
   end
 
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
+  def to_param
+    "#{self.opta_match_id}-#{self.team_a}-vs-#{self.team_b}".parameterize
+  end
+
   def to_s
     "#{self.opta_match_id}-#{self.team_a}-#{self.team_b}"
   end

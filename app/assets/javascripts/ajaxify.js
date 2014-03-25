@@ -1,3 +1,6 @@
+/* Loading content via AJAX */
+/* Author: Lht */
+
 $(document).ready(function () {
         var ajax_method = 'GET';
         var $content_by_ajaxs = $('.remote-data:not(.loaded)');
@@ -15,14 +18,18 @@ $(document).ready(function () {
                         Helper.add_loading_indicator($content_ajax_able);
                     },
                     success: function (response) {
-                        $content_ajax_able.append(response);
+                        if (response.success) {
+                            $content_ajax_able.append(response.html);
+                        } else {
+                            Helper.alert_warning('Error while loading');
+                        }
                     },
                     complete: function () {
                         Helper.destroy_loading_indicator($content_ajax_able);
                         $content_ajax_able.addClass('loaded');
                     },
                     error: function () {
-                        Helper.alert_warning('Error while loading');
+                        Helper.alert_server_error();
                     },
                 });
             }

@@ -8,6 +8,7 @@
  = require highcharts/highcharts
  = require bootsy
  = require common
+ = require ajaxify
  = require turbolinks
 
  */
@@ -82,38 +83,40 @@ $(document).ready(function () {
     });
 
     /* Loading bet from Betclic */
-    $('#available-matches-wrapper').on('click', '.btn-view-bets', function () {
-        var $match_div = $(this).closest('.match');
-        var $bets_wrapper = $match_div.children('.bets');
-        if (!$match_div.hasClass('loaded')) {
-            Helper.add_loading_indicator($bets_wrapper);
-            $.ajax({
-                url: $match_div.attr('data-url'),
-                type: 'GET',
-                dataType: 'JSON',
-                success: function (response) {
-                    if (response.success) {
-                        $bets_wrapper.html(response.html);
-                    } else {
-                        Helper.alert_server_error();
-                    }
-                }
-            });
-            $match_div.addClass('loaded');
-        }
-        // Toggle result
-        $bets_wrapper.toggle(200);
-    });
+    /* No longer used now */
+//    $('#available-matches-wrapper').on('click', '.btn-view-bets', function () {
+//        var $match_div = $(this).closest('.match');
+//        var $bets_wrapper = $match_div.children('.bets');
+//        if (!$match_div.hasClass('loaded')) {
+//            Helper.add_loading_indicator($bets_wrapper);
+//            $.ajax({
+//                url: $match_div.attr('data-url'),
+//                type: 'GET',
+//                dataType: 'JSON',
+//                success: function (response) {
+//                    if (response.success) {
+//                        $bets_wrapper.html(response.html);
+//                    } else {
+//                        Helper.alert_server_error();
+//                    }
+//                }
+//            });
+//            $match_div.addClass('loaded');
+//        }
+//        // Toggle result
+//        $bets_wrapper.toggle(200);
+//    });
 
     /* Some effet when hovered on buttons */
-    $('#available-matches-wrapper').on('mouseover', '.choice-odd-button', function () {
+    $('.bets-on-match').on('mouseover', '.choice-odd-button', function () {
         $(this).removeClass('btn-default');
         $(this).addClass('btn-primary');
     });
-    $('#available-matches-wrapper').on('mouseleave', '.choice-odd-button', function () {
+    $('.bets-on-match').on('mouseleave', '.choice-odd-button', function () {
         $(this).addClass('btn-default');
         $(this).removeClass('btn-primary');
     });
+
     $('.lk-select-create-tip-method').on('mouseover', function () {
         $(this).removeClass('btn-default');
         $(this).addClass('btn-primary');
@@ -137,8 +140,7 @@ $(document).ready(function () {
     });
 
     /* Create Post data and show popup to confirm select odd*/
-    $('#available-matches-wrapper').on('click', '.choice-odd-button', function () {
-        console.log('choice');
+    $('.bets-on-match').on('click', '.choice-odd-button', function () {
         var $modal = $('#confirm-select-odd-modal');
         var $form = $modal.find('form');
 
