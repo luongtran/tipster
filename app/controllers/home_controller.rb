@@ -16,6 +16,7 @@ class HomeController < ApplicationController
     end
     @plans = Plan.all
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
+    @total = total_tipster
   end
 
   def select_language
