@@ -100,7 +100,7 @@ gem 'devise_security_extension'
 gem 'actionpack'
 gem 'nokogiri'
 gem 'carrierwave'
-#gem 'rmagick'
+gem 'rmagick'
 gem 'fog'
 
 # For get google image chart
