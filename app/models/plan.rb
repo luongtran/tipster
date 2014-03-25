@@ -14,6 +14,7 @@
 #  price                  :float
 #  number_tipster         :integer
 #  period                 :integer
+#  adding_price           :float
 #  created_at             :datetime
 #  updated_at             :datetime
 #

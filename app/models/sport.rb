@@ -4,15 +4,17 @@
 #
 #  id       :integer          not null, primary key
 #  name     :string(255)      not null
+#  code     :string(255)      not null
 #  position :integer
 #
 
 class Sport < ActiveRecord::Base
-  has_and_belongs_to_many :tipsters, uniq: true
+  has_and_belongs_to_many :tipsters, -> { readonly }
   has_many :bet_types
   has_many :competitions
   has_many :seasons, through: :competitions
-  validates :name, presence: true, uniqueness: {case_sensitive: false}
+
+  validates :code, presence: true, uniqueness: {case_sensitive: false}
 
   after_create :auto_position
 

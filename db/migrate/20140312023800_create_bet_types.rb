@@ -3,10 +3,13 @@ class CreateBetTypes < ActiveRecord::Migration
     create_table :bet_types do |t|
       t.integer :sport_id
       t.string :code
+      t.string :betclic_code
       t.string :name
       t.string :other_name
       t.string :definition
       t.string :example
+      t.boolean :has_line, default: true
+
       t.index :sport_id
     end
   end

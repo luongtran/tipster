@@ -6,9 +6,12 @@
 #  tipster_id      :integer
 #  subscription_id :integer
 #  active          :boolean          default(FALSE)
+#  is_primary      :boolean          default(FALSE)
+#  payment_id      :integer
+#  active_at       :datetime
+#  expired_at      :datetime
 #  created_at      :datetime
 #  updated_at      :datetime
-#  is_primary         :boolean
 #
 
 class SubscriptionTipster < ActiveRecord::Base

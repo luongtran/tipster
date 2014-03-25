@@ -11,6 +11,7 @@ class CreateSubscribers < ActiveRecord::Migration
       t.string :city
       t.string :country
       t.string :zip_code
+      t.string :phone_indicator
       t.string :mobile_phone
       t.string :telephone
       t.string :favorite_beting_website

@@ -6,6 +6,7 @@ class CreateTipsters < ActiveRecord::Migration
       t.string :avatar
       t.integer :status
       t.boolean :active, default: true
+      t.text  :description
       t.timestamps
     end
   end

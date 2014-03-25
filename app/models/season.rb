@@ -3,9 +3,8 @@
 # Table name: seasons
 #
 #  id                  :integer          not null, primary key
-#  competition_id      :integer
-#  opta_season_id      :string(255)
-#  opta_competition_id :string(255)
+#  opta_season_id      :integer
+#  opta_competition_id :integer
 #  name                :string(255)
 #  start_date          :datetime
 #  end_date            :datetime

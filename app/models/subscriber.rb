@@ -13,6 +13,7 @@
 #  city                       :string(255)
 #  country                    :string(255)
 #  zip_code                   :string(255)
+#  phone_indicator            :string(255)
 #  mobile_phone               :string(255)
 #  telephone                  :string(255)
 #  favorite_beting_website    :string(255)

@@ -2,12 +2,12 @@
 #
 # Table name: areas
 #
-#  id             :integer          not null, primary key
-#  area_id        :string(255)
-#  name           :string(255)
-#  country_code   :string(255)
-#  parent_area_id :string(255)
-#  active         :boolean          default(TRUE)
+#  id           :integer          not null, primary key
+#  opta_area_id :integer
+#  parent_id    :integer
+#  name         :string(255)
+#  country_code :string(255)
+#  active       :boolean          default(TRUE)
 #
 
 class Area < ActiveRecord::Base

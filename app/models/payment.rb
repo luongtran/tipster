@@ -23,6 +23,12 @@
 #  receiver_id       :string(255)
 #  payment_status    :string(255)
 #  mc_gross          :float
+#  paykey            :string(255)
+#  paid_for          :string(255)
+#  tipster_ids       :string(255)
+#  amount            :float
+#  enable_history    :boolean          default(FALSE)
+#  is_recurring      :boolean          default(FALSE)
 #  created_at        :datetime
 #  updated_at        :datetime
 #

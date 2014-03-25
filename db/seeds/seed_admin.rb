@@ -1,4 +1,4 @@
-puts "\n===> Creating admin accounts ==================="
+puts "\n==========> Starting create admin accounts"
 2.times do |i|
   admin = Admin.new(
       full_name: "Admin",
@@ -10,9 +10,7 @@ puts "\n===> Creating admin accounts ==================="
   )
   admin.account.skip_confirmation!
   if admin.save
-    puts " ==> Created: #{admin.account.email}"
-  else
-    puts " ==> Created admin account failed: #{admin.errors.full_messages} "
+    puts "===== Created: #{admin.account.email}"
   end
 end
-puts "===> Done admin accounts ==================="
+puts "\n==========> Done create accounts"

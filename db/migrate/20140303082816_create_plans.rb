@@ -11,6 +11,7 @@ class CreatePlans < ActiveRecord::Migration
       t.float :price
       t.integer :number_tipster
       t.integer :period
+      t.float :adding_price
       t.timestamps
     end
   end

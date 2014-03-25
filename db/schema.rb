@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140324065821) do
+ActiveRecord::Schema.define(version: 20140319142648) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -43,11 +43,11 @@ ActiveRecord::Schema.define(version: 20140324065821) do
   end
 
   create_table "areas", force: true do |t|
-    t.string  "area_id"
+    t.integer "opta_area_id"
+    t.integer "parent_id"
     t.string  "name"
     t.string  "country_code"
-    t.string  "parent_area_id"
-    t.boolean "active",         default: true
+    t.boolean "active",       default: true
   end
 
   create_table "authorizations", force: true do |t|
@@ -65,28 +65,28 @@ ActiveRecord::Schema.define(version: 20140324065821) do
   create_table "bet_types", force: true do |t|
     t.integer "sport_id"
     t.string  "code"
+    t.string  "betclic_code"
     t.string  "name"
     t.string  "other_name"
     t.string  "definition"
     t.string  "example"
     t.boolean "has_line",     default: true
-    t.string  "betclic_code"
   end
 
   add_index "bet_types", ["sport_id"], name: "index_bet_types_on_sport_id"
 
   create_table "competitions", force: true do |t|
-    t.string   "opta_competition_id"
-    t.string   "name"
-    t.string   "opta_area_id"
-    t.string   "country_code"
-    t.boolean  "active",              default: true
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "sport_id"
+    t.integer "opta_competition_id"
+    t.integer "opta_area_id"
+    t.integer "sport_id"
+    t.string  "name"
+    t.string  "fr_name"
+    t.boolean "active",              default: true
   end
 
+  add_index "competitions", ["opta_area_id"], name: "index_competitions_on_opta_area_id"
   add_index "competitions", ["opta_competition_id"], name: "index_competitions_on_opta_competition_id"
+  add_index "competitions", ["sport_id"], name: "index_competitions_on_sport_id"
 
   create_table "coupon_codes", force: true do |t|
     t.integer  "subscriber_id"
@@ -100,22 +100,21 @@ ActiveRecord::Schema.define(version: 20140324065821) do
   add_index "coupon_codes", ["subscriber_id"], name: "index_coupon_codes_on_subscriber_id"
 
   create_table "matches", force: true do |t|
-    t.string   "opta_competition_id"
-    t.string   "opta_match_id"
-    t.string   "betclic_match_id"
-    t.string   "betclic_event_id"
+    t.integer  "opta_match_id"
     t.integer  "sport_id"
+    t.integer  "opta_competition_id"
     t.string   "team_a"
     t.string   "team_b"
     t.string   "name"
-    t.string   "en_name"
-    t.string   "fr_name"
+    t.string   "betclic_match_id"
+    t.string   "betclic_event_id"
     t.datetime "start_at"
     t.string   "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "matches", ["opta_competition_id"], name: "index_matches_on_opta_competition_id"
   add_index "matches", ["opta_match_id"], name: "index_matches_on_opta_match_id"
   add_index "matches", ["sport_id"], name: "index_matches_on_sport_id"
 
@@ -140,14 +139,14 @@ ActiveRecord::Schema.define(version: 20140324065821) do
     t.string   "receiver_id"
     t.string   "payment_status"
     t.float    "mc_gross"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "paykey"
-    t.float    "amount"
     t.string   "paid_for"
     t.string   "tipster_ids"
+    t.float    "amount"
     t.boolean  "enable_history",    default: false
     t.boolean  "is_recurring",      default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "payments", ["coupon_code_id"], name: "index_payments_on_coupon_code_id"
@@ -164,9 +163,9 @@ ActiveRecord::Schema.define(version: 20140324065821) do
     t.float    "price"
     t.integer  "number_tipster"
     t.integer  "period"
+    t.float    "adding_price"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "adding_price"
   end
 
   create_table "platforms", force: true do |t|
@@ -175,8 +174,8 @@ ActiveRecord::Schema.define(version: 20140324065821) do
   end
 
   create_table "seasons", force: true do |t|
-    t.string   "opta_season_id"
-    t.string   "opta_competition_id"
+    t.integer  "opta_season_id"
+    t.integer  "opta_competition_id"
     t.string   "name"
     t.datetime "start_date"
     t.datetime "end_date"
@@ -184,6 +183,7 @@ ActiveRecord::Schema.define(version: 20140324065821) do
     t.datetime "updated_at"
   end
 
+  add_index "seasons", ["opta_competition_id"], name: "index_seasons_on_opta_competition_id"
   add_index "seasons", ["opta_season_id"], name: "index_seasons_on_opta_season_id"
 
   create_table "sessions", force: true do |t|
@@ -198,6 +198,7 @@ ActiveRecord::Schema.define(version: 20140324065821) do
 
   create_table "sports", force: true do |t|
     t.string  "name",     null: false
+    t.string  "code",     null: false
     t.integer "position"
   end
 
@@ -219,6 +220,7 @@ ActiveRecord::Schema.define(version: 20140324065821) do
     t.string   "city"
     t.string   "country"
     t.string   "zip_code"
+    t.string   "phone_indicator"
     t.string   "mobile_phone"
     t.string   "telephone"
     t.string   "favorite_beting_website"
@@ -230,22 +232,21 @@ ActiveRecord::Schema.define(version: 20140324065821) do
     t.boolean  "created_by_omniauth",        default: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "phone_indicator"
   end
 
   create_table "subscription_tipsters", force: true do |t|
     t.integer  "tipster_id"
     t.integer  "subscription_id"
     t.boolean  "active",          default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "type"
     t.boolean  "is_primary",      default: false
     t.integer  "payment_id"
     t.datetime "active_at"
     t.datetime "expired_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
+  add_index "subscription_tipsters", ["payment_id"], name: "index_subscription_tipsters_on_payment_id"
   add_index "subscription_tipsters", ["subscription_id"], name: "index_subscription_tipsters_on_subscription_id"
   add_index "subscription_tipsters", ["tipster_id"], name: "index_subscription_tipsters_on_tipster_id"
 
@@ -254,47 +255,43 @@ ActiveRecord::Schema.define(version: 20140324065821) do
     t.integer  "plan_id"
     t.boolean  "using_coupon",   default: false
     t.boolean  "active",         default: false
+    t.boolean  "is_one_shoot",   default: false
     t.datetime "active_at"
     t.datetime "expired_at"
+    t.string   "payment_status"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "is_one_shoot",   default: false
-    t.string   "payment_status"
   end
 
   add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id"
   add_index "subscriptions", ["subscriber_id"], name: "index_subscriptions_on_subscriber_id"
 
   create_table "tips", force: true do |t|
-    t.integer  "author_id"
-    t.string   "author_type"
-    t.integer  "sport_id"
-    t.string   "event"
-    t.datetime "event_start_at"
-    t.datetime "event_end_at"
-    t.integer  "platform_id",                    null: false
-    t.integer  "bet_type_id",                    null: false
-    t.float    "odds",                           null: false
-    t.string   "selection",                      null: false
+    t.integer  "author_id",                    null: false
+    t.string   "author_type",                  null: false
+    t.integer  "match_id"
+    t.integer  "sport_id",                     null: false
+    t.integer  "platform_id",                  null: false
+    t.integer  "bet_type_id",                  null: false
+    t.float    "odds",                         null: false
+    t.string   "selection",                    null: false
     t.float    "line"
-    t.text     "advice",                         null: false
-    t.integer  "amount",                         null: false
-    t.boolean  "correct",        default: false
-    t.integer  "status",                         null: false
-    t.boolean  "free",           default: false
+    t.text     "advice",                       null: false
+    t.integer  "amount",                       null: false
+    t.boolean  "correct",      default: false
+    t.integer  "status",                       null: false
+    t.boolean  "free",         default: false
     t.integer  "published_by"
     t.datetime "published_at"
+    t.datetime "finished_at"
+    t.integer  "finished_by"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "match_id"
-    t.string   "match_name"
-    t.datetime "match_date"
-    t.string   "league_id"
-    t.string   "area_id"
   end
 
   add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type"
   add_index "tips", ["bet_type_id"], name: "index_tips_on_bet_type_id"
+  add_index "tips", ["match_id"], name: "index_tips_on_match_id"
   add_index "tips", ["platform_id"], name: "index_tips_on_platform_id"
   add_index "tips", ["sport_id"], name: "index_tips_on_sport_id"
 
@@ -304,9 +301,9 @@ ActiveRecord::Schema.define(version: 20140324065821) do
     t.string   "avatar"
     t.integer  "status"
     t.boolean  "active",       default: true
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "description"
   end
 
 end

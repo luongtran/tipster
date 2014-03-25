@@ -2,14 +2,11 @@ class CreateTips < ActiveRecord::Migration
   def change
     create_table :tips do |t|
       # Polymophic association
-      t.integer :author_id
-      t.string :author_type
+      t.integer :author_id, null: false
+      t.string :author_type, null: false
+      t.integer :match_id
 
-      t.integer :sport_id
-
-      t.string :event, null: false # The name of match/race
-      t.datetime :event_start_at
-      t.datetime :event_end_at
+      t.integer :sport_id, null: false
 
       t.integer :platform_id, null: false # bookmaker
 
@@ -31,8 +28,16 @@ class CreateTips < ActiveRecord::Migration
       t.integer :published_by
       t.datetime :published_at
 
+      t.datetime :finished_at
+      t.integer :finished_by
+
       t.timestamps
     end
     add_index :tips, [:author_id, :author_type]
+    add_index :tips, :sport_id
+    add_index :tips, :bet_type_id
+    add_index :tips, :platform_id
+    add_index :tips, :match_id
+
   end
 end

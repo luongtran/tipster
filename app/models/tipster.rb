@@ -8,6 +8,7 @@
 #  avatar       :string(255)
 #  status       :integer
 #  active       :boolean          default(TRUE)
+#  description  :text
 #  created_at   :datetime
 #  updated_at   :datetime
 #
@@ -60,7 +61,7 @@ class Tipster < ActiveRecord::Base
     end
   end
 
-  has_and_belongs_to_many :sports, uniq: true
+  has_and_belongs_to_many :sports, -> { uniq }
   mount_uploader :avatar, AvatarUploader
 
   # ==============================================================================

@@ -1,3 +1,4 @@
+puts "\n==========> Starting create plans"
 Plan.delete_all
 Subscription.delete_all
 p1 = Plan.create!(
@@ -11,7 +12,7 @@ p1 = Plan.create!(
     :period => 0,
     :adding_price => 0
 )
-puts " -> Created plan: #{p1.title}"
+puts "===== Created plan: #{p1.title}"
 
 p2 = Plan.create!(
     title: '1 Month',
@@ -22,7 +23,7 @@ p2 = Plan.create!(
     :period => 1,
     :adding_price => 15.90
 )
-puts " -> Created plan: #{p2.title}"
+puts "===== Created plan: #{p2.title}"
 
 p3 = Plan.create!(
     title: '3 Month',
@@ -32,7 +33,7 @@ p3 = Plan.create!(
     :period => 3,
     :adding_price => 13.90
 )
-puts " -> Created plan: #{p3.title}"
+puts "===== Created plan: #{p3.title}"
 
 p4 = Plan.create!(
     title: '12 Month',
@@ -42,6 +43,6 @@ p4 = Plan.create!(
     :period => 12,
     :adding_price => 9.90
 )
-puts " -> Created plan: #{p4.title}"
+puts "===== Created plan: #{p4.title}"
 
-puts "Seed plans completed!"
+puts "\n==========> Done create plans"

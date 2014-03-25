@@ -3,14 +3,12 @@
 # Table name: competitions
 #
 #  id                  :integer          not null, primary key
+#  opta_competition_id :integer
+#  opta_area_id        :integer
 #  sport_id            :integer
-#  opta_competition_id :string(255)
 #  name                :string(255)
-#  opta_area_id        :string(255)
-#  country_code        :string(255)
+#  fr_name             :string(255)
 #  active              :boolean          default(TRUE)
-#  created_at          :datetime
-#  updated_at          :datetime
 #
 
 class Competition < ActiveRecord::Base

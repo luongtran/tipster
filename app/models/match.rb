@@ -3,16 +3,14 @@
 # Table name: matches
 #
 #  id                  :integer          not null, primary key
-#  opta_competition_id :string(255)
-#  opta_match_id       :string(255)
-#  betclic_match_id    :string(255)
-#  betclic_event_id    :string(255)
+#  opta_match_id       :integer
 #  sport_id            :integer
+#  opta_competition_id :integer
 #  team_a              :string(255)
 #  team_b              :string(255)
 #  name                :string(255)
-#  en_name             :string(255)
-#  fr_name             :string(255)
+#  betclic_match_id    :string(255)
+#  betclic_event_id    :string(255)
 #  start_at            :datetime
 #  status              :string(255)
 #  created_at          :datetime

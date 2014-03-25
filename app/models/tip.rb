@@ -2,32 +2,27 @@
 #
 # Table name: tips
 #
-#  id             :integer          not null, primary key
-#  author_id      :integer
-#  author_type    :string(255)
-#  sport_id       :integer
-#  event          :string(255)      not null
-#  event_start_at :datetime
-#  event_end_at   :datetime
-#  platform_id    :integer          not null
-#  bet_type_id    :integer          not null
-#  odds           :float            not null
-#  selection      :string(255)      not null
-#  line           :float
-#  advice         :text             not null
-#  amount         :integer          not null
-#  correct        :boolean          default(FALSE)
-#  status         :integer          not null
-#  free           :boolean          default(FALSE)
-#  published_by   :integer
-#  published_at   :datetime
-#  created_at     :datetime
-#  updated_at     :datetime
-#  match_id       :integer
-#  match_name     :string(255)
-#  match_date     :datetime
-#  league_id      :string(255)
-#  area_id        :string(255)
+#  id           :integer          not null, primary key
+#  author_id    :integer          not null
+#  author_type  :string(255)      not null
+#  match_id     :integer
+#  sport_id     :integer          not null
+#  platform_id  :integer          not null
+#  bet_type_id  :integer          not null
+#  odds         :float            not null
+#  selection    :string(255)      not null
+#  line         :float
+#  advice       :text             not null
+#  amount       :integer          not null
+#  correct      :boolean          default(FALSE)
+#  status       :integer          not null
+#  free         :boolean          default(FALSE)
+#  published_by :integer
+#  published_at :datetime
+#  finished_at  :datetime
+#  finished_by  :integer
+#  created_at   :datetime
+#  updated_at   :datetime
 #
 
 class Tip < ActiveRecord::Base
@@ -37,7 +32,7 @@ class Tip < ActiveRecord::Base
   STATUS_REJECTED = 2
   STATUS_FINISHED = 3
 
-  CREATE_PARAMS = [:event, :platform_id, :bet_type_id, :odds, :selection, :advice, :amount, :sport_id, :line]
+  CREATE_PARAMS = [:platform_id, :bet_type_id, :odds, :selection, :advice, :amount, :sport_id, :line]
 
   attr_accessor :match_name, :bet_type_name, :bet_type_code
 
@@ -57,7 +52,7 @@ class Tip < ActiveRecord::Base
             :amount, presence: true
   validates_presence_of :bet_type_id, :platform_id,
                         message: 'Choose at least one'
-  validates_length_of :event, :advice, minimum: 10, allow_blank: true
+  validates_length_of :advice, minimum: 10, allow_blank: true
   validates_numericality_of :amount, greater_than_or_equal_to: 10, less_than_or_equal_to: 100, only_integer: true
   validates_numericality_of :odds, greater_than_or_equal_to: 1.0
   #validates_presence_of :line, :if => Proc.new { self.bet_type && self.bet_type.has_line? }

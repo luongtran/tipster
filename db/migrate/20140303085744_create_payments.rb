@@ -21,6 +21,15 @@ class CreatePayments < ActiveRecord::Migration
       t.string :receiver_id
       t.string :payment_status
       t.float :mc_gross
+
+
+      t.string :paykey
+      t.string :paid_for
+      t.string :tipster_ids
+      t.float :amount
+      t.boolean :enable_history, default: false
+      t.boolean :is_recurring, default: false
+
       t.timestamps
     end
     add_index :payments, :subscription_id

@@ -2,16 +2,17 @@
 #
 # Table name: subscriptions
 #
-#  id            :integer          not null, primary key
-#  subscriber_id :integer
-#  plan_id       :integer
-#  using_coupon  :boolean          default(FALSE)
-#  active        :boolean          default(FALSE)
-#  active_at     :datetime
-#  expired_at    :datetime
-#  created_at    :datetime
-#  updated_at    :datetime
-#  is_one_shoot  :boolean          default(FALSE)
+#  id             :integer          not null, primary key
+#  subscriber_id  :integer
+#  plan_id        :integer
+#  using_coupon   :boolean          default(FALSE)
+#  active         :boolean          default(FALSE)
+#  is_one_shoot   :boolean          default(FALSE)
+#  active_at      :datetime
+#  expired_at     :datetime
+#  payment_status :string(255)
+#  created_at     :datetime
+#  updated_at     :datetime
 #
 
 class Subscription < ActiveRecord::Base
