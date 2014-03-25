@@ -11,7 +11,8 @@ class PaymentController < ApplicationController
       notify = Paypal::Notification.new(request.raw_post)
       subscriber = Subscriber.find(notify.item_id)
       unless subscriber.account.confirmed?
-        subscriber.account.resend_confirmation_instructions
+        #subscriber.account.resend_confirmation_instructions
+        #Send email problem !!!
       end
       subscription = payment.subscription
       payment.update_from_paypal notify.params
