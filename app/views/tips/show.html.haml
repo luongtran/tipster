@@ -1,2 +1,8 @@
+- content_for :title do
+  = @tip.match_name
 .container
-  Show tip
+  .panel.panel-default
+    .panel-header
+    .panel-body
+      %h3= @tip.match_name
+      = @tip.created_at_in_string

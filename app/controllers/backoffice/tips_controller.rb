@@ -36,6 +36,8 @@ class Backoffice::TipsController < ApplicationController
                        sport_id: @match.sport.id,
                        platform_id: platform.id
                    ))
+  rescue ActiveRecord::RecordNotFound => e
+    redirect_to :back, alert: 'Request is invalid'
   end
 
   def submit
