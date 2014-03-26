@@ -8,15 +8,13 @@
       .modal-body
         .row
           .col-sm-10.col-sm-offset-1
-            %a.btn.btn-lg.btn-social.btn-facebook.btn-block.mbl{href: account_omniauth_authorize_path(:facebook)}
+            %a.btn.btn-md.btn-social.btn-facebook.btn-block.mbl{href: account_omniauth_authorize_path(:facebook)}
               %i.fa.fa-facebook
               Connect with Facebook
-            %a.btn.btn-lg.btn-social.btn-google-plus.btn-block{href: account_omniauth_authorize_path(:google_oauth2)}
+            %a.btn.btn-md.btn-social.btn-google-plus.btn-block{href: account_omniauth_authorize_path(:google_oauth2)}
               %i.fa.fa-google-plus
               Connect with Google +
-            %p
-              %br
-            .text-center.pbl
+            .text-center.mas
               %h5.text-muted OR
             = simple_form_for :account, url: account_registration_path, html: {id: 'sign-up-form'} do |f|
               .form-group
@@ -37,6 +35,7 @@
               .form-group
                 %button.btn.btn-success.btn-block.btn-md#submiter Sign Up
         .text-center
+          %hr
           Already registered?
           %a.lk-toggle-sign-in-box.btn-black{href: 'javascript:void(0);'}
             Sign In

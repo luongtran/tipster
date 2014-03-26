@@ -2,7 +2,6 @@ class HomeController < ApplicationController
   before_action :load_subscribe_data, only: [:pricing]
 
   def index
-    # TODO,
     Tipster.load_data(params.merge(ranking: Tipster::LAST_MONTH))
     @top_4 = Tipster.find_top_of_previous_week(4)
     if flash[:sign_in_box]

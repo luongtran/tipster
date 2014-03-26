@@ -8,23 +8,23 @@
       .row
         .text-center
           = high_chart("profil-chart-container", @chart)
-      %hr
-      .row
-        .col-md-2.col-md-offset-1
-          Number of tips:
-          %strong= @tipster.number_of_tips
-        .col-md-2
-          Profit:
-          %strong= @tipster.profit_in_string
-        .col-md-2
-          Yield:
-          %strong= @tipster.yield_in_string
-        .col-md-2
-          Win rate:
-          %strong= @tipster.hit_rate_in_string
-        .col-md-2
-          Avg of odds:
-          %strong= @tipster.avg_odds
+        %hr
+        .row.clearfix
+          .col-md-2.col-md-offset-1
+            Number of tips:
+            %strong= @tipster.number_of_tips
+          .col-md-2
+            Profit:
+            %strong= @tipster.profit_in_string
+          .col-md-2
+            Yield:
+            %strong= @tipster.yield_in_string
+          .col-md-2
+            Win rate:
+            %strong= @tipster.hit_rate_in_string
+          .col-md-2
+            Avg of odds:
+            %strong= @tipster.avg_odds
 .mam
   .panel.panel-success
     .panel-heading

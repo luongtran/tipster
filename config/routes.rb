@@ -119,6 +119,7 @@ TipsterHero::Application.routes.draw do
     end
 
     get 'my_tips', to: 'tips#my_tips'
+    get 'my_statistics', to: 'home#my_statistics'
     resources :tips, except: [:index] do
       collection do
         post :confirm

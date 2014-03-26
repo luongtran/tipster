@@ -174,7 +174,7 @@ class Tipster < ActiveRecord::Base
     def profit_chart_for_tipster(tipster)
       chart = LazyHighCharts::HighChart.new('graph') do |f|
         f.title(
-            :text => "Profit on " + I18n.t("tipster.ranking.ranges.#{tipster.current_statistics_range}")
+            :text => nil
         )
         f.xAxis(
             :categories => tipster.profit_dates_for_chart,
@@ -332,9 +332,10 @@ class Tipster < ActiveRecord::Base
     self
   end
 
+  # Calculate statistic on per month
+  # Month	    Profit	Yield	  N° of Tips
+  # Oct 13	  +169	   27%	     9
   def get_monthly_statistics
-    # Month	    Profit	Yield	  N° of Tips
-    # Oct 13	  +169	   27%	     9
     result = []
     first_dates_of_months_since_join.each do |date|
       current_range = date.beginning_of_month.beginning_of_day..date.end_of_month.end_of_day
