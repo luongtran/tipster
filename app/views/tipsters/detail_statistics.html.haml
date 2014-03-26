@@ -62,3 +62,31 @@
                 %i Tipster's description
 #profile-overiew-page
   .container
+    .panel.panel-default
+      .panel-body
+        %h3 Monthly statistics
+        %table.table.table-bordered.table-striped
+          %thead
+            %tr
+              %th Month
+              %th Profit
+              %th Yield
+              %th Hit rate
+              %th Avg odds
+              %th
+                = ("N" + content_tag(:sup, 'o')).html_safe
+                of tips
+          %tbody
+            - @monthly_statistics.each do |month_statistics|
+              - unless month_statistics[:number_of_tips].zero?
+                %tr
+                  %td= month_statistics[:date].strftime("%B %Y")
+                  %td= profit_in_string month_statistics[:profit]
+                  %td= yield_in_string month_statistics[:yield]
+                  %td= hit_rate_in_string month_statistics[:hit_rate]
+                  %td= month_statistics[:avg_odds]
+                  %td= month_statistics[:number_of_tips]
+
+        %h3 Sport/Country/Championship statistics
+        %p Type of bets statistics:
+        %p Odds statistics:

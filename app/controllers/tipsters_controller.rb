@@ -6,9 +6,11 @@ class TipstersController < ApplicationController
   def index
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
     @selected_plan = selected_plan
+
     @tipsters = Tipster.load_data(params)
-    @top_3 = Tipster.top_3_of_previous_week
+    @top_3 = Tipster.find_top_of_previous_week(3)
     @sports = Sport.order('position asc')
+
     if current_subscriber && current_subscriber.has_active_subscription?
       @tipsters_in_subscription = current_subscriber.subscription.active_tipsters
     end
@@ -45,6 +47,7 @@ class TipstersController < ApplicationController
 
   def detail_statistics
     @tipster.get_statistics(ranking: Tipster::OVERALL)
+    @monthly_statistics = @tipster.get_monthly_statistics
   end
 
   def last_tips

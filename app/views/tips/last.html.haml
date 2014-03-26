@@ -1,36 +1,32 @@
 - content_for :title do
   Last Tips
 - content_for :current_menu, 'last_tips'
-.container
-  .panel.panel-default
-    .panel-header.pas
-
-      %ul.sports-filter
+.tipster-list#tipster_list
+  .tipster-list-inner.container.for-last-tip
+    .tipster-list-line1
+      %ul.list-inline
         %li
-          %a.btn{href: last_tips_path(sport_filter_param(nil)), class: class_for_sport_filter('all')}
-            All sports
+          %a{href: last_tips_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
         - @sports.each do |sport|
           %li
-            %a.btn{href: last_tips_path(sport_filter_param(sport.code)), class: class_for_sport_filter(sport.code)}
-              = sport.name.titleize
-      %hr
+            %a{href: last_tips_path(sport_filter_param(sport.code)), class: class_for_sport_filter(sport.code)}= sport.name.titleize
+    .tipster-list-line2.clearfix
       .text-center
         %ul.list-inline.list-unstyled.mbn.dates-list
           %li
-            %a{href: last_tips_path(date_filter_param(nil)), class: class_for_date_filter('today')}
+            %a.btn-xs.text-success{href: last_tips_path(date_filter_param(nil)), class: class_for_date_filter('today')}
               Today
           - date_range_filter_for_tips.each do |date|
             %li
-              %a{href: last_tips_path(date_filter_param(date[:value])), class: class_for_date_filter(date[:value])}
+              %a.btn.btn-xs.text-success{href: last_tips_path(date_filter_param(date[:value])), class: class_for_date_filter(date[:value])}
                 = date[:label]
-    .panel-body
-      / Tab panes
-      .tab-content
-        #all.tab-pane.active
-          %table.table.table-bordered.table-hover.bgw
+    .tipster-list-table
+      .row
+        .col-md-12
+          %table.table.table-hover
             %thead
               %tr
-                %th Event
+                %th Match/Event
                 %th Odds
                 %th Tipster
                 %th Sport
@@ -41,8 +37,9 @@
             %tbody
               - @tips.each do |tip|
                 %tr
-                  %td.text-info
-                    %a{href: tip_path(tip)}= tip.match.try(:name)
+                  %td
+                    = image_tag tip.sport.icon_path
+                    %a.text-warning.text-bold{href: tip_path(tip)}= tip.match.try(:name)
                   %td= tip.odds
                   %td
                     %a.text-warning{href: tipster_path(tip.author)}= tip.author.full_name
@@ -73,6 +70,5 @@
                       \---
           - if @tips.empty?
             .clearfix
-              .text-center.text-danger
-                Not found !
-
+              .text-center.text-danger.mam
+                %i There are no any tips

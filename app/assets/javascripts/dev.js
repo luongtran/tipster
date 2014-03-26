@@ -69,11 +69,6 @@ $(document).ready(function () {
         });
     });
 
-    /* Auto expand dropdown */
-    $('#menu-main li.dropdown:not(.open)').mouseover(function () {
-        $(this).addClass('open');
-    });
-
     /* Load the link of select box as links */
     $('.select-as-links').on('change', function () {
         window.location = $(this).children('option:selected').attr('data-url');

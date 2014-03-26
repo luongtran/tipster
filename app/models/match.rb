@@ -45,7 +45,6 @@ class Match < ActiveRecord::Base
   # ==============================================================================
   scope :betable, -> { where(status: STATUS_FIXTURE) }
 
-
   delegate :name, to: :competition, prefix: true
   # ==============================================================================
   # CLASS METHODS
@@ -65,7 +64,6 @@ class Match < ActiveRecord::Base
         relation = relation.where(opta_competition_id: params[:competition])
       end
 
-
       # Do filter date
       # Filter start date
 
@@ -77,7 +75,11 @@ class Match < ActiveRecord::Base
         rescue => e
           date = Date.today
         end
-        relation = relation.where(start_at: date.beginning_of_day..date.end_of_day)
+        start_from = date.beginning_of_day
+        if date == Date.today
+          start_from = DateTime.now + 1.hours
+        end
+        relation = relation.where(start_at: start_from..date.end_of_day)
       else
         relation = relation.where("start_at >= ?", Date.today)
       end
@@ -88,6 +90,11 @@ class Match < ActiveRecord::Base
       end
 
       relation.includes(:sport, :competition => [:area])
+    end
+
+    # Return betable matches at the current time
+    def available
+
     end
 
     # Find bets and odds from Betclic for the given match

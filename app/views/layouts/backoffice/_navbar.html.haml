@@ -20,6 +20,9 @@
           %li
             %a#lk-toggle-select-create-tip-method{href: '#'}
               New Tip
+          %li
+            %a{href: '#'}
+              My Statistics
           %li.dropdown
             %a.dropdown-toggle{'data-toggle' => "dropdown", href: "#"}
               = current_tipster.full_name
@@ -33,3 +36,4 @@
         - else
           %li
             %a.btn.btn-default.btn-sm{href: backoffice_sign_in_path} Sign In
+

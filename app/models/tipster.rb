@@ -43,7 +43,8 @@ class Tipster < ActiveRecord::Base
   # This is list of attributes for saving the statistics data
   attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield,
                 :profit_per_months, :profit_per_dates, :current_statistics_range,
-                :tips_per_dates, :profitable_months, :profit_on_previous_week
+                :tips_per_dates, :profitable_months,
+                :profit_on_previous_week, :total_amount_on_previous_week
 
   # ==============================================================================
   # ASSOCIATIONS
@@ -82,7 +83,7 @@ class Tipster < ActiveRecord::Base
   # CLASS METHODS
   # ==============================================================================
   class << self
-    attr_accessor :top_3_of_previous_week
+    attr_accessor :top_of_previous_week
 
     def load_data(params = {})
       relation = perform_filter_params(params)
@@ -104,7 +105,7 @@ class Tipster < ActiveRecord::Base
         tipster.get_statistics(params)
       end
 
-      @top_3_of_previous_week = result.sort_by { |tipster| -tipster.profit_on_previous_week }.first(3)
+      @top_of_previous_week = result.sort_by { |tipster| -tipster.profit_on_previous_week }.first(5)
 
       if sorting_info.increase?
         result.sort_by { |tipster| tipster.send("#{sorting_info.sort_by}") }
@@ -145,20 +146,8 @@ class Tipster < ActiveRecord::Base
       end
     end
 
-    # Find the top 3(profit) of the last week
-    def find_top_3_last_week(params)
-      prev_week_range = DateUtils.previous_week_date_range
-      relation = self
-      unless params[:sport].blank?
-        relation = relation.perform_sport_param(params[:sport])
-      end
-
-      ranking_range = parse_range_param(params)
-      range = range_paser(ranking_range)
-
-      relation.includes(:account, :finished_tips).
-          where("tips.published_at" => prev_week_range).
-          references(:tips)
+    def find_top_of_previous_week(limit = 3)
+      @top_of_previous_week.first(limit)
     end
 
     # Return the start & end date specify by given range string
@@ -290,6 +279,7 @@ class Tipster < ActiveRecord::Base
 
     @profit_per_dates = [] # save profit after each date
     @profit_on_previous_week = 0 # save profit on previous week to find "top n of the week"
+    @total_amount_on_previous_week = 0
     @tips_per_dates = [] # tips counter per every date
     @yield = 0 # incremental
     @profit = 0 # incremental
@@ -306,7 +296,7 @@ class Tipster < ActiveRecord::Base
       @tips_per_dates << {date: date, tips_count: tips.size}
 
       money_on_current_date = 0
-
+      amount_on_current_date = 0
       tips.each do |tip|
         money_of_the_tip = 0
         total_odds += tip.odds
@@ -320,13 +310,15 @@ class Tipster < ActiveRecord::Base
         end
         @profit += money_of_the_tip
         money_on_current_date += money_of_the_tip
+        amount_on_current_date += tip.amount
       end
-
-      @profit_per_dates << {date: date, profit: @profit}
 
       if prev_week_range.include? date
         @profit_on_previous_week += money_on_current_date
+        @total_amount_on_previous_week += amount_on_current_date
       end
+
+      @profit_per_dates << {date: date, profit: @profit}
     end
 
     #  Cal avg of odds and hit(win) rate
@@ -340,8 +332,53 @@ class Tipster < ActiveRecord::Base
     self
   end
 
-  def get_monthy_statistics
+  def get_monthly_statistics
+    # Month	    Profit	Yield	  N° of Tips
+    # Oct 13	  +169	   27%	     9
+    result = []
+    first_dates_of_months_since_join.each do |date|
+      current_range = date.beginning_of_month.beginning_of_day..date.end_of_month.end_of_day
+      finished_tips_in_range = self.finished_tips.in_range(current_range)
+      _profit = 0
+      _yield = 0
+      _correct_tips = 0
+      _total_odds = 0
+      _total_tips = finished_tips_in_range.size
+      _total_amount = 0
+      finished_tips_in_range.each do |tip|
+        if tip.correct?
+          _correct_tips += 1
+          money_of_the_tip = (tip.amount*(tip.odds - 1)).round(0)
+        else
+          money_of_the_tip = -tip.amount
+        end
+        _profit += money_of_the_tip
+        _total_odds += tip.odds
+        _total_amount += tip.amount
+      end
 
+      if _total_tips.zero?
+        result << {
+            date: date,
+            number_of_tips: 0,
+            profit: 0,
+            yield: 0,
+            hit_rate: 0,
+            avg_odds: 0
+        }
+      else
+        result << {
+            date: date,
+            number_of_tips: finished_tips_in_range.count,
+            profit: _profit,
+            yield: (_profit*100/_total_amount.to_f).round(0),
+            hit_rate: (_correct_tips*100/_total_tips.to_f).round(1),
+            avg_odds: (_total_odds/_total_tips.to_f).round(1)
+        }
+      end
+    end
+    # Sort by date descrease
+    result.map.sort_by { |monthly| -(monthly[:date].to_time.to_i) }
   end
 
   def profit_in_string(include_unit = false)

@@ -20,15 +20,12 @@
                   .hotTipster-info
                     %span.proofed
                       Profit:
-                      %b
-                        +
-                        = rand(100..900)
+                      %b= profit_in_string tipster.profit_on_previous_week
                     %span.yield
                       Yield:
-                      %b
-                        = "#{rand(0..100)}%"
-                  %a{href: "#{tipster_path(tipster)}",class: "see-profile-link" } See Profile
-            = image_tag  'headads.png',style: "height: 360px;float:left"
+                      %b= yield_in_string (tipster.total_amount_on_previous_week*100/tipster.profit_on_previous_week.to_f).round(1)
+                  %a.see-profile-link{href: tipster_path(tipster)} See Profile
+            = image_tag 'headads.png', style: "height: 360px;float:left"
   #board-gray
     .board-gray-inner.container.clearfix
       %h4.text-slim.man.pull-left Stop gambling, invest...  get tips from <br>proven proffesional tipsters

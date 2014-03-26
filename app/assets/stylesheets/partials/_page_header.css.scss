@@ -53,7 +53,7 @@
               display: block;
               a {
                 color: $text-color-base;
-                line-height: 1.4;
+                line-height: 2;
                 font-size: 12px;
                 width: 100%;
                 padding: 0 10px;
@@ -62,7 +62,7 @@
               &:hover {
                 a {
                   color: $green-dark;
-                  background-color: tint($green-lighter, 70%);
+//                  background-color: tint($green-lighter, 70%);
                 }
               }
             }
