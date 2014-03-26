@@ -120,9 +120,8 @@ class Worker
 
         end # End seasons
       end
-
       founded_matches.each do |match_attrs|
-        Match.create! match_attrs
+        Match.create match_attrs
       end
       founded_matches
     end
