@@ -381,4 +381,17 @@ module ApplicationHelper
     options.each { |option| option.reverse! }
     options
   end
+
+  def profit_in_string(profit, include_unit = false)
+    sign = '+' if profit > 0
+    "#{sign}#{profit} #{I18n.t('tipster.units') if include_unit}"
+  end
+
+  def hit_rate_in_string(hit_rate)
+    "#{hit_rate}%"
+  end
+
+  def yield_in_string(_yield)
+    "#{_yield}%"
+  end
 end
