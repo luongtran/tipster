@@ -29,14 +29,13 @@
                   %span.input-group-addon
                     %i(class="fa fa-lock fa-lg")
                   = f.input_field :password, as: :password, placeholder: 'Password',id: 'password', class: 'input-block input-md'
-              .form-group.clearfix
-                .input-group.inline
-                  %span.pull-left
-                    = f.input_field :remember_me, :as => :boolean
-                  %span.pull-left
+              .form-group
+                %div
+                  %label#label-auto
+                    %input#account_remember_me.boolean.optional{name: "account[remember_me]", type: "checkbox",value: "1"}/
                     = t('menu.stay_connect')
-                  %span.pull-left
-                    %a{href: new_account_password_path, class: 'pull-right'} Forgot password?
+                  %span
+                    %a.pull-right{href: "/accounts/password/new"} Forgot password?
               #sign-in-message-container
               .form-group
                 %button.btn.btn-success.btn-block.btn-lg#submiter Sign In
