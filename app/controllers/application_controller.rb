@@ -171,6 +171,7 @@ class ApplicationController < ActionController::Base
     'backoffice' if self.class.name.split("::").first == 'Backoffice'
   end
 
+  # Catch server errors and puts to public/errors.txt
   def write_log(exception)
     Thread.new do
       file_path = File.join(Rails.root, 'public', 'errors.txt')
