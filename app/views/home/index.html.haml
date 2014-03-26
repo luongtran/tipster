@@ -1,5 +1,5 @@
 - content_for :page_head_mid do
-  = render 'top_tipster', :tipsters => @tipsters
+  = render 'top_tipster', :tipsters => @top_4
 - content_for :title do
   Home
 %link{href: "http://fonts.googleapis.com/css?family=Montserrat", rel: "stylesheet", type: "text/css"}/
@@ -45,13 +45,13 @@
               %li TipsterHero's advices
           %hr.divider
           .text-center.row
-            %a(href="javascript:;" class="btn btn-lg btn-success col-md-6 col-md-offset-3" ) Sign Up
+            %a.btn.btn-lg.btn-success.col-md-6.col-md-offset-3(href="javascript:;") Sign Up
       .col-md-4
         .abonnaments.super
           .abon-head.text-center
-            =image_tag('abon-text-super-1.png')
+            = image_tag 'abon-text-super-1.png'
             .absolute
-              =image_tag 'robbon.png'
+              = image_tag 'robbon.png'
           .abon-mid-1
             %h1
               %span from
@@ -65,7 +65,7 @@
               %li Profit guaranteed
           %hr.divider
           .text-center.row
-            %a(href="javascript:;" class="btn btn-lg btn-success col-md-6 col-md-offset-3" )= t('user.sign_up')
+            %a.btn.btn-lg.btn-success.col-md-6.col-md-offset-3(href="javascript:;")= t('user.sign_up')
 - if @show_sign_in_box
   :javascript
     $('document').ready(function(){

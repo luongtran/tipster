@@ -67,15 +67,7 @@
   #top_tipsters_of_weeks
     %h4.text-slim.text-success.text-center Top 3 of the week
     %hr.mbs.mts
-
-      -#.tipster-top-body.remote-data{data: {url: top_three_tipsters_path(sport: query_params[:sport]), 'error-msg' => 'Failed to load top 3 of the week.'}}
-      .tipster-top-body
-        - @top_3.each do |tipster|
-          %a{href: tipster_path(tipster)}
-            .tipster-top-unit.text-center
-              = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar'
-              .tipster-top-name.text-success.text-bold
-                = tipster.full_name
+    = render 'top_three', tipsters: @top_3
   - if @show_checkout_dialog
     = render 'shared/pop_up_adding', choose_tipster: @choose_tipster,selected_plan: @selected_plan,second_tipster: @second_tipster,third_tipster: @third_tipster,tipster_first: @tipster_first
 

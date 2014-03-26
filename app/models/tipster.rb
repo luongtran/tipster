@@ -43,7 +43,8 @@ class Tipster < ActiveRecord::Base
   # This is list of attributes for saving the statistics data
   attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield,
                 :profit_per_months, :profit_per_dates, :current_statistics_range,
-                :tips_per_dates, :profitable_months, :profit_on_previous_week
+                :tips_per_dates, :profitable_months,
+                :profit_on_previous_week, :total_amount_on_previous_week
 
   # ==============================================================================
   # ASSOCIATIONS
@@ -278,6 +279,7 @@ class Tipster < ActiveRecord::Base
 
     @profit_per_dates = [] # save profit after each date
     @profit_on_previous_week = 0 # save profit on previous week to find "top n of the week"
+    @total_amount_on_previous_week = 0
     @tips_per_dates = [] # tips counter per every date
     @yield = 0 # incremental
     @profit = 0 # incremental
@@ -294,7 +296,7 @@ class Tipster < ActiveRecord::Base
       @tips_per_dates << {date: date, tips_count: tips.size}
 
       money_on_current_date = 0
-
+      amount_on_current_date = 0
       tips.each do |tip|
         money_of_the_tip = 0
         total_odds += tip.odds
@@ -308,13 +310,15 @@ class Tipster < ActiveRecord::Base
         end
         @profit += money_of_the_tip
         money_on_current_date += money_of_the_tip
+        amount_on_current_date += tip.amount
       end
-
-      @profit_per_dates << {date: date, profit: @profit}
 
       if prev_week_range.include? date
         @profit_on_previous_week += money_on_current_date
+        @total_amount_on_previous_week += amount_on_current_date
       end
+
+      @profit_per_dates << {date: date, profit: @profit}
     end
 
     #  Cal avg of odds and hit(win) rate
