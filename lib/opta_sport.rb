@@ -20,7 +20,7 @@ module OptaSport
     end
 
     def authenticate_params
-      "&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3"
+      "&username=#{config.username}&authkey=#{config.authkey}"
     end
   end
 
@@ -76,7 +76,7 @@ module OptaSport
 
     class SoccerArea < Base
       def all
-        nodes = @xml_doc.xpath('//area')
+        nodes = @xml_doc.css('area')
         areas = []
         nodes.each do |area|
           areas << {
@@ -211,11 +211,15 @@ module OptaSport
           # Add parameters
           unless params.blank?
             sanitized_params = {}
-            params.each do |param, val|
+            params.each do |key, val|
               if val.is_a? DateTime
-                sanitized_params[param] = val.strftime(datetime_param_format)
+                sanitized_params[key] = val.strftime(datetime_param_format)
+              elsif val.is_a? TrueClass
+                sanitized_params[key] = 'yes'
+              elsif val.is_a? FalseClass
+                sanitized_params[key] = 'no'
               else
-                sanitized_params[param] = val
+                sanitized_params[key] = val
               end
             end
             u += sanitized_params.to_query

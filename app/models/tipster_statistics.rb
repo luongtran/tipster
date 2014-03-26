@@ -13,7 +13,7 @@
 
 class TipsterStatistics
 
-  UPDATE_PERIOD = 1.hour
+  UPDATE_PERIOD = 2.hours
 
   attr_accessor :tipster, :range, :profit, :yield, :number_of_tips, :hit_rate, :avg_odds, :profit_per_months, :profit_per_days
 
