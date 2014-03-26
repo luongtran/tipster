@@ -31,7 +31,6 @@
       - @tipsters.each_with_index do |tipster,index|
         %tr
           %td
-            = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar-mini'
             %a.tipster-name{href: tipster_path(tipster)}
               = tipster.full_name
             -#.tipster-profit-chart
