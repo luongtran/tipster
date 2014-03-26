@@ -21,15 +21,15 @@
             %a#lk-toggle-select-create-tip-method{href: '#'}
               New Tip
           %li
-            %a{href: '#'}
+            %a{href: backoffice_my_statistics_path}
               My Statistics
           %li.dropdown
             %a.dropdown-toggle{'data-toggle' => "dropdown", href: "#"}
               = current_tipster.full_name
               %b.caret
             %ul.dropdown-menu
-              %li
-                %a{href: backoffice_my_profile_path} My Account
+              %li{'data-no-turbolink' => true}
+                %a{href: backoffice_my_profile_path} My Profile
               %li.divider
               %li
                 %a{href: backoffice_sign_out_path} Sign Out
