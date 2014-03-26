@@ -108,7 +108,7 @@ module ApplicationHelper
   def class_for_date_filter(date)
     current_date = query_params[:date]
     current_date = 'today' if current_date.nil?
-    current_date == date ? 'disable text-muted' : ''
+    current_date == date ? 'disabled' : ''
   end
 
   def query_params

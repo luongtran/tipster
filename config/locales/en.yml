@@ -137,3 +137,14 @@ en:
         zip_code: "Zip code:"
         mobile_phone: "Mobile phone:"
         telephone: "Telephone:"
+  time:
+    formats:
+      long_date: "%A, %b %d %Y"
+      short_date: "%B %d, %Y"
+      date_with_time: "%b %d, %Y at %H:%M"
+
+  date:
+    formats:
+      default: "%m-%d-%Y"
+      short: "%b %e, %Y"
+      long: "%B %e, %Y"

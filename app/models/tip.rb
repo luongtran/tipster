@@ -74,6 +74,7 @@ class Tip < ActiveRecord::Base
   scope :moneyable, -> { where(free: false, status: STATUS_FINISHED) }
 
   delegate :name, to: :sport, prefix: true
+  delegate :name, to: :match, prefix: true
 
   # ===========================================================================
   # Class METHODS
@@ -86,7 +87,7 @@ class Tip < ActiveRecord::Base
 
     def load_data(params = {}, relation = self)
       relation = perform_filter_params(params)
-      result = relation.includes([:author, :sport, :bet_type, :match]).order('created_at desc')
+      result = relation.includes(:author, :sport, :bet_type, :match).order('created_at desc')
     end
 
     def perform_filter_params(params, relation = self)
@@ -124,6 +125,10 @@ class Tip < ActiveRecord::Base
 
   # Call after admin validate the tip. Send tip and subtract bankroll
   def published!
+    self.update_attributes(
+        published_at: Time.now,
+        status: STATUS_PUBLISHED
+    )
   end
 
   def published?
@@ -147,6 +152,10 @@ class Tip < ActiveRecord::Base
   end
 
   def status_in_string
+  end
+
+  def created_at_in_string
+    DateUtils.in_time_zone(self.created_at, I18n.t('time.formats.date_with_time'))
   end
 
   # ===========================================================================

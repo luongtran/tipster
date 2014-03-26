@@ -82,7 +82,7 @@ class Tipster < ActiveRecord::Base
   # CLASS METHODS
   # ==============================================================================
   class << self
-    attr_accessor :top_3_of_previous_week
+    attr_accessor :top_of_previous_week
 
     def load_data(params = {})
       relation = perform_filter_params(params)
@@ -104,7 +104,7 @@ class Tipster < ActiveRecord::Base
         tipster.get_statistics(params)
       end
 
-      @top_3_of_previous_week = result.sort_by { |tipster| -tipster.profit_on_previous_week }.first(3)
+      @top_of_previous_week = result.sort_by { |tipster| -tipster.profit_on_previous_week }.first(5)
 
       if sorting_info.increase?
         result.sort_by { |tipster| tipster.send("#{sorting_info.sort_by}") }
@@ -145,20 +145,8 @@ class Tipster < ActiveRecord::Base
       end
     end
 
-    # Find the top 3(profit) of the last week
-    def find_top_3_last_week(params)
-      prev_week_range = DateUtils.previous_week_date_range
-      relation = self
-      unless params[:sport].blank?
-        relation = relation.perform_sport_param(params[:sport])
-      end
-
-      ranking_range = parse_range_param(params)
-      range = range_paser(ranking_range)
-
-      relation.includes(:account, :finished_tips).
-          where("tips.published_at" => prev_week_range).
-          references(:tips)
+    def find_top_of_previous_week(limit = 3)
+      @top_of_previous_week.first(limit)
     end
 
     # Return the start & end date specify by given range string

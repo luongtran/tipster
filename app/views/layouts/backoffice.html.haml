@@ -15,5 +15,6 @@
         .mam
           = render 'layouts/shared/flash_messages'
           = yield
+    = render 'layouts/backoffice/footer'
     - if current_tipster
       = render 'layouts/backoffice/select_create_tip_method_box'
