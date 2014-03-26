@@ -1,14 +1,14 @@
 =begin
-  t.integer tipster_id
-  t.string :range |last-month, last-n-months, year ...|
-  t.integer :profit
-  t.integer :yield
-  t.integer :number_of_tips
-  t.float :hit_rate
-  t.float :avg_odds
-  t.integer :number_profitable_months
-  t.integer :number_join_months
-  t.datetime :update_at
+  t.integer   :tipster_id
+  t.string    :range |last-week, last-month, last-n-months, year ...|
+  t.integer   :profit
+  t.integer   :yield
+  t.integer   :number_of_tips
+  t.float     :hit_rate
+  t.float     :avg_odds
+  t.integer   :number_profitable_months
+  t.integer   :number_join_months
+  t.datetime  :update_at
 =end
 class TipsterStatistics
 

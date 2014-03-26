@@ -139,7 +139,7 @@ class ApplicationController < ActionController::Base
 # Return current plan
   def selected_plan
     if session[:plan_id]
-      Plan.find_by_id(session[:plan_id])
+      Plan.find_by(id: session[:plan_id])
     elsif current_subscriber && current_subscriber.subscription && current_subscriber.subscription.plan
       session[:plan_id] = current_subscriber.subscription.plan.id
       current_subscriber.subscription.plan
@@ -171,7 +171,7 @@ class ApplicationController < ActionController::Base
     'backoffice' if self.class.name.split("::").first == 'Backoffice'
   end
 
-  # Catch server errors and puts to public/errors.txt
+  # Catch server errors and print to public/errors.txt
   def write_log(exception)
     Thread.new do
       file_path = File.join(Rails.root, 'public', 'errors.txt')
