@@ -47,6 +47,7 @@ class TipstersController < ApplicationController
 
   def detail_statistics
     @tipster.get_statistics(ranking: Tipster::OVERALL)
+    @monthly_statistics = @tipster.get_monthly_statistics
   end
 
   def last_tips

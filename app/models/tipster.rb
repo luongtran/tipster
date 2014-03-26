@@ -328,8 +328,53 @@ class Tipster < ActiveRecord::Base
     self
   end
 
-  def get_monthy_statistics
+  def get_monthly_statistics
+    # Month	    Profit	Yield	  N° of Tips
+    # Oct 13	  +169	   27%	     9
+    result = []
+    first_dates_of_months_since_join.each do |date|
+      current_range = date.beginning_of_month.beginning_of_day..date.end_of_month.end_of_day
+      finished_tips_in_range = self.finished_tips.in_range(current_range)
+      _profit = 0
+      _yield = 0
+      _correct_tips = 0
+      _total_odds = 0
+      _total_tips = finished_tips_in_range.size
+      _total_amount = 0
+      finished_tips_in_range.each do |tip|
+        if tip.correct?
+          _correct_tips += 1
+          money_of_the_tip = (tip.amount*(tip.odds - 1)).round(0)
+        else
+          money_of_the_tip = -tip.amount
+        end
+        _profit += money_of_the_tip
+        _total_odds += tip.odds
+        _total_amount += tip.amount
+      end
 
+      if _total_tips.zero?
+        result << {
+            date: date,
+            number_of_tips: 0,
+            profit: 0,
+            yield: 0,
+            hit_rate: 0,
+            avg_odds: 0
+        }
+      else
+        result << {
+            date: date,
+            number_of_tips: finished_tips_in_range.count,
+            profit: _profit,
+            yield: (_profit*100/_total_amount.to_f).round(0),
+            hit_rate: (_correct_tips*100/_total_tips.to_f).round(1),
+            avg_odds: (_total_odds/_total_tips.to_f).round(1)
+        }
+      end
+    end
+    # Sort by date descrease
+    result.map.sort_by { |monthly| -(monthly[:date].to_time.to_i) }
   end
 
   def profit_in_string(include_unit = false)
