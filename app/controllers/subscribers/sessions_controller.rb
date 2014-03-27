@@ -1,9 +1,8 @@
 class Subscribers::SessionsController < Devise::SessionsController
-
   def create
     if request.xhr?
       @account = Account.find_by(email: params[:account][:email])
-      if @account && @account.valid_password?(params[:account][:password])
+      if @account && @account.is_a?(Subscriber) && @account.valid_password?(params[:account][:password])
         sign_in @account
         render json: {
             success: true,
@@ -43,9 +42,9 @@ class Subscribers::SessionsController < Devise::SessionsController
     root_path
   end
 
-  #def require_no_authentication
-  #  if current_subscriber
-  #    redirect_to root_url, alert: I18n.t('devise.failure.already_authenticated')
-  #  end
-  #end
+  def require_no_authentication
+    if current_subscriber
+      redirect_to root_url, alert: I18n.t('devise.failure.already_authenticated')
+    end
+  end
 end
