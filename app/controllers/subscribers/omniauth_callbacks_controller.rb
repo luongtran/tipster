@@ -1,5 +1,6 @@
 class Subscribers::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   before_action :subscriber_required
+
   def facebook
     authorize('Facebook')
   end
@@ -31,7 +32,9 @@ class Subscribers::OmniauthCallbacksController < Devise::OmniauthCallbacksContro
     redirect_to session[:return_url] || pricing_url
   end
 
-  protected
+  def after_omniauth_failure_path_for(resource_name)
+    root_path
+  end
 
   def email_from_omniauth
     request.env["omniauth.auth"]['info']['email']
