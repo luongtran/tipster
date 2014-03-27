@@ -148,3 +148,4 @@ en:
       default: "%m-%d-%Y"
       short: "%b %e, %Y"
       long: "%B %e, %Y"
+    monthly_statistics: "%B %Y"

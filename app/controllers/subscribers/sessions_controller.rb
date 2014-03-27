@@ -1,4 +1,8 @@
 class Subscribers::SessionsController < Devise::SessionsController
+  def new
+    #Worker.update_tipster_statistics
+    super
+  end
   def create
     if request.xhr?
       @account = Account.find_by(email: params[:account][:email])
