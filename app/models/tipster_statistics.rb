@@ -3,31 +3,11 @@ class TipsterStatistics < ActiveRecord::Base
   validates_presence_of :tipster
 
   class StatisticsNumber
-    attr_accessor :from, :to, :range,
-                  :profit, :number_correct_tips,
+    attr_accessor :profit, :number_correct_tips,
                   :total_amount, :total_odds, :number_of_tips,
-                  :yield, :hit_rate, :avg_odds,
-                  :profit_per_dates
+                  :yield, :hit_rate, :avg_odds
 
-    def initiallize
-    end
-  end
-
-  class BaseStatistics
-    attr_accessor :from, :to, :range,
-                  :profit, :number_correct_tips,
-                  :total_amount, :total_odds, :number_of_tips,
-                  :yield, :hit_rate, :avg_odds,
-                  :profit_per_dates
-
-    class << self
-      def initial_from_json(json_string)
-      end
-    end
-
-    def initialize(range)
-      @range = range
-      # Initial values
+    def initialize
       @profit = 0
       @total_odds = 0
       @number_of_tips = 0
@@ -36,8 +16,6 @@ class TipsterStatistics < ActiveRecord::Base
       @yield = 0
       @hit_rate = 0
       @avg_odds = 0
-      @profit_per_dates = []
-      self
     end
 
     # Calculate more values
@@ -52,30 +30,103 @@ class TipsterStatistics < ActiveRecord::Base
 
     def format_for_store
       {
-          from: @range.first,
-          to: @range.last,
           profit: @profit,
           yield: @yield,
           hit_rate: @hit_rate,
-          avg_odds: @avg_odds
+          avg_odds: @avg_odds,
       }
     end
-
   end
 
-  class LastNMonthStatistics
+  class BaseStatistics
+    # :statistics_number is a instance of StatisticsNumber
+    attr_accessor :statistics_number
+
+    def finish
+      @statistics_number.composite
+      self
+    end
   end
 
-  class SportStatistics
+  class LastNMonthStatistics < BaseStatistics
+    attr_accessor :profit_per_dates, :range, :from, :to
+
+    def initialize(range)
+      @range = range
+      @profit_per_dates = []
+      @statistics_number = StatisticsNumber.new
+      self
+    end
+
+    def format_for_store
+      {from: @range.first, to: @range.last}.merge(@statistics_number.format_for_store)
+    end
   end
 
-  class CountryCompetitionStatistics
+  class MonthlyStatistics < BaseStatistics
+    attr_accessor :month_name, :range
+
+    def initialize(first_day)
+      @range = DateUtils.date_range_of_month_for(first_day)
+      @month_name = DateUtils.name_of_month_for(first_day)
+      @profit_per_dates = []
+      @statistics_number = StatisticsNumber.new
+      self
+    end
+
+    def format_for_store
+      {name: @month_name}.merge(@statistics_number.format_for_store)
+    end
   end
 
-  class OddStatistics
+  class SportStatistics < BaseStatistics
+    attr_accessor :percentage, :sport_name, :sport_id, :number_of_tips, :total_tips
+
+    def initialize(sport, total_tips)
+      @sport_name = sport.name
+      @total_tips = total_tips
+      # TODO: think to use 'code' of instead for 'id' of sport
+      @sport_id = sport.id
+      @number_of_tips, @percentage = 0, 0
+      @statistics_number = StatisticsNumber.new
+      self
+    end
+
+    def format_for_store
+      {name: @sport_name, percentage: @percentage}.merge(@statistics_number.format_for_store)
+    end
+
+    def finish
+      @percentage = (@statistics_number.number_of_tips * 100/@total_tips.to_f).round(0) unless @total_tips.zero?
+      super
+      self
+    end
   end
-  class BetTypeStatistics
+
+  class BetTypeStatistics < BaseStatistics
+    attr_accessor :percentage, :bet_type_name, :sport_name, :bet_type_id
+
+    def initialize(bet_type)
+      @bet_type_name = bet_type.name
+      @bet_type_id = bet_type.id
+      @sport_name = bet_type.sport.name
+      @percentage = 0
+      @statistics_number = StatisticsNumber.new
+      self
+    end
+
+    def format_for_store
+      {name: @bet_type_name, percentage: @percentage}.merge(@statistics_number.format_for_store)
+    end
   end
+
+  class CountryCompetitionStatistics < BaseStatistics
+    attr_accessor :percentage
+  end
+  class OddStatistics < BaseStatistics
+    attr_accessor :percentage
+  end
+
 
   RANKING_RANGES = [
       OVERALL = 'overall',
@@ -88,11 +139,9 @@ class TipsterStatistics < ActiveRecord::Base
   EXTRA_RANKING_RANGES = [
       PREVIOUS_WEEK = 'previous_week',
   ]
-
   ODDS_RANGES = [
 
   ]
-
   class << self
     def date_range_parser(range_in_string)
       end_date = Date.today
@@ -122,41 +171,49 @@ class TipsterStatistics < ActiveRecord::Base
 
       tips = tipster.finished_tips # Get overall finished tips
       statistics_data[:last_n_months] = get_last_n_months_statistics(tipster)
-      statistics_data[:monthly] = get_monthly_statistics(tipster)
-      statistics_data[:sports] = get_sports_statistics(tipster)
-      statistics_data[:countries_competitions] = get_countries_competitions_statistics(tipster)
-      statistics_data[:odds] = get_odds_statistics(tipster)
-      statistics_data[:type_of_bets] = get_type_of_bets_statistics(tipster)
+
       ts
     end
 
     # Calculate previous week and last-n-months
     def get_last_n_months_statistics(tipster)
+      logger = Logger.new "log/statis.log"
       tips = tipster.finished_tips
       last_n_month_statistics = {}
-      monthly_statistics = {}
+      monthly_statistics = []
       sports_statistics = {}
 
-      # Prepare date ranges for last_n_months
+      # ==============  Prepare for last_n_months statistics
       (RANKING_RANGES + EXTRA_RANKING_RANGES).each do |range_key|
         date_range = date_range_parser(range_key)
-        last_n_month_statistics[range_key] = BaseStatistics.new(date_range)
+        last_n_month_statistics[range_key] = LastNMonthStatistics.new(date_range)
       end
 
-      # Prepare date ranges for monthly statistics
+      # ==============  Prepare date ranges for monthly statistics
+
       DateUtils.first_days_of_months_so_far_from(tipster.created_at.to_date).each do |date|
-        date_range_of_month = DateUtils.date_range_of_month_for(date)
-        monthly_statistics[DateUtils.name_of_month_for(date)] = BaseStatistics.new(date_range_of_month)
+        monthly_statistics << MonthlyStatistics.new(date)
       end
 
-      # Prepare for sports statistics
-      sports = tipster.sports
-
-      sports.each do |sport|
-        sports_statistics[sport.name.downcase.parameterize('_')] = nil
+      # ==============  Prepare for sports statistics
+      tipster_sports = tipster.sports.includes(:bet_types)
+      sports_statistics = []
+      tipster_sports.each do |sport|
+        sports_statistics << SportStatistics.new(sport, tips.size)
       end
 
-      sports_statistics = {}
+      # ============== Prepare for types of bet statistics
+      bet_types_statistics = []
+      logger.info "\n Size Before: #{bet_types_statistics.size}"
+      logger.info bet_types_statistics
+      tipster_sports.each do |sport|
+        sport.bet_types.each do |bet_type|
+          bet_types_statistics << BetTypeStatistics.new(bet_type)
+        end
+      end
+
+      logger.info "\n Size After: #{bet_types_statistics.size}"
+      logger.info bet_types_statistics
       # Group published date and sort increase
       date_with_tips = tips.group_by(&:published_date)
 
@@ -181,70 +238,94 @@ class TipsterStatistics < ActiveRecord::Base
                            -tip.amount
                          end
           profit_of_current_date += money_of_tip
+
+          # Saving for sport
+          sports_statistics.map! do |statistics_obj|
+            if tip.sport_id == statistics_obj.sport_id
+              # TODO: DRYing up !
+              statistics_obj.statistics_number.number_of_tips += 1
+              statistics_obj.statistics_number.total_odds += tip.odds
+              statistics_obj.statistics_number.number_correct_tips += 1 if tip.correct?
+              statistics_obj.statistics_number.total_amount += tip.amount
+              statistics_obj.statistics_number.profit += money_of_tip
+              break
+            end
+          end
+
+          # Saving for bet types
+          bet_types_statistics.map! do |statistics_obj|
+            if statistics_obj && (tip.bet_type_id == statistics_obj.bet_type_id)
+              # TODO: DRYing up !
+              statistics_obj.statistics_number.number_of_tips += 1
+              statistics_obj.statistics_number.total_odds += tip.odds
+              statistics_obj.statistics_number.number_correct_tips += 1 if tip.correct?
+              statistics_obj.statistics_number.total_amount += tip.amount
+              statistics_obj.statistics_number.profit += money_of_tip
+              break
+            end
+          end
         end
 
         # Update statistics_obj
         last_n_month_statistics.each do |range_key, statistics_obj|
           if statistics_obj.range.cover?(published_date)
-            last_n_month_statistics[range_key].number_of_tips += number_tips_of_current_date
-            last_n_month_statistics[range_key].total_odds += total_odds_of_current_date
-            last_n_month_statistics[range_key].number_correct_tips += number_correct_tips_current_date
-            last_n_month_statistics[range_key].total_amount += total_amount_of_current_date
-            last_n_month_statistics[range_key].profit += profit_of_current_date
+            # TODO: DRYing up !
+            last_n_month_statistics[range_key].statistics_number.number_of_tips += number_tips_of_current_date
+            last_n_month_statistics[range_key].statistics_number.total_odds += total_odds_of_current_date
+            last_n_month_statistics[range_key].statistics_number.number_correct_tips += number_correct_tips_current_date
+            last_n_month_statistics[range_key].statistics_number.total_amount += total_amount_of_current_date
+            last_n_month_statistics[range_key].statistics_number.profit += profit_of_current_date
             last_n_month_statistics[range_key].profit_per_dates << {
                 date: published_date,
-                profit: last_n_month_statistics[range_key].profit
+                profit: last_n_month_statistics[range_key].statistics_number.profit
             }
           end
         end
 
-        monthly_statistics.each do |range_key, statistics_obj|
+        monthly_statistics.each do |statistics_obj|
           if statistics_obj.range.cover?(published_date)
-            monthly_statistics[range_key].number_of_tips += number_tips_of_current_date
-            monthly_statistics[range_key].total_odds += total_odds_of_current_date
-            monthly_statistics[range_key].number_correct_tips += number_correct_tips_current_date
-            monthly_statistics[range_key].total_amount += total_amount_of_current_date
-            monthly_statistics[range_key].profit += profit_of_current_date
-
-            # The above data is maybe use in future
-            #monthly_statistics[range_key].profit_per_dates << {
-            #    profit: monthly_statistics[range_key].profit
-            #}
+            # TODO: DRYing up !
+            statistics_obj.statistics_number.number_of_tips += number_tips_of_current_date
+            statistics_obj.statistics_number.total_odds += total_odds_of_current_date
+            statistics_obj.statistics_number.number_correct_tips += number_correct_tips_current_date
+            statistics_obj.statistics_number.total_amount += total_amount_of_current_date
+            statistics_obj.statistics_number.profit += profit_of_current_date
           end
         end
       end
 
       last_n_month_statistics.each do |key, val|
-        last_n_month_statistics[key] = last_n_month_statistics[key].composite.format_for_store
+        last_n_month_statistics[key] = last_n_month_statistics[key].finish.format_for_store
       end
 
-      monthly_statistics.each do |key, val|
-        monthly_statistics[key] = monthly_statistics[key].composite.format_for_store
+      x_monthly_statistics = []
+      monthly_statistics.each do |statistics_obj|
+        x_monthly_statistics << statistics_obj.finish.format_for_store
+      end
+
+      x_sports_statistics = []
+      sports_statistics.each do |statistics_obj|
+        x_sports_statistics << statistics_obj.finish.format_for_store
+      end
+
+      x_bet_types_statistics = []
+      bet_types_statistics.each do |statistics_obj|
+        x_bet_types_statistics << statistics_obj.finish.format_for_store unless statistics_obj.nil?
       end
       {
           last_n_months: last_n_month_statistics,
-          monthly: monthly_statistics
+          monthly: x_monthly_statistics,
+          sports: x_sports_statistics,
+          bet_types: x_bet_types_statistics
       }
     end
 
-    def get_monthly_statistics(tipster)
-
-    end
-
-    def get_sports_statistics(tipster)
-    end
-
     # United Kingdom	+5388	  6%	  1022	  29%	  3.79
-    def get_countries_competitions_statistics(tipster)
-    end
 
     # (3.00 - 6.00)	 +5806	  8%	  910	  28%	  3.84
-    def get_odds_statistics(tipsters)
-    end
 
     # Winner  +7364   8%   1142    29%    3.77
-    def get_type_of_bets_statistics(tiptser)
-    end
+
   end
 
   SAMPLE = {
@@ -254,7 +335,6 @@ class TipsterStatistics < ActiveRecord::Base
               'previous_week' => {
                   'from' => 'from date',
                   'to' => 'to date',
-                  'name' => 'Jan 2014',
                   'profit' => 1,
                   'yield' => 2,
                   'hit_rate' => 3,
@@ -285,14 +365,13 @@ class TipsterStatistics < ActiveRecord::Base
               },
           # ...
           ],
-          'sports' => {
-              '<sport_name>' => {
-                  'sport_id' => 'football',
+          'sports' => [
+              {
+                  'name' => 'football',
                   'percentage' => '10',
                   #'Profit	Yield	N° of Tips	Win rate	Avg. Odds'
               }
-          },
-
+          ],
           'countries_competitions' => [
               {
                   'country_code' => 'EN',
