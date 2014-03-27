@@ -1,4 +1,4 @@
-%nav.navbar.navbar-default#backoffice-navbar{role: "navigation"}
+%nav.navbar.navbar-default{role: "navigation"}
   .navbar-header
     %button.navbar-toggle{"data-target" => "#bs-example-navbar-collapse-1", "data-toggle" => "collapse", type: "button"}
       %span.sr-only Toggle navigation
@@ -7,7 +7,7 @@
       %span.icon-bar
     - url = admin_root_path
     - url = admin_dashboard_path if account_signed_in?
-    %a.navbar-brand{href: url} Admin Dashboard
+    %a.navbar-brand{href: url} Dashboard
   #bs-example-navbar-collapse-1.collapse.navbar-collapse
     %ul.nav.navbar-nav
       - if current_admin

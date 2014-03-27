@@ -18,7 +18,7 @@ class Backoffice::TipsController < ApplicationController
 
   def available_matches
     prepare_data_for_new_tip
-    @matches = Match.betable.load_data
+    @matches = Match.betable.load_data(sport: current_tipster.sport_ids)
     if params[:mode] == 'manual'
       @tip = current_tipster.tips.new
       render 'manually_mode'
@@ -45,7 +45,6 @@ class Backoffice::TipsController < ApplicationController
 
   # POST from AJAX
   def filter_matches
-
     @matches = Match.betable.load_data(params)
     success = true
     html = render_to_string(

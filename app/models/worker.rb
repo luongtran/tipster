@@ -50,8 +50,8 @@ class Worker
           res = fetcher.get_seasons(
               id: competition.opta_competition_id,
               type: 'competition',
-              authorized: 'yes',
-              active: 'yes'
+              authorized: true,
+              active: true
           )
           if fetcher.success?
             founded_seasons += res.all
