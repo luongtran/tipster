@@ -54,7 +54,7 @@ class Match < ActiveRecord::Base
     def load_data(params = {}, relation = self)
       if params[:sport].present?
         if params[:sport].is_a? Array
-          relation = relation.where(sport_id: params[:sport])
+          relation = relation.where("sport_id in (?)", params[:sport])
         else
           sport = Sport.find_by(name: params[:sport])
           relation = relation.where(sport_id: sport.id) if sport

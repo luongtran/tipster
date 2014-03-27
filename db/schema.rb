@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140319142648) do
+ActiveRecord::Schema.define(version: 20140327062655) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -294,6 +294,14 @@ ActiveRecord::Schema.define(version: 20140319142648) do
   add_index "tips", ["match_id"], name: "index_tips_on_match_id"
   add_index "tips", ["platform_id"], name: "index_tips_on_platform_id"
   add_index "tips", ["sport_id"], name: "index_tips_on_sport_id"
+
+  create_table "tipster_statistics", force: true do |t|
+    t.integer  "tipster_id",                  null: false
+    t.text     "data",       limit: 16777215
+    t.datetime "updated_at"
+  end
+
+  add_index "tipster_statistics", ["tipster_id"], name: "index_tipster_statistics_on_tipster_id"
 
   create_table "tipsters", force: true do |t|
     t.string   "display_name"

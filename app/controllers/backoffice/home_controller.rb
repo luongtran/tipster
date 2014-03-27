@@ -3,6 +3,9 @@ class Backoffice::HomeController < ApplicationController
 
   def index
     redirect_to backoffice_dashboard_url if current_tipster
+    if !!flash[:email]
+      @email = flash[:email]
+    end
   end
 
   def dashboard

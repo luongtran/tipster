@@ -11,8 +11,9 @@ class Backoffice::SessionsController < Devise::SessionsController
       flash.clear
       redirect_to after_sign_in_path_for(resource)
     else
-      flash.now[:alert] = I18n.t('devise.failure.not_found_in_database')
-      render :new
+      flash[:alert] = I18n.t('devise.failure.not_found_in_database')
+      flash[:email] = params[:account][:email]
+      redirect_to backoffice_root_url
     end
   end
 
