@@ -1,4 +1,4 @@
-module DateUtils
+module DateUtil
   class << self
     # Return the date range of previous week from today
     def previous_week_date_range

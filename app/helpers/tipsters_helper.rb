@@ -32,7 +32,7 @@ module TipstersHelper
     if current_range.present?
       current_range == range ? 'current' : 'text-muted'
     else
-      range == Tipster::DEFAULT_RANKING_RANGE ? 'current' : 'text-muted'
+      range == TipsterStatistics::DEFAULT_RANKING_RANGE ? 'current' : 'text-muted'
     end
   end
 
@@ -41,6 +41,6 @@ module TipstersHelper
   end
 
   def ranking_param(range)
-    query_params.merge(ranking: range)
+    query_params.merge(ranking: range.parameterize('_'))
   end
 end

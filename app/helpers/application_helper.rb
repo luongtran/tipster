@@ -88,7 +88,7 @@ module ApplicationHelper
 
   def ranking_ranges_for_select
     options = []
-    Tipster::RANKING_RANGES.each do |range|
+    TipsterStatistics::RANKING_RANGES.each do |range|
       options << [
           I18n.t("tipster.ranking.ranges.#{range}").titleize,
           range,
@@ -243,7 +243,7 @@ module ApplicationHelper
   end
 
   def current_ranking_range_param
-    query_params[:ranking] ||= Tipster::DEFAULT_RANKING_RANGE
+    query_params[:ranking] ||= TipsterStatistics::DEFAULT_RANKING_RANGE
   end
 
 

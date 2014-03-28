@@ -1,4 +1,7 @@
 en:
+  common:
+    over: 'Over'
+    under: 'Under'
   hello: "Hello world"
   language:
     text: 'Language'
@@ -93,10 +96,10 @@ en:
     description: 'Description'
     ranking:
       ranges:
-        last-12-months: 'Last 12 months'
-        last-6-months: 'Last 6 months'
-        last-3-months: 'Last 3 months'
-        last-month: 'Last month'
+        last_12_months: 'Last 12 months'
+        last_6_months: 'Last 6 months'
+        last_3_months: 'Last 3 months'
+        last_month: 'Last month'
         overall: 'Overall'
       sort_by:
         yield: 'Yield'

@@ -8,9 +8,11 @@ class TipstersController < ApplicationController
     @selected_plan = selected_plan
 
     @tipsters = Tipster.load_data(params)
-    @top_3 = Tipster.find_top_of_previous_week(3)
+    @top_3 = Tipster.find_tipsters_of_week(3)
     @sports = Sport.order('position asc')
 
+    # TODO: Oh my God! How can I increase response time with these bellow lines
+    # remember: this is a Controller not Model
     if current_subscriber && current_subscriber.has_active_subscription?
       @tipsters_in_subscription = current_subscriber.subscription.active_tipsters
     end
@@ -41,23 +43,21 @@ class TipstersController < ApplicationController
   end
 
   def show
-    @tipster.get_statistics(params)
-    @chart = Tipster.profit_chart_for_tipster(@tipster)
+    @tipster = Tipster.includes(:statistics).find(params[:id]).
+        prepare_statistics_data(params).initial_chart
   end
 
   def detail_statistics
-    @tipster.get_statistics(ranking: Tipster::OVERALL)
     @monthly_statistics = @tipster.get_monthly_statistics
   end
 
   def last_tips
-    @tipster.get_statistics(ranking: Tipster::OVERALL)
     @tipster_sports = @tipster.sports
     @tips = @tipster.tips.load_data(params)
   end
 
   def description
-    @tipster.get_statistics(ranking: Tipster::OVERALL)
+    @tipster
   end
 
   def profile
