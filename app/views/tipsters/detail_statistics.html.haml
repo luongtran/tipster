@@ -64,30 +64,108 @@
   .container
     .panel.panel-default
       .panel-body
-        %h3 Monthly statistics
-        %table.table.table-bordered.table-striped
-          %thead
-            %tr
-              %th Month
-              %th Profit
-              %th Yield
-              %th Hit rate
-              %th Avg odds
-              %th
-                = ("N" + content_tag(:sup, 'o')).html_safe
-                of tips
-          %tbody
-            - @monthly_statistics.each do |month_statistics|
-              - unless month_statistics[:number_of_tips].zero?
+        %h3.text-warning Monthly statistics
+        .row
+          .col-lg-9
+            %table.table.table-bordered.table-striped
+              %thead
                 %tr
-                  %td= month_statistics[:date].strftime("%B %Y")
-                  %td= profit_in_string month_statistics[:profit]
-                  %td= yield_in_string month_statistics[:yield]
-                  %td= hit_rate_in_string month_statistics[:hit_rate]
-                  %td= month_statistics[:avg_odds]
-                  %td= month_statistics[:number_of_tips]
-
-        %h3 Sports
-        %h3 Countries - Competitions
-        %p Type of bets statistics:
-        %p Odds statistics:
+                  %th Month
+                  %th Profit
+                  %th Yield
+                  %th Hit rate
+                  %th Avg odds
+                  %th
+                    = ("N" + content_tag(:sup, 'o')).html_safe
+                    of tips
+              %tbody
+                - @tipster.monthly_statistics.each do |month_statistics|
+                  - unless month_statistics[:number_of_tips].zero?
+                    %tr
+                      %td= month_statistics[:name]
+                      %td= profit_in_string month_statistics[:profit]
+                      %td= yield_in_string month_statistics[:yield]
+                      %td= hit_rate_in_string month_statistics[:hit_rate]
+                      %td= month_statistics[:avg_odds]
+                      %td= month_statistics[:number_of_tips]
+              .col-lg-3
+        %hr
+        %h3.text-warning Sports
+        .row
+          .col-lg-9
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %th Sport
+                  %th Profit
+                  %th Yield
+                  %th Hit rate
+                  %th Avg odds
+                  %th
+                    = ("N" + content_tag(:sup, 'o')).html_safe
+                    of tips
+              %tbody
+                - @tipster.sports_statistics.each do |sport_statistics|
+                  - unless sport_statistics[:number_of_tips].zero?
+                    %tr
+                      %td= sport_statistics[:sport_name]
+                      %td= profit_in_string sport_statistics[:profit]
+                      %td= yield_in_string sport_statistics[:yield]
+                      %td= hit_rate_in_string sport_statistics[:hit_rate]
+                      %td= sport_statistics[:avg_odds]
+                      %td= sport_statistics[:number_of_tips]
+          .col-lg-3
+        %h3.text-warning Type of bets:
+        .row
+          .col-lg-9
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %th Bet Type
+                  %th Profit
+                  %th Yield
+                  %th Hit rate
+                  %th Avg odds
+                  %th
+                    = ("N" + content_tag(:sup, 'o')).html_safe
+                    of tips
+              %tbody
+                - @tipster.bet_types_statistics.each do |bet_type_statistics|
+                  - unless bet_type_statistics[:number_of_tips].zero?
+                    %tr
+                      %td
+                        = bet_type_statistics[:bet_type_name]
+                        = "(#{bet_type_statistics[:sport_name]})"
+                      %td= profit_in_string bet_type_statistics[:profit]
+                      %td= yield_in_string bet_type_statistics[:yield]
+                      %td= hit_rate_in_string bet_type_statistics[:hit_rate]
+                      %td= bet_type_statistics[:avg_odds]
+                      %td= bet_type_statistics[:number_of_tips]
+          .col-lg-3
+        %h3.text-warning Odds statistics:
+        .row
+          .col-lg-9
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %th Odds
+                  %th Profit
+                  %th Yield
+                  %th Hit rate
+                  %th Avg odds
+                  %th
+                    = ("N" + content_tag(:sup, 'o')).html_safe
+                    of tips
+              %tbody
+                - @tipster.odds_statistics.each do |odds_statistics|
+                  - unless odds_statistics[:number_of_tips].zero?
+                    %tr
+                      %td
+                        = odds_statistics[:range_name]
+                      %td= profit_in_string odds_statistics[:profit]
+                      %td= yield_in_string odds_statistics[:yield]
+                      %td= hit_rate_in_string odds_statistics[:hit_rate]
+                      %td= odds_statistics[:avg_odds]
+                      %td= odds_statistics[:number_of_tips]
+          .col-lg-3
+        -#%h3 Countries - Competitions
