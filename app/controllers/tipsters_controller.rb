@@ -48,7 +48,8 @@ class TipstersController < ApplicationController
   end
 
   def detail_statistics
-    @monthly_statistics = @tipster.get_monthly_statistics
+    # TODO: make the prepare function to be easier to pass parameter
+    @tipster = @tipster.prepare_statistics_data({}, nil, true)
   end
 
   def last_tips

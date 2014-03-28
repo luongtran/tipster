@@ -35,7 +35,8 @@ class Tipster < ActiveRecord::Base
                 :profit_per_months, :profit_per_dates, :total_months,
                 :tips_per_dates, :profitable_months, :current_statistics_range
 
-  attr_accessor :profit_on_previous_week, :total_amount_on_previous_week
+  attr_accessor :monthly_statistics, :sports_statistics,
+                :bet_types_statistics, :odds_statistics
   attr_accessor :profit_chart # LazyHighChart object
 
   # ==============================================================================
@@ -252,24 +253,46 @@ class Tipster < ActiveRecord::Base
     self
   end
 
-  def prepare_statistics_data(params, ranking_range = nil)
+  def prepare_statistics_data(params, ranking_range = nil, details = false)
+
     ranking_range ||= self.class.sanitized_ranking_range_param(params).to_sym
 
-    # Get and parse statistics depending to ranking param
+    # Parse and get statistics data depending to ranking param
     statistics_data = self.statistics.parse_data
     last_n_months_statistics = statistics_data[:last_n_months][ranking_range]
+
     # Assign statistic attr_accessors for each tipster object
+    @profitable_months = statistics_data[:profitable_months]
+    @total_months = statistics_data[:total_months]
+
     @profit = last_n_months_statistics[:profit]
     @yield = last_n_months_statistics[:yield]
     @avg_odds = last_n_months_statistics[:avg_odds]
     @number_of_tips = last_n_months_statistics[:number_of_tips]
     @hit_rate = last_n_months_statistics[:hit_rate]
 
-    @profitable_months = statistics_data[:profitable_months]
-    @total_months = statistics_data[:total_months]
+
     @current_statistics_range = ranking_range
     @profit_per_dates = last_n_months_statistics[:profit_per_dates]
+
+
+    # Load all statistics
+    if details
+      @monthly_statistics = statistics_data[:monthly].map { |statistic| statistic.symbolize_keys }
+      @sports_statistics = statistics_data[:sports].map { |statistic| statistic.symbolize_keys }
+      @bet_types_statistics = statistics_data[:bet_types].map { |statistic| statistic.symbolize_keys }
+      @odds_statistics = statistics_data[:odds].map { |statistic| statistic.symbolize_keys }
+    end
+
     self
+  end
+
+  def prepare_monthly_statistics_data
+    if self.statistics.loaded?
+      self.monthly_statistics = prepare_statistics_data({}, nil, true)
+    else
+      raise 'the :statistics relation must be loaded before you call the method'
+    end
   end
 
   # Calculate statistic on per month

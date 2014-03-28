@@ -1,3 +1,4 @@
+# coding: utf-8
 # Sample of a record
 #{
 #    tipster_id: 1,
@@ -6,20 +7,12 @@
 #            'previous_week' => {
 #                'from' => '2013-03-17', # The monday
 #                'to' => '2013-03-23', # The Sunday
-#                'profit' => 1,
-#                'yield' => 2,
-#                'hit_rate' => 3,
-#                'avg odds' => 4,
-#                'number_of_tips' => 5
+#                'Profit	Yield	N° of Tips	Win rate	Avg. Odds'
 #            },
 #            'last_month' => {
 #                'from' => '2013-02-23',
 #                'to' => '2013-03-23',
-#                'profit' => 1,
-#                'yield' => 2,
-#                'hit_rate' => 3,
-#                'avg_odds' => 4,
-#                'number_of_tips' => 14,
+#                'Profit	Yield	N° of Tips	Win rate	Avg. Odds'
 #                'profit_per_dates' => [
 #                    'date' => '2013-03-15',
 #                    'profit' => '457'
@@ -33,17 +26,14 @@
 #        'monthly' => [
 #            {
 #                'name' => 'Jan 2014',
-#                'profit' => 1,
-#                'yield' => 2,
-#                'hit_rate' => 3,
-#                'avg_odds' => 4,
-#                'number_of_tips' => 5
+#                 #'Profit	Yield	N° of Tips	Win rate	Avg. Odds'
 #            },
 #            # ....
 #        ],
 #        'sports' => [
 #            {
-#                'name' => 'football',
+#                'sport_name' => 'Football',
+#                'sport_code' => 'football',
 #                'percentage' => '10',
 #                #'Profit	Yield	N° of Tips	Win rate	Avg. Odds'
 #            },
@@ -57,19 +47,16 @@
 #        ],
 #        'type_of_bets' => [
 #            {
-#                'sport_code' => 'football',
-#                'bet_name' => 'Match odds'
+#                'sport_name' => 'football',
+#                'bet_type_name' => 'Match odds'
+#                #'Profit	Yield	N° of Tips	Win rate	Avg. Odds'
 #            },
 #            # ....
 #        ],
 #        'odds' => [
 #            {
 #                'range' => '3.0 - 6.0',
-#                'profit' => '123',
-#                'yield' => '35',
-#                'number_of_tips' => '100',
-#                'hit_rate' => '15',
-#                'avg_odds' => '3.2'
+#                #'Profit	Yield	N° of Tips	Win rate	Avg. Odds'
 #            },
 #            # ....
 #        ],
@@ -169,20 +156,24 @@ class TipsterStatistics < ActiveRecord::Base
 
   # ================= For saving a sport statistics object
   class SportStatistics < BaseStatistics
-    attr_accessor :percentage, :sport_name, :sport_id, :number_of_tips, :total_tips
+    attr_accessor :percentage, :sport_name, :sport_id, :sport_code, :number_of_tips, :total_tips
 
     def initialize(sport, total_tips)
       @sport_name = sport.name
-      @total_tips = total_tips
-      # TODO: think to use 'code' of instead for 'id' of sport
+      @sport_code = sport.code
       @sport_id = sport.id
+      @total_tips = total_tips
       @number_of_tips, @percentage = 0, 0
       @statistics_number = StatisticsNumber.new
       self
     end
 
     def format_for_store
-      {name: @sport_name, percentage: @percentage}.merge(@statistics_number.format_for_store)
+      {
+          sport_name: @sport_name,
+          sport_code: @sport_code,
+          percentage: @percentage
+      }.merge(@statistics_number.format_for_store)
     end
 
     def finish
@@ -214,9 +205,9 @@ class TipsterStatistics < ActiveRecord::Base
 
     def format_for_store
       {
-          name: @bet_type_name,
-          percentage: @percentage,
-          sport_name: @sport_name
+          bet_type_name: @bet_type_name,
+          sport_name: @sport_name,
+          percentage: @percentage
       }.merge(@statistics_number.format_for_store)
     end
   end
@@ -254,7 +245,7 @@ class TipsterStatistics < ActiveRecord::Base
 
     def format_for_store
       {
-          name: @range_name,
+          range_name: @range_name,
           percentage: @percentage,
       }.merge(@statistics_number.format_for_store)
     end
