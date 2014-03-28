@@ -5,8 +5,7 @@ class CartController < ApplicationController
       flash[:alert] = I18n.t('cart.empty')
       redirect_to tipsters_url
     else
-      @tipsters = Tipster.where(id: tipster_ids_in_cart)
-      @tipsters.each { |tipster| tipster.get_statistics }
+      @tipsters = Tipster.includes(:statistics).where(id: tipster_ids_in_cart).load_data
       if current_subscriber && current_subscriber.has_active_subscription?
         @subscription_active = true
       end
@@ -47,7 +46,7 @@ class CartController < ApplicationController
       end
     else
       session[:tipster_first] = true
-      session[:failed_add_tipster_id] =  params[:id]
+      session[:failed_add_tipster_id] = params[:id]
     end
     flash[:show_checkout_dialog] = true
     redirect_to tipsters_path and return

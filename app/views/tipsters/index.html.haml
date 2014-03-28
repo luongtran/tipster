@@ -12,7 +12,7 @@
     .tipster-list-line2.clearfix
       .pull-left
         %ul.list-inline.list-unstyled.mbn.rank-ranges
-          - Tipster::RANKING_RANGES.each do |range|
+          - TipsterStatistics::RANKING_RANGES.each do |range|
             %li
               %a{href: tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
                 = t("tipster.ranking.ranges.#{range}").titleize
@@ -39,26 +39,27 @@
                 %th
             %tbody
               - @tipsters.each_with_index do |tipster,index|
-                %tr
-                  %td
-                    = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar-mini'
-                    %a.tipster-name{href: tipster_path(tipster)}
-                      = tipster.full_name
-                    .tipster-profit-chart
-                      = image_tag profit_img_chart_url_for(tipster.profit_values_for_chart), alt: 'Profit chart'
-                  %td= tipster.profit_in_string
-                  %td= tipster.yield_in_string
-                  %td= tipster.number_of_tips
-                  %td= tipster.hit_rate_in_string
-                  %td= tipster.avg_odds
-                  %td= tipster.profitable_months
-                  %td.text-center
-                    - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
-                      %button.btn.btn-sm.btn-default Already purchase
-                    - else
-                      %button.btn.btn-sm.btn-default.btn-add-to-cart{data: {'tipster-id' => tipster.id}, class: "#{'disabled' if tipster_ids_in_cart.include?(tipster.id.to_s)}"}
-                        %i.glyphicon.glyphicon-plus.mrs
-                        Subscribe
+                - unless tipster.number_of_tips.zero?
+                  %tr
+                    %td
+                      = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar-mini'
+                      %a.tipster-name{href: tipster_path(tipster)}
+                        = tipster.full_name
+                      .tipster-profit-chart
+                        = image_tag profit_img_chart_url_for(tipster.profit_values_for_chart), alt: 'Profit chart'
+                    %td= tipster.profit_in_string
+                    %td= tipster.yield_in_string
+                    %td= tipster.number_of_tips
+                    %td= tipster.hit_rate_in_string
+                    %td= tipster.avg_odds
+                    %td= tipster.profitable_months_in_string
+                    %td.text-center
+                      - if @tipsters_in_subscription.present? && @tipsters_in_subscription.include?(tipster)
+                        %button.btn.btn-sm.btn-default Already purchase
+                      - else
+                        %button.btn.btn-sm.btn-default.btn-add-to-cart{data: {'tipster-id' => tipster.id}, class: "#{'disabled' if tipster_ids_in_cart.include?(tipster.id.to_s)}"}
+                          %i.glyphicon.glyphicon-plus.mrs
+                          Subscribe
           - if @tipsters.empty?
             .text-center.clearfix
               %br

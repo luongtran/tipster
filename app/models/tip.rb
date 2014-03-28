@@ -155,7 +155,7 @@ class Tip < ActiveRecord::Base
   end
 
   def created_at_in_string
-    DateUtils.in_time_zone(self.created_at, I18n.t('time.formats.date_with_time'))
+    DateUtil.in_time_zone(self.created_at, I18n.t('time.formats.date_with_time'))
   end
 
   # ===========================================================================

@@ -137,9 +137,9 @@ class Worker
     end
 
     def update_tipster_statistics
-      tipsters = Tipster.select('id, created_at').includes(finished_tips: [:match, :bet_type])
+      tipsters = Tipster.includes(:statistics, sports: [:bet_types], finished_tips: [:match, :bet_type])
       tipsters.each do |tipster|
-        TipsterStatistics.perform_statistics_for(tipster)
+        TipsterStatistics.make_statistics_for(tipster)
       end
     end
   end # End class block
