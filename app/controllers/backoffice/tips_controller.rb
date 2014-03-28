@@ -45,7 +45,11 @@ class Backoffice::TipsController < ApplicationController
 
   # POST from AJAX
   def filter_matches
-    @matches = Match.betable.load_data(params)
+    params_x = params
+    unless params_x[:sport].present?
+      params_x= params_x.merge(sport: current_tipster.sport_ids)
+    end
+    @matches = Match.betable.load_data(params_x)
     success = true
     html = render_to_string(
         partial: 'backoffice/tips/available_matches_list',

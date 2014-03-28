@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140319142648) do
+ActiveRecord::Schema.define(version: 20140327062655) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -31,17 +31,10 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.datetime "confirmation_sent_at"
   end
 
-<<<<<<< HEAD
   add_index "accounts", ["confirmation_token"], name: "index_accounts_on_confirmation_token", unique: true, using: :btree
   add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true, using: :btree
   add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true, using: :btree
   add_index "accounts", ["rolable_id", "rolable_type"], name: "index_accounts_on_rolable_id_and_rolable_type", using: :btree
-=======
-  add_index "accounts", ["confirmation_token"], name: "index_accounts_on_confirmation_token", unique: true
-  add_index "accounts", ["email"], name: "index_accounts_on_email", unique: true
-  add_index "accounts", ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
-  add_index "accounts", ["rolable_id", "rolable_type"], name: "index_accounts_on_rolable_id_and_rolable_type"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "admins", force: true do |t|
     t.string   "full_name"
@@ -66,13 +59,8 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.datetime "updated_at"
   end
 
-<<<<<<< HEAD
   add_index "authorizations", ["subscriber_id"], name: "index_authorizations_on_subscriber_id", using: :btree
   add_index "authorizations", ["uid"], name: "index_authorizations_on_uid", using: :btree
-=======
-  add_index "authorizations", ["subscriber_id"], name: "index_authorizations_on_subscriber_id"
-  add_index "authorizations", ["uid"], name: "index_authorizations_on_uid"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "bet_types", force: true do |t|
     t.integer "sport_id"
@@ -85,11 +73,7 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.boolean "has_line",     default: true
   end
 
-<<<<<<< HEAD
   add_index "bet_types", ["sport_id"], name: "index_bet_types_on_sport_id", using: :btree
-=======
-  add_index "bet_types", ["sport_id"], name: "index_bet_types_on_sport_id"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "competitions", force: true do |t|
     t.integer "opta_competition_id"
@@ -100,15 +84,9 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.boolean "active",              default: true
   end
 
-<<<<<<< HEAD
   add_index "competitions", ["opta_area_id"], name: "index_competitions_on_opta_area_id", using: :btree
   add_index "competitions", ["opta_competition_id"], name: "index_competitions_on_opta_competition_id", using: :btree
   add_index "competitions", ["sport_id"], name: "index_competitions_on_sport_id", using: :btree
-=======
-  add_index "competitions", ["opta_area_id"], name: "index_competitions_on_opta_area_id"
-  add_index "competitions", ["opta_competition_id"], name: "index_competitions_on_opta_competition_id"
-  add_index "competitions", ["sport_id"], name: "index_competitions_on_sport_id"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "coupon_codes", force: true do |t|
     t.integer  "subscriber_id"
@@ -119,11 +97,7 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.datetime "created_at",                    null: false
   end
 
-<<<<<<< HEAD
   add_index "coupon_codes", ["subscriber_id"], name: "index_coupon_codes_on_subscriber_id", using: :btree
-=======
-  add_index "coupon_codes", ["subscriber_id"], name: "index_coupon_codes_on_subscriber_id"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "matches", force: true do |t|
     t.integer  "opta_match_id"
@@ -140,15 +114,9 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.datetime "updated_at"
   end
 
-<<<<<<< HEAD
   add_index "matches", ["opta_competition_id"], name: "index_matches_on_opta_competition_id", using: :btree
   add_index "matches", ["opta_match_id"], name: "index_matches_on_opta_match_id", using: :btree
   add_index "matches", ["sport_id"], name: "index_matches_on_sport_id", using: :btree
-=======
-  add_index "matches", ["opta_competition_id"], name: "index_matches_on_opta_competition_id"
-  add_index "matches", ["opta_match_id"], name: "index_matches_on_opta_match_id"
-  add_index "matches", ["sport_id"], name: "index_matches_on_sport_id"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "payments", force: true do |t|
     t.integer  "subscription_id"
@@ -181,13 +149,8 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.datetime "updated_at"
   end
 
-<<<<<<< HEAD
   add_index "payments", ["coupon_code_id"], name: "index_payments_on_coupon_code_id", using: :btree
   add_index "payments", ["subscription_id"], name: "index_payments_on_subscription_id", using: :btree
-=======
-  add_index "payments", ["coupon_code_id"], name: "index_payments_on_coupon_code_id"
-  add_index "payments", ["subscription_id"], name: "index_payments_on_subscription_id"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "plans", force: true do |t|
     t.string   "title"
@@ -220,13 +183,8 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.datetime "updated_at"
   end
 
-<<<<<<< HEAD
   add_index "seasons", ["opta_competition_id"], name: "index_seasons_on_opta_competition_id", using: :btree
   add_index "seasons", ["opta_season_id"], name: "index_seasons_on_opta_season_id", using: :btree
-=======
-  add_index "seasons", ["opta_competition_id"], name: "index_seasons_on_opta_competition_id"
-  add_index "seasons", ["opta_season_id"], name: "index_seasons_on_opta_season_id"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "sessions", force: true do |t|
     t.string   "session_id", null: false
@@ -235,13 +193,8 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.datetime "updated_at"
   end
 
-<<<<<<< HEAD
   add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true, using: :btree
   add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at", using: :btree
-=======
-  add_index "sessions", ["session_id"], name: "index_sessions_on_session_id", unique: true
-  add_index "sessions", ["updated_at"], name: "index_sessions_on_updated_at"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "sports", force: true do |t|
     t.string  "name",     null: false
@@ -254,11 +207,7 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.integer "tipster_id", null: false
   end
 
-<<<<<<< HEAD
   add_index "sports_tipsters", ["sport_id", "tipster_id"], name: "index_sports_tipsters_on_sport_id_and_tipster_id", using: :btree
-=======
-  add_index "sports_tipsters", ["sport_id", "tipster_id"], name: "index_sports_tipsters_on_sport_id_and_tipster_id"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "subscribers", force: true do |t|
     t.string   "first_name"
@@ -297,15 +246,9 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.datetime "updated_at"
   end
 
-<<<<<<< HEAD
   add_index "subscription_tipsters", ["payment_id"], name: "index_subscription_tipsters_on_payment_id", using: :btree
   add_index "subscription_tipsters", ["subscription_id"], name: "index_subscription_tipsters_on_subscription_id", using: :btree
   add_index "subscription_tipsters", ["tipster_id"], name: "index_subscription_tipsters_on_tipster_id", using: :btree
-=======
-  add_index "subscription_tipsters", ["payment_id"], name: "index_subscription_tipsters_on_payment_id"
-  add_index "subscription_tipsters", ["subscription_id"], name: "index_subscription_tipsters_on_subscription_id"
-  add_index "subscription_tipsters", ["tipster_id"], name: "index_subscription_tipsters_on_tipster_id"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "subscriptions", force: true do |t|
     t.integer  "subscriber_id"
@@ -320,13 +263,8 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.datetime "updated_at"
   end
 
-<<<<<<< HEAD
   add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id", using: :btree
   add_index "subscriptions", ["subscriber_id"], name: "index_subscriptions_on_subscriber_id", using: :btree
-=======
-  add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id"
-  add_index "subscriptions", ["subscriber_id"], name: "index_subscriptions_on_subscriber_id"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
 
   create_table "tips", force: true do |t|
     t.integer  "author_id",                    null: false
@@ -351,19 +289,19 @@ ActiveRecord::Schema.define(version: 20140319142648) do
     t.datetime "updated_at"
   end
 
-<<<<<<< HEAD
   add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type", using: :btree
   add_index "tips", ["bet_type_id"], name: "index_tips_on_bet_type_id", using: :btree
   add_index "tips", ["match_id"], name: "index_tips_on_match_id", using: :btree
   add_index "tips", ["platform_id"], name: "index_tips_on_platform_id", using: :btree
   add_index "tips", ["sport_id"], name: "index_tips_on_sport_id", using: :btree
-=======
-  add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type"
-  add_index "tips", ["bet_type_id"], name: "index_tips_on_bet_type_id"
-  add_index "tips", ["match_id"], name: "index_tips_on_match_id"
-  add_index "tips", ["platform_id"], name: "index_tips_on_platform_id"
-  add_index "tips", ["sport_id"], name: "index_tips_on_sport_id"
->>>>>>> eeb48fa57b3869164e5607c5d38122f4a23372d1
+
+  create_table "tipster_statistics", force: true do |t|
+    t.integer  "tipster_id",                  null: false
+    t.text     "data",       limit: 16777215
+    t.datetime "updated_at"
+  end
+
+  add_index "tipster_statistics", ["tipster_id"], name: "index_tipster_statistics_on_tipster_id", using: :btree
 
   create_table "tipsters", force: true do |t|
     t.string   "display_name"

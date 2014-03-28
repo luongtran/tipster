@@ -50,6 +50,8 @@ class Tipster < ActiveRecord::Base
   # ASSOCIATIONS
   # ==============================================================================
 
+  has_one :statistics, class_name: TipsterStatistics
+
   has_many :tips, as: :author do
     def recent(count = 10)
       proxy_association.owner.tips.includes(:sport).order('created_at desc').limit(count)
@@ -164,7 +166,7 @@ class Tipster < ActiveRecord::Base
                        365.days.ago
                      when OVERALL
                        self.order("created_at asc").first.created_at.to_date
-                     else
+                     else # last 3 months by default
                        90.days.ago
                    end
       start_date..end_date
@@ -297,6 +299,7 @@ class Tipster < ActiveRecord::Base
 
       money_on_current_date = 0
       amount_on_current_date = 0
+
       tips.each do |tip|
         money_of_the_tip = 0
         total_odds += tip.odds
