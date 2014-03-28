@@ -135,6 +135,12 @@ class Worker
         Area.create area_attrs
       end
     end
-  end # End class block
 
+    def update_tipster_statistics
+      tipsters = Tipster.select('id, created_at').includes(finished_tips: [:match, :bet_type])
+      tipsters.each do |tipster|
+        TipsterStatistics.perform_statistics_for(tipster)
+      end
+    end
+  end # End class block
 end

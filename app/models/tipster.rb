@@ -420,15 +420,7 @@ class Tipster < ActiveRecord::Base
   # Get all first date of the months from join date to today
   # Example return: ['2013-02-01','2013-02-01' ...]
   def first_dates_of_months_since_join
-    dates = []
-    first_date_of_first_month = self.created_at.to_date.beginning_of_month
-    first_date_of_last_month = Date.today.beginning_of_month
-    tmp_date = first_date_of_first_month
-    while tmp_date <= first_date_of_last_month
-      dates << tmp_date
-      tmp_date = tmp_date.next_month
-    end
-    dates
+    DateUtils.first_days_of_months_so_far_from(self.created_at.to_date)
   end
 
   def update_description(text)
