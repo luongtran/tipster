@@ -148,7 +148,11 @@ class Tip < ActiveRecord::Base
   end
 
   def profit
-    ((self.amount) * (self.odds - 1)).round(0)
+    if self.correct?
+      ((self.amount) * (self.odds - 1)).round(0)
+    else
+      -self.amount
+    end
   end
 
   def status_in_string

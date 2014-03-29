@@ -37,7 +37,10 @@ class Tipster < ActiveRecord::Base
 
   attr_accessor :monthly_statistics, :sports_statistics,
                 :bet_types_statistics, :odds_statistics
-  attr_accessor :profit_chart # LazyHighChart object
+
+  # LazyHighChart objects
+  attr_accessor :monthly_chart, :sports_chart,
+                :bet_types_chart, :odds_chart, :profit_chart
 
   # ==============================================================================
   # ASSOCIATIONS
@@ -155,7 +158,7 @@ class Tipster < ActiveRecord::Base
 
     # Return LazayHightChart object for draw profile chart
     def profit_chart_for_tipster(tipster)
-      chart = LazyHighCharts::HighChart.new('graph') do |f|
+      LazyHighCharts::HighChart.new('graph') do |f|
         f.title(
             :text => nil
         )
@@ -178,7 +181,6 @@ class Tipster < ActiveRecord::Base
                 ]
         f.chart({:defaultSeriesType => "line"})
       end
-      chart
     end
 
     def find_tipsters_of_week(count = 3)
@@ -248,17 +250,23 @@ class Tipster < ActiveRecord::Base
   def subtract_bankroll(amount)
   end
 
-  def initial_chart
-    @profit_chart = Tipster.profit_chart_for_tipster(self)
+  def initial_chart(type)
+    case type
+      when 'profit'
+        @profit_chart = Tipster.profit_chart_for_tipster(self)
+      when 'all'
+        @bet_types_chart = self.statistics.get_bet_types_chart
+        @odds_chart = self.statistics.get_odds_chart
+        @sports_chart = self.statistics.get_sports_chart
+    end
     self
   end
 
   def prepare_statistics_data(params, ranking_range = nil, details = false)
-
     ranking_range ||= self.class.sanitized_ranking_range_param(params).to_sym
 
     # Parse and get statistics data depending to ranking param
-    statistics_data = self.statistics.parse_data
+    statistics_data = self.statistics.parsed_data
     last_n_months_statistics = statistics_data[:last_n_months][ranking_range]
 
     # Assign statistic attr_accessors for each tipster object

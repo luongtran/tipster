@@ -70,6 +70,7 @@ class TipsterStatistics < ActiveRecord::Base
   belongs_to :tipster
   validates_presence_of :tipster_id
 
+  attr_accessor :parsed_data
   class StatisticsNumber
     attr_accessor :profit, :number_correct_tips,
                   :total_amount, :total_odds, :number_of_tips,
@@ -209,6 +210,10 @@ class TipsterStatistics < ActiveRecord::Base
           sport_name: @sport_name,
           percentage: @percentage
       }.merge(@statistics_number.format_for_store)
+    end
+
+    def to_chart
+
     end
   end
 
@@ -493,7 +498,117 @@ class TipsterStatistics < ActiveRecord::Base
   # ==================================================================================
 
   # Convert statistics data from a json_string to a Hash
-  def parse_data
-    JSON.parse(self.data).deep_symbolize_keys
+  def parsed_data
+    @parsed_data ||= JSON.parse(self.data).deep_symbolize_keys
+    @parsed_data
+  end
+
+  def get_bet_types_chart
+    bet_types_statistic = parsed_data[:bet_types]
+
+    sanitized_bet_types_statistic = []
+    bet_types_statistic.each do |bet_type|
+      if bet_type['percentage'].to_i > 0
+        sanitized_bet_types_statistic << {
+            name: bet_type['bet_type_name'][0..12],
+            y: bet_type['percentage']
+        }
+      end
+    end
+    LazyHighCharts::HighChart.new('graph') do |f|
+      f.series(
+          :data => sanitized_bet_types_statistic,
+      )
+      f.plotOptions(
+          pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: true
+              }
+          }
+      )
+      f.tooltip(
+          pointFormat: '<b>{point.percentage}%</b>',
+          percentageDecimals: 1
+      )
+      f.chart(
+          :type => 'pie',
+          width: 300,
+          height: 300
+      )
+    end
+  end
+
+  def get_sports_chart
+    sports_statistics = parsed_data[:sports]
+    sanitized_sports_statistic = []
+    sports_statistics.each do |bet_type|
+      if bet_type['percentage'].to_i > 0
+        sanitized_sports_statistic << {
+            name: bet_type['sport_name'],
+            y: bet_type['percentage']
+        }
+      end
+    end
+    LazyHighCharts::HighChart.new('graph') do |f|
+      f.series(
+          :data => sanitized_sports_statistic,
+      )
+      f.plotOptions(
+          pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: true
+              }
+          }
+      )
+      f.tooltip(
+          pointFormat: '<b>{point.percentage}%</b>',
+          percentageDecimals: 1
+      )
+      f.chart(
+          :type => "pie",
+          width: 200,
+          height: 200
+      )
+    end
+  end
+
+  def get_odds_chart
+    odds_statistics = parsed_data[:odds]
+    sanitized_odds_statistic = []
+    odds_statistics.each do |bet_type|
+      if bet_type['percentage'].to_i > 0
+        sanitized_odds_statistic << {
+            name: bet_type['range_name'],
+            y: bet_type['percentage']
+        }
+      end
+    end
+    LazyHighCharts::HighChart.new('graph') do |f|
+      f.series(
+          :data => sanitized_odds_statistic,
+      )
+      f.plotOptions(
+          pie: {
+              allowPointSelect: true,
+              cursor: 'pointer',
+              dataLabels: {
+                  enabled: true
+              }
+          }
+      )
+      f.tooltip(
+          pointFormat: '<b>{point.percentage}%</b>',
+          percentageDecimals: 1
+      )
+      f.chart(
+          :type => "pie",
+          width: 300,
+          height: 300
+      )
+    end
   end
 end
