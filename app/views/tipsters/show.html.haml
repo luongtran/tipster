@@ -92,4 +92,40 @@
             .col-md-12
               .text-center
                 = high_chart("profil-chart-container", @tipster.profit_chart)
+            .col-md-12
+              %h3 All Tips(just for test)
+              %table.table.table-bordered
+                %thead
+                  %tr
+                    %th #
+                    %th Date
+                    %th Odd
+                    %th Amount
+                    %th Correct
+                    %th $
+                %tbody
+                  - @finished_tips.each_with_index do |tip, index|
+                    - tr_klass = tip.correct? ? 'text-success' : 'text-danger'
+                    - index += 1
+                    %tr{class: tr_klass}
+                      %td= index
+                      %td
+                        = tip.published_date
+                        -#- if tip.published_date == 30.days.ago.to_date
+                        -#  %b Last month
+                        -#- if tip.published_date == 90.days.ago.to_date
+                        -#  %b Last 3 month
+                        -#- if tip.published_date == 180.days.ago.to_date
+                        -#  %b Last 6 month
+                      %td= tip.odds
+                      %td= tip.amount
+                      %td
+                        %span{class: tr_klass}
+                          - if tip.correct?
+                            &#x2714;
+                          - else
+                            &#x2718;
+                      %th
+                        = profit_in_string tip.profit
+
 
