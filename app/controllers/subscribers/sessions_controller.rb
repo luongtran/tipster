@@ -1,12 +1,15 @@
 class Subscribers::SessionsController < Devise::SessionsController
+  skip_before_action :require_no_authentication
+
   def new
     #Worker.update_tipster_statistics
     super
   end
+
   def create
     if request.xhr?
       @account = Account.find_by(email: params[:account][:email])
-      if @account && @account.is_a?(Subscriber) && @account.valid_password?(params[:account][:password])
+      if @account && @account.rolable.is_a?(Subscriber) && @account.valid_password?(params[:account][:password])
         sign_in @account
         render json: {
             success: true,
@@ -19,6 +22,7 @@ class Subscribers::SessionsController < Devise::SessionsController
         }
       end
     else
+      1.to_aaa
       self.resource = warden.authenticate!(auth_options)
       set_flash_message(:notice, :signed_in) if is_flashing_format?
       sign_in(resource_name, resource)

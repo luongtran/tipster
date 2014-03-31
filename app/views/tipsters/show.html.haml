@@ -103,12 +103,13 @@
                     %th Amount
                     %th Correct
                     %th $
+                    %th Free?
                 %tbody
                   - @finished_tips.each_with_index do |tip, index|
                     - tr_klass = tip.correct? ? 'text-success' : 'text-danger'
                     - index += 1
                     %tr{class: tr_klass}
-                      %td= index
+                      %td= tip.id
                       %td
                         = tip.published_date
                         -#- if tip.published_date == 30.days.ago.to_date
@@ -125,7 +126,8 @@
                             &#x2714;
                           - else
                             &#x2718;
-                      %th
+                      %td
                         = profit_in_string tip.profit
+                      %td= tip.free?
 
 

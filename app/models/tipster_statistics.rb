@@ -300,10 +300,12 @@ class TipsterStatistics < ActiveRecord::Base
             else
               90.days.ago
           end
-      start_date..end_date
+      start_date.beginning_of_day..end_date.end_of_day
     end
 
     def make_statistics_for(tipster)
+      loger = Logger.new "log/upda_tipster_statistics.log"
+      loger.info "\nStart\n"
       tips = tipster.finished_tips
       total_tips = tips.size
 
@@ -415,6 +417,9 @@ class TipsterStatistics < ActiveRecord::Base
 
         # === Saving for last n months and previous week statistics
         last_n_month_statistics.each do |range_key, statistics_obj|
+          if (range_key == LAST_MONTH)
+            loger.info "Tipster id = #{tipster.id}| Ranking in last month: Curent date #{published_date}"
+          end
           if statistics_obj.range.cover?(published_date)
             # TODO: DRYing up !
             last_n_month_statistics[range_key].statistics_number.number_of_tips += number_tips_of_current_date

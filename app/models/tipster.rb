@@ -136,25 +136,25 @@ class Tipster < ActiveRecord::Base
     end
 
     # Return the start & end date specify by given range string
-    def range_paser(range)
-      end_date = Date.today
-      start_date =
-          case range
-            when LAST_MONTH
-              30.days.ago
-            when LAST_3_MONTHS
-              90.days.ago
-            when LAST_6_MONTHS
-              180.days.ago
-            when LAST_12_MONTHS
-              365.days.ago
-            when OVERALL
-              self.order("created_at asc").first.created_at.to_date
-            else # last 3 months by default
-              90.days.ago
-          end
-      start_date..end_date
-    end
+    #def range_paser(range)
+    #  end_date = Date.today
+    #  start_date =
+    #      case range
+    #        when LAST_MONTH
+    #          30.days.ago
+    #        when LAST_3_MONTHS
+    #          90.days.ago
+    #        when LAST_6_MONTHS
+    #          180.days.ago
+    #        when LAST_12_MONTHS
+    #          365.days.ago
+    #        when OVERALL
+    #          self.order("created_at asc").first.created_at.to_date
+    #        else # last 3 months by default
+    #          90.days.ago
+    #      end
+    #  start_date..end_date
+    #end
 
     # Return LazayHightChart object for draw profile chart
     def profit_chart_for_tipster(tipster)
