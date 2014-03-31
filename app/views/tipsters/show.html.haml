@@ -71,7 +71,7 @@
               .statistics-number-box
                 .box-header
                   Total profit
-                .box-body
+                .box-body.pam
                   .text-right
                     %h3
                       %span.number.text-success
@@ -82,7 +82,7 @@
               .statistics-number-box
                 .box-header
                   Number of tips
-                .box-body
+                .box-body.pam
                   .text-right
                     %h3
                       %span.number.text-danger
@@ -93,8 +93,10 @@
               .statistics-number-box
                 .box-header
                   Win rates
-                .box-body
-                  .text-right
+                .box-body.pam
+                  .pull-left
+                    .percentage-pie-chart{"data-percent"=> @tipster.hit_rate , "data-scale-color"=>"#ffb400"}
+                  .pull-right
                     %h3.text-danger
                       %span.number
                         = @tipster.hit_rate_in_string
