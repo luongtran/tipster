@@ -52,10 +52,6 @@ label.control-label, label.checkbox {
     border: 1px dashed #DADADA;
 }
 
-#profil-chart-container {
-    height: 400px;
-}
-
 #page_header_top #menu-main ul li a {
     /*font-family: fantasy;*/
 }
@@ -370,9 +366,47 @@ tr.additional {
     background: #FDD845;
 }
 
-/*Fix table for last tip page*/
+/*Fix tables on last tip page*/
 .tipster-list .tipster-list-inner.for-last-tip {
     float: none;
     margin-right: auto;
+    width: 100%;
 }
 
+#profile-overview-detail .tipster-list {
+    background: none;
+}
+
+.black-bg {
+    background-color: #414242;
+    color: #fff;
+}
+
+.tipster-profile-subpage-header {
+    padding: 7px;
+}
+
+.profit-chart-wrapper {
+    padding: 10px;
+    border: 1px solid #4D759E;
+    border-radius: 10px;
+}
+
+.statistics-number-box {
+    border: 2px solid #eee;
+    border-radius: 4px;
+    min-height: 170px;
+}
+
+.statistics-number-box .box-header {
+    font-size: 20px;
+    font-style: italic;
+    font-weight: bold;
+    padding: 5px;
+    background-color: #eee;
+}
+
+.statistics-number-box .box-body .number {
+    font-size: 50px;
+    font-weight: bold;
+}

@@ -48,7 +48,7 @@ class TipstersController < ApplicationController
 
   def detail_statistics
     # TODO: make the prepare function to be easier to pass parameter
-    @tipster = @tipster.prepare_statistics_data(params, true).load_chart('all')
+    @tipster = @tipster.prepare_statistics_data(params, true)
   end
 
   def last_tips

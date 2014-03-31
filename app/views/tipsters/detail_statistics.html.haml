@@ -64,11 +64,13 @@
   .container
     .panel.panel-default
       .panel-body
-        %h3.text-warning Monthly statistics
+        %h3.tipster-profile-subpage-header.black-bg Details Statistics
         .row
           .col-lg-9
             %table.table.table-bordered.table-striped
               %thead
+                %tr
+                  %td.text-center{'colspan' => 6 } Monthly
                 %tr
                   %th Month
                   %th Profit
@@ -91,11 +93,12 @@
               .col-lg-3
         %hr
         -# ========================================== Sports
-        %h3.text-warning Sports
         .row
           .col-lg-8
             %table.table.table-bordered.table-striped
               %thead
+                %tr
+                  %td.text-center{'colspan' => 6 } Sports
                 %tr
                   %th Sport
                   %th Profit
@@ -119,66 +122,65 @@
             = high_chart("sports-chart-container", @tipster.sports_chart) do |chart|
               = "options.plotOptions.pie.dataLabels.distance = 3"
               = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
-        %h3.text-warning Type of bets statistics
         -# ========================================== Bet types
         .row
           .col-lg-8
-            .statistic-table-container
-              %table.table.table-bordered.table-striped
-                %thead
-                  %tr
-                    %th Bet Type
-                    %th Profit
-                    %th Yield
-                    %th Hit rate
-                    %th Avg odds
-                    %th
-                      = ("N" + content_tag(:sup, 'o')).html_safe
-                      of tips
-                %tbody
-                  - @tipster.bet_types_statistics.each do |bet_type_statistics|
-                    - unless bet_type_statistics[:number_of_tips].zero?
-                      %tr
-                        %td
-                          = bet_type_statistics[:bet_type_name]
-                          = "(#{bet_type_statistics[:sport_name]})"
-                        %td= profit_in_string bet_type_statistics[:profit]
-                        %td= yield_in_string bet_type_statistics[:yield]
-                        %td= hit_rate_in_string bet_type_statistics[:hit_rate]
-                        %td= bet_type_statistics[:avg_odds]
-                        %td= bet_type_statistics[:number_of_tips]
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %td.text-center{'colspan' => 6 } Type of bets
+                %tr
+                  %th Bet Type
+                  %th Profit
+                  %th Yield
+                  %th Hit rate
+                  %th Avg odds
+                  %th
+                    = ("N" + content_tag(:sup, 'o')).html_safe
+                    of tips
+              %tbody
+                - @tipster.bet_types_statistics.each do |bet_type_statistics|
+                  - unless bet_type_statistics[:number_of_tips].zero?
+                    %tr
+                      %td
+                        = bet_type_statistics[:bet_type_name]
+                        = "(#{bet_type_statistics[:sport_name]})"
+                      %td= profit_in_string bet_type_statistics[:profit]
+                      %td= yield_in_string bet_type_statistics[:yield]
+                      %td= hit_rate_in_string bet_type_statistics[:hit_rate]
+                      %td= bet_type_statistics[:avg_odds]
+                      %td= bet_type_statistics[:number_of_tips]
           .col-lg-4
             = high_chart("bet-type-chart-container", @tipster.bet_types_chart) do |chart|
               = "options.plotOptions.pie.dataLabels.distance = 3"
               = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
-        %h3.text-warning Odds statistics:
-
         -# ========================================== Odds
         .row
           .col-lg-8
-            .statistic-table-container
-              %table.table.table-bordered.table-striped
-                %thead
-                  %tr
-                    %th Odds
-                    %th Profit
-                    %th Yield
-                    %th Hit rate
-                    %th Avg odds
-                    %th
-                      = ("N" + content_tag(:sup, 'o')).html_safe
-                      of tips
-                %tbody
-                  - @tipster.odds_statistics.each do |odds_statistics|
-                    - unless odds_statistics[:number_of_tips].zero?
-                      %tr
-                        %td
-                          = odds_statistics[:range_name]
-                        %td= profit_in_string odds_statistics[:profit]
-                        %td= yield_in_string odds_statistics[:yield]
-                        %td= hit_rate_in_string odds_statistics[:hit_rate]
-                        %td= odds_statistics[:avg_odds]
-                        %td= odds_statistics[:number_of_tips]
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %td.text-center{'colspan' => 6 } Odds
+                %tr
+                  %th Odds
+                  %th Profit
+                  %th Yield
+                  %th Hit rate
+                  %th Avg odds
+                  %th
+                    = ("N" + content_tag(:sup, 'o')).html_safe
+                    of tips
+              %tbody
+                - @tipster.odds_statistics.each do |odds_statistics|
+                  - unless odds_statistics[:number_of_tips].zero?
+                    %tr
+                      %td
+                        = odds_statistics[:range_name]
+                      %td= profit_in_string odds_statistics[:profit]
+                      %td= yield_in_string odds_statistics[:yield]
+                      %td= hit_rate_in_string odds_statistics[:hit_rate]
+                      %td= odds_statistics[:avg_odds]
+                      %td= odds_statistics[:number_of_tips]
           .col-lg-4
             = high_chart("odds-chart-container", @tipster.odds_chart) do |chart|
               = "options.plotOptions.pie.dataLabels.distance = 3"

@@ -65,30 +65,59 @@
     #profile-overview-detail
       .panel.panel-default
         .panel-body
-          .clearfix
-            .col-md-12
-              .col-md-2.col-md-offset-1.text-center
-                %h2
-                  Profit:
-                = @tipster.profit_in_string(true)
-              .col-md-2.text-center
-                %h2
-                  Yield:
-                = @tipster.yield_in_string
-              .col-md-2.text-center
-                %h2
-                  Tips:
-                = @tipster.number_of_tips
-              .col-md-2.text-center
-                %h2
-                  Avg Odds:
-                = @tipster.avg_odds
-              .col-md-2.text-center
-                %h2
-                  Win rate:
-                = @tipster.hit_rate_in_string
-            .mal.clearfix
-              %hr
-            .col-md-12
-              .text-center
+          %h3.tipster-profile-subpage-header.black-bg General Statistics
+          .col-md-12.clearfix
+            .col-md-4
+              .statistics-number-box
+                .box-header
+                  Total profit
+                .box-body
+                  .text-right
+                    %h3
+                      %span.number.text-success
+                        = "$#{@tipster.profit}"
+                      %br
+                      Total
+            .col-md-4
+              .statistics-number-box
+                .box-header
+                  Number of tips
+                .box-body
+                  .text-right
+                    %h3
+                      %span.number.text-danger
+                        = @tipster.number_of_tips
+                      %br
+                      Total
+            .col-md-4
+              .statistics-number-box
+                .box-header
+                  Win rates
+                .box-body
+                  .text-right
+                    %h3.text-danger
+                      %span.number
+                        = @tipster.hit_rate_in_string
+                      %br
+                      Average
+          .mal.clearfix
+          .col-md-12.clearfix
+            .col-md-8
+              .profit-chart-wrapper
                 = high_chart("profil-chart-container", @tipster.profit_chart)
+            .col-md-4
+              .statistics-number-box
+                .box-header
+                  Average odds
+                .box-body
+                  .text-right
+                    %h3
+                      %span.number.text-success
+                        = @tipster.avg_odds
+                      %br
+                      %span ON
+                      %br
+                      %span.text-success
+                        = @tipster.number_of_tips
+                        %span.text-success bets
+

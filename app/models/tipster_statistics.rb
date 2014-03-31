@@ -646,7 +646,7 @@ class TipsterStatistics < ActiveRecord::Base
       f.series(
           :name => 'Profit',
           :yAxis => 0,
-          :color => '#AABF46',
+          :color => '#4D759E',
           :data => values_for_chart,
           showInLegend: false
       )
@@ -656,7 +656,10 @@ class TipsterStatistics < ActiveRecord::Base
                       :margin => 20
                   }
               ]
-      f.chart({:defaultSeriesType => "line"})
+      f.chart(
+          :defaultSeriesType => "line",
+          height: 350
+      )
     end
   end
 end
