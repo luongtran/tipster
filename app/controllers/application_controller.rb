@@ -176,7 +176,7 @@ class ApplicationController < ActionController::Base
     Thread.new do
       file_path = File.join(Rails.root, 'public', 'errors.txt')
       File.open(file_path, "a") do |f|
-        f.puts "=================================================== #{Time.now} ========================================\n"
+        f.puts "=====#{exception.message}==================#{Time.now} ========================================\n"
         f.puts(exception.backtrace.join("\n"))
         f.puts "=================================================================================\n"
       end
