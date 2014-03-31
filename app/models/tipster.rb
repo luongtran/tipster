@@ -50,7 +50,7 @@ class Tipster < ActiveRecord::Base
 
   has_many :tips, as: :author do
     def recent(count = 10)
-      proxy_association.owner.tips.includes(:sport).order('created_at desc').limit(count)
+      proxy_association.owner.tips.includes(:sport, :match).order('created_at desc').limit(count)
     end
   end
 
@@ -279,8 +279,7 @@ class Tipster < ActiveRecord::Base
     @number_of_tips = last_n_months_statistics[:number_of_tips]
     @hit_rate = last_n_months_statistics[:hit_rate]
 
-
-    @current_statistics_range = ranking_range
+    @current_statistics_range = ranking_range # Saving for display or you know what the current range
     @profit_per_dates = last_n_months_statistics[:profit_per_dates]
 
 
