@@ -9,12 +9,12 @@ class Backoffice::HomeController < ApplicationController
   end
 
   def dashboard
-    @tipster = current_tipster.prepare_statistics_data(params).initial_chart('profit')
+    @tipster = current_tipster.prepare_statistics_data(params).load_chart('profit')
     @recent_tips = current_tipster.tips.recent
     @subscribers = @tipster.followers
   end
 
   def my_statistics
-    @monthly_statistics = current_tipster.get_monthly_statistics
+    @tipster = current_tipster.prepare_statistics_data(params, true).load_chart('all')
   end
 end

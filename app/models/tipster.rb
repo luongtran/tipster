@@ -31,7 +31,7 @@ class Tipster < ActiveRecord::Base
   PROFILE_ATTRS = [:display_name, :full_name]
 
   # This is list of attributes for saving the statistics data
-  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield,
+  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield, :avg_yield, :avg_profit,
                 :profit_per_months, :profit_per_dates, :total_months,
                 :tips_per_dates, :profitable_months, :current_statistics_range
 
@@ -78,20 +78,6 @@ class Tipster < ActiveRecord::Base
   # CLASS METHODS
   # ==============================================================================
   class << self
-    def prepare_statistics_data(tipsters, params ={})
-      ranking_range = sanitized_ranking_range_param(params).to_sym
-      tipsters.each do |tipster|
-        tipster.prepare_statistics_data({}, ranking_range)
-      end
-      sorting_info = parse_sort_params(params)
-      if sorting_info.increase?
-        tipsters.sort_by! { |tipster| tipster.send("#{sorting_info.sort_by}") }
-      else
-        tipsters.sort_by! { |tipster| -tipster.send("#{sorting_info.sort_by}") }
-      end
-      tipsters
-    end
-
     def load_data(params = {})
       relation = perform_filter_params(params)
 
@@ -100,7 +86,19 @@ class Tipster < ActiveRecord::Base
       # relation.includes([]).order(sort_string).page(paging_info.page).per(paging_info.page_size)
 
       tipsters = relation.includes(:statistics)
-      relation.prepare_statistics_data(tipsters, params)
+
+      # Load statistics data
+      tipsters.each do |tipster|
+        tipster.prepare_statistics_data(params)
+      end
+
+      sorting_info = parse_sort_params(params)
+      if sorting_info.increase?
+        tipsters.sort_by! { |tipster| tipster.send("#{sorting_info.sort_by}") }
+      else
+        tipsters.sort_by! { |tipster| -tipster.send("#{sorting_info.sort_by}") }
+      end
+      tipsters
     end
 
     def perform_filter_params(params, relation = self)
@@ -136,29 +134,9 @@ class Tipster < ActiveRecord::Base
       ranking_range.gsub('-', '_')
     end
 
-    # Return the start & end date specify by given range string
-    #def range_paser(range)
-    #  end_date = Date.today
-    #  start_date =
-    #      case range
-    #        when LAST_MONTH
-    #          30.days.ago
-    #        when LAST_3_MONTHS
-    #          90.days.ago
-    #        when LAST_6_MONTHS
-    #          180.days.ago
-    #        when LAST_12_MONTHS
-    #          365.days.ago
-    #        when OVERALL
-    #          self.order("created_at asc").first.created_at.to_date
-    #        else # last 3 months by default
-    #          90.days.ago
-    #      end
-    #  start_date..end_date
-    #end
-
     # Return LazayHightChart object for draw profile chart
-    def profit_chart_for_tipster(tipster)
+    def profit_chart_for_tipster(range)
+
       LazyHighCharts::HighChart.new('graph') do |f|
         f.title(
             :text => nil
@@ -251,19 +229,20 @@ class Tipster < ActiveRecord::Base
   def subtract_bankroll(amount)
   end
 
-  def initial_chart(type)
-    case type
-      when 'profit'
-        @profit_chart = Tipster.profit_chart_for_tipster(self)
-      when 'all'
-        @bet_types_chart = self.statistics.get_bet_types_chart
-        @odds_chart = self.statistics.get_odds_chart
-        @sports_chart = self.statistics.get_sports_chart
-    end
-    self
-  end
+  #def load_chart(type)
+  #  case type
+  #    when 'profit' # Use in tipsters index page
+  #      @profit_chart = self.statistics.get_bet_types_chart.get_profit_chart
+  #    when 'all'
+  #      @profit_chart = self.statistics.get_bet_types_chart.get_profit_chart
+  #      @bet_types_chart = self.statistics.get_bet_types_chart
+  #      @odds_chart = self.statistics.get_odds_chart
+  #      @sports_chart = self.statistics.get_sports_chart
+  #  end
+  #  self
+  #end
 
-  def prepare_statistics_data(params, ranking_range = nil, details = false)
+  def prepare_statistics_data(params, details = false)
     ranking_range ||= self.class.sanitized_ranking_range_param(params).to_sym
 
     # Parse and get statistics data depending to ranking param
@@ -280,9 +259,11 @@ class Tipster < ActiveRecord::Base
     @number_of_tips = last_n_months_statistics[:number_of_tips]
     @hit_rate = last_n_months_statistics[:hit_rate]
 
+    @avg_yield = last_n_months_statistics[:avg_yield]
+    @avg_profit = last_n_months_statistics[:avg_profit]
+
     @current_statistics_range = ranking_range # Saving for display or you know what the current range
     @profit_per_dates = last_n_months_statistics[:profit_per_dates]
-
 
     # Load all statistics
     if details
@@ -292,23 +273,14 @@ class Tipster < ActiveRecord::Base
       @odds_statistics = statistics_data[:odds].map { |statistic| statistic.symbolize_keys }
     end
 
+
+    # Prepare charts
+    @profit_chart = self.statistics.get_profit_chart(ranking_range)
+    @bet_types_chart = self.statistics.get_bet_types_chart
+    @odds_chart = self.statistics.get_odds_chart
+    @sports_chart = self.statistics.get_sports_chart
+
     self
-  end
-
-  def prepare_monthly_statistics_data
-    if self.statistics.loaded?
-      self.monthly_statistics = prepare_statistics_data({}, nil, true)
-    else
-      raise 'the :statistics relation must be loaded before you call the method'
-    end
-  end
-
-  # Calculate statistic on per month
-  # Month	    Profit	Yield	  N° of Tips
-  # Oct 13	  +169	   27%	     9
-
-  def update_all_statistics
-    TipsterStatistics
   end
 
   def profit_in_string(include_unit = false)
