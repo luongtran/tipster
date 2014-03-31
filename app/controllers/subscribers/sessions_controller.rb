@@ -3,10 +3,11 @@ class Subscribers::SessionsController < Devise::SessionsController
     #Worker.update_tipster_statistics
     super
   end
+
   def create
     if request.xhr?
       @account = Account.find_by(email: params[:account][:email])
-      if @account && @account.is_a?(Subscriber) && @account.valid_password?(params[:account][:password])
+      if @account && @account.rolable.is_a?(Subscriber) && @account.valid_password?(params[:account][:password])
         sign_in @account
         render json: {
             success: true,
