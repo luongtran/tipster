@@ -45,7 +45,6 @@ class TipstersController < ApplicationController
   def show
     @tipster = Tipster.includes(:statistics).find(params[:id]).
         prepare_statistics_data(params).initial_chart('profit')
-
     @finished_tips = @tipster.finished_tips.in_range(30.days.ago.beginning_of_day..DateTime.now)
   end
 
