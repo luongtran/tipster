@@ -118,6 +118,7 @@
           .col-lg-4
             = high_chart("sports-chart-container", @tipster.sports_chart) do |chart|
               = "options.plotOptions.pie.dataLabels.distance = 3"
+              = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
         %h3.text-warning Type of bets statistics
         -# ========================================== Bet types
         .row
@@ -149,7 +150,7 @@
           .col-lg-4
             = high_chart("bet-type-chart-container", @tipster.bet_types_chart) do |chart|
               = "options.plotOptions.pie.dataLabels.distance = 3"
-              -#= "options.plotOptions.pie.dataLabels.formatter = function() {return '<b>' + this.point.name + '</b>: ' + this.percentage.toFixed(2) + '%';}".html_safe
+              = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
         %h3.text-warning Odds statistics:
 
         -# ========================================== Odds
@@ -181,4 +182,5 @@
           .col-lg-4
             = high_chart("odds-chart-container", @tipster.odds_chart) do |chart|
               = "options.plotOptions.pie.dataLabels.distance = 3"
+              = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
         -#%h3 Countries - Competitions

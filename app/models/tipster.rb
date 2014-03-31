@@ -56,7 +56,8 @@ class Tipster < ActiveRecord::Base
 
   has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author do
     def in_range(range)
-      proxy_association.owner.tips.where(published_at: range)
+      # FIXME
+      proxy_association.owner.tips.where(published_at: range).where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false)
     end
   end
 
