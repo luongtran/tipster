@@ -136,8 +136,10 @@ class TipsterStatistics < ActiveRecord::Base
     end
 
     def finish
-      @avg_profit = (@statistics_number.profit/ @statistics_number.number_of_tips.to_f).round(1)
-      @avg_yield = (@total_yield/ @statistics_number.number_of_tips.to_f).round(1)
+      unless @statistics_number.number_of_tips.zero?
+        @avg_profit = (@statistics_number.profit/ @statistics_number.number_of_tips.to_f).round(1)
+        @avg_yield = (@total_yield/ @statistics_number.number_of_tips.to_f).round(1)
+      end
       super
       self
     end
