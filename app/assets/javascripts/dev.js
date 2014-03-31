@@ -213,6 +213,10 @@ $(document).ready(function () {
         $form.trigger('submit');
     });
 
+    /*Percentage hit rate pie chart*/
+    $('.percentage-pie-chart').easyPieChart({
+        "lineWidth": 10
+    });
 
     /* Background switching */
     // order following: football, tennis, basket,
