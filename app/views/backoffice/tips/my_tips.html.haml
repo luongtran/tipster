@@ -4,11 +4,11 @@
     .mam
       %ul.sports-filter.list-inline.list-unstyled.mbn
         %li
-          %a.btn.btn-default{href: backoffice_my_tips_path(sport_filter_param(nil)), class: class_for_sport_filter('all')}
+          %a.btn.btn-sm.btn-default{href: backoffice_my_tips_path(sport_filter_param(nil)), class: class_for_sport_filter('all')}
             All sports
         - @sports.each do |sport|
           %li
-            %a.btn.btn-default{href: backoffice_my_tips_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}
+            %a.btn.btn-sm.btn-default{href: backoffice_my_tips_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}
               = sport.name.titleize
       %hr
       .text-center

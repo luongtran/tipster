@@ -43,15 +43,12 @@ class TipstersController < ApplicationController
   end
 
   def show
-    @tipster = Tipster.includes(:statistics).find(params[:id]).
-        prepare_statistics_data(params).initial_chart('profit')
-    @range = 30.days.ago.beginning_of_day..DateTime.now
-    @finished_tips = @tipster.finished_tips.in_range(30.days.ago.beginning_of_day..DateTime.now)
+    @tipster = Tipster.includes(:statistics).find(params[:id]).prepare_statistics_data(params)
   end
 
   def detail_statistics
     # TODO: make the prepare function to be easier to pass parameter
-    @tipster = @tipster.prepare_statistics_data({}, nil, true).initial_chart('all')
+    @tipster = @tipster.prepare_statistics_data(params, true).load_chart('all')
   end
 
   def last_tips

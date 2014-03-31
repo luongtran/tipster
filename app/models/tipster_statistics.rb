@@ -61,7 +61,9 @@
 #            # ....
 #        ],
 #        'profitable_months' => 3,
-#        'total_months' => 8
+#        'total_months' => 8,
+#        'avg_yield' => 25,
+#        'avg_profit' => 234
 #    }, # End of data
 #    'update_at' => DateTime.now
 #}
@@ -75,6 +77,7 @@ class TipsterStatistics < ActiveRecord::Base
     attr_accessor :profit, :number_correct_tips,
                   :total_amount, :total_odds, :number_of_tips,
                   :yield, :hit_rate, :avg_odds
+
 
     def initialize
       @profit = 0
@@ -120,12 +123,22 @@ class TipsterStatistics < ActiveRecord::Base
 
   # ================= For saving a last n months statistics object
   class LastNMonthStatistics < BaseStatistics
-    attr_accessor :profit_per_dates, :range, :from, :to
+    attr_accessor :profit_per_dates, :range, :from, :to, :total_yield, :avg_yield, :avg_profit
 
     def initialize(range)
       @range = range
       @profit_per_dates = []
       @statistics_number = StatisticsNumber.new
+      @total_yield = 0
+      @avg_yield = 0
+      @avg_profit = 0
+      self
+    end
+
+    def finish
+      @avg_profit = (@statistics_number.profit/ @statistics_number.number_of_tips.to_f).round(1)
+      @avg_yield = (@total_yield/ @statistics_number.number_of_tips.to_f).round(1)
+      super
       self
     end
 
@@ -133,7 +146,9 @@ class TipsterStatistics < ActiveRecord::Base
       {
           from: @range.first,
           to: @range.last,
-          profit_per_dates: @profit_per_dates
+          profit_per_dates: @profit_per_dates,
+          avg_profit: @avg_profit,
+          avg_yield: @avg_yield,
       }.merge(@statistics_number.format_for_store)
     end
   end
@@ -351,6 +366,7 @@ class TipsterStatistics < ActiveRecord::Base
       date_with_tips = tips.group_by(&:published_date)
 
       date_with_tips = date_with_tips.sort_by { |published_date, tips| published_date.to_time.to_i }
+
       # Loop per dates, ordered by increase
       date_with_tips.each do |published_date, tips|
         profit_of_current_date = 0
@@ -359,6 +375,7 @@ class TipsterStatistics < ActiveRecord::Base
         number_correct_tips_current_date = 0
         number_tips_of_current_date = tips.size
 
+        total_yield_of_current_date = 0
         # Loop tips in date
         tips.each do |tip|
           total_amount_of_current_date += tip.amount
@@ -371,7 +388,7 @@ class TipsterStatistics < ActiveRecord::Base
                            -tip.amount
                          end
           profit_of_current_date += money_of_tip
-
+          total_yield_of_current_date += (money_of_tip*100)/(tip.amount)
 
           # === Saving for sport
           sports_statistics.each do |statistics_obj|
@@ -423,6 +440,7 @@ class TipsterStatistics < ActiveRecord::Base
             last_n_month_statistics[range_key].statistics_number.number_correct_tips += number_correct_tips_current_date
             last_n_month_statistics[range_key].statistics_number.total_amount += total_amount_of_current_date
             last_n_month_statistics[range_key].statistics_number.profit += profit_of_current_date
+            last_n_month_statistics[range_key].total_yield += total_yield_of_current_date
             last_n_month_statistics[range_key].profit_per_dates << {
                 date: published_date,
                 profit: last_n_month_statistics[range_key].statistics_number.profit
@@ -610,6 +628,35 @@ class TipsterStatistics < ActiveRecord::Base
           width: 300,
           height: 300
       )
+    end
+  end
+
+  def get_profit_chart(range)
+    statistics_in_range = self.parsed_data[:last_n_months][range]
+    dates_for_chart = statistics_in_range[:profit_per_dates].map { |ppd| ppd['date'].to_date.strftime("%b %d") }
+    values_for_chart = statistics_in_range[:profit_per_dates].map { |ppd| ppd['profit'] }
+    LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(
+          :text => nil
+      )
+      f.xAxis(
+          :categories => dates_for_chart,
+          tickInterval: 5
+      )
+      f.series(
+          :name => 'Profit',
+          :yAxis => 0,
+          :color => '#AABF46',
+          :data => values_for_chart,
+          showInLegend: false
+      )
+      f.yAxis [
+                  :title => {
+                      :text => "Profit in Euro",
+                      :margin => 20
+                  }
+              ]
+      f.chart({:defaultSeriesType => "line"})
     end
   end
 end

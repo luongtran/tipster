@@ -33,11 +33,11 @@
                 %h4 RANK
                 %span.value 1
               .col-md-2
-                %h4 AVG.YIED
-                %span.value 21.5%
+                %h4 AVG. YIED
+                %span.value= yield_in_string @tipster.avg_yield
               .col-md-2
-                %h4 AVG.PROFIT
-                %span.value 129.90 $
+                %h4 AVG. PROFIT
+                %span.value= profit_in_string @tipster.avg_profit
               .col-md-3
                 = select_tag :ranking, options_for_select(ranking_ranges_for_select), class: 'select-as-links statistics-range mam'
   .tipters-menu-quicklink
@@ -92,42 +92,3 @@
             .col-md-12
               .text-center
                 = high_chart("profil-chart-container", @tipster.profit_chart)
-            .col-md-12
-              %h3 All Tips(just for test)
-              %table.table.table-bordered
-                %thead
-                  %tr
-                    %th #
-                    %th Date
-                    %th Odd
-                    %th Amount
-                    %th Correct
-                    %th $
-                    %th Free?
-                %tbody
-                  - @finished_tips.each_with_index do |tip, index|
-                    - tr_klass = tip.correct? ? 'text-success' : 'text-danger'
-                    - index += 1
-                    %tr{class: tr_klass}
-                      %td= index
-                      %td
-                        = tip.published_date
-                        -#- if tip.published_date == 30.days.ago.to_date
-                        -#  %b Last month
-                        -#- if tip.published_date == 90.days.ago.to_date
-                        -#  %b Last 3 month
-                        -#- if tip.published_date == 180.days.ago.to_date
-                        -#  %b Last 6 month
-                      %td= tip.odds
-                      %td= tip.amount
-                      %td
-                        %span{class: tr_klass}
-                          - if tip.correct?
-                            &#x2714;
-                          - else
-                            &#x2718;
-                      %td
-                        = profit_in_string tip.profit
-                      %td= tip.free?
-
-
