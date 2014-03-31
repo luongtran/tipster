@@ -109,7 +109,7 @@
                     - tr_klass = tip.correct? ? 'text-success' : 'text-danger'
                     - index += 1
                     %tr{class: tr_klass}
-                      %td= tip.id
+                      %td= index
                       %td
                         = tip.published_date
                         -#- if tip.published_date == 30.days.ago.to_date
