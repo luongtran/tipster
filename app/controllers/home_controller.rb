@@ -2,6 +2,7 @@ class HomeController < ApplicationController
   before_action :load_subscribe_data, only: [:pricing]
 
   def index
+    Worker.update_france_name_for_areas
     @recommend_tipsters = Tipster.find_tipsters_of_week(4)
     if flash[:sign_in_box]
       @show_sign_in_box = true

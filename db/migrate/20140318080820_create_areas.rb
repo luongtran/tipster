@@ -4,6 +4,7 @@ class CreateAreas < ActiveRecord::Migration
       t.integer :opta_area_id
       t.integer :parent_id
       t.string :name
+      t.string :fr_name
       t.string :country_code
       t.boolean :active, default: true
     end

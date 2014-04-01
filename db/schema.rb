@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140327062655) do
+ActiveRecord::Schema.define(version: 20140401100754) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(version: 20140327062655) do
     t.string  "name"
     t.string  "country_code"
     t.boolean "active",       default: true
+    t.string  "fr_name"
   end
 
   create_table "authorizations", force: true do |t|
