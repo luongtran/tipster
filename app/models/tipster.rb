@@ -283,35 +283,12 @@ class Tipster < ActiveRecord::Base
     self
   end
 
-  def profit_in_string(include_unit = false)
-    if @profit.zero?
-      0
-    else
-      sign = '+' if @profit > 0
-      "#{sign}#@profit #{I18n.t('tipster.units') if include_unit}"
-    end
-  end
-
-  def yield_in_string
-    "#@yield%"
-  end
-
   def profit_values_for_chart
     @profit_per_dates.map { |ppd| ppd['profit'] }
   end
 
   def profit_dates_for_chart
     @profit_per_dates.map { |ppd| ppd['date'].to_date.strftime("%b %d") }
-  end
-
-  def hit_rate_in_string
-    "#@hit_rate%"
-  end
-
-  # The ratio of the number of profitable months per overall months
-  # Example return: 3/6
-  def profitable_months_in_string
-    "#@profitable_months/#@total_months"
   end
 
   # Return lastest tips limit by the given quantity

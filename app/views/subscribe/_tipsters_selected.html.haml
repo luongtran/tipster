@@ -25,8 +25,8 @@
                     .tipster-profit-chart
                       -#= image_tag profit_img_chart_url_for(tipster.profit_values_for_chart), alt: 'Profit chart'
                   %td= tipster.profit
-                  %td= tipster.yield_in_string
+                  %td= yield_in_string tipster.yield
                   %td= tipster.number_of_tips
-                  %td= tipster.hit_rate_in_string
+                  %td= hit_rate_in_string tipster.hit_rate
                   %td= tipster.avg_odds
                   %td= tipster.profitable_months

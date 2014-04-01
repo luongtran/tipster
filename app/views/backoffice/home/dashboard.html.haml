@@ -15,13 +15,13 @@
             %strong= @tipster.number_of_tips
           .col-md-2
             Profit:
-            %strong= @tipster.profit_in_string
+            %strong= profit_in_string @tipster.profit
           .col-md-2
             Yield:
-            %strong= @tipster.yield_in_string
+            %strong= yield_in_string @tipster.yield
           .col-md-2
             Win rate:
-            %strong= @tipster.hit_rate_in_string
+            %strong= hit_rate_in_string @tipster.hit_rate
           .col-md-2
             Avg of odds:
             %strong= @tipster.avg_odds
