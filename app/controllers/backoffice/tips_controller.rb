@@ -1,4 +1,4 @@
-class Backoffice::TipsController < ApplicationController
+class Backoffice::TipsController < Backoffice::BaseController
   before_action :authenticate_tipster
 
   def my_tips

@@ -1,4 +1,5 @@
 class Backoffice::SessionsController < Devise::SessionsController
+  layout 'backoffice'
 
   def new
     @account = Account.new

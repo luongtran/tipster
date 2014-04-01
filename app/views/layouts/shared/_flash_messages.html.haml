@@ -1,12 +1,11 @@
 - if notice || alert
-  .container.flash-container
+  .flash-container
     #flash
       - if notice
-        %div{:class => "alert alert-info alert-sm fade in", 'data-alert' => "alert"}
-          %a{:class => "close", 'data-dismiss' => 'alert', :href => "#"} &times;
+        .alert.alert-info.alert-sm.fade.in{'data-alert' => "alert"}
+          %a.close{'data-dismiss' => 'alert', :href => "#"} &times;
           = notice
-
       - if alert
-        %div{:class => "alert alert-danger alert-sm fade in", 'data-alert' => "alert"}
-          %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+        .alert.alert-danger.alert-sm.fade.in{'data-alert' => "alert"}
+          %a.close{'data-dismiss' => "alert", :href => "#"} &times;
           = alert

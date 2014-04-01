@@ -1,5 +1,5 @@
 class Subscribers::ProfileController < ProfileController
-  before_action :authenticate_subscriber, :prepare_user_data
+  before_action :authenticate_subscriber
 
   protected
   def user_params
