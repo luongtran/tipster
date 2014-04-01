@@ -70,7 +70,82 @@ label.control-label {
 .select2able {
     width: 100%;
 }
+
 .wysihtml5-sandbox {
     width: 100% !important;
     min-height: 400px;
+}
+
+/* Fix menu smaller */
+#page_header_top #menu-main ul {
+    padding-top: 10px;
+}
+
+#page_header_top #tipster-logo-main a {
+    height: 50px;
+}
+
+#page_header_top #tipster-logo-main a img {
+    max-width: 70%;
+}
+
+/* Left menu filter sport areas, competittions */
+.nav-header {
+    display: block;
+    padding: 3px 15px;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 20px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.nav li + .nav-header {
+    margin-top: 9px;
+}
+
+.nav-list {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 0;
+}
+
+.nav-list > li > a, .nav-list .nav-header {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.nav-list > li > a {
+    padding: 3px 15px;
+}
+
+.nav-list > .active > a, .nav-list > .active > a:hover, .nav-list > .active > a:focus {
+    color: #ffffff;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+    background-color: #0088cc;
+}
+
+.nav-list [class^="icon-"], .nav-list [class*=" icon-"] {
+    margin-right: 2px;
+}
+
+.nav-list .divider {
+    *width: 100%;
+    height: 1px;
+    margin: 9px 1px;
+    *margin: -5px 0 5px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+.competitions-tree-menu {
+    padding: 5px;
+    border-radius: 2px;
+    border: 2px solid #eee;
+}
+
+.tree-toggler {
+    cursor: pointer;
+}
+.flag-icon {
+    border: 1px solid #eee;
 }
