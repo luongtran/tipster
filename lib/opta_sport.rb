@@ -20,7 +20,8 @@ module OptaSport
     end
 
     def authenticate_params
-      "&username=#{config.username}&authkey=#{config.authkey}"
+      #"&username=#{config.username}&authkey=#{config.authkey}"
+      "&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3"
     end
   end
 
@@ -107,10 +108,8 @@ module OptaSport
         seasons
       end
     end
-
     class SoccerMatchLive < Base
     end
-
     class BasketballArea < Base
     end
     class BasketballCompetition < Base

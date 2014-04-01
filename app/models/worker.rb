@@ -31,7 +31,6 @@ class Worker
             end
           end
         end
-
       end
     end
 
@@ -128,11 +127,21 @@ class Worker
 
 
     def update_areas
-      # Soccer for full of areas
       fetcher = OptaSport::Fetcher.soccer
       res = fetcher.get_areas
       res.all.each do |area_attrs|
         Area.create area_attrs
+      end
+    end
+
+    def update_france_name_for_areas
+      fetcher = OptaSport::Fetcher.soccer
+      res = fetcher.get_areas(lang: 'fr')
+      res.all.each do |area_attrs|
+        area = Area.find_by(opta_area_id: area_attrs[:opta_area_id])
+        if area
+          area.update_attribute :fr_name, area_attrs[:name]
+        end
       end
     end
 

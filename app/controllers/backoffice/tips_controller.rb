@@ -103,7 +103,7 @@ class Backoffice::TipsController < Backoffice::BaseController
 
   private
   def prepare_data_for_new_tip
-    @competitions = Competition.all
+    @competitions = Competition.includes(:sport, :area).load
     @tipster_sports = current_tipster.sports
     @platforms = Platform.all
   end
