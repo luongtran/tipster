@@ -1,4 +1,5 @@
 class Backoffice::ProfileController < ProfileController
+  layout 'backoffice'
   USER_TYPE = Tipster.name
   before_action :authenticate_tipster
 
