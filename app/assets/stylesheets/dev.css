@@ -6,6 +6,14 @@ ul.sports-filter {
     text-align: center;
 }
 
+.bgtrans {
+    background: transparent;
+}
+
+.font-i {
+    font-style: italic;
+}
+
 ul.sports-filter li {
     display: inline;
 }
@@ -287,7 +295,8 @@ ul.steps-container .step-name a:hover {
 /* Markup tipster profile page */
 
 .tipsterdetail-head {
-    height: 150px;
+    /*height: 150px;*/
+    height: 100px;
 }
 
 .tipsterdetail-head .common-tipster-info {
@@ -306,6 +315,7 @@ ul.steps-container .step-name a:hover {
 .avatar-tipster {
     position: absolute;
     padding-top: 125px;
+    padding-top: 50px;
 }
 
 .bgtest {
@@ -318,8 +328,10 @@ ul.steps-container .step-name a:hover {
 }
 
 .tipster-profile-subpage-links {
-    padding-top: 10px;
-    height: 60px;
+    /*padding-top: 10px;*/
+    /*height: 60px;*/
+    padding-top: 5px;
+    height: 45px;
 }
 
 .tipster-profile-subpage-links ul li {
@@ -328,6 +340,19 @@ ul.steps-container .step-name a:hover {
 
 .tipster-profile-subpage-links ul li:nth-child(even) {
     font-weight: bold;
+    padding: 0 30px;
+}
+
+.tipsterdetail-head select {
+    margin-top: 75px;
+    color: #429637;
+    font-weight: bold;
+    font-size: 15px;
+    text-transform: uppercase;
+    padding: 4px 3px;
+    background: #fff;
+    border: none;
+    outline: none;
 }
 
 .common-tipster-info span.value {

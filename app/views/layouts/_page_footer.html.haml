@@ -25,27 +25,25 @@
       .row
         .col-md-4
           #page-footer-logo
-            =image_tag('footer-icon.png')
+            = image_tag('footer-icon.png')
         .col-md-4
           %h4.text-slim APP AVAILABLE SOON!
-          %a(href="javascript:;" class="anchor-app" ) IOS AND ANDROID
+          %a.anchor-app(href="javascript:;") IOS AND ANDROID
         .col-md-4
           .clearfix
-            %ul(class="list-unstyled pull-right" )
+            %ul.list-unstyled.pull-right
               %li.list-header INFORMATION
               - @items = ['Help', 'Private Policy', 'Terms of use']
               - @items.each do |node|
                 %li
                   %a{:href=>"javascript:;"}= node
             %ul.list-inline.man.text-slim
-              %a{href: 'http://www.facebook.com/'}
+              %a{href: 'http://www.facebook.com/', target: 'blank'}
                 %image{src: image_url('social/t_btn.png')}
-              %a{href: 'http://www.facebook.com/'}
+              %a{href: 'http://www.facebook.com/', target: 'blank'}
                 %image{src: image_url('social/f_btn.png')}
-              %a{href: 'http://www.facebook.com/'}
+              %a{href: 'http://www.facebook.com/', target: 'blank'}
                 %image{src: image_url('social/g_btn.png')}
 
   #page-footer-bottom
     %p.text-center.man Copyright @ 2013 TipsterHero
-  -##backgrounds-container
-  -#  %img#backgrounder{src: 'http://i1.upanh.com/2014/0310/07//58891042.chrysanthemum.jpg'}
