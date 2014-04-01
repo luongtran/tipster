@@ -11,7 +11,7 @@
       - sport = matches.first.sport
       - group_title = "#{image_tag sport.icon_path} #{sport.name.titleize}".html_safe
     - else
-      - group_title = group.strftime("%A %d %b %Y")
+      - group_title = group.strftime("%A - %d %b %Y")
 
     - index += 1
     .panel{class: "#{index == 1 ? 'panel-success' : 'panel-default'}"}
@@ -26,7 +26,6 @@
       .panel-collapse.collapse{id: "abcxyz-panel-#{index}", class: "#{'in' if index == 1}" }
         .panel-body
           - matches.each do |m|
-
             .match.clearfix{data: {url: find_bets_on_match_backoffice_tips_path(match_id: m.opta_match_id)}}
               .summary
                 .match-hour

@@ -19,6 +19,8 @@ class Backoffice::TipsController < ApplicationController
   def available_matches
     prepare_data_for_new_tip
     @matches = Match.betable.load_data(sport: current_tipster.sport_ids)
+
+
     if params[:mode] == 'manual'
       @tip = current_tipster.tips.new
       render 'manually_mode'

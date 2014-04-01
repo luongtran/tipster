@@ -1,64 +1,89 @@
 -# Trick for preload image
 = image_tag 'circle_loading.gif', class: 'hide'
 .row
-  .mam
-    .col-lg-4
-      %h3.text-info Available matches and events
-    .col-lg-7
-      .mal
-        = simple_form_for :nothing, url: filter_matches_backoffice_tips_path, html: {id: 'form-group-method'} do |f|
-          = hidden_field_tag :mode, 'auto'
-          %label.col-sm-3 Group by:
-          .col-sm-9
-            .radio-inline
-              %label.control-label
-                %input.btn-filter-mode{type: :radio, name: :group_by, 'checked' => true, value: 'date'}
-                Date
-            .radio-inline
-              %label.control-label
-                %input.btn-filter-mode{type: :radio, name: :group_by, value: 'sport'}
-                Sport
-            .radio-inline
-              %label.control-label
-                %input.btn-filter-mode#switch-advanced-search-form{type: :radio, name: :group_by, value: 'none'}
-                Advanced Search
-    .clearfix
-      = simple_form_for :nothing, url: filter_matches_backoffice_tips_path, html: {id: 'form-advanced-search', class: 'form-horizontal hide'} do |f|
+  .col-lg-4
+    %h3.text-info Available matches
+  .col-lg-7
+    .mal
+      = simple_form_for :nothing, url: filter_matches_backoffice_tips_path, html: {id: 'form-group-method'} do |f|
         = hidden_field_tag :mode, 'auto'
-        .col-lg-6
-          .col-lg-5
-            .form-group
-              %label.control-label.col-sm-3
-                Sport
-              .col-sm-9
-                = select_tag :sport, options_for_select(sport_filter_for_matches(@tipster_sports)),
-                  class: 'select2able', 'data-no-search' => true
-          .col-lg-7
-            .form-group
-              %label.control-label.col-sm-4
-                Competition
-              .col-sm-8
-                = select_tag :competition, options_for_select(competition_filter_for_matches(@competitions)),
-                  class: 'select2able'
+        %label.col-sm-3 Group by:
+        .col-sm-9
+          .radio-inline
+            %label.control-label
+              %input.btn-filter-mode{type: :radio, name: :group_by, 'checked' => true, value: 'date'}
+              Date
+          .radio-inline
+            %label.control-label
+              %input.btn-filter-mode{type: :radio, name: :group_by, value: 'sport'}
+              Sport
+          .radio-inline
+            %label.control-label
+              %input.btn-filter-mode#switch-advanced-search-form{type: :radio, name: :group_by, value: 'none'}
+              Advanced Search
+  .clearfix
+    = simple_form_for :nothing, url: filter_matches_backoffice_tips_path, html: {id: 'form-advanced-search', class: 'form-horizontal hide'} do |f|
+      = hidden_field_tag :mode, 'auto'
+      .col-lg-6
         .col-lg-5
-          .col-lg-7
-            - max_date = 7.days.from_now.to_date.to_s
-            - min_date = Date.today.to_s
-            .form-group
-              %label.control-label.col-sm-4
-                Date
-              .col-sm-8.input-group
-                %input.input-sm.form-control.date-picker.limited{type: :text, name: 'date', 'data-max-date' => max_date, 'data-min-date' => min_date}
-                %span.input-group-addon
-                  %i.fa.fa-calendar
-          .col-lg-4.col-md-offset-1
-            .form-group
-              .col-sm-12.input-group
-                %input.input-sm.form-control{type: :text, placeholder: 'match or event ...', name: 'search'}
-                %span.input-group-btn
-                  %button.btn.btn-default.btn-sm
-                    %i.fa.fa-search
-    .clearfix
+          .form-group
+            %label.control-label.col-sm-3
+              Sport
+            .col-sm-9
+              = select_tag :sport, options_for_select(sport_filter_for_matches(@tipster_sports)),
+                class: 'select2able', 'data-no-search' => true
+        .col-lg-7
+          .form-group
+            %label.control-label.col-sm-4
+              Competition
+            .col-sm-8
+              = select_tag :competition, options_for_select(competition_filter_for_matches(@competitions)),
+                class: 'select2able'
+      .col-lg-5
+        .col-lg-7
+          - max_date = 7.days.from_now.to_date.to_s
+          - min_date = Date.today.to_s
+          .form-group
+            %label.control-label.col-sm-4
+              Date
+            .col-sm-8.input-group
+              %input.input-sm.form-control.date-picker.limited{type: :text, name: 'date', 'data-max-date' => max_date, 'data-min-date' => min_date}
+              %span.input-group-addon
+                %i.fa.fa-calendar
+        .col-lg-4.col-md-offset-1
+          .form-group
+            .col-sm-12.input-group
+              %input.input-sm.form-control{type: :text, placeholder: 'match or event ...', name: 'search'}
+              %span.input-group-btn
+                %button.btn.btn-default.btn-sm
+                  %i.fa.fa-search
+  .clearfix
+    .col-lg-3
+      - sports_competitions = @competitions.group_by(&:sport)
+      .competitions-tree-menu.pas
+        %div{style: "overflow-y: scroll; overflow-x: hidden; height: 500px;"}
+          %ul.nav.nav-list
+            - sports_competitions.each do |sport, competitions|
+              %li
+                %label.tree-toggler.nav-header
+                  %img{src: sport.icon_path}
+                  -# SPORT
+                  = sport.name.titleize
+                %ul.nav.nav-list.tree
+                  - areas_competitions = competitions.group_by(&:area)
+                  - areas_competitions.each do |area, competitions|
+                    %li
+                      -# AREA
+                      %label.tree-toggler.nav-header
+                        %img.flag{class: "flag-#{%w(fr ad flag-england us vn).sample}"}
+                        = area.name
+                      %ul.nav.nav-list.tree{style: "display: none;"}
+                        - competitions.each do |compt|
+                          %li
+                            %a.text-info{href: "#"}= compt.name
+
+              %li.divider
+    .col-lg-9
       #available-matches-wrapper{'data-mode' => 'auto'}
         = render 'available_matches_list', matches: @matches, group_by: 'date', mode: 'auto'
 
