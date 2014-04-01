@@ -1,4 +1,4 @@
-class Backoffice::HomeController < ApplicationController
+class Backoffice::HomeController < Backoffice::BaseController
   before_action :authenticate_tipster, only: [:dashboard]
 
   def index

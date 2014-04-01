@@ -1,5 +1,5 @@
 class ProfileController < ApplicationController
-
+  before_action :prepare_user_data
 
   def show
   end
@@ -15,7 +15,6 @@ class ProfileController < ApplicationController
     end
   end
 
-
   def change_password
     if @account.update_with_password(change_password_params)
       flash[:notice] = I18n.t('user.password_changed_successfully')
@@ -29,6 +28,10 @@ class ProfileController < ApplicationController
   end
 
   protected
+  def prepare_user_data
+    raise 'Need to implement the method'
+  end
+
   def user_params
     raise 'Need to implement the method'
   end

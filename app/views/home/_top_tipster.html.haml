@@ -20,10 +20,10 @@
                   .hotTipster-info
                     %span.proofed
                       Profit:
-                      %b= tipster.profit.zero? ? rand(200..370) : tipster.profit_in_string
+                      %b= profit_in_string tipster.profit.zero? ? rand(200..370) : tipster.profit
                     %span.yield
                       Yield:
-                      %b=  tipster.yield.zero? ? rand(200.370) : tipster.yield_in_string
+                      %b= yield_in_string tipster.yield.zero? ? rand(200.370) : tipster.yield
                   %a.see-profile-link{href: tipster_path(tipster)} See Profile
             = image_tag 'headads.png', style: "height: 360px;float:left"
   #board-gray

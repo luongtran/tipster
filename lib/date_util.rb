@@ -10,7 +10,7 @@ module DateUtil
       time.in_time_zone(timezone).strftime(format)
     end
 
-    # Return an array of the first days of months from the given date -> today
+    # Return an array of the first days of months from the given date to today
     def first_days_of_months_so_far_from(from_date)
       dates = []
       first_day_of_first_month = from_date.beginning_of_month

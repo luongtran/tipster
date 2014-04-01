@@ -13,6 +13,10 @@
     background-color: #fff;
 }
 
+.alert {
+    padding: 5px 15px;
+}
+
 .hide-tmp {
     display: none;
 }
@@ -146,6 +150,7 @@ label.control-label {
 .tree-toggler {
     cursor: pointer;
 }
+
 .flag-icon {
     border: 1px solid #eee;
 }

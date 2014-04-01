@@ -1,14 +1,15 @@
 class ApplicationController < ActionController::Base
-  layout :find_layout
+  USER_TYPE = Subscriber.name
   protect_from_forgery with: :exception
 
-  before_action :set_locale
+  before_action :set_locale, :clean_session
 
   helper_method :tipster_ids_in_cart
 
   rescue_from Exception, :with => :write_log if Rails.env.production?
 
-  # Define 3 helper methods: current_{subscriber|tipster|admin}
+  # Define 3 helper methods: current_<subscriber|tipster|admin>
+  # to find current signed in user
   [Tipster, Admin, Subscriber].each do |klass|
     method_name = "current_#{klass.name.downcase}"
     define_method method_name do
@@ -36,26 +37,7 @@ class ApplicationController < ActionController::Base
     @current_ability ||= Ability.new(current_account)
   end
 
-  def tipster_required
-    if account_signed_in? && !current_tipster
-      sign_out current_account
-    end
-  end
-
-  def admin_required
-    if account_signed_in? && !current_admin
-      sign_out current_account
-    end
-  end
-
-
-  def subscriber_required
-    if account_signed_in? && !current_subscriber
-      sign_out current_account
-    end
-  end
-
-# Render bad request(if: invalid params, etc ...)
+  # Render bad request if: invalid params, etc ...
   def render_400
     render nothing: true, status: 400
   end
@@ -65,8 +47,25 @@ class ApplicationController < ActionController::Base
   end
 
   def render_500
-    # TODO: write response for js
-    render 'errors/500'
+    respond_to do |format|
+      format.js do
+        render :json => 'Server Error'
+      end
+      format.html do
+        render 'errors/500'
+      end
+    end
+  end
+
+
+  # Destroy session if a singed-in users access to a place not be for them
+  def clean_session
+    if account_signed_in?
+      current_user = current_account.rolable
+      if current_user.class.name != self.class::USER_TYPE
+        sign_out current_account
+      end
+    end
   end
 
   def set_locale
@@ -167,16 +166,11 @@ class ApplicationController < ActionController::Base
     @selected_plan = selected_plan
   end
 
-  def find_layout
-    'backoffice' if self.class.name.split("::").first == 'Backoffice'
-  end
-
   # Catch server errors and print to public/errors.txt
   def write_log(exception)
     Thread.new do
-      file_path = File.join(Rails.root, 'public', 'errors.txt')
-      File.open(file_path, "a") do |f|
-        f.puts "=====#{exception.message}==================#{Time.now} ========================================\n"
+      File.open(File.join(Rails.root, 'public', 'errors.txt'), "a") do |f|
+        f.puts "=====Error: #{exception.message}======#{Time.now} ==========================\n"
         f.puts(exception.backtrace.join("\n"))
         f.puts "=================================================================================\n"
       end

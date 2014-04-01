@@ -54,12 +54,7 @@ class Tipster < ActiveRecord::Base
     end
   end
 
-  has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author do
-    def in_range(range)
-      # FIXME
-      proxy_association.owner.tips.where(published_at: range).where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false)
-    end
-  end
+  has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author
 
   has_and_belongs_to_many :sports, -> { uniq }
   mount_uploader :avatar, AvatarUploader
@@ -283,19 +278,6 @@ class Tipster < ActiveRecord::Base
     self
   end
 
-  def profit_in_string(include_unit = false)
-    if @profit.zero?
-      0
-    else
-      sign = '+' if @profit > 0
-      "#{sign}#@profit #{I18n.t('tipster.units') if include_unit}"
-    end
-  end
-
-  def yield_in_string
-    "#@yield%"
-  end
-
   def profit_values_for_chart
     @profit_per_dates.map { |ppd| ppd['profit'] }
   end
@@ -304,19 +286,9 @@ class Tipster < ActiveRecord::Base
     @profit_per_dates.map { |ppd| ppd['date'].to_date.strftime("%b %d") }
   end
 
-  def hit_rate_in_string
-    "#@hit_rate%"
-  end
-
-  # The ratio of the number of profitable months per overall months
-  # Example return: 3/6
-  def profitable_months_in_string
-    "#@profitable_months/#@total_months"
-  end
-
   # Return lastest tips limit by the given quantity
   def recent_tips(quantity = 10)
-    self.tips.includes([:author, :sport]).order('created_at desc').limit(quantity)
+    self.tips.includes(:author, :sport, :match).order('created_at desc').limit(quantity)
   end
 
   # Get all first date of the months from join date to today

@@ -394,4 +394,8 @@ module ApplicationHelper
   def yield_in_string(_yield)
     "#{_yield}%"
   end
+
+  def profitable_months_in_string(number_profitable_months, total_months)
+    "#{number_profitable_months}/#{total_months}"
+  end
 end
