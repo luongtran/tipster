@@ -1,7 +1,7 @@
 .background-granite
   .container
     #sub-page-navi.text-success
-      %ol.breadcrumb.mbn
+      %ol.breadcrumb.mbn.bgtrans.font-i
         %li
           %a.text-success
             %i.fa.fa-home
@@ -19,6 +19,8 @@
         .row
           .avatar-tipster
             = image_tag (tipster.avatar_url || 'demo.jpg'), class: 'img-responsive'
+          .pull-right
+            = select_tag :ranking, options_for_select(ranking_ranges_for_select), class: 'select-as-links statistics-range'
     .bgtest
       .row
         .col-lg-9.col-lg-offset-3
@@ -36,4 +38,3 @@
               %h4 AVG.PROFIT
               %span.value 129.90 $
             .col-md-3
-              = select_tag :ranking, options_for_select(ranking_ranges_for_select), class: 'select-as-links statistics-range mam'
