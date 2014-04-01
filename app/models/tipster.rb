@@ -54,12 +54,7 @@ class Tipster < ActiveRecord::Base
     end
   end
 
-  has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author do
-    def in_range(range)
-      # FIXME
-      proxy_association.owner.tips.where(published_at: range).where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false)
-    end
-  end
+  has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author
 
   has_and_belongs_to_many :sports, -> { uniq }
   mount_uploader :avatar, AvatarUploader
@@ -293,7 +288,7 @@ class Tipster < ActiveRecord::Base
 
   # Return lastest tips limit by the given quantity
   def recent_tips(quantity = 10)
-    self.tips.includes([:author, :sport]).order('created_at desc').limit(quantity)
+    self.tips.includes(:author, :sport, :match).order('created_at desc').limit(quantity)
   end
 
   # Get all first date of the months from join date to today
