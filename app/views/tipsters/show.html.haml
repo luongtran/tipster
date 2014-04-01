@@ -1,65 +1,8 @@
 -  content_for :title do
   = @tipster.full_name
 - content_for :page_head_mid do
-  .background-granite
-    .container
-      #sub-page-navi.text-success
-        %ol.breadcrumb.mbn
-          %li
-            %a.text-success
-              %i.fa.fa-home
-              Home
-          %li
-            %a.text-success
-              Tipsters
-          %li
-            %a.text-success
-              = @tipster.full_name.titleize
-  #page_header_mid.fixed-bg
-    #sub-page-header
-      .container.clearfix
-        .tipsterdetail-head
-          .row
-            .avatar-tipster
-              = image_tag (@tipster.avatar_url || 'demo.jpg'), class: 'img-responsive'
-      .bgtest
-        .row
-          .col-lg-9.col-lg-offset-3
-            .common-tipster-info
-              .col-md-3
-                %h4= @tipster.first_name.upcase
-                %span.value= @tipster.last_name
-              .col-md-2
-                %h4 RANK
-                %span.value 1
-              .col-md-2
-                %h4 AVG. YIED
-                %span.value= yield_in_string @tipster.avg_yield
-              .col-md-2
-                %h4 AVG. PROFIT
-                %span.value= profit_in_string @tipster.avg_profit
-              .col-md-3
-                = select_tag :ranking, options_for_select(ranking_ranges_for_select), class: 'select-as-links statistics-range mam'
-  .tipters-menu-quicklink
-    .container
-      .row
-        .col-md-9.col-md-offset-3.pts
-          %ul.list-inline
-            %li
-              %a{href: tipster_path(@tipster)}
-                %i General statistics
-            %li -
-            %li
-              %a{href: detail_statistics_tipster_path(@tipster)}
-                %i Details statistics
-            %li -
-            %li
-              %a{href: last_tips_tipster_path(@tipster)}
-                %i Last tips
-            %li -
-            %li
-              %a{href: description_tipster_path(@tipster)}
-                %i Tipster's description
+  = render 'profile_header', tipster: @tipster
+  = render 'tipster_profile_subpage_links', tipster: @tipster
 #profile-overiew-page
   .container
     #profile-overview-detail

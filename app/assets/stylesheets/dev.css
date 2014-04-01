@@ -298,7 +298,7 @@ ul.steps-container .step-name a:hover {
     max-width: 200px;
 }
 
-.tipters-menu-quicklink ul li a {
+.tipster-profile-subpage-links ul li a {
     color: #3c763d;
     font-size: 21px;
 }
@@ -317,13 +317,17 @@ ul.steps-container .step-name a:hover {
     margin-bottom: 0px;
 }
 
-.tipters-menu-quicklink {
+.tipster-profile-subpage-links {
     padding-top: 10px;
     height: 60px;
 }
 
-.common-tipster-info h4.label {
+.tipster-profile-subpage-links ul li {
+    vertical-align: middle;
+}
 
+.tipster-profile-subpage-links ul li:nth-child(even) {
+    font-weight: bold;
 }
 
 .common-tipster-info span.value {
