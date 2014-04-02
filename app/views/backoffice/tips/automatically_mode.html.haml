@@ -80,7 +80,7 @@
                       %ul.nav.nav-list.tree{style: "display: none;"}
                         - competitions.each do |compt|
                           %li
-                            %a.lk-select-competition.text-info{href: '#', 'data-competition-id' => compt.id}= compt.name
+                            %a.lk-select-competition.text-info{href: '#', 'data-competition-id' => compt.opta_competition_id}= compt.name
 
               %li.divider
     .col-lg-9
