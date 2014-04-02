@@ -104,7 +104,7 @@ class Tip < ActiveRecord::Base
       unless params[:status].blank?
         relation = relation.perform_status_param(params[:status])
       end
-      #relation = relation.perform_date_param(params[:date])
+      relation = relation.perform_date_param(params[:date])
       relation
     end
 

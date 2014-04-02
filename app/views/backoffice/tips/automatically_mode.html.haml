@@ -60,7 +60,7 @@
   .clearfix
     .col-lg-3
       - sports_competitions = @competitions.group_by(&:sport)
-      .competitions-tree-menu.pas
+      .competitions-tree-menu.pas{'data-filter-url' => filter_matches_backoffice_tips_path}
         %div{style: "overflow-y: scroll; overflow-x: hidden; height: 500px;"}
           %ul.nav.nav-list
             - sports_competitions.each do |sport, competitions|
@@ -80,7 +80,7 @@
                       %ul.nav.nav-list.tree{style: "display: none;"}
                         - competitions.each do |compt|
                           %li
-                            %a.text-info{href: "#"}= compt.name
+                            %a.lk-select-competition.text-info{href: '#', 'data-competition-id' => compt.id}= compt.name
 
               %li.divider
     .col-lg-9
@@ -99,3 +99,6 @@
           = form_for :nothing, url: confirm_backoffice_tips_path, :method => 'post' do |f|
             %button.btn.btn-success#submiter{type: :submit} Confirm
             %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
+
+= form_for :nothing, url: filter_matches_backoffice_tips_path, html:{ id: 'form-filter-available-matches', method: 'GET'} do |f|
+  = hidden_field_tag :competition, nil, class: 'competition'

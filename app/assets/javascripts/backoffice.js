@@ -241,7 +241,18 @@ $(document).ready(function () {
         }
     });
 
+    /* Left menu on available matches page */
     $('label.tree-toggler').click(function () {
         $(this).parent().children('ul.tree').toggle(300);
     });
+    $('.competitions-tree-menu').on('click', '.lk-select-competition', function () {
+        var competition_id = $(this).attr('data-competition-id');
+        var $form = $('#form-filter-available-matches');
+        $form.find('.competition').val(competition_id);
+
+        doFilterMatches($form);
+
+        return false;
+    });
+
 });
