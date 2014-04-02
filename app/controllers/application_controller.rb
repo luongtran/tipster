@@ -156,7 +156,11 @@ class ApplicationController < ActionController::Base
       flash[:sign_in_box] = true
       redirect_to root_url
     elsif klass == Tipster
-      redirect_to backoffice_sign_in_url, alert: 'You need to signed in before continue'
+      redirect_to backoffice_root_url, alert: 'You need to signed in before continue'
+    elsif klass == Admin
+      redirect_to admin_sign_in_url, alert: 'You need to signed in before continue'
+    else
+      redirect_to root_url
     end
   end
 

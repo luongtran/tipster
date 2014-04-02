@@ -6,11 +6,17 @@
 $(document).ready(function () {
     $('.select2able').each(function () {
         options = {
-            width: 'resolve'
+//            width: 'resolve'
         };
         if ($(this).attr('data-no-search'))
             options['minimumResultsForSearch'] = -1; // Hide the seach box
         $(this).select2(options);
+    });
+
+    /* Load the link of select box as links */
+    $('.select-as-links').on('change', function () {
+        window.location = $(this).children('option:selected').attr('data-url');
+        return false;
     });
 
     /* Datepicker */

@@ -1,7 +1,7 @@
 class Backoffice::ProfileController < ProfileController
   layout 'backoffice'
   USER_TYPE = Tipster.name
-  before_action :authenticate_tipster
+  prepend_before_action :authenticate_tipster
 
   def change_avatar
     prepare_user_data

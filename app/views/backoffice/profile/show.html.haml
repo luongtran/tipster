@@ -23,11 +23,12 @@
             .col-sm-offset-4.col-sm-7
               %button.btn.btn-primary{type: "submit"}= t('user.change_password')
 .row
-  .panel.panel-default
-    .panel-heading
-      %h4.panel-title= I18n.t('tipster.description')
-    .panel-body
-      = simple_form_for @user, as: :user, url: backoffice_update_description_path, method: 'POST', html: {class: '', novalidate: true} do |f|
-        = f.input_field :description, as: :bootsy, class: 'text-editorable'
-        .mam.text-center
-          %button.btn.btn-primary{type: :submit} Update
+  .mam
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title= I18n.t('tipster.description')
+      .panel-body
+        = simple_form_for @user, as: :user, url: backoffice_update_description_path, method: 'POST', html: {class: '', novalidate: true} do |f|
+          = f.input_field :description, as: :bootsy, class: 'text-editorable'
+          .mam.text-center
+            %button.btn.btn-primary{type: :submit} Update

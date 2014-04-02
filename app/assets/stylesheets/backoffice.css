@@ -154,3 +154,11 @@ label.control-label {
 .flag-icon {
     border: 1px solid #eee;
 }
+
+.lb-inline-filter {
+    font-weight: 600;
+    padding-right: 5px;
+}
+.select2-container .select2-choice {
+    border-radius: 2px;
+}

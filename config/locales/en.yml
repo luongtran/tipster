@@ -2,6 +2,7 @@ en:
   common:
     over: 'Over'
     under: 'Under'
+    all: 'All'
   hello: "Hello world"
   language:
     text: 'Language'
@@ -112,6 +113,11 @@ en:
     limit_add_tipster: "You can add only addtional %{count} tipsters."
   tip:
     created_successfully: 'A tip created successfully!'
+    statuses:
+      waiting_for_approved: 'Waiting for approved'
+      published: 'Published'
+      rejected: 'Rejected'
+      finished: 'Finished'
   errors:
     messages:
       invalid_date: "is not a valid date"

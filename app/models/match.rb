@@ -56,7 +56,7 @@ class Match < ActiveRecord::Base
         if params[:sport].is_a? Array
           relation = relation.where("sport_id in (?)", params[:sport])
         else
-          sport = Sport.find_by(name: params[:sport])
+          sport = Sport.find_by(code: params[:sport])
           relation = relation.where(sport_id: sport.id) if sport
         end
         relation

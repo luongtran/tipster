@@ -32,6 +32,13 @@ class Tip < ActiveRecord::Base
   STATUS_REJECTED = 2
   STATUS_FINISHED = 3
 
+  STATUSES_MAP = {
+      STATUS_WAITING_FOR_APPROVED => 'waiting_for_approved',
+      STATUS_PUBLISHED => 'published',
+      STATUS_REJECTED => 'rejected',
+      STATUS_FINISHED => 'finished'
+  }
+
   CREATE_PARAMS = [:platform_id, :bet_type_id, :odds, :selection, :advice, :amount, :sport_id, :line]
 
   attr_accessor :match_name, :bet_type_name, :bet_type_code
@@ -94,6 +101,9 @@ class Tip < ActiveRecord::Base
       unless params[:sport].blank?
         relation = relation.perform_sport_param(params[:sport])
       end
+      unless params[:status].blank?
+        relation = relation.perform_status_param(params[:status])
+      end
       relation = relation.perform_date_param(params[:date])
       relation
     end
@@ -101,6 +111,14 @@ class Tip < ActiveRecord::Base
     def perform_sport_param(sport, relation = self)
       sport = Sport.find_by(code: sport)
       relation = relation.where(sport_id: sport.id) if sport
+      relation
+    end
+
+    def perform_status_param(status, relation = self)
+      status_code = STATUSES_MAP.index(status)
+      if status_code
+        relation = relation.where(status: status_code)
+      end
       relation
     end
 

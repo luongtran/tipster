@@ -3,7 +3,7 @@ class Backoffice::TipsController < Backoffice::BaseController
 
   def my_tips
     @tips = Tip.by_author(current_tipster, params)
-    @sports = current_tipster.sports
+    @tipster_sports = current_tipster.sports
   end
 
   def new

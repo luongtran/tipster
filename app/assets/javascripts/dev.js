@@ -69,12 +69,6 @@ $(document).ready(function () {
         });
     });
 
-    /* Load the link of select box as links */
-    $('.select-as-links').on('change', function () {
-        window.location = $(this).children('option:selected').attr('data-url');
-        return false;
-    });
-
     /* Languages selection */
     $('.lk-change-lang:not(.current)').on('click', function () {
         var lang = $(this).attr('data-lang');

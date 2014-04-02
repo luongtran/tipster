@@ -30,7 +30,7 @@
             %label.control-label.col-sm-3
               Sport
             .col-sm-9
-              = select_tag :sport, options_for_select(sport_filter_for_matches(@tipster_sports)),
+              = select_tag :sport, options_for_select(sport_filter_for_select(@tipster_sports)),
                 class: 'select2able', 'data-no-search' => true
         .col-lg-7
           .form-group

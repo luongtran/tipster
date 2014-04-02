@@ -12,7 +12,7 @@
             %label.control-label.col-sm-3
               Sport
             .col-sm-7
-              = select_tag :sport, options_for_select(sport_filter_for_matches(@tipster_sports)), class: 'select2able', 'data-no-search' => true
+              = select_tag :sport, options_for_select(sport_filter_for_select(@tipster_sports)), class: 'select2able', 'data-no-search' => true
         .col-lg-3
           - max_date = 7.days.from_now.to_date.to_s
           - min_date = Date.today.to_s

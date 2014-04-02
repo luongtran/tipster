@@ -1,13 +1,13 @@
 .container
   %ul.list-inline
     %li
-      %a{href: admin_tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
+      %a.btn.btn-default.btn-sm{href: admin_tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
     - @sports.each do |sport|
       %li
-        %a{href: admin_tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
+        %a.btn.btn-default.btn-sm{href: admin_tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
   .pull-left
     %ul.list-inline.list-unstyled.mbn.rank-ranges
-      - Tipster::RANKING_RANGES.each do |range|
+      - TipsterStatistics::RANKING_RANGES.each do |range|
         %li
           %a{href: admin_tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
             = t("tipster.ranking.ranges.#{range}").titleize
@@ -31,7 +31,7 @@
       - @tipsters.each_with_index do |tipster,index|
         %tr
           %td
-            %a.tipster-name{href: tipster_path(tipster)}
+            %a.tipster-name{href: '#'}
               = tipster.full_name
             -#.tipster-profit-chart
             -#  = image_tag profit_img_chart_url_for(tipster.profit_data_for_chart), alt: 'Profit chart'

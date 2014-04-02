@@ -354,14 +354,17 @@ module ApplicationHelper
     options
   end
 
+  def append_query_param(path, param ={})
 
-  def sport_filter_for_matches(sports)
+  end
+
+  def sport_filter_for_select(sports)
     options = []
     options << ['All', nil]
     sports.each do |sport|
       options << [
           sport.name.titleize,
-          sport.name
+          sport.code
       ]
     end
     options

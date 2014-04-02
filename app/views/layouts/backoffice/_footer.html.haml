@@ -1,6 +1,5 @@
 .row
-  .container.bgw
-    .pull-right
-      %p.text-info
-        Current time:
-        = Time.now.in_time_zone('Paris').strftime("%H:%M, %d %b %Y (%Z %z)#{Time.zone.name}")
+  .pull-right
+    %p.text-info
+      Current time:
+      = Time.now.in_time_zone('Paris').strftime("%H:%M, %d %b %Y #{Time.zone.name}")
