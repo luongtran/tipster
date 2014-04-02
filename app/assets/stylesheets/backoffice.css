@@ -161,4 +161,5 @@ label.control-label {
 }
 .select2-container .select2-choice {
     border-radius: 2px;
+    height: 30px;
 }

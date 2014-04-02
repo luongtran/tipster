@@ -1,5 +1,4 @@
 class Subscribers::RegistrationsController < Devise::RegistrationsController
-  #before_action :configure_permitted_parameters, :only => [:create, :update]
 
   def new
     if request.xhr?

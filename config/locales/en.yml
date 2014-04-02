@@ -3,6 +3,7 @@ en:
     over: 'Over'
     under: 'Under'
     all: 'All'
+    email: 'Email'
   hello: "Hello world"
   language:
     text: 'Language'

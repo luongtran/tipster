@@ -12,7 +12,8 @@ TipsterHero::Application.routes.draw do
   devise_for :accounts, controllers: {
       registrations: 'subscribers/registrations',
       omniauth_callbacks: 'subscribers/omniauth_callbacks',
-      sessions: 'subscribers/sessions'
+      sessions: 'subscribers/sessions',
+      passwords: 'subscribers/passwords'
   }
 
   # Routes for Subscriber module without prefix
