@@ -4,7 +4,7 @@ source 'http://rubygems.org'
 gem 'rails', '4.0.0'
 
 gem 'sqlite3'
-
+gem 'mysql2'
 # Use SCSS for stylesheets
 gem 'sass-rails'
 gem 'sass', '>= 3.3.0.rc.2'
