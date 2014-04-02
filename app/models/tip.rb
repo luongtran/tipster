@@ -104,7 +104,7 @@ class Tip < ActiveRecord::Base
       unless params[:status].blank?
         relation = relation.perform_status_param(params[:status])
       end
-      relation = relation.perform_date_param(params[:date])
+      #relation = relation.perform_date_param(params[:date])
       relation
     end
 
@@ -157,14 +157,6 @@ class Tip < ActiveRecord::Base
     self.published_at.to_date
   end
 
-  def expired?
-    self.expire_at.past?
-  end
-
-  def bet_on_in_string
-    # Bet on: {Selection} [Line] {Bet type}
-  end
-
   def profit
     if self.correct?
       ((self.amount) * (self.odds - 1)).round(0)
@@ -174,6 +166,7 @@ class Tip < ActiveRecord::Base
   end
 
   def status_in_string
+    I18n.t("tip.statuses.#{STATUSES_MAP[self.status]}")
   end
 
   def created_at_in_string

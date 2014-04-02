@@ -13,11 +13,11 @@
           .col-md-9
             = select_tag :status, options_for_select(tip_statuses_filter_for_select(backoffice_my_tips_path)),
                 class: 'select-as-links select2able', 'data-no-search' => true
-        .col-lg-2.input-group
-          %input.input-sm.form-control{type: :text, name: :search, placeholder: 'search by match'}
-            %span.input-group-btn
-              %button.btn.btn-default.btn-sm
-                %i.fa.fa-search
+        -#.col-lg-2.input-group
+        -#  %input.input-sm.form-control{type: :text, name: :search, placeholder: 'search by match'}
+        -#    %span.input-group-btn
+        -#      %button.btn.btn-default.btn-sm
+        -#        %i.fa.fa-search
       .clearfix
       %hr
       .text-center
@@ -41,6 +41,7 @@
           %th Created at
           %th Profit
           %th Result
+          %th Status
       %tbody
         - @tips.each do |tip|
           %tr
@@ -73,6 +74,8 @@
                     &#x2718;
               - else
                 \---
+            %td
+              = tip.status_in_string
     - if @tips.empty?
       .text-center.text-danger
         Not found any
