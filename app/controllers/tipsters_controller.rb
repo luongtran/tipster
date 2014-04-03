@@ -53,7 +53,7 @@ class TipstersController < ApplicationController
 
   def last_tips
     @tipster_sports = @tipster.sports
-    @tips = @tipster.tips.load_data(params)
+    @tips = @tipster.finished_tips.recent(10)
   end
 
   def description

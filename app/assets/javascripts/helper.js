@@ -52,6 +52,22 @@ Helper = {
             return true;
         });
     },
+    loading_state: function (container) {
+        var html =
+            '<div class="modal fade"> \
+             <div class="modal-dialog"> \
+                <div class="modal-content"> \
+                    <div class="modal-body text-center text-danger">  \
+                     <img class="loadding-indicator" src="/assets/circle_loading.gif" /> \
+                    </div> \
+                </div> \
+           </div> \
+      </div>';
+        $(html).modal({
+            backdrop: 'static',
+            keyboard: false
+        });
+    },
     alert_server_error: function () {
         var html =
             '<div class="modal fade"> \

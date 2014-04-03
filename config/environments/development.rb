@@ -26,7 +26,7 @@ TipsterHero::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
-  config.action_mailer.default_url_options = {:host => 'localhost:3000'}
+  config.action_mailer.default_url_options = {:host => 'sfr.no-ip.org:3000'}
   config.action_mailer.delivery_method = :smtp
   # Using MAILCATCHER
   #config.action_mailer.smtp_settings = {:address => "localhost", :port => 1025}
@@ -40,4 +40,3 @@ TipsterHero::Application.configure do
       :enable_starttls_auto => true
   }
 end
-API_AUTHENTICATION = 'username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3'

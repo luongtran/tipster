@@ -139,6 +139,8 @@ $(document).ready(function () {
 
     /* Create Post data and show popup to confirm select odd*/
     $('body').on('click', '.choice-odd-button', function () {
+
+        // FIXME: this is a temporally solution
         var $modal = $('#confirm-select-odd-modal');
         var $form = $modal.find('form');
 

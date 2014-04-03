@@ -75,7 +75,7 @@
                     %li
                       -# AREA
                       %label.tree-toggler.nav-header
-                        %img.flag{class: "flag-#{%w(fr ad flag-england us vn).sample}"}
+                        %img.flag{class: flag_class_for_area(area)}
                         = area.name
                       %ul.nav.nav-list.tree{style: "display: none;"}
                         - competitions.each do |compt|

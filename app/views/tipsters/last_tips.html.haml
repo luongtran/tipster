@@ -8,18 +8,42 @@
     #profile-overview-detail
       .panel.panel-default
         .panel-body
-          %h3.tipster-profile-subpage-header.black-bg Last Tips
+          %h3.tipster-profile-subpage-header.black-bg Last 10 Tips
           .clearfix
           .tipster-list#tipster_list
             .tipster-list-inner.container.for-last-tip
-              .tipster-list-line1
+              .clearfix
+                - t_profit = 0
+                - t_amount = 0
+                - tt_correct_tips = 0
+                - @tips.each do |tip|
+                  - if tip.published?
+                    - t_profit += tip.profit
+                    - t_amount += tip.amount
+                    - tt_correct_tips += 1 if tip.correct?
+                - t_yield = (t_profit*100/t_amount.to_f).round(1)
+                - t_hit_rate = (tt_correct_tips*100/10).round(1)
+
+                .col-md-3.col-md-offset-1
+                  %h3
+                    Profit:
+                    = profit_in_string t_profit
+                .col-md-4
+                  %h3
+                    Yield:
+                    = yield_in_string t_yield
+                .col-md-4
+                  %h3
+                    Hit rate:
+                    = hit_rate_in_string t_hit_rate
+              -#.tipster-list-line1
                 %ul.list-inline
                   %li
                     %a{href: last_tips_tipster_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
                   - @tipster_sports.each do |sport|
                     %li
                       %a{href: last_tips_tipster_path(sport_filter_param(sport.code)), class: class_for_sport_filter(sport.code)}= sport.name.titleize
-              .tipster-list-line2.clearfix
+              -#.tipster-list-line2.clearfix
                 .text-center
                   %ul.list-inline.list-unstyled.mbn.dates-list
                     %li
@@ -37,8 +61,6 @@
                         %tr
                           %th Match/Event
                           %th Odds
-                          %th Tipster
-                          %th Sport
                           %th Published at
                           %th Stake
                           %th Profit
@@ -50,21 +72,16 @@
                               = image_tag tip.sport.icon_path
                               %a.text-warning.text-bold{href: tip_path(tip)}= tip.match.try(:name)
                             %td= tip.odds
-                            %td
-                              %a.text-warning{href: tipster_path(tip.author)}= tip.author.full_name
-                            %td= tip.sport_name.titleize
                             %td= tip.published_at
                             %td= tip.amount
                             %td
                               - if tip.published?
                                 - if tip.correct?
                                   %span.text-success
-                                    \+
-                                    = tip.profit
+                                    = profit_in_string tip.profit
                                 - else
                                   %span.text-danger
-                                    \-
-                                    = tip.amount
+                                    = profit_in_string tip.profit
                               - else
                                 \---
                             %td
@@ -81,3 +98,4 @@
                       .clearfix
                         .text-center.text-danger.mam
                           %i There are no any tips
+

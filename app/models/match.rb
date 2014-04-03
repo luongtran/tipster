@@ -126,7 +126,7 @@ class Match < ActiveRecord::Base
   end
 
   def find_bets
-    Betclic.find_bets_on_match(self)
+    Bookmarker::Betclic.find_bets_on_match(self)
   end
 
 end

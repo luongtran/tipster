@@ -54,7 +54,11 @@ class Tipster < ActiveRecord::Base
     end
   end
 
-  has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author
+  has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author  do
+    def recent(count)
+      proxy_association.owner.finished_tips.includes(:sport, :match).order('created_at desc').limit(count)
+    end
+  end
 
   has_and_belongs_to_many :sports, -> { uniq }
   mount_uploader :avatar, AvatarUploader

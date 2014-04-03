@@ -343,6 +343,10 @@ module ApplicationHelper
     end
   end
 
+  def flag_class_for_area(area)
+    "flag-#{%w(fr ad en us vn).sample}"
+  end
+
   def adding_price_show(price)
     "#{price}  € / month"
   end
