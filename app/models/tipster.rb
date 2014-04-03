@@ -278,7 +278,7 @@ class Tipster < ActiveRecord::Base
     @bet_types_chart = self.statistics.get_bet_types_chart
     @odds_chart = self.statistics.get_odds_chart
     @sports_chart = self.statistics.get_sports_chart
-
+    @monthly_chart = self.statistics.get_monthly_chart
     self
   end
 

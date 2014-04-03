@@ -115,3 +115,4 @@ gem 'humanizer'
 gem 'lazy_high_charts'
 gem 'wicked'
 gem 'bootsy'
+gem "google_visualr", ">= 2.1"

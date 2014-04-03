@@ -17,6 +17,7 @@
  = require ajaxify
  = require helper
  = require highcharts/highcharts
+ = require google_jsapi
  = require easypiechart
  = require_tree ../../../vendor/assets/javascripts/framework/bootstrap
  = require ../../../vendor/assets/javascripts/framework/angularjs/angular.min

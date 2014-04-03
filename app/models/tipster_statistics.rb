@@ -55,7 +55,7 @@
 #        ],
 #        'odds' => [
 #            {
-#                'range' => '3.0 - 6.0',
+#                'range_name' => '3.0 - 6.0',
 #                #'Profit	Yield	N° of Tips	Win rate	Avg. Odds'
 #            },
 #            # ....
@@ -527,110 +527,53 @@ class TipsterStatistics < ActiveRecord::Base
   def get_bet_types_chart
     bet_types_statistic = parsed_data[:bet_types]
 
-    sanitized_bet_types_statistic = []
-    bet_types_statistic.each do |bet_type|
-      if bet_type['percentage'].to_i > 0
-        sanitized_bet_types_statistic << {
-            name: bet_type['bet_type_name'][0..12],
-            y: bet_type['percentage']
-        }
-      end
+    data_table = GoogleVisualr::DataTable.new
+    data_table.add_rows(bet_types_statistic.count)
+
+    data_table.new_column('string', 'Bet Type')
+    data_table.new_column('number', 'Number of tips')
+
+    bet_types_statistic.each_with_index do |bet_type, index|
+      data_table.set_cell(index, 0, bet_type['bet_type_name'])
+      data_table.set_cell(index, 1, bet_type['number_of_tips'].to_i)
     end
-    LazyHighCharts::HighChart.new('graph') do |f|
-      f.series(
-          :data => sanitized_bet_types_statistic,
-      )
-      f.plotOptions(
-          pie: {
-              allowPointSelect: true,
-              cursor: 'pointer',
-              dataLabels: {
-                  enabled: true
-              }
-          }
-      )
-      f.tooltip(
-          pointFormat: '<b>{point.percentage}%</b>',
-          percentageDecimals: 1
-      )
-      f.chart(
-          :type => 'pie',
-          width: 300,
-          height: 300
-      )
-    end
+
+    opts = {:width => 400, :height => 190, :title => 'Type of bets statistics', :is3D => true}
+    GoogleVisualr::Interactive::PieChart.new(data_table, opts)
   end
 
   def get_sports_chart
     sports_statistics = parsed_data[:sports]
-    sanitized_sports_statistic = []
-    sports_statistics.each do |bet_type|
-      if bet_type['percentage'].to_i > 0
-        sanitized_sports_statistic << {
-            name: bet_type['sport_name'],
-            y: bet_type['percentage']
-        }
-      end
+    data_table = GoogleVisualr::DataTable.new
+    data_table.add_rows(sports_statistics.count)
+
+    data_table.new_column('string', 'Sport')
+    data_table.new_column('number', 'Number of tips')
+
+    sports_statistics.each_with_index do |sport, index|
+      data_table.set_cell(index, 0, sport['sport_name'])
+      data_table.set_cell(index, 1, sport['number_of_tips'].to_i)
     end
-    LazyHighCharts::HighChart.new('graph') do |f|
-      f.series(
-          :data => sanitized_sports_statistic,
-      )
-      f.plotOptions(
-          pie: {
-              allowPointSelect: true,
-              cursor: 'pointer',
-              dataLabels: {
-                  enabled: true
-              }
-          }
-      )
-      f.tooltip(
-          pointFormat: '<b>{point.percentage}%</b>',
-          percentageDecimals: 1
-      )
-      f.chart(
-          :type => "pie",
-          width: 200,
-          height: 200
-      )
-    end
+
+    opts = {:width => 400, :height => 190, :title => 'Sports statistics', :is3D => true}
+    GoogleVisualr::Interactive::PieChart.new(data_table, opts)
   end
 
   def get_odds_chart
     odds_statistics = parsed_data[:odds]
-    sanitized_odds_statistic = []
-    odds_statistics.each do |bet_type|
-      if bet_type['percentage'].to_i > 0
-        sanitized_odds_statistic << {
-            name: bet_type['range_name'],
-            y: bet_type['percentage']
-        }
-      end
+    data_table = GoogleVisualr::DataTable.new
+    data_table.add_rows(odds_statistics.count)
+
+    data_table.new_column('string', 'Odds')
+    data_table.new_column('number', 'Number of tips')
+
+    odds_statistics.each_with_index do |odd_range, index|
+      data_table.set_cell(index, 0, odd_range['range_name'])
+      data_table.set_cell(index, 1, odd_range['number_of_tips'].to_i)
     end
-    LazyHighCharts::HighChart.new('graph') do |f|
-      f.series(
-          :data => sanitized_odds_statistic,
-      )
-      f.plotOptions(
-          pie: {
-              allowPointSelect: true,
-              cursor: 'pointer',
-              dataLabels: {
-                  enabled: true
-              }
-          }
-      )
-      f.tooltip(
-          pointFormat: '<b>{point.percentage}%</b>',
-          percentageDecimals: 1
-      )
-      f.chart(
-          :type => "pie",
-          width: 300,
-          height: 300
-      )
-    end
+
+    opts = {:width => 400, :height => 190, :title => 'Odds statistics', :is3D => true}
+    GoogleVisualr::Interactive::PieChart.new(data_table, opts)
   end
 
   def get_profit_chart(range)
@@ -663,5 +606,24 @@ class TipsterStatistics < ActiveRecord::Base
           height: 350
       )
     end
+  end
+
+  def get_monthly_chart
+    monthly_statistics = parsed_data[:monthly]
+    data_table = GoogleVisualr::DataTable.new
+    data_table.new_column('string', 'Month')
+    data_table.new_column('number', 'Profit')
+    data_table.add_rows(monthly_statistics.count)
+    monthly_statistics.each_with_index do |month, index|
+      data_table.set_cell(index, 0, month['name'])
+      data_table.set_cell(index, 1, month['profit'])
+    end
+
+    opts = {
+        :width => 400,
+        :height => 240,
+        :title => 'Monthy statistics'
+    }
+    @chart = GoogleVisualr::Interactive::ColumnChart.new(data_table, opts)
   end
 end

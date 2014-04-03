@@ -9,11 +9,11 @@
       .panel-body
         %h3.tipster-profile-subpage-header.black-bg Details Statistics
         .row
-          .col-lg-9
+          .col-lg-7
             %table.table.table-bordered.table-striped
               %thead
-                %tr
-                  %td.text-center{'colspan' => 6 } Monthly
+                %tr.warning
+                  %td.text-center{'colspan' => 6 } Monthly statistics
                 %tr
                   %th Month
                   %th Profit
@@ -33,15 +33,18 @@
                       %td= hit_rate_in_string month_statistics[:hit_rate]
                       %td= month_statistics[:avg_odds]
                       %td= month_statistics[:number_of_tips]
-              .col-lg-3
+          .col-lg-5
+            #monthly-chart-container
+            = render_chart @tipster.monthly_chart, 'monthly-chart-container'
         %hr
         -# ========================================== Sports
         .row
-          .col-lg-8
+          .col-lg-7
             %table.table.table-bordered.table-striped
               %thead
-                %tr
-                  %td.text-center{'colspan' => 6 } Sports
+                %tr.warning
+                  %td.text-center{'colspan' => 6 }
+                    %h4 Sports
                 %tr
                   %th Sport
                   %th Profit
@@ -61,17 +64,21 @@
                       %td= hit_rate_in_string sport_statistics[:hit_rate]
                       %td= sport_statistics[:avg_odds]
                       %td= sport_statistics[:number_of_tips]
-          .col-lg-4
-            = high_chart("sports-chart-container", @tipster.sports_chart) do |chart|
-              = "options.plotOptions.pie.dataLabels.distance = 3"
-              = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
+          .col-lg-5
+            #sports-chart-container
+            = render_chart @tipster.sports_chart, 'sports-chart-container'
+            -#= high_chart("sports-chart-container", @tipster.sports_chart) do |chart|
+            -#  = "options.plotOptions.pie.dataLabels.distance = 3"
+            -#  = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
         -# ========================================== Bet types
+        %hr
         .row
-          .col-lg-8
+          .col-lg-7
             %table.table.table-bordered.table-striped
               %thead
-                %tr
-                  %td.text-center{'colspan' => 6 } Type of bets
+                %tr.warning
+                  %td.text-center{'colspan' => 6 }
+                    %h4 Type of bets
                 %tr
                   %th Bet Type
                   %th Profit
@@ -93,17 +100,21 @@
                       %td= hit_rate_in_string bet_type_statistics[:hit_rate]
                       %td= bet_type_statistics[:avg_odds]
                       %td= bet_type_statistics[:number_of_tips]
-          .col-lg-4
-            = high_chart("bet-type-chart-container", @tipster.bet_types_chart) do |chart|
+          .col-lg-5
+            #bet-types-chart-container
+            = render_chart @tipster.bet_types_chart, 'bet-types-chart-container'
+            -#= high_chart("bet-type-chart-container", @tipster.bet_types_chart) do |chart|
               = "options.plotOptions.pie.dataLabels.distance = 3"
               = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
+        %hr
         -# ========================================== Odds
         .row
-          .col-lg-8
+          .col-lg-7
             %table.table.table-bordered.table-striped
               %thead
-                %tr
-                  %td.text-center{'colspan' => 6 } Odds
+                %tr.warning
+                  %td.text-center{'colspan' => 6 }
+                    %h4 Odds
                 %tr
                   %th Odds
                   %th Profit
@@ -124,8 +135,10 @@
                       %td= hit_rate_in_string odds_statistics[:hit_rate]
                       %td= odds_statistics[:avg_odds]
                       %td= odds_statistics[:number_of_tips]
-          .col-lg-4
-            = high_chart("odds-chart-container", @tipster.odds_chart) do |chart|
+          .col-lg-5
+            #odds-chart-container
+            = render_chart @tipster.odds_chart, 'odds-chart-container'
+            -#= high_chart("odds-chart-container", @tipster.odds_chart) do |chart|
               = "options.plotOptions.pie.dataLabels.distance = 3"
               = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
         -#%h3 Countries - Competitions
