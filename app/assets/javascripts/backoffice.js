@@ -248,6 +248,8 @@ $(document).ready(function () {
         $(this).parent().children('ul.tree').toggle(300);
     });
     $('.competitions-tree-menu').on('click', '.lk-select-competition', function () {
+        $('.competitions-tree-menu .lk-select-competition.active').removeClass('active');
+        $(this).addClass('active');
         var competition_id = $(this).attr('data-competition-id');
         var $form = $('#form-filter-available-matches');
         $form.find('.competition').val(competition_id);
@@ -256,5 +258,6 @@ $(document).ready(function () {
 
         return false;
     });
+
 
 });

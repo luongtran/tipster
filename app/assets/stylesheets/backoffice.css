@@ -159,7 +159,17 @@ label.control-label {
     font-weight: 600;
     padding-right: 5px;
 }
+
 .select2-container .select2-choice {
     border-radius: 2px;
     height: 30px;
+}
+
+.lk-select-competition {
+    font-size: 13px;
+}
+
+.lk-select-competition.active {
+    font-weight: bold;
+    background-color: #eee;
 }

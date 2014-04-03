@@ -86,7 +86,6 @@
     .col-lg-9
       #available-matches-wrapper{'data-mode' => 'auto'}
         = render 'available_matches_list', matches: @matches, group_by: 'date', mode: 'auto'
-
 -# The hidden dialog to confirm select odd
 #confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
   .modal-dialog.modal-md
@@ -99,6 +98,6 @@
           = form_for :nothing, url: confirm_backoffice_tips_path, :method => 'post' do |f|
             %button.btn.btn-success#submiter{type: :submit} Confirm
             %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
-
+-# The hidden dialog to confirm select odd
 = form_for :nothing, url: filter_matches_backoffice_tips_path, html:{ id: 'form-filter-available-matches', method: 'GET'} do |f|
   = hidden_field_tag :competition, nil, class: 'competition'

@@ -1,6 +1,7 @@
 module Bookmarker
   require 'nokogiri'
   module Betclic
+    CODE = 'betclic'
     EN_ODDS_URL = 'http://xml.cdn.betclic.com/odds_en.xml'
     FR_ODDS_URL = 'http://xml.cdn.betclic.com/odds_frfr.xml'
 
@@ -26,12 +27,6 @@ module Bookmarker
       end
 
       def find_bets_on_match(match)
-        # TODO: do follow these steps for better performance:
-        # 1. filter by sport
-        # 2. filter by event id, it's competition on the local db
-        # 3. find with name
-        # 4. filter by bet types on local db
-
         sport = match.sport
         bet_type_codes_filter = sport.bet_types.on_betclic.pluck(:betclic_code)
 
@@ -48,21 +43,18 @@ module Bookmarker
           }
         end
 
-        betclic_id_match = nil
+        found_match_betclic_id = nil
         result_matches.each do |m|
           if match.name.downcase.include?(m[:name]) || m[:name].include?(match.name.downcase)
-            betclic_id_match = m[:betclic_match_id]
-            # TODO: update betclic_match_id for match here
+            found_match_betclic_id = m[:betclic_match_id] # TODO: consider to save the id
             break
           end
         end
 
         # Start get bets on match  ==============================================
         bets_found = []
-        unless betclic_id_match.nil?
-          bet_nodes = xml_doc.css("match##{betclic_id_match} > bets > bet")
-
-
+        unless found_match_betclic_id.nil?
+          bet_nodes = xml_doc.css("match##{found_match_betclic_id} > bets > bet")
           bet_nodes.each do |bet|
             if bet_type_codes_filter.include?(bet['code'])
               # Get choices on current bet

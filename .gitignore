@@ -16,3 +16,4 @@ public/uploads
 public/images
 public/assets
 public/errors.txt
+/db/odds_xmls/*
