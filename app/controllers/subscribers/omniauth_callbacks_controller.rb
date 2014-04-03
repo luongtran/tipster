@@ -1,5 +1,4 @@
 class Subscribers::OmniauthCallbacksController < Devise::OmniauthCallbacksController
-  before_action :subscriber_required
 
   def facebook
     authorize('Facebook')
