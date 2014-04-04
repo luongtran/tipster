@@ -45,7 +45,7 @@
               %li TipsterHero's advices
           %hr.divider
           .text-center.row
-            %a.btn.btn-lg.btn-success.col-md-6.col-md-offset-3(href="javascript:;") Sign Up
+            %a.btn.btn-lg.btn-success.col-md-6.col-md-offset-3.lk-toggle-sign-up-box(href="javascript:;")= t('user.sign_up')
       .col-md-4
         .abonnaments.super
           .abon-head.text-center
@@ -65,7 +65,7 @@
               %li Profit guaranteed
           %hr.divider
           .text-center.row
-            %a.btn.btn-lg.btn-success.col-md-6.col-md-offset-3(href="javascript:;")= t('user.sign_up')
+            %a.btn.btn-lg.btn-success.col-md-6.col-md-offset-3{href: pricing_path}= t('common.subscribe')
 - if @show_sign_in_box
   :javascript
     $('document').ready(function(){

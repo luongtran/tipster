@@ -4,6 +4,7 @@ en:
     under: 'Under'
     all: 'All'
     email: 'Email'
+    subscribe: 'Subscribe'
   hello: "Hello world"
   language:
     text: 'Language'
@@ -75,9 +76,9 @@ en:
     address: "Address"
     zip_code: "Zip code"
     change_password: "Change Password"
-    password_changed_successfully: "Your password was changed successfully."
-    password_changed_failed: "Change password failed."
-    change_password_fail: "Cannot change your password."
+    password_changed_successfully: "Your password was changed successfully"
+    password_changed_failed: "Change password failed"
+    change_password_fail: "Cannot change your password"
     update_profile: "Update Profile"
     last_sign_in: "Last sign in"
     update_account: "Update account"

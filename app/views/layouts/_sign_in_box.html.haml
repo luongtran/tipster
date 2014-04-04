@@ -33,7 +33,8 @@
                     %input#account_remember_me.boolean.optional{name: "account[remember_me]", type: "checkbox",value: "1"}/
                     = t('menu.stay_connect')
                   %span
-                    %a.pull-right{href: "/accounts/password/new"} Forgot password?
+                    -# FIXME: please using route helper
+                    %a.btn-link.pull-right{href: "/accounts/password/new"} Forgot password?
               #sign-in-message-container
               .form-group
                 %button.btn.btn-success.btn-block.btn-md#submiter Sign In

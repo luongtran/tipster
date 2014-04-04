@@ -1,13 +1,42 @@
+#encoding: utf-8
+require 'nokogiri'
 module Bookmarker
-  require 'nokogiri'
   module Betclic
     CODE = 'betclic'
-    EN_ODDS_URL = 'http://xml.cdn.betclic.com/odds_en.xml'
+    ODDS_URL = 'http://xml.cdn.betclic.com/odds_en.xml'
     FR_ODDS_URL = 'http://xml.cdn.betclic.com/odds_frfr.xml'
 
     # Response XML structure: sports > sport > event > match > bets > bet > choice
 
     class << self
+      # TODO: DRYing up
+      def recognized_bet_types(sport = nil)
+        sports_bet_types = YAML.load_file File.join(Rails.root, 'db', 'seeds', 'sports_bet_types.yml')
+      end
+
+      # === Translate name bet type of from Betclic to our site
+      def translate_bet_type(bet_type)
+      end
+
+      # === Return the bet types found in the response XML
+      def get_raw_bet_types
+        xml_doc = self.go
+        bet_nodes = xml_doc.css('bet')
+        found_bet_types = []
+
+        bet_nodes.each do |bet_node|
+          sport_node = bet_node.ancestors('sport').first
+          found_bet_types << {
+              name: bet_node['name'],
+              code: bet_node['code'],
+              sport_id: sport_node['id'],
+              sport_name: sport_node['name']
+          }
+        end
+
+        found_bet_types.uniq
+      end
+
       def fetch_odds(lang = 'en')
         xml_doc = self.go
         match_nodes = xml_doc.css('sport > event > match')
@@ -22,13 +51,10 @@ module Bookmarker
         result_matches
       end
 
-      # Sport param must be id of sport on betclic
-      def find_matches_by_sport(sport)
-      end
-
+      # === Perform search bets on the given match
       def find_bets_on_match(match)
         sport = match.sport
-        bet_type_codes_filter = sport.bet_types.on_betclic.pluck(:betclic_code)
+        bet_type_codes_filter = BET_TYPE_CODES
 
         xml_doc = self.go
         match_nodes = xml_doc.css('sport > event > match')
@@ -78,7 +104,7 @@ module Bookmarker
         bets_found
       end
 
-      # Find all available sports on betclic
+      # === Find all sports in the response XML
       def support_sports
         xml_doc = self.go
         sport_nodes = xml_doc.css('sport')
@@ -92,30 +118,30 @@ module Bookmarker
         re_sports
       end
 
-      def bet_types
-        xml_doc = self.go
-        bet_nodes = xml_doc.css('bet')
-        re_bet_types = []
-        bet_nodes.each do |bet|
-          sport = bet.parent.parent.parent.parent
-          re_bet_types << {
-              name: bet['name'],
-              code: bet['code'],
-              sport_id: sport['id'],
-              sport_name: sport['name']
-          }
-        end
-        re_bet_types.uniq
-      end
-
       protected
       # Start to feed xml
       # Return Nokogiri::Document object
       def go
-        uri = URI(EN_ODDS_URL)
+        uri = URI(ODDS_URL)
         response = Net::HTTP.get_response(uri)
         # TODO: catch timeout error
         Nokogiri::XML(response.body)
+      end
+
+      # === Save to xml file for use later
+      # Run on seperate thread
+      def save_to_local(doc)
+        # Create lock file
+        file_name = "#{CODE}#{Time.now.to_i}.xml"
+        File.open(File.join(Rails.root, db, 'odds_xmls', file_name), 'w') do |f|
+          doc.write_xml_to f
+        end
+        # Remove lock file
+      end
+
+      # === Read lastest xml file for use
+      # Called when the lastest file is not experied
+      def read_from_local
       end
     end
 

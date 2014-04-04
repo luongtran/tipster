@@ -38,7 +38,6 @@ class Match < ActiveRecord::Base
   # VALIDATIONS
   # ==============================================================================
   validates :opta_match_id, uniqueness: true
-  validates_uniqueness_of :betclic_match_id, allow_blank: true
 
   # ==============================================================================
   # SCOPE
@@ -100,10 +99,6 @@ class Match < ActiveRecord::Base
 
     end
 
-    # Find bets and odds from Betclic for the given match
-    def get_bets_on_match(match)
-      Betclic.find_bets_on_match(match)
-    end
   end
 
   # ==============================================================================
@@ -125,7 +120,7 @@ class Match < ActiveRecord::Base
     self.start_at.to_date
   end
 
-  def find_bets(bookmarker_code = '')
+  def find_bets(bookmarker = '')
     Bookmarker::Betclic.find_bets_on_match(self)
     #Bookmarker::FranceParis.find_bets_on_match(self)
   end

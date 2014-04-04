@@ -1,4 +1,16 @@
+
 #page-header.background-granite
+  - if notice || alert
+    .flash-container
+      #flash
+        - if notice
+          .alert.alert-info.alert-sm.fade.in{'data-alert' => "alert"}
+            %a.close{'data-dismiss' => 'alert', :href => "#"} &times;
+            = notice
+        - if alert
+          .alert.alert-danger.alert-sm.fade.in{'data-alert' => "alert"}
+            %a.close{'data-dismiss' => "alert", :href => "#"} &times;
+            = alert
   #feature-profiles
     .container.pbs
       %div= image_tag('title-tipweek.png')
@@ -20,10 +32,10 @@
                   .hotTipster-info
                     %span.proofed
                       Profit:
-                      %b= profit_in_string tipster.profit.zero? ? rand(200..370) : tipster.profit
+                      %b= profit_in_string tipster.profit
                     %span.yield
                       Yield:
-                      %b= yield_in_string tipster.yield.zero? ? rand(200.370) : tipster.yield
+                      %b= yield_in_string tipster.yield
                   %a.see-profile-link{href: tipster_path(tipster)} See Profile
             = image_tag 'headads.png', style: "height: 360px;float:left"
   #board-gray
