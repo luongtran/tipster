@@ -74,7 +74,7 @@ class Backoffice::TipsController < Backoffice::BaseController
     match = Match.includes(:sport).find_by(opta_match_id: match_id)
     bets = match.find_bets
     success = true
-    html = render_to_string(partial: 'backoffice/tips/bets_on_match', locals: {match: match, bets: bets}).html_safe
+    html = render_to_string(partial: 'backoffice/tips/france_paris_bets', locals: {match: match, bets: bets}).html_safe
     render json: {success: success, html: html}
   end
 

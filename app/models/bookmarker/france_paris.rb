@@ -93,7 +93,8 @@ module FranceParis
         # Offer node attributes example: <type_id="26088130" type_name="1-N-2">
 
         bet_type_nodes.each do |bet_type_node|
-          bet_type_support = supported_bet_types.detect { |bet_type| bet_type[CODE] == bet_type_node['code'] }
+          bet_type_support = supported_bet_types.detect { |bet_type| bet_type[CODE] == bet_type_node['type_name'] }
+
           if bet_type_support
             choice_nodes = bet_type_node.children
             found_choices = []
@@ -104,16 +105,12 @@ module FranceParis
               translated_choice_name = choice_node['name']
 
               if bet_type_support['has_line']
-                translated_choice_name += " #{bet_type_node["number"]}"
+                choice[:selection] = "#{choice_node['name']} #{bet_type_node["number"]}"
               else
                 choice[:selection] = choice_node['name']
               end
 
-              found_choices << {
-                  name: translated_choice_name,
-                  odd: choice_node['odds']
-              }
-
+              found_choices << choice
             end
             found_bets << {
                 code: bet_type_support['standard_code'],

@@ -12,8 +12,8 @@
         .bet-choice
           %span.text-bold
             - choice_name = choice[:selection]
-            - choice_name.gsub!('%1%',match.team_a)
-            - choice_name.gsub!('%2%',match.team_b)
+            -#- choice_name.gsub!('%1%',match.team_a)
+            -#- choice_name.gsub!('%2%',match.team_b)
             = choice_name
           %button.btn.btn-sm.btn-default.choice-odd-button{data: {'bet-type-code' => bet[:code], odd: choice[:odd],
               'choice-name' => choice_name, 'match-id' => match.opta_match_id, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}

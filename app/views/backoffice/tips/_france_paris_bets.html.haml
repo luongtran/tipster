@@ -11,8 +11,8 @@
       - bet[:choices].each do |choice|
         .bet-choice
           %span.text-bold
-            - choice_name = choice[:name]
-            - choice_name.gsub!('Nul','Draw') if choice_name.include?('Nul')
+            - choice_name = choice[:selection]
+            -#- choice_name.gsub!('Nul','Draw') if choice_name.include?('Nul')
             = choice_name
           %button.btn.btn-sm.btn-default.choice-odd-button{data: {'bet-type-code' => bet[:code], odd: choice[:odd],
               'choice-name' => choice_name, 'match-id' => match.opta_match_id, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
