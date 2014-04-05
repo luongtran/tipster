@@ -184,12 +184,11 @@ class TipsterStatistics < ActiveRecord::Base
 
   # ================= For saving a sport statistics object
   class SportStatistics < BaseStatistics
-    attr_accessor :percentage, :sport_name, :sport_id, :sport_code, :number_of_tips, :total_tips
+    attr_accessor :percentage, :sport_name, :sport_code, :number_of_tips, :total_tips
 
     def initialize(sport, total_tips)
       @sport_name = sport.name
       @sport_code = sport.code
-      @sport_id = sport.id
       @total_tips = total_tips
       @number_of_tips, @percentage = 0, 0
       @statistics_number = StatisticsNumber.new
@@ -213,11 +212,11 @@ class TipsterStatistics < ActiveRecord::Base
 
   # ================= For saving a bet type statistics object
   class BetTypeStatistics < BaseStatistics
-    attr_accessor :percentage, :bet_type_name, :sport_name, :bet_type_id, :total_tips
+    attr_accessor :percentage, :bet_type_name, :sport_name, :bet_type_code, :total_tips
 
     def initialize(bet_type, total_tips)
       @bet_type_name = bet_type.name
-      @bet_type_id = bet_type.id
+      @bet_type_code = bet_type.code
       @total_tips = total_tips
       @sport_name = bet_type.sport.name
       @percentage = 0
@@ -404,7 +403,7 @@ class TipsterStatistics < ActiveRecord::Base
 
           # === Saving for sport
           sports_statistics.each do |statistics_obj|
-            if tip.sport_id == statistics_obj.sport_id
+            if tip.sport_code == statistics_obj.sport_code
               # TODO: DRYing up !
               statistics_obj.statistics_number.number_of_tips += 1
               statistics_obj.statistics_number.total_odds += tip.odds
@@ -417,7 +416,7 @@ class TipsterStatistics < ActiveRecord::Base
 
           # === Saving for bet types statistics
           bet_types_statistics.each do |statistics_obj|
-            if tip.bet_type_id == statistics_obj.bet_type_id
+            if tip.bet_type_code == statistics_obj.bet_type_code
               # TODO: DRYing up !
               statistics_obj.statistics_number.number_of_tips += 1
               statistics_obj.statistics_number.total_odds += tip.odds

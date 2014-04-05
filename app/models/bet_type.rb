@@ -13,16 +13,14 @@
 #
 
 class BetType < ActiveRecord::Base
+
   belongs_to :sport, foreign_key: :sport_code, primary_key: :code
+
   validates_presence_of :sport, :code, :name
   validates_uniqueness_of :code, allow_blank: true
   validates_uniqueness_of :name, scope: :sport_code, allow_blank: true
 
   class << self
-  end
-
-  def other_names
-    MAP[self.code]
   end
 
 end

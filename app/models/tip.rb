@@ -40,36 +40,35 @@ class Tip < ActiveRecord::Base
       STATUS_FINISHED => 'finished'
   }
 
-  CREATE_PARAMS = [:platform_id, :bet_type_id, :odds, :selection, :advice, :amount, :sport_id, :line]
-
-  attr_accessor :match_name, :bet_type_name, :bet_type_code
+  CREATE_PARAMS = [:bookmarker_code, :bet_type_code, :sport_code, :odds, :selection, :advice, :amount, :line]
 
   # ===========================================================================
   # ASSOCIATIONS
   # ===========================================================================
   belongs_to :author, polymorphic: true
-  belongs_to :sport
-  belongs_to :bet_type
-  belongs_to :platform
+
+  belongs_to :sport, foreign_key: :sport_code, primary_key: :code
+  belongs_to :bet_type, foreign_key: :bet_type_code, primary_key: :code
+  belongs_to :bookmarker, foreign_key: :bookmarker_code, primary_key: :code
+
   belongs_to :match, foreign_key: :match_id, primary_key: :opta_match_id
 
   # ===========================================================================
   # VALIDATIONS
   # ===========================================================================
-  validates :author, :odds, :selection, :advice, :sport, :platform, :bet_type,
-            :amount, presence: true
-  validates_presence_of :bet_type_id, :platform_id,
-                        message: 'Choose at least one'
-  validates_length_of :advice, minimum: 10, allow_blank: true
-  validates_numericality_of :amount, greater_than_or_equal_to: 10, less_than_or_equal_to: 100, only_integer: true
-  validates_numericality_of :odds, greater_than_or_equal_to: 1.0
-  #validates_presence_of :line, :if => Proc.new { self.bet_type && self.bet_type.has_line? }
+  #validates :author, :odds, :selection, :advice, :sport, :bookmarker, :bet_type, :amount, presence: true
+  #
+  #validates_presence_of :bet_type_code, :bookmarker_code, message: 'Choose at least one'
+  #
+  #validates_length_of :advice, minimum: 10, allow_blank: true
+  #validates_numericality_of :amount, greater_than_or_equal_to: 10, less_than_or_equal_to: 100, only_integer: true
+  #validates_numericality_of :odds, greater_than_or_equal_to: 1.0
 
   # ===========================================================================
   # CALLBACKS
   # ===========================================================================
-  before_validation :valid_beting
-  before_create :init_status
+  #before_validation :valid_beting
+  #before_create :init_status
 
   # ===========================================================================
   # SCOPE
@@ -111,7 +110,7 @@ class Tip < ActiveRecord::Base
 
     def perform_sport_param(sport, relation = self)
       sport = Sport.find_by(code: sport)
-      relation = relation.where(sport_id: sport.id) if sport
+      relation = relation.where(sport_code: sport.code) if sport
       relation
     end
 

@@ -51,10 +51,10 @@ class Match < ActiveRecord::Base
     def load_data(params = {}, relation = self)
       if params[:sport].present?
         if params[:sport].is_a? Array
-          relation = relation.where("sport_id in (?)", params[:sport])
+          relation = relation.where("sport_code in (?)", params[:sport])
         else
           sport = Sport.find_by(code: params[:sport])
-          relation = relation.where(sport_id: sport.id) if sport
+          relation = relation.where(sport_code: sport.code) if sport
         end
         relation
       end

@@ -21,7 +21,7 @@ class Competition < ActiveRecord::Base
 
   has_many :matches, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
 
-  validates :sport_id, presence: true
+  validates :sport_code, presence: true
 
   validates_uniqueness_of :opta_competition_id, scope: :opta_area_id
 

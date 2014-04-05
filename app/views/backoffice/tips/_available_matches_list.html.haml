@@ -1,5 +1,5 @@
 - if group_by == 'sport'
-  - matches_grouped = matches.group_by {|match| match.sport_id}
+  - matches_grouped = matches.group_by {|match| match.sport_code}
 - else # Group by date
   - matches_grouped = matches.group_by {|match| match.start_date}
   -# Sort by start date asc

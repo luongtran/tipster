@@ -216,6 +216,10 @@ class Tipster < ActiveRecord::Base
     self.full_name.split(' ').try(:second).try(:capitalize)
   end
 
+  def sport_codes
+    self.sports.pluck :code
+  end
+
   def followers
     subscriptions_tipsters = SubscriptionTipster.where(tipster_id: self.id)
     subscriptions = subscriptions_tipsters.map { |s_t| s_t.subscription } unless subscriptions_tipsters.empty?

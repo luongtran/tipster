@@ -17,7 +17,7 @@ class Sport < ActiveRecord::Base
   has_many :competitions, foreign_key: :sport_code, primary_key: :code
   has_many :seasons, through: :competitions
 
-  has_many :matches
+  has_many :matches, foreign_key: :sport_code, primary_key: :code
   validates :code, presence: true, uniqueness: {case_sensitive: false}
 
   after_create :auto_position

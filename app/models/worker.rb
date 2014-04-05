@@ -73,7 +73,7 @@ class Worker
         fetcher = OptaSport::Fetcher.send(sport.code)
         if fetcher.respond_to?(:get_competitions)
           res = fetcher.get_competitions(
-              authorized: 'yes'
+              authorized: true
           )
           if fetcher.success?
             competitions = res.all
@@ -82,6 +82,32 @@ class Worker
               Competition.create(
                   competition.merge(sport_code: sport.code)
               )
+            end
+          else
+            puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
+          end
+        end
+      end
+      compts
+    end
+
+    def update_france_name_for_competitions
+      sports = Sport.where(code: %w(soccer basketball tennis))
+      compts = []
+      sports.each do |sport|
+        fetcher = OptaSport::Fetcher.send(sport.code)
+        if fetcher.respond_to?(:get_competitions)
+          res = fetcher.get_competitions(
+              authorized: true,
+              lang: 'fr'
+          )
+          if fetcher.success?
+            competitions = res.all
+            competitions.each do |competition_attrs|
+              compt = Competition.find_by(opta_competition_id: competition_attrs[:opta_competition_id])
+              if compt
+                compt.update_column :fr_name, competition_attrs[:name]
+              end
             end
           else
             puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
@@ -124,7 +150,6 @@ class Worker
       end
       founded_matches
     end
-
 
     def update_areas
       fetcher = OptaSport::Fetcher.soccer

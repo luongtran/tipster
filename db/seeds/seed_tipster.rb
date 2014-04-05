@@ -6,7 +6,7 @@ if sports.empty?
 else
   ActiveRecord::Base.record_timestamps = false
   30.times do
-    created_at = rand(270..350).days.ago - rand(1..15).hours
+    created_at = rand(200..350).days.ago - rand(1..15).hours
     fn = Faker::Name.first_name
     tipser = Tipster.new(
         display_name: fn,
