@@ -3,15 +3,13 @@
 # Table name: matches
 #
 #  id                  :integer          not null, primary key
-#  opta_match_id       :integer
-#  sport_id            :integer
+#  opta_match_id       :integer          not null
+#  sport_code          :string(255)      not null
 #  opta_competition_id :integer
 #  team_a              :string(255)
 #  team_b              :string(255)
 #  name                :string(255)
-#  betclic_match_id    :string(255)
-#  betclic_event_id    :string(255)
-#  start_at            :datetime
+#  start_at            :datetime         not null
 #  status              :string(255)
 #  created_at          :datetime
 #  updated_at          :datetime
@@ -32,7 +30,7 @@ class Match < ActiveRecord::Base
   # ==============================================================================
   belongs_to :competition, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
 
-  belongs_to :sport
+  belongs_to :sport, foreign_key: :sport_code, primary_key: :code
   has_many :tips, foreign_key: :match_id, primary_key: :opta_match_id
   # ==============================================================================
   # VALIDATIONS

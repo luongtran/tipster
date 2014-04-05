@@ -1,4 +1,14 @@
 # coding: utf-8
+# == Schema Information
+#
+# Table name: tipster_statistics
+#
+#  id         :integer          not null, primary key
+#  tipster_id :integer          not null
+#  data       :text(16777215)
+#  updated_at :datetime
+#
+
 # Sample of a record
 #{
 #    tipster_id: 1,

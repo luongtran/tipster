@@ -24,7 +24,7 @@ class Worker
             if fetcher.success?
               matches = res.all
               matches.each do |match|
-                Match.create(match.merge(sport_id: sport.id))
+                Match.create(match.merge(sport_code: sport.code))
               end
             else
               puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
@@ -80,7 +80,7 @@ class Worker
             compts += competitions
             competitions.each do |competition|
               Competition.create(
-                  competition.merge(sport_id: sport.id)
+                  competition.merge(sport_code: sport.code)
               )
             end
           else
@@ -110,7 +110,7 @@ class Worker
             )
             if fetcher.success?
               founded_matches += res.all.map do |match_attrs|
-                match_attrs.merge(sport_id: sport.id)
+                match_attrs.merge(sport_code: sport.code)
               end
             else
               puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"

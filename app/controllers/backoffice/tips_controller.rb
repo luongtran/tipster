@@ -29,15 +29,15 @@ class Backoffice::TipsController < Backoffice::BaseController
 
   def confirm
     @match = Match.includes(sport: [:bet_types]).find_by!(opta_match_id: params[:tip][:match_id])
-    @bet_type = @match.sport.bet_types.find_by!(betclic_code: params[:tip][:bet_type_code])
+    @bet_type = @match.sport.bet_types.find_by!(code: params[:tip][:bet_type_code])
     platform = Platform.find_by!(code: 'betclic')
     @tip = Tip.new(tip_params.merge(
                        bet_type_id: @bet_type.id,
                        sport_id: @match.sport.id,
                        platform_id: platform.id
                    ))
-  rescue ActiveRecord::RecordNotFound => e
-    redirect_to :back, alert: 'Request is invalid'
+  #rescue ActiveRecord::RecordNotFound => e
+  #  redirect_to :back, alert: 'Request is invalid'
   end
 
   def submit
@@ -72,9 +72,7 @@ class Backoffice::TipsController < Backoffice::BaseController
     bets = match.find_bets
     success = true
     html = render_to_string(partial: 'backoffice/tips/bets_on_match', locals: {match: match, bets: bets}).html_safe
-    render json: {
-        success: success, html: html
-    }
+    render json: {success: success, html: html}
   end
 
   def create

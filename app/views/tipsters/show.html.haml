@@ -49,7 +49,7 @@
           .col-md-12.clearfix
             .col-md-8
               .profit-chart-wrapper
-                = high_chart("profil-chart-container", @tipster.profit_chart)
+                = high_chart("profil-chart-container", @tipster.profit_chart) if @tipster.profit_chart
             .col-md-4
               .statistics-number-box
                 .box-header

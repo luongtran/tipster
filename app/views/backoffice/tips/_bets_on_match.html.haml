@@ -11,7 +11,7 @@
       - bet[:choices].each do |choice|
         .bet-choice
           %span.text-bold
-            - choice_name = choice[:name]
+            - choice_name = choice[:selection]
             - choice_name.gsub!('%1%',match.team_a)
             - choice_name.gsub!('%2%',match.team_b)
             = choice_name

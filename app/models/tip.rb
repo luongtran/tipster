@@ -2,28 +2,29 @@
 #
 # Table name: tips
 #
-#  id           :integer          not null, primary key
-#  author_id    :integer          not null
-#  author_type  :string(255)      not null
-#  match_id     :integer
-#  sport_id     :integer          not null
-#  platform_id  :integer          not null
-#  bet_type_id  :integer          not null
-#  odds         :float            not null
-#  selection    :string(255)      not null
-#  line         :float
-#  advice       :text             not null
-#  amount       :integer          not null
-#  correct      :boolean          default(FALSE)
-#  status       :integer          not null
-#  free         :boolean          default(FALSE)
-#  published_by :integer
-#  published_at :datetime
-#  finished_at  :datetime
-#  finished_by  :integer
-#  created_at   :datetime
-#  updated_at   :datetime
+#  id              :integer          not null, primary key
+#  author_id       :integer          not null
+#  author_type     :string(255)      not null
+#  match_id        :integer
+#  sport_code      :string(255)      not null
+#  bookmarker_code :string(255)      not null
+#  bet_type_code   :string(255)      not null
+#  odds            :float            not null
+#  selection       :string(255)      not null
+#  line            :float
+#  advice          :text             not null
+#  amount          :integer          not null
+#  correct         :boolean          default(FALSE)
+#  status          :integer          not null
+#  free            :boolean          default(FALSE)
+#  published_by    :integer
+#  published_at    :datetime
+#  finished_at     :datetime
+#  finished_by     :integer
+#  created_at      :datetime
+#  updated_at      :datetime
 #
+
 
 class Tip < ActiveRecord::Base
 

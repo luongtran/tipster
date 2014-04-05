@@ -9,9 +9,12 @@
 #
 
 class Sport < ActiveRecord::Base
-  has_and_belongs_to_many :tipsters, -> { readonly }
-  has_many :bet_types
-  has_many :competitions
+
+  has_many :sports_tipsters, class_name: SportsTipsters, foreign_key: :sport_code, primary_key: :code
+  has_many :tipsters, through: :sports_tipsters #, primary_key: :code
+
+  has_many :bet_types, foreign_key: :sport_code, primary_key: :code
+  has_many :competitions, foreign_key: :sport_code, primary_key: :code
   has_many :seasons, through: :competitions
 
   has_many :matches

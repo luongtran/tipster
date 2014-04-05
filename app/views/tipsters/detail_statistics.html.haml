@@ -24,18 +24,19 @@
                     = ("N" + content_tag(:sup, 'o')).html_safe
                     of tips
               %tbody
-                - @tipster.monthly_statistics.each do |month_statistics|
-                  - unless month_statistics[:number_of_tips].zero?
-                    %tr
-                      %td= month_statistics[:name]
-                      %td= profit_in_string month_statistics[:profit]
-                      %td= yield_in_string month_statistics[:yield]
-                      %td= hit_rate_in_string month_statistics[:hit_rate]
-                      %td= month_statistics[:avg_odds]
-                      %td= month_statistics[:number_of_tips]
+                - if @tipster.monthly_statistics
+                  - @tipster.monthly_statistics.each do |month_statistics|
+                    - unless month_statistics[:number_of_tips].zero?
+                      %tr
+                        %td= month_statistics[:name]
+                        %td= profit_in_string month_statistics[:profit]
+                        %td= yield_in_string month_statistics[:yield]
+                        %td= hit_rate_in_string month_statistics[:hit_rate]
+                        %td= month_statistics[:avg_odds]
+                        %td= month_statistics[:number_of_tips]
           .col-lg-5
             #monthly-chart-container
-            = render_chart @tipster.monthly_chart, 'monthly-chart-container'
+            = render_chart @tipster.monthly_chart, 'monthly-chart-container' if @tipster.monthly_chart
         %hr
         -# ========================================== Sports
         .row
@@ -55,18 +56,19 @@
                     = ("N" + content_tag(:sup, 'o')).html_safe
                     of tips
               %tbody
-                - @tipster.sports_statistics.each do |sport_statistics|
-                  - unless sport_statistics[:number_of_tips].zero?
-                    %tr
-                      %td= sport_statistics[:sport_name]
-                      %td= profit_in_string sport_statistics[:profit]
-                      %td= yield_in_string sport_statistics[:yield]
-                      %td= hit_rate_in_string sport_statistics[:hit_rate]
-                      %td= sport_statistics[:avg_odds]
-                      %td= sport_statistics[:number_of_tips]
+                - if @tipster.sports_statistics
+                  - @tipster.sports_statistics.each do |sport_statistics|
+                    - unless sport_statistics[:number_of_tips].zero?
+                      %tr
+                        %td= sport_statistics[:sport_name]
+                        %td= profit_in_string sport_statistics[:profit]
+                        %td= yield_in_string sport_statistics[:yield]
+                        %td= hit_rate_in_string sport_statistics[:hit_rate]
+                        %td= sport_statistics[:avg_odds]
+                        %td= sport_statistics[:number_of_tips]
           .col-lg-5
             #sports-chart-container
-            = render_chart @tipster.sports_chart, 'sports-chart-container'
+            = render_chart @tipster.sports_chart, 'sports-chart-container' if @tipster.sports_chart
             -#= high_chart("sports-chart-container", @tipster.sports_chart) do |chart|
             -#  = "options.plotOptions.pie.dataLabels.distance = 3"
             -#  = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
@@ -89,20 +91,21 @@
                     = ("N" + content_tag(:sup, 'o')).html_safe
                     of tips
               %tbody
-                - @tipster.bet_types_statistics.each do |bet_type_statistics|
-                  - unless bet_type_statistics[:number_of_tips].zero?
-                    %tr
-                      %td
-                        = bet_type_statistics[:bet_type_name]
-                        = "(#{bet_type_statistics[:sport_name]})"
-                      %td= profit_in_string bet_type_statistics[:profit]
-                      %td= yield_in_string bet_type_statistics[:yield]
-                      %td= hit_rate_in_string bet_type_statistics[:hit_rate]
-                      %td= bet_type_statistics[:avg_odds]
-                      %td= bet_type_statistics[:number_of_tips]
+                - if @tipster.bet_types_statistics
+                  - @tipster.bet_types_statistics.each do |bet_type_statistics|
+                    - unless bet_type_statistics[:number_of_tips].zero?
+                      %tr
+                        %td
+                          = bet_type_statistics[:bet_type_name]
+                          = "(#{bet_type_statistics[:sport_name]})"
+                        %td= profit_in_string bet_type_statistics[:profit]
+                        %td= yield_in_string bet_type_statistics[:yield]
+                        %td= hit_rate_in_string bet_type_statistics[:hit_rate]
+                        %td= bet_type_statistics[:avg_odds]
+                        %td= bet_type_statistics[:number_of_tips]
           .col-lg-5
             #bet-types-chart-container
-            = render_chart @tipster.bet_types_chart, 'bet-types-chart-container'
+            = render_chart @tipster.bet_types_chart, 'bet-types-chart-container' if @tipster.bet_types_chart
             -#= high_chart("bet-type-chart-container", @tipster.bet_types_chart) do |chart|
               = "options.plotOptions.pie.dataLabels.distance = 3"
               = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
@@ -125,19 +128,20 @@
                     = ("N" + content_tag(:sup, 'o')).html_safe
                     of tips
               %tbody
-                - @tipster.odds_statistics.each do |odds_statistics|
-                  - unless odds_statistics[:number_of_tips].zero?
-                    %tr
-                      %td
-                        = odds_statistics[:range_name]
-                      %td= profit_in_string odds_statistics[:profit]
-                      %td= yield_in_string odds_statistics[:yield]
-                      %td= hit_rate_in_string odds_statistics[:hit_rate]
-                      %td= odds_statistics[:avg_odds]
-                      %td= odds_statistics[:number_of_tips]
+                - if @tipster.odds_statistics
+                  - @tipster.odds_statistics.each do |odds_statistics|
+                    - unless odds_statistics[:number_of_tips].zero?
+                      %tr
+                        %td
+                          = odds_statistics[:range_name]
+                        %td= profit_in_string odds_statistics[:profit]
+                        %td= yield_in_string odds_statistics[:yield]
+                        %td= hit_rate_in_string odds_statistics[:hit_rate]
+                        %td= odds_statistics[:avg_odds]
+                        %td= odds_statistics[:number_of_tips]
           .col-lg-5
             #odds-chart-container
-            = render_chart @tipster.odds_chart, 'odds-chart-container'
+            = render_chart @tipster.odds_chart, 'odds-chart-container' if @tipster.odds_chart
             -#= high_chart("odds-chart-container", @tipster.odds_chart) do |chart|
               = "options.plotOptions.pie.dataLabels.distance = 3"
               = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe

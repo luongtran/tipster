@@ -45,6 +45,8 @@ class Tipster < ActiveRecord::Base
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
+  has_many :sports_tipsters, class_name: SportsTipsters, dependent: :destroy
+  has_many :sports, through: :sports_tipsters
 
   has_one :statistics, class_name: TipsterStatistics
 
@@ -54,13 +56,13 @@ class Tipster < ActiveRecord::Base
     end
   end
 
-  has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author  do
+  has_many :finished_tips, -> { where("tips.status = ? AND tips.free = ?", Tip::STATUS_FINISHED, false) }, class_name: Tip, as: :author do
     def recent(count)
       proxy_association.owner.finished_tips.includes(:sport, :match).order('created_at desc').limit(count)
     end
   end
 
-  has_and_belongs_to_many :sports, -> { uniq }
+
   mount_uploader :avatar, AvatarUploader
 
   # ==============================================================================
@@ -243,42 +245,44 @@ class Tipster < ActiveRecord::Base
 
   def prepare_statistics_data(params, details = false)
     ranking_range ||= self.class.sanitized_ranking_range_param(params).to_sym
-
-    # Parse and get statistics data depending to ranking param
-    statistics_data = self.statistics.parsed_data
-    last_n_months_statistics = statistics_data[:last_n_months][ranking_range]
-
-    # Assign statistic attr_accessors for each tipster object
-    @profitable_months = statistics_data[:profitable_months]
-    @total_months = statistics_data[:total_months]
-
-    @profit = last_n_months_statistics[:profit]
-    @yield = last_n_months_statistics[:yield]
-    @avg_odds = last_n_months_statistics[:avg_odds]
-    @number_of_tips = last_n_months_statistics[:number_of_tips]
-    @hit_rate = last_n_months_statistics[:hit_rate]
-
-    @avg_yield = last_n_months_statistics[:avg_yield]
-    @avg_profit = last_n_months_statistics[:avg_profit]
-
     @current_statistics_range = ranking_range # Saving for display or you know what the current range
-    @profit_per_dates = last_n_months_statistics[:profit_per_dates]
+    tipster_statistics = self.statistics
+    # Parse and get statistics data depending to ranking param
+    if tipster_statistics
+      statistics_data = self.statistics.parsed_data
+      last_n_months_statistics = statistics_data[:last_n_months][ranking_range]
 
-    # Load all statistics
-    if details
-      @monthly_statistics = statistics_data[:monthly].map { |statistic| statistic.symbolize_keys }
-      @sports_statistics = statistics_data[:sports].map { |statistic| statistic.symbolize_keys }
-      @bet_types_statistics = statistics_data[:bet_types].map { |statistic| statistic.symbolize_keys }
-      @odds_statistics = statistics_data[:odds].map { |statistic| statistic.symbolize_keys }
+      # Assign statistic attr_accessors for each tipster object
+      @profitable_months = statistics_data[:profitable_months]
+      @total_months = statistics_data[:total_months]
+
+      @profit = last_n_months_statistics[:profit]
+      @yield = last_n_months_statistics[:yield]
+      @avg_odds = last_n_months_statistics[:avg_odds]
+      @number_of_tips = last_n_months_statistics[:number_of_tips]
+      @hit_rate = last_n_months_statistics[:hit_rate]
+
+      @avg_yield = last_n_months_statistics[:avg_yield]
+      @avg_profit = last_n_months_statistics[:avg_profit]
+      @profit_per_dates = last_n_months_statistics[:profit_per_dates]
+
+      # Load all statistics
+      if details
+        @monthly_statistics = statistics_data[:monthly].map { |statistic| statistic.symbolize_keys }
+        @sports_statistics = statistics_data[:sports].map { |statistic| statistic.symbolize_keys }
+        @bet_types_statistics = statistics_data[:bet_types].map { |statistic| statistic.symbolize_keys }
+        @odds_statistics = statistics_data[:odds].map { |statistic| statistic.symbolize_keys }
+      end
+
+      # Prepare charts
+      @profit_chart = self.statistics.get_profit_chart(ranking_range)
+      @bet_types_chart = self.statistics.get_bet_types_chart
+      @odds_chart = self.statistics.get_odds_chart
+      @sports_chart = self.statistics.get_sports_chart
+      @monthly_chart = self.statistics.get_monthly_chart
+    else
+      @profit, @yield, @avg_odds, @number_of_tips, @hit_rate, @avg_yield, @avg_profit = 0, 0, 0, 0, 0, 0, 0
     end
-
-
-    # Prepare charts
-    @profit_chart = self.statistics.get_profit_chart(ranking_range)
-    @bet_types_chart = self.statistics.get_bet_types_chart
-    @odds_chart = self.statistics.get_odds_chart
-    @sports_chart = self.statistics.get_sports_chart
-    @monthly_chart = self.statistics.get_monthly_chart
     self
   end
 
