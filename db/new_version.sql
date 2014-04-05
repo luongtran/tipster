@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `tipster-hero-development` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
-USE `tipster-hero-development`;
 -- MySQL dump 10.13  Distrib 5.5.16, for Win32 (x86)
 --
 -- Host: localhost    Database: tipster-hero-development

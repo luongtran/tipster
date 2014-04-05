@@ -49,10 +49,10 @@ module ApplicationHelper
     options
   end
 
-  def platforms_for_select(platforms)
+  def bookmarkers_for_select(platforms)
     options = []
     platforms.each do |pf|
-      options << [pf.name.titleize, pf.id]
+      options << [pf.name.titleize, pf.code]
     end
     options
   end
@@ -77,9 +77,9 @@ module ApplicationHelper
     options = []
     bet_types.each do |bet_type|
       if bet_type.has_line?
-        options << [bet_type.name.titleize, bet_type.id, 'data-has-line' => true]
+        options << [bet_type.name.titleize, bet_type.code, 'data-has-line' => true]
       else
-        options << [bet_type.name.titleize, bet_type.id]
+        options << [bet_type.name.titleize, bet_type.code]
       end
 
     end

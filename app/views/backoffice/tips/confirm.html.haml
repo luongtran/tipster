@@ -5,11 +5,11 @@
     = simple_form_for @tip, url: backoffice_tips_path, html: {class: 'form-horizontal', id: 'form-new-tip'} do |f|
       = hidden_field_tag :act, 'confirm'
       = f.input_field :match_id, as: :hidden
-      = f.input_field :bet_type_id, as: :hidden
+      = f.input_field :bet_type_code, as: :hidden
       = f.input_field :odds, as: :hidden
       = f.input_field :selection, as: :hidden
-      = f.input_field :sport_id, as: :hidden
-      = f.input_field :platform_id, as: :hidden
+      = f.input_field :sport_code, as: :hidden
+      = f.input_field :bookmarker_code, as: :hidden
       .form-group
         %label.col-md-4.control-label
           Match:

@@ -41,7 +41,7 @@ class Tip < ActiveRecord::Base
   }
 
   CREATE_PARAMS = [:bookmarker_code, :bet_type_code, :sport_code, :odds, :selection, :advice, :amount, :line]
-
+  attr_accessor :match_name, :bet_type_name
   # ===========================================================================
   # ASSOCIATIONS
   # ===========================================================================
@@ -56,19 +56,19 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   # VALIDATIONS
   # ===========================================================================
-  #validates :author, :odds, :selection, :advice, :sport, :bookmarker, :bet_type, :amount, presence: true
-  #
-  #validates_presence_of :bet_type_code, :bookmarker_code, message: 'Choose at least one'
-  #
-  #validates_length_of :advice, minimum: 10, allow_blank: true
-  #validates_numericality_of :amount, greater_than_or_equal_to: 10, less_than_or_equal_to: 100, only_integer: true
-  #validates_numericality_of :odds, greater_than_or_equal_to: 1.0
+  validates :author, :odds, :selection, :advice, :sport, :bookmarker, :bet_type, :amount, presence: true
+
+  validates_presence_of :bet_type_code, :bookmarker_code, message: 'Choose at least one'
+
+  validates_length_of :advice, minimum: 10, allow_blank: true
+  validates_numericality_of :amount, greater_than_or_equal_to: 10, less_than_or_equal_to: 100, only_integer: true
+  validates_numericality_of :odds, greater_than_or_equal_to: 1.0
 
   # ===========================================================================
   # CALLBACKS
   # ===========================================================================
-  #before_validation :valid_beting
-  #before_create :init_status
+  before_validation :valid_beting
+  before_create :init_status
 
   # ===========================================================================
   # SCOPE

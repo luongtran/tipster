@@ -118,6 +118,7 @@ class Match < ActiveRecord::Base
     self.start_at.to_date
   end
 
+  # Find bets and odds from the given bookmarker
   def find_bets(bookmarker = '')
     Bookmarker::Betclic.find_bets_on_match(self)
     #Bookmarker::FranceParis.find_bets_on_match(self)

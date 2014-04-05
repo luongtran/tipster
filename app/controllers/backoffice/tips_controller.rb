@@ -7,12 +7,13 @@ class Backoffice::TipsController < Backoffice::BaseController
   end
 
   def new
+    # FIXME: the code bellow has wrote at 18h :))
     @match = Match.includes(sport: [:bet_types]).find_by(opta_match_id: params[:match].to_i)
     @bet_types = @match.sport.bet_types
     prepare_data_for_new_tip
     @tip = current_tipster.tips.new(
         match_id: @match.opta_match_id,
-        sport_id: @match.sport.id
+        sport_code: @match.sport_code
     )
   end
 
@@ -28,16 +29,17 @@ class Backoffice::TipsController < Backoffice::BaseController
   end
 
   def confirm
+    # FIXME: the code bellow has wrote at 18h :))
     @match = Match.includes(sport: [:bet_types]).find_by!(opta_match_id: params[:tip][:match_id])
     @bet_type = @match.sport.bet_types.find_by!(code: params[:tip][:bet_type_code])
-    platform = Platform.find_by!(code: 'betclic')
+    bookmarker = Bookmarker.find_by!(code: 'betclic')
     @tip = Tip.new(tip_params.merge(
-                       bet_type_id: @bet_type.id,
-                       sport_id: @match.sport.id,
-                       platform_id: platform.id
+                       bet_type_code: @bet_type.code,
+                       sport_code: @match.sport.code,
+                       bookmarker_code: bookmarker.code
                    ))
-  #rescue ActiveRecord::RecordNotFound => e
-  #  redirect_to :back, alert: 'Request is invalid'
+    #rescue ActiveRecord::RecordNotFound => e
+    #  redirect_to :back, alert: 'Request is invalid'
   end
 
   def submit
@@ -45,6 +47,7 @@ class Backoffice::TipsController < Backoffice::BaseController
 
   # POST from AJAX
   def filter_matches
+    # FIXME: the code bellow has wrote at 18h :))
     params_x = params
     unless params_x[:sport].present?
       params_x= params_x.merge(sport: current_tipster.sport_ids)
@@ -101,7 +104,7 @@ class Backoffice::TipsController < Backoffice::BaseController
   def prepare_data_for_new_tip
     @competitions = Competition.includes(:sport, :area).load
     @tipster_sports = current_tipster.sports
-    @platforms = Platform.all
+    @bookmarkers = Bookmarker.all
   end
 
   def get_available_matches
