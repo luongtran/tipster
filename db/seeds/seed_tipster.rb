@@ -6,7 +6,7 @@ if sports.empty?
 else
   ActiveRecord::Base.record_timestamps = false
   30.times do
-    created_at = rand(200..250).days.ago - rand(1..15).hours
+    created_at = rand(270..350).days.ago - rand(1..15).hours
     fn = Faker::Name.first_name
     tipser = Tipster.new(
         display_name: fn,
@@ -22,12 +22,11 @@ else
     tipser.account.skip_confirmation!
     if tipser.save # Add sport for tipster
       # Any tipster are have football
-      football_sport = Sport.find_by(code: 'football')
+      football_sport = Sport.find_by(code: 'soccer')
       tipser.sports << football_sport if football_sport
-
       # Add more sport for tipster
       sports_of_tipster = sports.sample(rand(2..3))
-      tipser.sports << sports_of_tipster
+      tipser.sports << sports_of_tipster.delete_if { |sport| sport.code == 'soccer' }
       puts "===== Created tipster: #{tipser.full_name} with sports: #{tipser.sports.map { |s| s.name.titleize }.join(' | ')}"
     end
 

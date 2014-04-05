@@ -1,6 +1,6 @@
-class CreatePlatforms < ActiveRecord::Migration
+class CreateBookmarkers < ActiveRecord::Migration
   def change
-    create_table :platforms do |t|
+    create_table :bookmarkers do |t|
       t.string :code, null: false
       t.string :name, null: false
     end

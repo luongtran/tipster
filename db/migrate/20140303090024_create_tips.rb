@@ -6,11 +6,10 @@ class CreateTips < ActiveRecord::Migration
       t.string :author_type, null: false
       t.integer :match_id
 
-      t.integer :sport_id, null: false
+      t.string :sport_code, null: false
+      t.string :bookmarker_code, null: false
 
-      t.integer :platform_id, null: false # bookmaker
-
-      t.integer :bet_type_id, null: false # Ex: Over/Under
+      t.string :bet_type_code, null: false # Ex: Over/Under
 
       t.float :odds, null: false # Best odds
 
@@ -34,9 +33,9 @@ class CreateTips < ActiveRecord::Migration
       t.timestamps
     end
     add_index :tips, [:author_id, :author_type]
-    add_index :tips, :sport_id
-    add_index :tips, :bet_type_id
-    add_index :tips, :platform_id
+    add_index :tips, :sport_code
+    add_index :tips, :bet_type_code
+    add_index :tips, :bookmarker_code
     add_index :tips, :match_id
 
   end

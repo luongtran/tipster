@@ -1,6 +1,6 @@
 puts "\n==========> Starting create tips"
 tipsters = Tipster.all
-betclic_platform = Platform.first
+betclic_platform = Bookmarker.first  #FIXME
 
 admins = Admin.all
 
@@ -29,7 +29,7 @@ tipsters.each do |tipster|
           sport_id: sport_of_tip.id,
           author_id: tipster.id,
           author_type: tipster.class.name,
-          platform_id: betclic_platform.id,
+          platform_id: betclic_platform.id,   #FIXME
           bet_type_id: bet_type.id,
           selection: [match.team_a, match.team_b, 'Draw', "#{%w(Over Under).sample} #{[1, 1.5, 3.5, 4, 2, 3.5].sample}"].sample,
           amount: 10*rand(1..10),

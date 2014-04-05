@@ -11,8 +11,8 @@ namespace :db do
     task :sport => :environment do
       load_seed_file('seed_sport.rb')
     end
-    task :platform => :environment do
-      load_seed_file('seed_platform.rb')
+    task :bookmarker => :environment do
+      load_seed_file('seed_bookmarker.rb')
     end
     task :tipster => :environment do
       load_seed_file('seed_tipster.rb')
@@ -26,6 +26,6 @@ namespace :db do
     end
 
 
-    task :all => [:plan, :sport, :platform, :tipster, :admin]
+    task :all => [:plan, :sport, :bookmarker, :tipster, :admin]
   end
 end

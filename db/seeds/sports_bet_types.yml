@@ -25,7 +25,7 @@
       france_paris: 'Over Under'
     -
       code: 'soccer_over_under_ht'
-      name: 'Over/Under Half-Time'
+      name: 'Over/Under HT'
       line: 'yes'
       selection_format: "%{selection} %{line} Half Time"
       betclic: 'Ftb_60'
@@ -62,7 +62,7 @@
       france_paris: '1-2'
     - # Who will win the first set
       code: 'tennis_first_set_winner'
-      name: 'Over/Under Sets'
+      name: 'First Set Winner'
       line: 'no'
       selection_format: "%{selection} First Set"
       betclic: 'Ten_Fsw'
