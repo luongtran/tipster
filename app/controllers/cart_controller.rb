@@ -11,7 +11,7 @@ class CartController < ApplicationController
       end
     end
   end
-
+  
   def add_tipster
     unless selected_plan.nil?
       if selected_plan.price == 0

@@ -26,7 +26,7 @@
       .panel-collapse.collapse{id: "abcxyz-panel-#{index}", class: "#{'in' if index == 1}" }
         .panel-body
           - matches.each do |m|
-            .match.clearfix{data: {url: find_bets_on_match_backoffice_tips_path(match_id: m.opta_match_id)}}
+            .match.clearfix{data: {url: find_bets_backoffice_match_path(m.opta_match_id)}}
               .summary
                 .match-hour
                   = m.start_at.strftime("%H:%M")

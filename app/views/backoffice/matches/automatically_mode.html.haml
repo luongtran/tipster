@@ -5,7 +5,7 @@
     %h3.text-info Available matches
   .col-lg-7
     .mal
-      = simple_form_for :nothing, url: filter_matches_backoffice_tips_path, html: {id: 'form-group-method'} do |f|
+      = simple_form_for :nothing, url: search_backoffice_matches_path, html: {id: 'form-group-method'} do |f|
         = hidden_field_tag :mode, 'auto'
         %label.col-sm-3 Group by:
         .col-sm-9
@@ -22,7 +22,7 @@
               %input.btn-filter-mode#switch-advanced-search-form{type: :radio, name: :group_by, value: 'none'}
               Advanced Search
   .clearfix
-    = simple_form_for :nothing, url: filter_matches_backoffice_tips_path, html: {id: 'form-advanced-search', class: 'form-horizontal hide'} do |f|
+    = simple_form_for :nothing, url: search_backoffice_matches_path, html: {id: 'form-advanced-search', class: 'form-horizontal hide'} do |f|
       = hidden_field_tag :mode, 'auto'
       .col-lg-6
         .col-lg-5
@@ -60,7 +60,7 @@
   .clearfix
     .col-lg-3
       - sports_competitions = @competitions.group_by(&:sport)
-      .competitions-tree-menu.pas{'data-filter-url' => filter_matches_backoffice_tips_path}
+      .competitions-tree-menu.pas{'data-filter-url' => search_backoffice_matches_path(mode: 'auto')}
         %div{style: "overflow-y: scroll; overflow-x: hidden; height: 500px;"}
           %ul.nav.nav-list
             - sports_competitions.each do |sport, competitions|
@@ -99,5 +99,6 @@
             %button.btn.btn-success#submiter{type: :submit} Confirm
             %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
 -# The hidden dialog to confirm select odd
-= form_for :nothing, url: filter_matches_backoffice_tips_path, html:{ id: 'form-filter-available-matches', method: 'GET'} do |f|
+= form_for :nothing, url: search_backoffice_matches_path, html:{ id: 'form-filter-available-matches', method: 'GET'} do |f|
   = hidden_field_tag :competition, nil, class: 'competition'
+  = hidden_field_tag :mode, @mode

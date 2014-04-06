@@ -124,13 +124,19 @@ TipsterHero::Application.routes.draw do
     resources :tips, except: [:index] do
       collection do
         post :confirm
-        get :find_bets_on_match
-        post :filter_matches
+
         get :available_matches
       end
     end
 
     resources :matches, only: [:show] do
+      member do
+        get :find_bets
+      end
+      collection do
+        get :search
+        get :available
+      end
     end
   end
 

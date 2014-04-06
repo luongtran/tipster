@@ -6,21 +6,24 @@
 #  code :string(255)      not null
 #  name :string(255)      not null
 #
-require 'bookmarker/betclic'
-require 'bookmarker/france_paris'
 
 class Bookmarker < ActiveRecord::Base
   validates :code, :name, uniqueness: {case_sensitive: false}
   BETCLIC = 'betclic'
   FRANCE_PARIS = 'france_paris'
 
-  CODE_TO_CLASS = {
-      BETCLIC => Betclic,
-      FRANCE_PARIS => FranceParis
+  CODE_TO_MODULE = {
+      BETCLIC => OddsFeed::Betclic,
+      FRANCE_PARIS => OddsFeed::FranceParis,
   }
 
-  # Return the class responsible to feed odds from bookmarker
-  def odds_feed_responsible_class
-    CODE_TO_CLASS[self.code]
+  class << self
+    def find_odds_feed_module_by(bookmarker)
+      CODE_TO_MODULE[bookmarker.code]
+    end
+  end
+  # Return the class responsible to feed odds for bookmarker
+  def odds_feed_module
+    CODE_TO_MODULE[self.code]
   end
 end

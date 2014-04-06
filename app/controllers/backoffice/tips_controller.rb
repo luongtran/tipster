@@ -50,7 +50,7 @@ class Backoffice::TipsController < Backoffice::BaseController
     # FIXME: the code bellow has wrote at 18h :))
     params_x = params
     unless params_x[:sport].present?
-      params_x= params_x.merge(sport: current_tipster.sport_ids)
+      params_x = params_x.merge(sport: current_tipster.sport_ids)
     end
     @matches = Match.betable.load_data(params_x)
     success = true
@@ -70,12 +70,7 @@ class Backoffice::TipsController < Backoffice::BaseController
   # GET
   # Find bets on the given match from Betclic XML feed
   def find_bets_on_match
-    match_id = params[:match_id]
-    match = Match.includes(:sport).find_by(opta_match_id: match_id)
-    bets = match.find_bets
-    success = true
-    html = render_to_string(partial: 'backoffice/tips/france_paris_bets', locals: {match: match, bets: bets}).html_safe
-    render json: {success: success, html: html}
+
   end
 
   def create

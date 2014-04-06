@@ -65,8 +65,6 @@ class Match < ActiveRecord::Base
       end
 
       # Do filter date
-      # Filter start date
-
       if params[:date].present?
         date = Date.today
         begin
@@ -93,8 +91,7 @@ class Match < ActiveRecord::Base
     end
 
     # Return betable matches at the current time
-    def available
-
+    def available_now
     end
 
   end
@@ -119,9 +116,7 @@ class Match < ActiveRecord::Base
   end
 
   # Find bets and odds from the given bookmarker
-  def find_bets(bookmarker = '')
-    #Bookmarker::Betclic.find_bets_on_match(self)
-    Bookmarker::FranceParis.find_bets_on_match(self)
+  def find_bets(bookmarker)
+    bookmarker.odds_feed_module.find_odds_on_match(self,)
   end
-
 end

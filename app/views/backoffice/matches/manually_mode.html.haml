@@ -5,7 +5,7 @@
     %h3 Select your match or event
     %hr
     .clearfix
-      = simple_form_for :nothing, url: filter_matches_backoffice_tips_path, html: {id: 'form-advanced-search', class: 'form-horizontal'} do |f|
+      = simple_form_for :nothing, url: search_backoffice_matches_path, html: {id: 'form-advanced-search', class: 'form-horizontal'} do |f|
         = hidden_field_tag :mode, 'manual'
         .col-lg-3
           .form-group
