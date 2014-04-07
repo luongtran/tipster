@@ -52,11 +52,12 @@ class TipstersController < ApplicationController
   end
 
   def last_tips
-    @tipster_sports = @tipster.sports
+    @tipster = @tipster.prepare_statistics_data(params, false)
     @tips = @tipster.finished_tips.recent(10)
   end
 
   def description
+    @tipster = @tipster.prepare_statistics_data(params, false)
   end
 
   def profile

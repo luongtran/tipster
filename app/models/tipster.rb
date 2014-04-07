@@ -277,14 +277,15 @@ class Tipster < ActiveRecord::Base
         @sports_statistics = statistics_data[:sports].map { |statistic| statistic.symbolize_keys }
         @bet_types_statistics = statistics_data[:bet_types].map { |statistic| statistic.symbolize_keys }
         @odds_statistics = statistics_data[:odds].map { |statistic| statistic.symbolize_keys }
+        @bet_types_chart = self.statistics.get_bet_types_chart
+        @odds_chart = self.statistics.get_odds_chart
+        @sports_chart = self.statistics.get_sports_chart
+        @monthly_chart = self.statistics.get_monthly_chart
       end
 
       # Prepare charts
       @profit_chart = self.statistics.get_profit_chart(ranking_range)
-      @bet_types_chart = self.statistics.get_bet_types_chart
-      @odds_chart = self.statistics.get_odds_chart
-      @sports_chart = self.statistics.get_sports_chart
-      @monthly_chart = self.statistics.get_monthly_chart
+
     else
       @profit, @yield, @avg_odds, @number_of_tips, @hit_rate, @avg_yield, @avg_profit = 0, 0, 0, 0, 0, 0, 0
     end
