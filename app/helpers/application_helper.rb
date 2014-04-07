@@ -108,7 +108,7 @@ module ApplicationHelper
   def class_for_date_filter(date)
     current_date = query_params[:date]
     current_date = 'today' if current_date.nil?
-    current_date == date ? 'disabled' : ''
+    current_date == date ? 'disabled text-muted' : ''
   end
 
   def query_params
@@ -377,6 +377,14 @@ module ApplicationHelper
                  "226" => "GIB", "235" => "JER", "236" => "IOM", "249" => "KSV", "250" => "GBR", "253" => "MCO", "254" => "GGY",
                  "263" => "VAT", "270" => "TNC", "2" => "", "3" => "", "4" => "", "5" => "", "6" => "", "261" => "PAL", "7" => "eu"}
     "flag-" << areas_map["#{opta_area_id}"].downcase
+  end
+
+
+  def icon_path_for_sport(code)
+    if code == 'soccer'
+      code = 'football'
+    end
+    "/assets/sport-icons/i_#{code}.png"
   end
 
   def adding_price_show(price)

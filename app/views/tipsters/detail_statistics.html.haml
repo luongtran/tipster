@@ -14,7 +14,7 @@
               %thead
                 %tr.warning
                   %td.text-center{'colspan' => 6 }
-                    %h4 Monthly statistics
+                    %i.text-bold Monthly statistics
                 = render 'header_statistics_table'
               %tbody
                 - if @tipster.monthly_statistics
@@ -38,14 +38,16 @@
               %thead
                 %tr.warning
                   %td.text-center{'colspan' => 6 }
-                    %h4 Sports
+                    %i.text-bold Sports
                 = render 'header_statistics_table'
               %tbody
                 - if @tipster.sports_statistics
                   - @tipster.sports_statistics.each do |sport_statistics|
                     - unless sport_statistics[:number_of_tips].zero?
                       %tr
-                        %td= sport_statistics[:sport_name]
+                        %td
+                          %img{src: icon_path_for_sport(sport_statistics[:sport_code])}
+                          = sport_statistics[:sport_name]
                         %td= profit_in_string sport_statistics[:profit]
                         %td= yield_in_string sport_statistics[:yield]
                         %td= hit_rate_in_string sport_statistics[:hit_rate]
@@ -65,7 +67,7 @@
               %thead
                 %tr.warning
                   %td.text-center{'colspan' => 6 }
-                    %h4 Countries - Competitions
+                    %i.text-bold Countries - Competitions
                 = render 'header_statistics_table'
               %tbody
                 - if @tipster.areas_statistics
@@ -102,7 +104,7 @@
               %thead
                 %tr.warning
                   %td.text-center{'colspan' => 6 }
-                    %h4 Type of bets
+                    %i.text-bold Type of bets
                 = render 'header_statistics_table'
               %tbody
                 - if @tipster.bet_types_statistics
@@ -131,7 +133,7 @@
               %thead
                 %tr.warning
                   %td.text-center{'colspan' => 6 }
-                    %h4 Odds
+                    %i.text-bold Odds
                 = render 'header_statistics_table'
               %tbody
                 - if @tipster.odds_statistics

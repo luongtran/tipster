@@ -46,7 +46,7 @@
 #        'sports' => [
 #            {
 #                'sport_name' => 'Football',
-#                'sport_code' => 'football',
+#                'sport_code' => 'soccer',
 #                'percentage' => '10',
 #                #'Profit	Yield	N° of Tips	Win rate	Avg. Odds'
 #            },
@@ -770,7 +770,7 @@ class TipsterStatistics < ActiveRecord::Base
     data_table.new_column('number', 'Profit')
     data_table.add_rows(monthly_statistics.count)
     monthly_statistics.each_with_index do |month, index|
-      data_table.set_cell(index, 0, month['name'])
+      data_table.set_cell(index, 0, month['name'].to_date.strftime("%b"))
       data_table.set_cell(index, 1, month['profit'])
     end
     opts = {

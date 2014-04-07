@@ -35,7 +35,6 @@ class SystemJournal < ActiveRecord::Base
     end
 
     def clean_up(keep = 5)
-
     end
   end
 
