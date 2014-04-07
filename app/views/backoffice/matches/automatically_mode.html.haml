@@ -80,7 +80,7 @@
                       %ul.nav.nav-list.tree{style: "display: none;"}
                         - competitions.each do |compt|
                           %li
-                            %a.lk-select-competition.text-info{href: '#', 'data-competition-id' => compt.opta_competition_id}= compt.name
+                            %a.lk-select-competition.text-info{href: '#', 'data-competition-id' => compt.opta_competition_id, 'data-sport-code' => sport.code}= compt.name
 
               %li.divider
     .col-lg-9
@@ -102,3 +102,4 @@
 = form_for :nothing, url: search_backoffice_matches_path, html:{ id: 'form-filter-available-matches', method: 'GET'} do |f|
   = hidden_field_tag :competition, nil, class: 'competition'
   = hidden_field_tag :mode, @mode
+  = hidden_field_tag :sport, nil, class: 'sport'

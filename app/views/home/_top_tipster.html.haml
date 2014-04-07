@@ -1,16 +1,6 @@
-
 #page-header.background-granite
-  - if notice || alert
-    .flash-container
-      #flash
-        - if notice
-          .alert.alert-info.alert-sm.fade.in{'data-alert' => "alert"}
-            %a.close{'data-dismiss' => 'alert', :href => "#"} &times;
-            = notice
-        - if alert
-          .alert.alert-danger.alert-sm.fade.in{'data-alert' => "alert"}
-            %a.close{'data-dismiss' => "alert", :href => "#"} &times;
-            = alert
+  .clearfix
+    = render 'layouts/shared/flash_messages'
   #feature-profiles
     .container.pbs
       %div= image_tag('title-tipweek.png')

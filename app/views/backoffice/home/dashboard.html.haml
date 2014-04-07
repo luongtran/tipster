@@ -8,6 +8,8 @@
       .row
         .text-center
           = high_chart("profil-chart-container", @tipster.profit_chart)
+          -##profit-chart-container
+          -#  = render_chart @tipster.profit_chart, 'profit-chart-container' if @tipster.profit_chart
         %hr
         .row.clearfix
           .col-md-2.col-md-offset-1

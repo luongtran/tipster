@@ -8,7 +8,8 @@
         %li
           %a#lk-view-cart{href: cart_path, class: "#{tipster_ids_in_cart.empty? ? 'empty' : ''}"}
             %i.glyphicon.glyphicon-shopping-cart
-            = "Shopping cart(#{tipster_ids_in_cart.size})"
+            = I18n.t('menu.shopping_cart')
+            = "(#{tipster_ids_in_cart.size})"
         %li.dropdown
           %a.dropdown-toggle{"data-toggle" => "dropdown", href: 'javascript:void(0);'}
             %img{src: I18n.t('language.icon')}
@@ -31,19 +32,19 @@
       %ul.list-inline.clearfix
         %li.pull-left
           %a{href: 'javascript:void(0);', class: set_current_menu('statistics',current_menu)}
-            Statistics
+            = I18n.t('menu.statistics')
         %li.pull-left
           %a{href: 'javascript:void(0);', class: set_current_menu('livescore',current_menu)}
-            Livescore
+            = I18n.t('menu.livescore')
         %li.pull-left
           %a{href: tipsters_path, class: set_current_menu('tipsters',current_menu)}
             = t('menu.tipster')
         %li.pull-left
           %a{href: last_tips_path, class: set_current_menu('last_tips',current_menu)}
-            Last tips
+            = t('menu.last_tips')
         %li.pull-left
           %a{href: 'javascript:void(0);', class: set_current_menu('news',current_menu)}
-            News
+            = t('menu.news')
         %li.pull-left
           %a{href: pricing_path, class: set_current_menu('pricing',current_menu)}
             = t('menu.pricing')
@@ -68,7 +69,6 @@
             %a.lk-toggle-sign-in-box{href: 'javascript:void(0);'}
               %i.glyphicon.glyphicon-log-in
               = I18n.t('user.sign_in')
-
 - if content_for? :page_head_mid
   = yield :page_head_mid
 - else

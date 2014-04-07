@@ -9,3 +9,9 @@
         .alert.alert-danger.alert-sm.fade.in{'data-alert' => "alert"}
           %a.close{'data-dismiss' => "alert", :href => "#"} &times;
           = alert
+  -# Because when rendering the homepage, the layout load top_tipster content inside the navbar.
+  -# And user cannot see the flash message without scroll down the page.
+  -# To fix it: I've rendered the flash_messages partial into top of top_tipster partial.
+  -# So we need to clear flash for avoid duplicate current flash message.
+  -# This issue is only occur with homepage.
+  - flash.clear
