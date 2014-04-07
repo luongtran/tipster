@@ -27,6 +27,9 @@
 #                    'date' => '2013-03-15',
 #                    'profit' => '457'
 #                ]
+#                'rank' => '2',
+#                'avg_profit' => '123'
+#                'avg_yield' => '14'
 #            },
 #            #'last-month',
 #            #'last-3-months',
@@ -71,9 +74,7 @@
 #            # ....
 #        ],
 #        'profitable_months' => 3,
-#        'total_months' => 8,
-#        'avg_yield' => 25,
-#        'avg_profit' => 234
+#        'total_months' => 8
 #    }, # End of data
 #    'update_at' => DateTime.now
 #}
@@ -133,7 +134,7 @@ class TipsterStatistics < ActiveRecord::Base
 
   # ================= For saving a last n months statistics object
   class LastNMonthStatistics < BaseStatistics
-    attr_accessor :profit_per_dates, :range, :from, :to, :total_yield, :avg_yield, :avg_profit
+    attr_accessor :profit_per_dates, :range, :from, :to, :total_yield, :avg_yield, :avg_profit, :rank
 
     def initialize(range)
       @range = range
@@ -329,197 +330,216 @@ class TipsterStatistics < ActiveRecord::Base
       start_date.beginning_of_day..end_date.end_of_day
     end
 
-    def make_statistics_for(tipster)
-      loger = Logger.new "log/upda_tipster_statistics.log"
-      tips = tipster.finished_tips
-      total_tips = tips.size
+    def update_all_statistics
+      loger = Logger.new "log/tipster_statistics.log"
+      tipsters = Tipster.includes(:statistics, sports: [:bet_types], finished_tips: [:match, :bet_type])
 
-      tipster_statistics = tipster.statistics
-      if tipster_statistics.nil?
-        tipster_statistics = new(tipster_id: tipster.id)
-      end
+      tipsters_statistics = []
 
-      # ==============  Prepare for last_n_months and previous week statistics
-      last_n_month_statistics = {}
-      (RANKING_RANGES + EXTRA_RANKING_RANGES).each do |range_key|
-        date_range = date_range_parser(range_key)
-        last_n_month_statistics[range_key] = LastNMonthStatistics.new(date_range)
-      end
+      tipsters.each do |tipster|
+        tips = tipster.finished_tips
+        total_tips = tips.size
 
-      # ==============  Prepare date ranges for monthly statistics
-      monthly_statistics = []
-      DateUtil.first_days_of_months_so_far_from(tipster.created_at.to_date).each do |date|
-        monthly_statistics << MonthlyStatistics.new(date)
-      end
-
-      # ==============  Prepare for sports statistics
-      tipster_sports = tipster.sports
-      sports_statistics = []
-      tipster_sports.each do |sport|
-        sports_statistics << SportStatistics.new(sport, total_tips)
-      end
-
-      # ============== Prepare for types of bet statistics
-      bet_types_statistics = []
-      tipster_sports.each do |sport|
-        sport.bet_types.each do |bet_type|
-          bet_types_statistics << BetTypeStatistics.new(bet_type, total_tips)
-        end
-      end
-
-      # ============== Prepare for odds statistics
-      odds_statistics = []
-      ODDS_RANGES.each do |float_range|
-        odds_statistics << OddStatistics.new(float_range, total_tips)
-      end
-
-      # Group published date and sort increase
-      date_with_tips = tips.group_by(&:published_date)
-
-      date_with_tips = date_with_tips.sort_by { |published_date, tips| published_date.to_time.to_i }
-
-      # Loop per dates, ordered by increase
-      date_with_tips.each do |published_date, tips|
-        profit_of_current_date = 0
-        total_amount_of_current_date = 0
-        total_odds_of_current_date = 0
-        number_correct_tips_current_date = 0
-        number_tips_of_current_date = tips.size
-
-        total_yield_of_current_date = 0
-        # Loop tips in date
-        tips.each do |tip|
-          total_amount_of_current_date += tip.amount
-          total_odds_of_current_date += tip.odds
-          # Money Money Money
-          money_of_tip = if tip.correct?
-                           number_correct_tips_current_date += 1
-                           (tip.amount*(tip.odds - 1)).round(0)
-                         else
-                           -tip.amount
-                         end
-          profit_of_current_date += money_of_tip
-          total_yield_of_current_date += (money_of_tip*100)/(tip.amount)
-
-          # === Saving for sport
-          sports_statistics.each do |statistics_obj|
-            if tip.sport_code == statistics_obj.sport_code
-              # TODO: DRYing up !
-              statistics_obj.statistics_number.number_of_tips += 1
-              statistics_obj.statistics_number.total_odds += tip.odds
-              statistics_obj.statistics_number.number_correct_tips += 1 if tip.correct?
-              statistics_obj.statistics_number.total_amount += tip.amount
-              statistics_obj.statistics_number.profit += money_of_tip
-              break
-            end
-          end
-
-          # === Saving for bet types statistics
-          bet_types_statistics.each do |statistics_obj|
-            if tip.bet_type_code == statistics_obj.bet_type_code
-              # TODO: DRYing up !
-              statistics_obj.statistics_number.number_of_tips += 1
-              statistics_obj.statistics_number.total_odds += tip.odds
-              statistics_obj.statistics_number.number_correct_tips += 1 if tip.correct?
-              statistics_obj.statistics_number.total_amount += tip.amount
-              statistics_obj.statistics_number.profit += money_of_tip
-              break
-            end
-          end
-
-          # === Saving for odds statistics
-          odds_statistics.each do |statistics_obj|
-            if statistics_obj.range.include? tip.odds
-              # TODO: DRYing up !
-              statistics_obj.statistics_number.number_of_tips += 1
-              statistics_obj.statistics_number.total_odds += tip.odds
-              statistics_obj.statistics_number.number_correct_tips += 1 if tip.correct?
-              statistics_obj.statistics_number.total_amount += tip.amount
-              statistics_obj.statistics_number.profit += money_of_tip
-              break
-            end
-          end
-
+        tipster_statistics = tipster.statistics
+        if tipster_statistics.nil?
+          tipster_statistics = new(tipster_id: tipster.id)
         end
 
-        # === Saving for last n months and previous week statistics
-        last_n_month_statistics.each do |range_key, statistics_obj|
-          if statistics_obj.range.cover?(published_date)
-            # TODO: DRYing up !
-            last_n_month_statistics[range_key].statistics_number.number_of_tips += number_tips_of_current_date
-            last_n_month_statistics[range_key].statistics_number.total_odds += total_odds_of_current_date
-            last_n_month_statistics[range_key].statistics_number.number_correct_tips += number_correct_tips_current_date
-            last_n_month_statistics[range_key].statistics_number.total_amount += total_amount_of_current_date
-            last_n_month_statistics[range_key].statistics_number.profit += profit_of_current_date
-            last_n_month_statistics[range_key].total_yield += total_yield_of_current_date
-            last_n_month_statistics[range_key].profit_per_dates << {
-                date: published_date,
-                profit: last_n_month_statistics[range_key].statistics_number.profit
-            }
+        # ==============  Prepare for last_n_months and previous week statistics
+        last_n_month_statistics = {}
+        (RANKING_RANGES + EXTRA_RANKING_RANGES).each do |range_key|
+          date_range = date_range_parser(range_key)
+          last_n_month_statistics[range_key] = LastNMonthStatistics.new(date_range)
+        end
+
+        # ==============  Prepare date ranges for monthly statistics
+        monthly_statistics = []
+        DateUtil.first_days_of_months_so_far_from(tipster.created_at.to_date).each do |date|
+          monthly_statistics << MonthlyStatistics.new(date)
+        end
+
+        # ==============  Prepare for sports statistics
+        tipster_sports = tipster.sports
+        sports_statistics = []
+        tipster_sports.each do |sport|
+          sports_statistics << SportStatistics.new(sport, total_tips)
+        end
+
+        # ============== Prepare for types of bet statistics
+        bet_types_statistics = []
+        tipster_sports.each do |sport|
+          sport.bet_types.each do |bet_type|
+            bet_types_statistics << BetTypeStatistics.new(bet_type, total_tips)
           end
         end
 
-        # === Saving for monthy statistics
+        # ============== Prepare for odds statistics
+        odds_statistics = []
+        ODDS_RANGES.each do |float_range|
+          odds_statistics << OddStatistics.new(float_range, total_tips)
+        end
+
+        # Group published date and sort increase
+        date_with_tips = tips.group_by(&:published_date)
+
+        date_with_tips = date_with_tips.sort_by { |published_date, tips| published_date.to_time.to_i }
+
+        # Loop per dates, ordered by increase
+        date_with_tips.each do |published_date, tips|
+          profit_of_current_date = 0
+          total_amount_of_current_date = 0
+          total_odds_of_current_date = 0
+          number_correct_tips_current_date = 0
+          number_tips_of_current_date = tips.size
+
+          total_yield_of_current_date = 0
+          # Loop tips in date
+          tips.each do |tip|
+            total_amount_of_current_date += tip.amount
+            total_odds_of_current_date += tip.odds
+            # Money Money Money
+            money_of_tip = if tip.correct?
+                             number_correct_tips_current_date += 1
+                             (tip.amount*(tip.odds - 1)).round(0)
+                           else
+                             -tip.amount
+                           end
+            profit_of_current_date += money_of_tip
+            total_yield_of_current_date += (money_of_tip*100)/(tip.amount)
+
+            # === Saving for sport
+            sports_statistics.each do |statistics_obj|
+              if tip.sport_code == statistics_obj.sport_code
+                # TODO: DRYing up !
+                statistics_obj.statistics_number.number_of_tips += 1
+                statistics_obj.statistics_number.total_odds += tip.odds
+                statistics_obj.statistics_number.number_correct_tips += 1 if tip.correct?
+                statistics_obj.statistics_number.total_amount += tip.amount
+                statistics_obj.statistics_number.profit += money_of_tip
+                break
+              end
+            end
+
+            # === Saving for bet types statistics
+            bet_types_statistics.each do |statistics_obj|
+              if tip.bet_type_code == statistics_obj.bet_type_code
+                # TODO: DRYing up !
+                statistics_obj.statistics_number.number_of_tips += 1
+                statistics_obj.statistics_number.total_odds += tip.odds
+                statistics_obj.statistics_number.number_correct_tips += 1 if tip.correct?
+                statistics_obj.statistics_number.total_amount += tip.amount
+                statistics_obj.statistics_number.profit += money_of_tip
+                break
+              end
+            end
+
+            # === Saving for odds statistics
+            odds_statistics.each do |statistics_obj|
+              if statistics_obj.range.include? tip.odds
+                # TODO: DRYing up !
+                statistics_obj.statistics_number.number_of_tips += 1
+                statistics_obj.statistics_number.total_odds += tip.odds
+                statistics_obj.statistics_number.number_correct_tips += 1 if tip.correct?
+                statistics_obj.statistics_number.total_amount += tip.amount
+                statistics_obj.statistics_number.profit += money_of_tip
+                break
+              end
+            end
+          end
+
+          # === Saving for last n months and previous week statistics
+          last_n_month_statistics.each do |range_key, statistics_obj|
+            if statistics_obj.range.cover?(published_date)
+              # TODO: DRYing up !
+              last_n_month_statistics[range_key].statistics_number.number_of_tips += number_tips_of_current_date
+              last_n_month_statistics[range_key].statistics_number.total_odds += total_odds_of_current_date
+              last_n_month_statistics[range_key].statistics_number.number_correct_tips += number_correct_tips_current_date
+              last_n_month_statistics[range_key].statistics_number.total_amount += total_amount_of_current_date
+              last_n_month_statistics[range_key].statistics_number.profit += profit_of_current_date
+              last_n_month_statistics[range_key].total_yield += total_yield_of_current_date
+
+              # Saving bellow data for draw charts
+              last_n_month_statistics[range_key].profit_per_dates << {
+                  date: published_date,
+                  profit: last_n_month_statistics[range_key].statistics_number.profit
+              }
+            end
+          end
+
+          # === Saving for monthy statistics
+          monthly_statistics.each do |statistics_obj|
+            if statistics_obj.range.cover?(published_date)
+              # TODO: DRYing up !
+              statistics_obj.statistics_number.number_of_tips += number_tips_of_current_date
+              statistics_obj.statistics_number.total_odds += total_odds_of_current_date
+              statistics_obj.statistics_number.number_correct_tips += number_correct_tips_current_date
+              statistics_obj.statistics_number.total_amount += total_amount_of_current_date
+              statistics_obj.statistics_number.profit += profit_of_current_date
+            end
+          end
+        end
+
+        last_n_month_statistics.each do |key, val|
+          last_n_month_statistics[key] = last_n_month_statistics[key].finish.format_for_store
+        end
+
+        x_monthly_statistics = []
         monthly_statistics.each do |statistics_obj|
-          if statistics_obj.range.cover?(published_date)
-            # TODO: DRYing up !
-            statistics_obj.statistics_number.number_of_tips += number_tips_of_current_date
-            statistics_obj.statistics_number.total_odds += total_odds_of_current_date
-            statistics_obj.statistics_number.number_correct_tips += number_correct_tips_current_date
-            statistics_obj.statistics_number.total_amount += total_amount_of_current_date
-            statistics_obj.statistics_number.profit += profit_of_current_date
+          x_monthly_statistics << statistics_obj.finish.format_for_store
+        end
+
+        x_sports_statistics = []
+        sports_statistics.each do |statistics_obj|
+          x_sports_statistics << statistics_obj.finish.format_for_store
+        end
+
+        x_bet_types_statistics = []
+        bet_types_statistics.each do |statistics_obj|
+          x_bet_types_statistics << statistics_obj.finish.format_for_store
+        end
+
+        x_odds_statistics = []
+        odds_statistics.each do |statistics_obj|
+          x_odds_statistics << statistics_obj.finish.format_for_store
+        end
+
+        # Get profitable months/all months
+        total_months = x_monthly_statistics.size
+        profitable_months = 0
+        x_monthly_statistics.each do |month|
+          if month[:profit] > 0
+            profitable_months += 1
           end
         end
+        # Got all statistics
+        statistics_data = {
+            last_n_months: last_n_month_statistics,
+            monthly: x_monthly_statistics,
+            sports: x_sports_statistics,
+            bet_types: x_bet_types_statistics,
+            odds: x_odds_statistics,
+            profitable_months: profitable_months,
+            total_months: total_months
+        }
+        tipster_statistics[:data] = statistics_data
+        tipsters_statistics << tipster_statistics
+
       end
 
-      last_n_month_statistics.each do |key, val|
-        last_n_month_statistics[key] = last_n_month_statistics[key].finish.format_for_store
-      end
-
-      x_monthly_statistics = []
-      monthly_statistics.each do |statistics_obj|
-        x_monthly_statistics << statistics_obj.finish.format_for_store
-      end
-
-      x_sports_statistics = []
-      sports_statistics.each do |statistics_obj|
-        x_sports_statistics << statistics_obj.finish.format_for_store
-      end
-
-      x_bet_types_statistics = []
-      bet_types_statistics.each do |statistics_obj|
-        x_bet_types_statistics << statistics_obj.finish.format_for_store
-      end
-
-      x_odds_statistics = []
-      odds_statistics.each do |statistics_obj|
-        x_odds_statistics << statistics_obj.finish.format_for_store
-      end
-
-      # Get profitable months/all months
-      total_months = x_monthly_statistics.size
-      profitable_months = 0
-      x_monthly_statistics.each do |month|
-        if month[:profit] > 0
-          profitable_months += 1
+      # Calculate rank for last-n-months statistics
+      (RANKING_RANGES + EXTRA_RANKING_RANGES).each do |range_key|
+        tipsters_statistics.sort_by do |tipster_statistics|
+          -tipster_statistics[:data][:last_n_months][range_key][:profit]
+        end.each_with_index do |tipster_statistics, index|
+          tipster_statistics[:data][:last_n_months][range_key][:rank] = index + 1
         end
       end
-      # Got all statistics
-      statistics_data =
-          {
-              last_n_months: last_n_month_statistics,
-              monthly: x_monthly_statistics,
-              sports: x_sports_statistics,
-              bet_types: x_bet_types_statistics,
-              odds: x_odds_statistics,
-              profitable_months: profitable_months,
-              total_months: total_months
-          }
 
-      # === Now we will prepate for saving the statistics data as json string
-      tipster_statistics[:data] = statistics_data.to_json
-      tipster_statistics.save
-      tipster_statistics
+      tipsters_statistics.each do |tipster_statistics|
+        # Convert data to json for saving the statistics data in db
+        tipster_statistics[:data] = tipster_statistics[:data].to_json
+        tipster_statistics.save
+      end
     end
   end
 

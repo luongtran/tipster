@@ -171,10 +171,7 @@ class Worker
     end
 
     def update_tipster_statistics
-      tipsters = Tipster.includes(:statistics, sports: [:bet_types], finished_tips: [:match, :bet_type])
-      tipsters.each do |tipster|
-        TipsterStatistics.make_statistics_for(tipster)
-      end
+      TipsterStatistics.update_all_statistics
     end
   end # End class block
 end

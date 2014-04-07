@@ -31,7 +31,7 @@ class Tipster < ActiveRecord::Base
   PROFILE_ATTRS = [:display_name, :full_name]
 
   # This is list of attributes for saving the statistics data
-  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield, :avg_yield, :avg_profit,
+  attr_accessor :number_of_tips, :hit_rate, :avg_odds, :profit, :yield, :avg_yield, :avg_profit, :rank,
                 :profit_per_months, :profit_per_dates, :total_months,
                 :tips_per_dates, :profitable_months, :current_statistics_range
 
@@ -70,6 +70,7 @@ class Tipster < ActiveRecord::Base
   # ==============================================================================
   validates :display_name, uniqueness: {case_sensitive: false}
   validates_presence_of :display_name, :full_name
+  validates_format_of :display_name, :full_name, :with => /\A[^0-9`!@#\$%\^&*+_=]+\z/
   # ==============================================================================
   # SCOPE
   # ==============================================================================
@@ -269,7 +270,7 @@ class Tipster < ActiveRecord::Base
       @avg_yield = last_n_months_statistics[:avg_yield]
       @avg_profit = last_n_months_statistics[:avg_profit]
       @profit_per_dates = last_n_months_statistics[:profit_per_dates]
-
+      @rank = last_n_months_statistics[:rank]
       # Load all statistics
       if details
         @monthly_statistics = statistics_data[:monthly].map { |statistic| statistic.symbolize_keys }

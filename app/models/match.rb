@@ -117,6 +117,6 @@ class Match < ActiveRecord::Base
 
   # Find bets and odds from the given bookmarker
   def find_bets(bookmarker)
-    bookmarker.odds_feed_module.find_odds_on_match(self,)
+    bookmarker.odds_feed_module.find_odds_on_match(self)
   end
 end

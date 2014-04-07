@@ -7,11 +7,6 @@ class Subscribers::ProfileController < ProfileController
   end
 
   def after_update_profile_path
-    if current_subscriber.account.sign_in_count <= 1
-      flash[:notice]= 'Please choose a plan'
-      pricing_path
-    else
-      my_profile_path
-    end
+    my_profile_path
   end
 end

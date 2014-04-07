@@ -30,11 +30,13 @@
               %span.value= tipster.last_name
             .col-md-2
               %h4 RANK
-              %span.value 1
+              %span.value
+                = tipster.rank
             .col-md-2
               %h4 AVG.YIED
-              %span.value 21.5%
+              %span.value
+                = yield_in_string tipster.avg_yield
             .col-md-2
               %h4 AVG.PROFIT
-              %span.value 129.90 $
-            .col-md-3
+              %span.value
+                = profit_in_string tipster.avg_profit

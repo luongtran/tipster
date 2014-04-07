@@ -8,7 +8,7 @@ class ProfileController < ApplicationController
     @user.bypass_humanizer = true if @user.respond_to?(:bypass_humanizer)
     if @user.update_attributes(user_params)
       flash[:notice] = I18n.t('user.account_update_successully')
-      redirect_to my_profile_path
+      redirect_to after_update_profile_path
     else
       flash[:alert] = I18n.t('user.account_update_failed')
       render :show
@@ -19,7 +19,8 @@ class ProfileController < ApplicationController
     if !(change_password_params[:password].blank?) && @account.update_with_password(change_password_params)
       flash[:notice] = I18n.t('user.password_changed_successfully')
       sign_in @account, bypass: true
-      redirect_to my_profile_path
+      redirect_to after_update_profile_path
+      #my_profile_path
     else
       @user = @account.rolable
       flash[:alert] = I18n.t('user.password_changed_failed')
@@ -33,6 +34,10 @@ class ProfileController < ApplicationController
   end
 
   def user_params
+    raise 'Need to implement the method'
+  end
+
+  def after_update_profile_path
     raise 'Need to implement the method'
   end
 
