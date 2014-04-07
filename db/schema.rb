@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140327062655) do
+ActiveRecord::Schema.define(version: 20140407115706) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -263,6 +263,14 @@ ActiveRecord::Schema.define(version: 20140327062655) do
 
   add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id", using: :btree
   add_index "subscriptions", ["subscriber_id"], name: "index_subscriptions_on_subscriber_id", using: :btree
+
+  create_table "tip_journals", force: true do |t|
+    t.integer  "tip_id"
+    t.integer  "author_id"
+    t.string   "author_type"
+    t.string   "event"
+    t.datetime "created_at"
+  end
 
   create_table "tips", force: true do |t|
     t.integer  "author_id",                       null: false

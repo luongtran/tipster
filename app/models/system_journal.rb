@@ -24,6 +24,13 @@ class SystemJournal < ActiveRecord::Base
       EVENT_UPDATE_TIPS = {
           code: 'update_tips',
           name: 'Update tips'
+      },
+      # Send sms and email
+      EVENT_PUBLISHED_TIP = {
+
+      },
+      EVENT_TIPSTER_DEACTIVE = {
+
       }
   ]
 
