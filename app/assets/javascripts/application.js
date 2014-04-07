@@ -12,6 +12,7 @@
 
  = require jquery
  = require jquery_ujs
+ = require flash_message.js
  = require dev
  = require ajaxify
  = require helper
