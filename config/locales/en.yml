@@ -21,7 +21,12 @@ en:
     term: "Terms of use"
     my_profile: "My Profile"
     my_subscription: "My Subscription"
+    shopping_cart: 'shopping cart'
     stay_connect: "Stay connected"
+    statistics: 'statistics'
+    livescore: 'Livescore'
+    last_tips: 'Last tips'
+    news: 'News'
     subscribe:
       paid:
         step1: "Shopping cart"

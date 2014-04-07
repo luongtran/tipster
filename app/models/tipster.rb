@@ -271,7 +271,8 @@ class Tipster < ActiveRecord::Base
       @avg_profit = last_n_months_statistics[:avg_profit]
       @profit_per_dates = last_n_months_statistics[:profit_per_dates]
       @rank = last_n_months_statistics[:rank]
-      # Load all statistics
+
+      # Load all statistics and charts (Ex: in details statistics page)
       if details
         @monthly_statistics = statistics_data[:monthly].map { |statistic| statistic.symbolize_keys }
         @sports_statistics = statistics_data[:sports].map { |statistic| statistic.symbolize_keys }

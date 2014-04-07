@@ -137,14 +137,14 @@ module OddsFeed
       # Start to feed xml
       # Return Nokogiri::Document object
       def go
-        #if true
-        #  uri = URI(ODDS_URL)
-        #  response = Net::HTTP.get_response(uri)
-        #  # TODO: catch timeout error
-        #  Nokogiri::XML(response.body)
-        #else
-        read_from_local
-        #end
+        if true
+          uri = URI(ODDS_URL)
+          response = Net::HTTP.get_response(uri)
+          # TODO: catch timeout error
+          Nokogiri::XML(response.body)
+        else
+          read_from_local
+        end
       end
 
       # === Save to xml file for use later

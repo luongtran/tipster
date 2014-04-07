@@ -609,18 +609,33 @@ class TipsterStatistics < ActiveRecord::Base
     statistics_in_range = self.parsed_data[:last_n_months][range]
     dates_for_chart = statistics_in_range[:profit_per_dates].map { |ppd| ppd['date'].to_date.strftime("%b %d") }
     values_for_chart = statistics_in_range[:profit_per_dates].map { |ppd| ppd['profit'] }
+
+    #data_table = GoogleVisualr::DataTable.new
+    #data_table.new_column('string', 'Date')
+    #data_table.new_column('number', 'Profit')
+    #data_table.add_rows(dates_for_chart.size)
+    #
+    #statistics_in_range[:profit_per_dates].each_with_index do |date_and_profit, index|
+    #  data_table.set_cell(index, 0, date_and_profit['date'].to_date.strftime("%b %d"))
+    #  data_table.set_cell(index, 1, date_and_profit['profit'])
+    #end
+    #
+    #opts = {:width => 650, :height => 240, :title => 'Profit', :legend => false}
+    #GoogleVisualr::Interactive::AreaChart.new(data_table, opts)
+
+    chart_x_interval = dates_for_chart.size/10
     LazyHighCharts::HighChart.new('graph') do |f|
       f.title(
           :text => nil
       )
       f.xAxis(
           :categories => dates_for_chart,
-          tickInterval: 5
+          tickInterval: chart_x_interval
       )
       f.series(
           :name => 'Profit',
           :yAxis => 0,
-          :color => '#4D759E',
+          :color => '#79B162',
           :data => values_for_chart,
           showInLegend: false
       )
@@ -647,7 +662,6 @@ class TipsterStatistics < ActiveRecord::Base
       data_table.set_cell(index, 0, month['name'])
       data_table.set_cell(index, 1, month['profit'])
     end
-
     opts = {
         :width => 400,
         :height => 240,
