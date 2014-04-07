@@ -212,6 +212,12 @@ $(document).ready(function () {
         "lineWidth": 10
     });
 
+    $('.tr-area-statistics').on('click', function () {
+        var area_id = $(this).attr('data-area-id');
+        $(this).siblings('.competitions-area-'+ area_id).toggle();
+    });
+
+
     /* Background switching */
     // order following: football, tennis, basket,
 //    if (localStorage.getItem('bgs') == null) {

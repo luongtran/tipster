@@ -35,11 +35,11 @@ class Tipster < ActiveRecord::Base
                 :profit_per_months, :profit_per_dates, :total_months,
                 :tips_per_dates, :profitable_months, :current_statistics_range
 
-  attr_accessor :monthly_statistics, :sports_statistics,
+  attr_accessor :monthly_statistics, :sports_statistics, :areas_statistics,
                 :bet_types_statistics, :odds_statistics
 
   # LazyHighChart objects
-  attr_accessor :monthly_chart, :sports_chart,
+  attr_accessor :monthly_chart, :sports_chart, :areas_chart,
                 :bet_types_chart, :odds_chart, :profit_chart
 
   # ==============================================================================
@@ -278,10 +278,13 @@ class Tipster < ActiveRecord::Base
         @sports_statistics = statistics_data[:sports].map { |statistic| statistic.symbolize_keys }
         @bet_types_statistics = statistics_data[:bet_types].map { |statistic| statistic.symbolize_keys }
         @odds_statistics = statistics_data[:odds].map { |statistic| statistic.symbolize_keys }
+        @areas_statistics = statistics_data[:areas].map { |statistic| statistic.symbolize_keys }
+
         @bet_types_chart = self.statistics.get_bet_types_chart
         @odds_chart = self.statistics.get_odds_chart
         @sports_chart = self.statistics.get_sports_chart
         @monthly_chart = self.statistics.get_monthly_chart
+        @areas_chart = self.statistics.get_areas_chart
       end
 
       # Prepare charts

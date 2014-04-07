@@ -439,3 +439,6 @@ tr.additional {
     font-size: 50px;
     font-weight: bold;
 }
+.tr-area-statistics {
+    cursor: pointer;
+}

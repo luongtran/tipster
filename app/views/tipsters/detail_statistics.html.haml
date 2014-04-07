@@ -13,16 +13,9 @@
             %table.table.table-bordered.table-striped
               %thead
                 %tr.warning
-                  %td.text-center{'colspan' => 6 } Monthly statistics
-                %tr
-                  %th Month
-                  %th Profit
-                  %th Yield
-                  %th Hit rate
-                  %th Avg odds
-                  %th
-                    = ("N" + content_tag(:sup, 'o')).html_safe
-                    of tips
+                  %td.text-center{'colspan' => 6 }
+                    %h4 Monthly statistics
+                = render 'header_statistics_table'
               %tbody
                 - if @tipster.monthly_statistics
                   - @tipster.monthly_statistics.each do |month_statistics|
@@ -46,15 +39,7 @@
                 %tr.warning
                   %td.text-center{'colspan' => 6 }
                     %h4 Sports
-                %tr
-                  %th Sport
-                  %th Profit
-                  %th Yield
-                  %th Hit rate
-                  %th Avg odds
-                  %th
-                    = ("N" + content_tag(:sup, 'o')).html_safe
-                    of tips
+                = render 'header_statistics_table'
               %tbody
                 - if @tipster.sports_statistics
                   - @tipster.sports_statistics.each do |sport_statistics|
@@ -72,6 +57,43 @@
             -#= high_chart("sports-chart-container", @tipster.sports_chart) do |chart|
             -#  = "options.plotOptions.pie.dataLabels.distance = 3"
             -#  = "options.tooltip.formatter = function () {return '<b>'+ this.point.name +'</b>: '+ Math.round(this.percentage) +' %';}".html_safe
+        -#========================================== Countries/ Competitions
+        %hr
+        .row
+          .col-lg-7
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr.warning
+                  %td.text-center{'colspan' => 6 }
+                    %h4 Countries - Competitions
+                = render 'header_statistics_table'
+              %tbody
+                - if @tipster.areas_statistics
+                  - @tipster.areas_statistics.each do |area_statistics|
+                    - unless area_statistics[:number_of_tips].zero?
+                      %tr.tr-area-statistics{'data-area-id' => area_statistics[:area_id]}
+                        %td
+                          %img.flag{class: flag_class_for_area_id(area_statistics[:area_id])}
+                          = area_statistics[:area_name]
+                        %td= profit_in_string area_statistics[:profit]
+                        %td= yield_in_string area_statistics[:yield]
+                        %td= hit_rate_in_string area_statistics[:hit_rate]
+                        %td= area_statistics[:avg_odds]
+                        %td= area_statistics[:number_of_tips]
+                      - area_statistics[:competitions].each do |competition_statistics|
+                        - competition_statistics = competition_statistics.symbolize_keys
+                        %tr{style: 'display:none', class: "competitions-area-#{area_statistics[:area_id]}"}
+                          %td= competition_statistics[:competition_name]
+                          %td= profit_in_string competition_statistics[:profit]
+                          %td= yield_in_string competition_statistics[:yield]
+                          %td= hit_rate_in_string competition_statistics[:hit_rate]
+                          %td= competition_statistics[:avg_odds]
+                          %td= competition_statistics[:number_of_tips]
+
+
+          .col-lg-5
+            #countries-chart-container
+            = render_chart @tipster.areas_chart, 'countries-chart-container' if @tipster.areas_chart
         -# ========================================== Bet types
         %hr
         .row
@@ -81,15 +103,7 @@
                 %tr.warning
                   %td.text-center{'colspan' => 6 }
                     %h4 Type of bets
-                %tr
-                  %th Bet Type
-                  %th Profit
-                  %th Yield
-                  %th Hit rate
-                  %th Avg odds
-                  %th
-                    = ("N" + content_tag(:sup, 'o')).html_safe
-                    of tips
+                = render 'header_statistics_table'
               %tbody
                 - if @tipster.bet_types_statistics
                   - @tipster.bet_types_statistics.each do |bet_type_statistics|
@@ -118,15 +132,7 @@
                 %tr.warning
                   %td.text-center{'colspan' => 6 }
                     %h4 Odds
-                %tr
-                  %th Odds
-                  %th Profit
-                  %th Yield
-                  %th Hit rate
-                  %th Avg odds
-                  %th
-                    = ("N" + content_tag(:sup, 'o')).html_safe
-                    of tips
+                = render 'header_statistics_table'
               %tbody
                 - if @tipster.odds_statistics
                   - @tipster.odds_statistics.each do |odds_statistics|

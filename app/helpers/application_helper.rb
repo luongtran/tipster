@@ -343,7 +343,7 @@ module ApplicationHelper
     end
   end
 
-  def flag_class_for_area(area)
+  def flag_class_for_area_id(opta_area_id)
     areas_map = {"1" => "world", "8" => "af", "19" => "au", "23" => "bh", "24" => "BAN", "31" => "bu", "37" => "BRU", "41" => "ca",
                  "49" => "cn", "50" => "TPE", "84" => "GUM", "91" => "HKG", "94" => "IND", "95" => "IDN", "96" => "IRN",
                  "97" => "IRQ", "102" => "JPN", "103" => "JOR", "106" => "PRK", "107" => "KOR", "108" => "KUW", "109" => "KGZ",
@@ -376,7 +376,7 @@ module ApplicationHelper
                  "184" => "SWE", "185" => "CHE", "196" => "tr", "201" => "UKR", "209" => "WAL", "224" => "SER", "225" => "MNE",
                  "226" => "GIB", "235" => "JER", "236" => "IOM", "249" => "KSV", "250" => "GBR", "253" => "MCO", "254" => "GGY",
                  "263" => "VAT", "270" => "TNC", "2" => "", "3" => "", "4" => "", "5" => "", "6" => "", "261" => "PAL", "7" => "eu"}
-    "flag-" << areas_map["#{area.opta_area_id}"].downcase
+    "flag-" << areas_map["#{opta_area_id}"].downcase
   end
 
   def adding_price_show(price)

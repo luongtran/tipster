@@ -52,10 +52,17 @@
 #            },
 #            # ....
 #        ],
-#        'countries_competitions' => [
+#        'area' => [
 #            {
-#                'country_code' => 'EN',
-#                'percentage' => '10'
+#                'area_name' => 'France',
+#                'country_code' => 'fr',
+#                'percentage' => '10',
+#                #'Profit	Yield	N° of Tips	Win rate	Avg. Odds'
+#                'competitions' => [
+#                   'competition_name' => 'France',
+#                   'percentage' => '10',
+#                   #'Profit	Yield	N° of Tips	Win rate	Avg. Odds'
+#                ]
 #            }
 #        ],
 #        'type_of_bets' => [
@@ -88,7 +95,6 @@ class TipsterStatistics < ActiveRecord::Base
     attr_accessor :profit, :number_correct_tips,
                   :total_amount, :total_odds, :number_of_tips,
                   :yield, :hit_rate, :avg_odds
-
 
     def initialize
       @profit = 0
@@ -238,15 +244,66 @@ class TipsterStatistics < ActiveRecord::Base
           percentage: @percentage
       }.merge(@statistics_number.format_for_store)
     end
+  end
 
-    def to_chart
+  class CompetitionStatistics < BaseStatistics
+    attr_accessor :percentage, :competition_name, :competition_id, :total_tips
 
+    def initialize(competition, total_tips)
+      @competition_name = competition.name
+      @competition_id = competition.opta_competition_id
+      @total_tips = total_tips
+      @percentage = 0
+      @statistics_number = StatisticsNumber.new
+    end
+
+    def finish
+      @percentage = (@statistics_number.number_of_tips * 100/@total_tips.to_f).round(0) unless @total_tips.zero?
+      super
+      self
+    end
+
+    def format_for_store
+      {
+          competition_name: @competition_name,
+          percentage: @percentage
+      }.merge(@statistics_number.format_for_store)
     end
   end
 
   # ================= For saving a country/compoetition statistics object
-  class CountryCompetitionStatistics < BaseStatistics
-    attr_accessor :percentage
+  class AreaStatistics < BaseStatistics
+    attr_accessor :percentage, :area_name, :area_id, :total_tips, :competitions_statistics
+
+    def initialize(area, competitions, total_tips)
+      @area_name = area.name
+      @area_id = area.opta_area_id
+      @total_tips = total_tips
+      @percentage = 0
+      @competitions_statistics = []
+      competitions.each do |compt|
+        @competitions_statistics << CompetitionStatistics.new(compt, total_tips)
+      end
+      @statistics_number = StatisticsNumber.new
+      self
+    end
+
+    def finish
+      @percentage = (@statistics_number.number_of_tips * 100/@total_tips.to_f).round(0) unless @total_tips.zero?
+      @competitions_statistics.each { |compt_statisitics| compt_statisitics.finish }
+      super
+      self
+    end
+
+    def format_for_store
+      competitions_statistics_formated = @competitions_statistics.map { |compt_statisitics| compt_statisitics.format_for_store }
+      {
+          area_name: @area_name,
+          area_id: @area_id,
+          percentage: @percentage,
+          competitions: competitions_statistics_formated
+      }.merge(@statistics_number.format_for_store)
+    end
   end
 
   # ================= For saving a odds statistics object
@@ -332,7 +389,7 @@ class TipsterStatistics < ActiveRecord::Base
 
     def update_all_statistics
       loger = Logger.new "log/tipster_statistics.log"
-      tipsters = Tipster.includes(:statistics, sports: [:bet_types], finished_tips: [:match, :bet_type])
+      tipsters = Tipster.includes(:statistics, sports: [:bet_types], finished_tips: [:bet_type, match: [competition: :area]])
 
       tipsters_statistics = []
 
@@ -363,6 +420,17 @@ class TipsterStatistics < ActiveRecord::Base
         sports_statistics = []
         tipster_sports.each do |sport|
           sports_statistics << SportStatistics.new(sport, total_tips)
+        end
+
+        # ==============  Prepare for Area with competitions statistics
+        competitions = tips.map { |tip| tip.match.competition }
+        competitions.uniq!
+        areas_competitions = competitions.group_by { |competition| competition.area }
+        loger.info "\n\n ================================\n"
+        loger.info areas_competitions
+        areas_statistics = []
+        areas_competitions.each do |area, competitions|
+          areas_statistics << AreaStatistics.new(area, competitions, total_tips)
         end
 
         # ============== Prepare for types of bet statistics
@@ -417,6 +485,26 @@ class TipsterStatistics < ActiveRecord::Base
                 statistics_obj.statistics_number.total_amount += tip.amount
                 statistics_obj.statistics_number.profit += money_of_tip
                 break
+              end
+            end
+
+            # === Saving for area/competition
+            areas_statistics.each do |area_statistics|
+              if tip.match.competition.area.opta_area_id == area_statistics.area_id
+                area_statistics.statistics_number.number_of_tips += 1
+                area_statistics.statistics_number.total_odds += tip.odds
+                area_statistics.statistics_number.number_correct_tips += 1 if tip.correct?
+                area_statistics.statistics_number.total_amount += tip.amount
+                area_statistics.statistics_number.profit += money_of_tip
+                area_statistics.competitions_statistics.each do |compt_statistics|
+                  if tip.match.competition.opta_competition_id == compt_statistics.competition_id
+                    compt_statistics.statistics_number.number_of_tips += 1
+                    compt_statistics.statistics_number.total_odds += tip.odds
+                    compt_statistics.statistics_number.number_correct_tips += 1 if tip.correct?
+                    compt_statistics.statistics_number.total_amount += tip.amount
+                    compt_statistics.statistics_number.profit += money_of_tip
+                  end
+                end
               end
             end
 
@@ -493,6 +581,11 @@ class TipsterStatistics < ActiveRecord::Base
           x_sports_statistics << statistics_obj.finish.format_for_store
         end
 
+        x_areas_statistics = []
+        areas_statistics.each do |statistics_obj|
+          x_areas_statistics << statistics_obj.finish.format_for_store
+        end
+
         x_bet_types_statistics = []
         bet_types_statistics.each do |statistics_obj|
           x_bet_types_statistics << statistics_obj.finish.format_for_store
@@ -516,6 +609,7 @@ class TipsterStatistics < ActiveRecord::Base
             last_n_months: last_n_month_statistics,
             monthly: x_monthly_statistics,
             sports: x_sports_statistics,
+            areas: x_areas_statistics,
             bet_types: x_bet_types_statistics,
             odds: x_odds_statistics,
             profitable_months: profitable_months,
@@ -585,6 +679,23 @@ class TipsterStatistics < ActiveRecord::Base
     end
 
     opts = {:width => 400, :height => 190, :title => 'Sports statistics', :is3D => true}
+    GoogleVisualr::Interactive::PieChart.new(data_table, opts)
+  end
+
+  def get_areas_chart
+    areas_statistics = parsed_data[:areas]
+    data_table = GoogleVisualr::DataTable.new
+    data_table.add_rows(areas_statistics.count)
+
+    data_table.new_column('string', 'Area')
+    data_table.new_column('number', 'Number of tips')
+
+    areas_statistics.each_with_index do |sport, index|
+      data_table.set_cell(index, 0, sport['area_name'])
+      data_table.set_cell(index, 1, sport['number_of_tips'].to_i)
+    end
+
+    opts = {:width => 400, :height => 190, :title => 'Countries statistics', :is3D => true}
     GoogleVisualr::Interactive::PieChart.new(data_table, opts)
   end
 
