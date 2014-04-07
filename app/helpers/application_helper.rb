@@ -178,7 +178,7 @@ module ApplicationHelper
 
   def profit_img_chart_url_for(data, options = {})
     default_options = {
-        size: '70x35'
+        size: '125x40'
     }
     options = default_options.merge(options)
     require 'gchart'

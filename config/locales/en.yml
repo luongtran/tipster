@@ -5,6 +5,15 @@ en:
     all: 'All'
     email: 'Email'
     subscribe: 'Subscribe'
+    tipster: 'tipster'
+    subscriber: 'subscriber'
+    profit: 'profit'
+    yield: 'yield'
+    hit_rate: 'hit rate'
+    number_of_tips: 'Number of tips'
+    avg_odds: 'Avg of odds'
+    profitable_months: 'profitable months'
+    all: 'All'
   hello: "Hello world"
   language:
     text: 'Language'

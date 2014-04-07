@@ -3,14 +3,14 @@
     #sub-page-navi.text-success
       %ol.breadcrumb.mbn.bgtrans.font-i
         %li
-          %a.text-success
+          %a.text-success{href: root_path}
             %i.fa.fa-home
             Home
         %li
-          %a.text-success
+          %a.text-success{href: tipsters_path}
             Tipsters
         %li
-          %a.text-success
+          %a.text-success{href: tipster_path(tipster)}
             = tipster.full_name.titleize
 #page_header_mid.fixed-bg
   #sub-page-header
