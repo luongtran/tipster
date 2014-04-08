@@ -2,4 +2,18 @@
   .panel-heading
     %strong Recent activities
   .panel-body
-    %p Display the last 10 activities here. Ex: new tips create. Admin published a tip.  New user registered ...
+    - @tip_journals.each do |event|
+      %p
+        %span= "#{event.author_type}"
+        %span.text-i.text-info.text-bold= "#{event.author_full_name}"
+        = t "tip.journals.#{event.event}"
+        %span.text-i.text-info.text-bold= event.tip.match_name
+        %span on
+        %span.text-i.text-info.text-bold= event.created_at.strftime(t('time.formats.date_with_time'))
+
+.panel.panel-default
+  .panel-heading
+    %strong System events
+  .panel-body
+    %p.text-i The background tasks events here.
+

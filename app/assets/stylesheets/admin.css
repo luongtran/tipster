@@ -1,4 +1,25 @@
 /*
   *= require_tree ../../../vendor/assets/stylesheets/framework/bootstrap
   *= require font-awesome.min
+  *= require partials/_common
 */
+
+.text-i {
+    font-style: italic;
+}
+
+.navbar {
+    background: #fff;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+#admin-content-wrapper {
+    margin-top: 60px;
+}
+
+textarea.fill-parent {
+    max-width: 100%;
+}

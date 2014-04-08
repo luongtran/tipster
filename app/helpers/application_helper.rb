@@ -102,7 +102,7 @@ module ApplicationHelper
   def class_for_sport_filter(sport)
     current_sport = query_params[:sport]
     current_sport = 'all' if current_sport.nil?
-    current_sport == sport ? 'current active' : ''
+    current_sport == sport ? 'current active disabled' : ''
   end
 
   def class_for_date_filter(date)
@@ -444,5 +444,20 @@ module ApplicationHelper
 
   def profitable_months_in_string(number_profitable_months, total_months)
     "#{number_profitable_months}/#{total_months}"
+  end
+
+  def class_for_tip_status(status)
+    case status
+      when Tip::STATUS_WAITING_FOR_APPROVAL
+        'text-warning'
+      when Tip::STATUS_REJECTED
+        'text-muted'
+      when Tip::STATUS_PUBLISHED
+        'text-info'
+      when Tip::STATUS_FINISHED
+        'text-success'
+      else
+        ''
+    end
   end
 end

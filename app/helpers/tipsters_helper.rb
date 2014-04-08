@@ -1,19 +1,18 @@
 module TipstersHelper
   def tipster_statuses_for_select(path)
-    # FIXME: the url need to dependency to 'path'
     selected_status = query_params[:status]
     options = []
     options << [
         I18n.t('tipster_statuses.all'),
         'all',
-        {data: {url: tipsters_path(query_params.merge(status: nil))}}
+        'data-url' => build_path_with_params(path, tipster_status_param(nil))
     ]
     options << [
         I18n.t('tipster_statuses.active'),
         'active',
-        {data: {url: tipsters_path(query_params.merge(status: 'active'))}, selected: selected_status == 'active'}
+        'data-url' => build_path_with_params(path, tipster_status_param('active')),
+        selected: selected_status == 'active'
     ]
-    #options << [I18n.t('tipster_statuses.inactive'), 'inactive', {data: {url: tipsters_path(query_params.merge(status: 'inactive'))}, selected: selected_status == 'inactive'}]
     options
   end
 
@@ -74,14 +73,22 @@ module TipstersHelper
     options
   end
 
+  # Append tip status param
   def tip_status_param(status)
     query_params.merge(status: status)
   end
 
+  # Append tipster status param
+  def tipster_status_param(status)
+    query_params.merge(status: status)
+  end
+
+  # Append sport param
   def sport_filter_param(sport_name)
     query_params.merge(sport: sport_name)
   end
 
+  # Append ranking range param
   def ranking_param(range)
     query_params.merge(ranking: range.parameterize('_'))
   end

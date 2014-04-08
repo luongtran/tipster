@@ -17,6 +17,7 @@
 #  correct         :boolean          default(FALSE)
 #  status          :integer          not null
 #  free            :boolean          default(FALSE)
+#  reject_reason   :text
 #  published_by    :integer
 #  published_at    :datetime
 #  finished_at     :datetime
@@ -28,13 +29,13 @@
 
 class Tip < ActiveRecord::Base
 
-  STATUS_WAITING_FOR_APPROVED = 0
+  STATUS_WAITING_FOR_APPROVAL = 0
   STATUS_PUBLISHED = 1
   STATUS_REJECTED = 2
   STATUS_FINISHED = 3
 
   STATUSES_MAP = {
-      STATUS_WAITING_FOR_APPROVED => 'waiting_for_approved',
+      STATUS_WAITING_FOR_APPROVAL => 'waiting_for_approval',
       STATUS_PUBLISHED => 'published',
       STATUS_REJECTED => 'rejected',
       STATUS_FINISHED => 'finished'
@@ -69,6 +70,7 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   before_validation :valid_beting
   before_create :init_status
+  after_create :write_event_created
 
   # ===========================================================================
   # SCOPE
@@ -82,7 +84,7 @@ class Tip < ActiveRecord::Base
 
   delegate :name, to: :sport, prefix: true
   delegate :name, to: :match, prefix: true
-
+  delegate :full_name, to: :author, prefix: true
   # ===========================================================================
   # Class METHODS
   # ===========================================================================
@@ -142,11 +144,18 @@ class Tip < ActiveRecord::Base
   end
 
   # Call after admin validate the tip. Send tip and subtract bankroll
-  def published!
-    self.update_attributes(
+  def published!(admin)
+    unless admin.is_a? Admin
+      raise "The tip can not publish by #{admin.class.name}"
+    end
+    self.update_attributes!(
         published_at: Time.now,
-        status: STATUS_PUBLISHED
+        status: STATUS_PUBLISHED,
+        published_by: admin.id
     )
+    TipJournal.write_event_published(self, admin)
+
+    # Do sending SMS, email
   end
 
   def published?
@@ -173,16 +182,41 @@ class Tip < ActiveRecord::Base
     DateUtil.in_time_zone(self.created_at, I18n.t('time.formats.date_with_time'))
   end
 
+  # Check the tip can reject or not
+  def rejectable?
+    self.status == STATUS_WAITING_FOR_APPROVAL
+  end
+
+  def publishalbe?
+    self.status == STATUS_WAITING_FOR_APPROVAL
+  end
+
+  # Params:
+  #  * admin(Admin): the admin has rejected the tip
+  #  * reason(string): the reason string
+  def reject!(admin, reason)
+    unless admin.is_a?(Admin)
+      raise "The author object must be a Admin."
+    end
+    update_status(STATUS_REJECTED)
+    update_column :reject_reason, reason
+    TipJournal.write_event_rejected(self, admin)
+  end
+
   # ===========================================================================
   # PRIVATE METHODS
   # ===========================================================================
   private
-  def init_status
-    self.status = STATUS_WAITING_FOR_APPROVED
+  def update_status(status)
+    self.update_attributes! status: status
   end
 
-  def init_expire_time
-    #self.expire_at = Time.now + 2.days
+  def write_event_created
+    TipJournal.write_event_created(self, self.author)
+  end
+
+  def init_status
+    self.status = STATUS_WAITING_FOR_APPROVAL
   end
 
   def valid_beting

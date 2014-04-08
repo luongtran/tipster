@@ -1,1 +1,58 @@
-Tips listing here
+%table.table.table-hover.table-bordered
+  %thead
+    %tr
+      %th Match/Event
+      %th Tipster
+      %th Sport
+      %th Odds
+      %th Amount
+      %th Create date
+      %th Status
+      %th Action
+  %tbody
+    - @tips.each do |tip|
+      %tr
+        %td= tip.match_name
+        %td.text-info
+          - if tip.author.is_a? Tipster
+            - author_url = admin_tipster_path(tip.author)
+          - else
+            - author_url = '#'
+          %a{href: author_url }= tip.author_full_name.capitalize
+        %td= tip.sport_name
+        %td= tip.odds
+        %td= tip.amount
+        %td= tip.created_at.strftime(t('time.formats.date_with_time'))
+        %td
+          %span{class: class_for_tip_status(tip.status)}= tip.status_in_string
+        %td
+          %a.text-info{href: admin_tip_path(tip)} Details
+          - if tip.rejectable?
+            |
+            %a.text-danger.btn-reject-tip{href: '#', 'data-url' => reject_admin_tip_path(tip)} Reject
+          - if tip.publishalbe?
+            |
+            %a.text-success.btn-publish-tip{href: '#', 'data-url' => publish_admin_tip_path(tip)} Publish
+#reject-tip-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header.text-center
+        %h3.modal-title Please enter the reason
+      .modal-body
+        = form_tag url: '' do |f|
+          = text_area_tag :reason, nil,id: 'input-reason', class: 'form-control fill-parent', rows: 4
+          %p.error-message-container.text-danger
+          .mas.text-center
+            %button.btn.btn-danger{type: :submit} Reject!
+            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
+
+#publish-tip-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header.text-center
+        %h3.modal-title Are you sure want to publish the tip?
+      .modal-body
+        = form_tag url: '' do |f|
+          .mas.text-center
+            %button.btn.btn-success{type: :submit} Publish!
+            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel

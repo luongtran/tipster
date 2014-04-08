@@ -47,7 +47,7 @@ class Tipster < ActiveRecord::Base
   # ==============================================================================
   has_many :sports_tipsters, class_name: SportsTipsters, dependent: :destroy
   has_many :sports, through: :sports_tipsters
-
+  has_many :tip_journals
   has_one :statistics, class_name: TipsterStatistics
 
   has_many :tips, as: :author do

@@ -14,15 +14,17 @@
         .col-md-12.column
           = render 'layouts/admin/navbar'
       .row.clearfix
-        .container
-          #flash
-            - if notice
-              %div{:class => "alert alert-info fade in", 'data-alert' => "alert"}
-                %a{:class => "close", 'data-dismiss' => 'alert', :href => "#"} &times;
-                = notice
+        #admin-content-wrapper.container
+          .panel
+            .panel-body
+              #flash
+                - if notice
+                  %div{:class => "alert alert-info fade in", 'data-alert' => "alert"}
+                    %a{:class => "close", 'data-dismiss' => 'alert', :href => "#"} &times;
+                    = notice
 
-            - if alert
-              %div{:class => "alert alert-danger fade in", 'data-alert' => "alert"}
-                %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
-                = alert
-          = yield
+                - if alert
+                  %div{:class => "alert alert-danger fade in", 'data-alert' => "alert"}
+                    %a{:class => "close", 'data-dismiss' => "alert", :href => "#"} &times;
+                    = alert
+              = yield

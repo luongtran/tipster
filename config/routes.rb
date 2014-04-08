@@ -171,7 +171,7 @@ TipsterHero::Application.routes.draw do
         get :published
       end
       member do
-        post :approved
+        post :publish # approved
         post :reject
       end
     end

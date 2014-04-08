@@ -128,9 +128,14 @@ en:
     free_plan_alert: 'You cannot follow any tipsters with Free plan, please choose another.'
     limit_add_tipster: "You can add only addtional %{count} tipsters."
   tip:
+    journals:
+      created: "created a new tip"
+      rejected: "rejected the tip"
+      published: "published the tip"
+      finished: "finished the tip"
     created_successfully: 'A tip created successfully!'
     statuses:
-      waiting_for_approved: 'Waiting for approved'
+      waiting_for_approval: 'Waiting for approval'
       published: 'Published'
       rejected: 'Rejected'
       finished: 'Finished'

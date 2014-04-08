@@ -1,10 +1,11 @@
-.container
-  %ul.list-inline
+%ul.list-inline.text-center
+  %li
+    %a.btn.btn-default.btn-sm{href: admin_tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
+  - @sports.each do |sport|
     %li
-      %a.btn.btn-default.btn-sm{href: admin_tipsters_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
-    - @sports.each do |sport|
-      %li
-        %a.btn.btn-default.btn-sm{href: admin_tipsters_path(sport_filter_param(sport.name.downcase)), class: class_for_sport_filter(sport.name)}= sport.name.titleize
+      %a.btn.btn-default.btn-sm{href: admin_tipsters_path(sport_filter_param(sport.code)),
+          class: class_for_sport_filter(sport.code)}= sport.name.titleize
+.col-md-10.col-md-offset-1
   .pull-left
     %ul.list-inline.list-unstyled.mbn.rank-ranges
       - TipsterStatistics::RANKING_RANGES.each do |range|
@@ -12,44 +13,43 @@
           %a{href: admin_tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
             = t("tipster.ranking.ranges.#{range}").titleize
   .pull-right
-    %span.mrs.text-muted Filter by status
-    = select_tag :status, options_for_select(tipster_statuses_for_select(tipsters_path)), id: 'tipster_statuses_filer'
-  %table.table.table-hover.table-bordered
-    %thead
+    %span.mrs.text-muted Status
+    = select_tag :status, options_for_select(tipster_statuses_for_select(admin_tipsters_path)), class: 'select-as-links'
+%table.table.table-hover.table-bordered.table-striped
+  %thead
+    %tr
+      %th Tipster
+      %th Profit
+      %th Yield
+      %th
+        = ("N" + content_tag(:sup, 'o')).html_safe
+        of tips
+      %th Hit Rate
+      %th Avg.Odds
+      %th Profitable Months
+      %th Actions
+  %tbody
+    - @tipsters.each_with_index do |tipster,index|
       %tr
-        %th Tipster
-        %th Profit
-        %th Yield
-        %th
-          = ("N" + content_tag(:sup, 'o')).html_safe
-          of tips
-        %th Hit Rate
-        %th Avg.Odds
-        %th Profitable Months
-        %th Actions
-    %tbody
-      - @tipsters.each_with_index do |tipster,index|
-        %tr
-          %td
-            %a.tipster-name{href: '#'}
-              = tipster.full_name
-            -#.tipster-profit-chart
-            -#  = image_tag profit_img_chart_url_for(tipster.profit_data_for_chart), alt: 'Profit chart'
-          %td= profit_in_string tipster.profit
-          %td= yield_in_string tipster.yield
-          %td= tipster.number_of_tips
-          %td= hit_rate_in_string tipster.hit_rate
-          %td= tipster.avg_odds
-          %td= tipster.profitable_months
-          %td
-            %a.text-info{href: '#'}
-              Edit
-            |
-            %a.text-danger{href: '#'}
-              Lock
+        %td
+          %a.tipster-name{href: admin_tipster_path(tipster)}
+            = tipster.full_name
+          -#  = image_tag profit_img_chart_url_for(tipster.profit_data_for_chart), alt: 'Profit chart'
+        %td= profit_in_string tipster.profit
+        %td= yield_in_string tipster.yield
+        %td= tipster.number_of_tips
+        %td= hit_rate_in_string tipster.hit_rate
+        %td= tipster.avg_odds
+        %td= profitable_months_in_string tipster.profitable_months, tipster.total_months
+        %td
+          %a.text-info{href: '#'}
+            Edit
+          |
+          %a.text-danger{href: '#'}
+            Lock
 
-  - if @tipsters.empty?
-    .text-center.clearfix
-      %br
-      %p.text-warning
-        Not found any tipsters match!
+- if @tipsters.empty?
+  .text-center.clearfix
+    %br
+    %p.text-warning
+      Not found any tipsters match!

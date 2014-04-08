@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140407115706) do
+ActiveRecord::Schema.define(version: 20140408032901) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -293,6 +293,7 @@ ActiveRecord::Schema.define(version: 20140407115706) do
     t.integer  "finished_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "reject_reason"
   end
 
   add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type", using: :btree
