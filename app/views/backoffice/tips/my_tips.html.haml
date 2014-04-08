@@ -42,6 +42,7 @@
           %th Profit
           %th Result
           %th Status
+          %th Action
       %tbody
         - @tips.each do |tip|
           %tr
@@ -75,7 +76,9 @@
               - else
                 \---
             %td
-              = tip.status_in_string
+              %span{class: class_for_tip_status(tip.status)}= tip.status_in_string
+            %td
+              %a.text-info{href: backoffice_tip_path(tip)} Details
     - if @tips.empty?
       .text-center.text-danger
         Not found any

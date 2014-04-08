@@ -49,7 +49,8 @@
               %td= tip.created_at
               %td= tip.odds
               %td= tip.selection
-              %td= tip.status_in_string
+              %td
+                %span{class: class_for_tip_status(tip.status)}= tip.status_in_string
       .text-center
         %a.btn.btn-default.btn-sm{href: backoffice_my_tips_path} More
 .mam

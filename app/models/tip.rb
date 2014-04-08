@@ -191,6 +191,9 @@ class Tip < ActiveRecord::Base
     self.status == STATUS_WAITING_FOR_APPROVAL
   end
 
+  def rejected?
+    self.status == STATUS_REJECTED
+  end
   # Params:
   #  * admin(Admin): the admin has rejected the tip
   #  * reason(string): the reason string
