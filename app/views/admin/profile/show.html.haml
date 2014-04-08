@@ -1,1 +1,23 @@
-%p.text-i The page is still not implement yet.
+.row
+  .col-lg-6
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title= I18n.t('user.account_info')
+      .panel-body
+        = simple_form_for @user, as: :user, url: update_profile_path_for(@user), method: 'POST', html: {class: 'form-horizontal', novalidate: true} do |f|
+          = f.input :full_name, input_html: {class: 'input-sm'}
+          .form-group
+            .col-sm-offset-4.col-sm-7
+              %button.btn.btn-primary{type: "submit"}= t('user.update_account')
+  .col-lg-6
+    .panel.panel-default
+      .panel-heading
+        %h4.panel-title= I18n.t('user.change_password')
+      .panel-body
+        = simple_form_for @account, as: :account, url: change_password_path_for(@user), method: 'POST', html: {class: 'form-horizontal'} do |f|
+          = f.input :current_password, required: true, input_html: {class: 'input-sm'}
+          = f.input :password, required: true, input_html: {class: 'input-sm'}
+          = f.input :password_confirmation, required: true, input_html: {class: 'input-sm'}
+          .form-group
+            .col-sm-offset-4.col-sm-7
+              %button.btn.btn-primary{type: "submit"}= t('user.change_password')

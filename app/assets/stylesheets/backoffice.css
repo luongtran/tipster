@@ -13,6 +13,11 @@
     background-color: #fff;
 }
 
+.login-form-wrapper {
+    padding: 10px;
+    border: 1px solid #dadada;
+}
+
 .alert {
     padding: 5px 15px;
 }

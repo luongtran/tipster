@@ -143,7 +143,8 @@ class Tip < ActiveRecord::Base
     "#{self.id}-#{self.match.try(:name)}".parameterize
   end
 
-  # Call after admin validate the tip. Send tip and subtract bankroll
+  # Call admin validate the bet and match of tip is valid.
+  # Do send tip and subtract bankroll
   def published!(admin)
     unless admin.is_a? Admin
       raise "The tip can not publish by #{admin.class.name}"
@@ -154,8 +155,31 @@ class Tip < ActiveRecord::Base
         published_by: admin.id
     )
     TipJournal.write_event_published(self, admin)
-
     # Do sending SMS, email
+  end
+
+  # Params:
+  #  * admin(Admin): the admin has rejected the tip
+  #  * reason(string): the reason string
+  def reject!(admin, reason)
+    unless admin.is_a?(Admin)
+      raise "The author object must be a Admin."
+    end
+    update_status(STATUS_REJECTED)
+    update_column :reject_reason, reason
+    TipJournal.write_event_rejected(self, admin)
+  end
+
+  def finnish!(admin)
+    unless admin.is_a?(Admin)
+      raise "The author object must be a Admin."
+    end
+    self.update_attributes!(
+        finished_at: Time.now,
+        finished_by: admin.id,
+        status: STATUS_FINISHED
+    )
+    TipJournal.write_event_finished(self, admin)
   end
 
   def published?
@@ -182,29 +206,26 @@ class Tip < ActiveRecord::Base
     DateUtil.in_time_zone(self.created_at, I18n.t('time.formats.date_with_time'))
   end
 
-  # Check the tip can reject or not
+  # Check the tip can be reject or not
   def rejectable?
     self.status == STATUS_WAITING_FOR_APPROVAL
   end
 
-  def publishalbe?
+  # Check the tip can be publish or not
+  def publishable?
     self.status == STATUS_WAITING_FOR_APPROVAL
   end
 
+  # Check the tip can be finish or not
+  def finishable?
+    self.status == STATUS_PUBLISHED
+  end
+
+  # Check the tip is currently rejected or not or not
   def rejected?
     self.status == STATUS_REJECTED
   end
-  # Params:
-  #  * admin(Admin): the admin has rejected the tip
-  #  * reason(string): the reason string
-  def reject!(admin, reason)
-    unless admin.is_a?(Admin)
-      raise "The author object must be a Admin."
-    end
-    update_status(STATUS_REJECTED)
-    update_column :reject_reason, reason
-    TipJournal.write_event_rejected(self, admin)
-  end
+
 
   # ===========================================================================
   # PRIVATE METHODS

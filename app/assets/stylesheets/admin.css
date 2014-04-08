@@ -23,3 +23,8 @@
 textarea.fill-parent {
     max-width: 100%;
 }
+
+.login-form-wrapper {
+    padding: 10px;
+    border: 1px solid #dadada;
+}

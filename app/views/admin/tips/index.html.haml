@@ -30,9 +30,12 @@
           - if tip.rejectable?
             |
             %a.text-danger.btn-reject-tip{href: '#', 'data-url' => reject_admin_tip_path(tip)} Reject
-          - if tip.publishalbe?
+          - if tip.publishable?
             |
             %a.text-success.btn-publish-tip{href: '#', 'data-url' => publish_admin_tip_path(tip)} Publish
+          - if tip.finishable?
+            |
+            %a.text-success.btn-finish-tip{href: '#', 'data-url' => finish_admin_tip_path(tip)} Finish
 #reject-tip-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
   .modal-dialog
     .modal-content
@@ -50,9 +53,20 @@
   .modal-dialog
     .modal-content
       .modal-header.text-center
-        %h3.modal-title Are you sure want to publish the tip?
+        %h3.modal-title Are you sure want to Publish the tip?
       .modal-body
         = form_tag url: '' do |f|
           .mas.text-center
             %button.btn.btn-success{type: :submit} Publish!
+            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
+
+#finish-tip-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header.text-center
+        %h3.modal-title Are you sure want to Finish the tip?
+      .modal-body
+        = form_tag url: '' do |f|
+          .mas.text-center
+            %button.btn.btn-success{type: :submit} Finish!
             %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel

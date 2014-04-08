@@ -129,6 +129,8 @@ module ApplicationHelper
       backoffice_update_profile_path
     elsif user.is_a? Subscriber
       update_profile_path
+    elsif user.is_a? Admin
+      admin_update_profile_path
     end
   end
 
@@ -138,6 +140,8 @@ module ApplicationHelper
       backoffice_change_password_path
     elsif user.is_a? Subscriber
       change_password_path
+    elsif user.is_a? Admin
+      admin_change_password_path
     end
   end
 

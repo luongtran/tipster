@@ -115,7 +115,6 @@ TipsterHero::Application.routes.draw do
       post :update_profile, to: :update
       post :change_password
       post :change_avatar
-      post :crop_avatar
       post :update_description
     end
 
@@ -156,6 +155,7 @@ TipsterHero::Application.routes.draw do
     get '/dashboard', to: 'home#dashboard'
     controller :profile do
       get :my_profile, to: :show
+      post :update_profile, to: :update
       post :change_password
     end
 
@@ -173,6 +173,7 @@ TipsterHero::Application.routes.draw do
       member do
         post :publish # approved
         post :reject
+        post :finish
       end
     end
   end

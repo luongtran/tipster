@@ -26,7 +26,7 @@ $(document).ready(function () {
             return false;
         }
     });
-    /* Toogle publish tip modal */
+    /* Toogle publish tip confirm modal */
     $('.btn-publish-tip').on('click', function () {
         var $modal = $('#publish-tip-modal');
         $modal.find('form').attr('action', $(this).attr('data-url'));
@@ -34,4 +34,11 @@ $(document).ready(function () {
         return false;
     });
 
+    /* Toogle finish tip confirm modal */
+    $('.btn-finish-tip').on('click', function () {
+        var $modal = $('#finish-tip-modal');
+        $modal.find('form').attr('action', $(this).attr('data-url'));
+        $modal.modal();
+        return false;
+    });
 });

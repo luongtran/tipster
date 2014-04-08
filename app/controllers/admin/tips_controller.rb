@@ -21,15 +21,27 @@ class Admin::TipsController < Admin::AdminBaseController
     redirect_to admin_tips_url, alert: 'The tip cannot be rejected.'
   end
 
+  # The tip and bet is valid and admin want to approve the tip
   def publish
     @tip = Tip.find(params[:id])
-    if @tip.publishalbe?
+    if @tip.publishable?
       @tip.published!(current_admin)
       redirect_to admin_tips_url, notice: 'The tip has been published.'
     else
       redirect_to admin_tips_url, alert: 'The tip cannot be publish.'
     end
+  end
 
+  # The match ended and admin want to closed the tip
+  # Substract or add money to tipster bankroll
+  def finish
+    @tip = Tip.find(params[:id])
+    if @tip.finishable?
+      @tip.finnish!(current_admin)
+      redirect_to admin_tips_url, notice: 'The tip has been closed.'
+    else
+      redirect_to admin_tips_url, alert: 'The tip cannot be closed.'
+    end
     publish_admin_tip_path
   end
 end

@@ -6,6 +6,6 @@ class Admin::HomeController < Admin::AdminBaseController
   end
 
   def dashboard
-    @tip_journals = TipJournal.includes(:author, :tip).order('created_at desc')
+    @tip_journals = TipJournal.includes(:author, tip: [:match]).order('created_at desc')
   end
 end
