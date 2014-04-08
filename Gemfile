@@ -6,15 +6,14 @@ gem 'rails', '4.0.0'
 gem 'sqlite3'
 gem 'mysql2', '0.3.13'
 # Use SCSS for stylesheets
-gem 'sass-rails'
+gem 'sass-rails', '~> 4.0.0'
 gem 'sass', '>= 3.3.0.rc.2'
-
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
-
+gem 'sprockets', '2.11.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
@@ -101,7 +100,7 @@ gem 'devise_security_extension'
 gem 'actionpack'
 gem 'nokogiri'
 gem 'carrierwave'
-gem 'rmagick'
+gem 'rmagick', :require => false
 gem 'fog'
 
 # For get google image chart
