@@ -26,9 +26,9 @@
   .modal-dialog
     .modal-content
       .modal-header.text-center
-        %h3.modal-title This tips is win or lose?
+        %h3.modal-title What is result of the tip?
       .modal-body
-        = form_tag url: '', class: 'form-horizontal' do |f|
+        = simple_form_for :nothing, url: '', class: 'form-horizontal' do |f|
           .text-center
             .radio-inline
               %label

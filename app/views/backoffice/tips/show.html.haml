@@ -1,5 +1,5 @@
 %h2.text-info
-  = image_tag @tip.sport.icon_path
+  %i{class: class_for_sport_icon(@tip.sport_code)}
   = @tip.match.try(:name) || @tip.event
 -#.form-horizontal
 -#  .form-group
