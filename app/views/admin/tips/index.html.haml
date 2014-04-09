@@ -1,3 +1,12 @@
+%ul.list-inline.text-center
+  %li
+    %a.btn.btn-default.btn-sm{href: admin_tips_path(sport_filter_param(nil)), class: class_for_sport_filter('all')} All
+  - @sports.each do |sport|
+    %li
+      %a.btn.btn-default.btn-sm{href: admin_tips_path(sport_filter_param(sport.code)),
+          class: class_for_sport_filter(sport.code)}
+        %i{class: class_for_sport_icon(sport.code)}
+        = sport.name.titleize
 %table.table.table-hover.table-bordered
   %thead
     %tr
@@ -12,7 +21,9 @@
   %tbody
     - @tips.each do |tip|
       %tr
-        %td= tip.match_name
+        %td
+          %a{href: admin_tip_path(tip)}
+            = tip.match_name
         %td.text-info
           - if tip.author.is_a? Tipster
             - author_url = admin_tipster_path(tip.author)
@@ -26,47 +37,19 @@
         %td
           %span{class: class_for_tip_status(tip.status)}= tip.status_in_string
         %td
-          %a.text-info{href: admin_tip_path(tip)} Details
+          -#%a.btn.btn-default.btn-xs.text-info{href: admin_tip_path(tip)}
+          -#  %i.fa.fa-eye
+          -#  Detail
           - if tip.rejectable?
-            |
-            %a.text-danger.btn-reject-tip{href: '#', 'data-url' => reject_admin_tip_path(tip)} Reject
+            %a.btn.btn-default.btn-xs.text-danger.btn-reject-tip{href: '#', 'data-url' => reject_admin_tip_path(tip)}
+              %i.fa.fa-times-circle
+              Reject
           - if tip.publishable?
-            |
-            %a.text-success.btn-publish-tip{href: '#', 'data-url' => publish_admin_tip_path(tip)} Publish
+            %a.btn.btn-default.btn-xs.text-success.btn-publish-tip{href: '#', 'data-url' => publish_admin_tip_path(tip)}
+              %i.fa.fa-globe
+              Publish
           - if tip.finishable?
-            |
-            %a.text-success.btn-finish-tip{href: '#', 'data-url' => finish_admin_tip_path(tip)} Finish
-#reject-tip-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
-  .modal-dialog
-    .modal-content
-      .modal-header.text-center
-        %h3.modal-title Please enter the reason
-      .modal-body
-        = form_tag url: '' do |f|
-          = text_area_tag :reason, nil,id: 'input-reason', class: 'form-control fill-parent', rows: 4
-          %p.error-message-container.text-danger
-          .mas.text-center
-            %button.btn.btn-danger{type: :submit} Reject!
-            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
-
-#publish-tip-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
-  .modal-dialog
-    .modal-content
-      .modal-header.text-center
-        %h3.modal-title Are you sure want to Publish the tip?
-      .modal-body
-        = form_tag url: '' do |f|
-          .mas.text-center
-            %button.btn.btn-success{type: :submit} Publish!
-            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
-
-#finish-tip-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
-  .modal-dialog
-    .modal-content
-      .modal-header.text-center
-        %h3.modal-title Are you sure want to Finish the tip?
-      .modal-body
-        = form_tag url: '' do |f|
-          .mas.text-center
-            %button.btn.btn-success{type: :submit} Finish!
-            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
+            %a.btn.btn-default.btn-xs.text-success.btn-finish-tip{href: '#', 'data-url' => finish_admin_tip_path(tip)}
+              %i.fa.fa-check-square
+              Finish
+= render 'action_modal_boxs'

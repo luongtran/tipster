@@ -1,0 +1,45 @@
+#reject-tip-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header.text-center
+        %h3.modal-title Please enter the reason
+      .modal-body
+        = form_tag url: '' do |f|
+          = text_area_tag :reason, nil,id: 'input-reason', class: 'form-control fill-parent', rows: 4
+          %p.error-message-container.text-danger
+          .mas.text-center
+            %button.btn.btn-danger{type: :submit} Reject!
+            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
+
+#publish-tip-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header.text-center
+        %h3.modal-title Are you sure want to Publish the tip?
+      .modal-body
+        = form_tag url: '' do |f|
+          .mas.text-center
+            %button.btn.btn-success{type: :submit} Publish!
+            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
+
+#finish-tip-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header.text-center
+        %h3.modal-title This tips is win or lose?
+      .modal-body
+        = form_tag url: '', class: 'form-horizontal' do |f|
+          .text-center
+            .radio-inline
+              %label
+                = radio_button_tag :result, 1
+                %span.text-success Win
+            .radio-inline
+              %label
+                = radio_button_tag :result, 0
+                %span.text-danger Lose
+            %p.text-warning
+              Note: This action cannot be undo.
+          .mas.text-center
+            %button.btn.btn-success{type: :submit} Finish!
+            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel

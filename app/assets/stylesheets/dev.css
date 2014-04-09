@@ -171,22 +171,6 @@ li.step-seperator-container {
     font-size: 13px;
 }
 
-/* Flash message container  */
-.flash-container {
-    padding: 0;
-    margin-bottom: 10px;
-}
-
-#flash {
-    text-align: center;
-}
-
-.alert {
-    padding: 5px 10px;
-    margin-bottom: 0px;
-    border-radius: 2px;
-}
-
 .tipster-list {
     padding-top: 0;
 }
@@ -439,6 +423,7 @@ tr.additional {
     font-size: 50px;
     font-weight: bold;
 }
+
 .tr-area-statistics {
     cursor: pointer;
 }

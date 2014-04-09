@@ -139,6 +139,10 @@ en:
       published: 'Published'
       rejected: 'Rejected'
       finished: 'Finished'
+    result:
+      win: 'Win'
+      lose: 'Lose'
+      void: 'Void'
   errors:
     messages:
       invalid_date: "is not a valid date"

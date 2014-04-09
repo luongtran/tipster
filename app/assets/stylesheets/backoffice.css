@@ -7,6 +7,7 @@
  *= require select2-bootstrap
  *= require bootsy
  *= require flags
+ *= require common
  */
 
 .bgw {
@@ -177,4 +178,9 @@ label.control-label {
 .lk-select-competition.active {
     font-weight: bold;
     background-color: #eee;
+}
+
+.btn-normal {
+    background-color: #fff;
+    border-color: #ccc;
 }

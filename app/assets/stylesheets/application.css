@@ -18,6 +18,7 @@
  *= require partials/_fonts
  *= require font-awesome.min
  *= require bootstrap-social
+ *= require common
  *= require dev
  *= require flags
  */

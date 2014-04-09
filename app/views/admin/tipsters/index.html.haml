@@ -4,7 +4,9 @@
   - @sports.each do |sport|
     %li
       %a.btn.btn-default.btn-sm{href: admin_tipsters_path(sport_filter_param(sport.code)),
-          class: class_for_sport_filter(sport.code)}= sport.name.titleize
+          class: class_for_sport_filter(sport.code)}
+        %i{class: "i-#{sport.code}"}
+        = sport.name.titleize
 .col-md-10.col-md-offset-1
   .pull-left
     %ul.list-inline.list-unstyled.mbn.rank-ranges
@@ -13,8 +15,9 @@
           %a{href: admin_tipsters_path(ranking_param(range)), class: class_for_current_ranking_range(range)}
             = t("tipster.ranking.ranges.#{range}").titleize
   .pull-right
-    %span.mrs.text-muted Status
+    %span.text-muted Status
     = select_tag :status, options_for_select(tipster_statuses_for_select(admin_tipsters_path)), class: 'select-as-links'
+.clearfix.mas
 %table.table.table-hover.table-bordered.table-striped
   %thead
     %tr

@@ -383,12 +383,8 @@ module ApplicationHelper
     "flag-" << areas_map["#{opta_area_id}"].downcase
   end
 
-
-  def icon_path_for_sport(code)
-    if code == 'soccer'
-      code = 'football'
-    end
-    "/assets/sport-icons/i_#{code}.png"
+  def class_for_sport_icon(code)
+    "i-#{code}"
   end
 
   def adding_price_show(price)
@@ -434,8 +430,13 @@ module ApplicationHelper
   end
 
   def profit_in_string(profit, include_unit = false)
-    sign = '+' if profit > 0
-    "#{sign}#{profit} #{I18n.t('tipster.units') if include_unit}"
+    if profit == 0
+      # Profit is 'Void' with some the handicap bets
+      return I18n.t('tip.result.void')
+    else
+      sign = '+' if  profit > 0
+      "#{sign}#{profit} #{I18n.t('tipster.units') if include_unit}"
+    end
   end
 
   def hit_rate_in_string(hit_rate)
@@ -464,4 +465,5 @@ module ApplicationHelper
         ''
     end
   end
+
 end

@@ -12,9 +12,13 @@
     %ul.nav.navbar-nav
       - if current_admin
         %li
-          %a{href: admin_tipsters_path} Tipters
+          %a{href: admin_tipsters_path}
+            %i.fa.fa-group
+            Tipters
         %li
-          %a{href: admin_tips_path} Tips
+          %a{href: admin_tips_path}
+            %i.fa.fa-comments-o
+            Tips
     %ul.nav.navbar-nav.navbar-right
       - if account_signed_in?
         %li.dropdown

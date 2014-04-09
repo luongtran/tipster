@@ -1,0 +1,17 @@
+/*
+  *= require app/sport_icons.css
+/* Flash message container  */
+.flash-container {
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+#flash {
+    text-align: center;
+}
+
+.alert {
+    padding: 5px 10px;
+    margin-bottom: 0px;
+    border-radius: 2px;
+}

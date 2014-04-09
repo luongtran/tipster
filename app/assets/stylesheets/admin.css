@@ -2,6 +2,7 @@
   *= require_tree ../../../vendor/assets/stylesheets/framework/bootstrap
   *= require font-awesome.min
   *= require partials/_common
+  *= require common
 */
 
 .text-i {
@@ -27,4 +28,44 @@ textarea.fill-parent {
 .login-form-wrapper {
     padding: 10px;
     border: 1px solid #dadada;
+}
+
+.img-fill {
+    width: 100%;
+}
+
+ul.fix-padding-left {
+    padding-left: 18px;
+}
+
+.tipster-avatar-medium {
+    max-width: 72px;
+    max-max-height: 72px;
+}
+
+/*.tip-info .tipster-info {*/
+/*padding-right: 15px;*/
+/*}*/
+
+.tip-info .tip-details {
+    border-left: 1px solid #eee;
+    padding-left: 15px;
+}
+
+.tipster-avatar-mini {
+    max-width: 48px;
+    max-height: 48px;
+}
+
+.tip-details-table {
+    margin-left: 15px;
+}
+
+.tip-details-table tr td {
+    font-size: 16px;
+}
+
+.match-name {
+    font-size: 20px;
+    font-weight: bold;
 }

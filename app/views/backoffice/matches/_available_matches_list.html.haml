@@ -9,7 +9,10 @@
   - matches_grouped.each do |group, matches|
     - if group_by == 'sport'
       - sport = matches.first.sport
-      - group_title = "#{image_tag sport.icon_path} #{sport.name.titleize}".html_safe
+      -#%i{class: "i-#{sport.code}"}
+      - group_title = content_tag :span do
+        %i{class: "i-#{sport.code}"}
+        = sport.name.titleize
     - else
       - group_title = group.strftime("%A - %d %b %Y")
 
@@ -20,7 +23,7 @@
 
           %a{"data-parent" => "#matches-on-date", "data-toggle" => "collapse", href: "#abcxyz-panel-#{index}"}
             %span.text-bold
-              = group_title
+              = group_title.html_safe
             %span.text-muted
               = "(#{matches.count})"
       .panel-collapse.collapse{id: "abcxyz-panel-#{index}", class: "#{'in' if index == 1}" }
@@ -34,7 +37,7 @@
 
                   .text-muted
                     - unless group_by == 'sport'
-                      = image_tag m.sport.icon_path
+                      %i{class: class_for_sport_icon(m.sport_code)}
                       = m.sport.name.titleize
                       \/
                     = m.competition.try(:name)

@@ -46,7 +46,7 @@
                     - unless sport_statistics[:number_of_tips].zero?
                       %tr
                         %td
-                          %img{src: icon_path_for_sport(sport_statistics[:sport_code])}
+                          %i{class: class_for_sport_icon(sport_statistics[:sport_code])}
                           = sport_statistics[:sport_name]
                         %td= profit_in_string sport_statistics[:profit]
                         %td= yield_in_string sport_statistics[:yield]

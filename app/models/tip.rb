@@ -18,6 +18,7 @@
 #  status          :integer          not null
 #  free            :boolean          default(FALSE)
 #  reject_reason   :text
+#  result          :datetime         string
 #  published_by    :integer
 #  published_at    :datetime
 #  finished_at     :datetime
@@ -26,13 +27,16 @@
 #  updated_at      :datetime
 #
 
-
 class Tip < ActiveRecord::Base
 
   STATUS_WAITING_FOR_APPROVAL = 0
   STATUS_PUBLISHED = 1
   STATUS_REJECTED = 2
   STATUS_FINISHED = 3
+
+  RESULT_WIN = 'win'
+  RESULT_LOSE = 'lose'
+  RESULT_VOID = 'void' # with handicap bets
 
   STATUSES_MAP = {
       STATUS_WAITING_FOR_APPROVAL => 'waiting_for_approval',
@@ -48,10 +52,10 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   belongs_to :author, polymorphic: true
 
+  # I don't trust the id of record :)
   belongs_to :sport, foreign_key: :sport_code, primary_key: :code
   belongs_to :bet_type, foreign_key: :bet_type_code, primary_key: :code
   belongs_to :bookmarker, foreign_key: :bookmarker_code, primary_key: :code
-
   belongs_to :match, foreign_key: :match_id, primary_key: :opta_match_id
 
   # ===========================================================================
@@ -84,6 +88,7 @@ class Tip < ActiveRecord::Base
 
   delegate :name, to: :sport, prefix: true
   delegate :name, to: :match, prefix: true
+  delegate :name, to: :bet_type, prefix: true
   delegate :full_name, to: :author, prefix: true
   # ===========================================================================
   # Class METHODS
@@ -170,7 +175,10 @@ class Tip < ActiveRecord::Base
     TipJournal.write_event_rejected(self, admin)
   end
 
-  def finnish!(admin)
+  # Params:
+  #  * admin(Admin): the admin has rejected the tip
+  #  * result(boolean): the tip is win | lose
+  def finnish!(admin, result)
     unless admin.is_a?(Admin)
       raise "The author object must be a Admin."
     end
@@ -182,9 +190,6 @@ class Tip < ActiveRecord::Base
     TipJournal.write_event_finished(self, admin)
   end
 
-  def published?
-    !!self.published_at
-  end
 
   def published_date
     self.published_at.to_date
@@ -206,9 +211,22 @@ class Tip < ActiveRecord::Base
     DateUtil.in_time_zone(self.created_at, I18n.t('time.formats.date_with_time'))
   end
 
-  # Check the tip can be reject or not
-  def rejectable?
-    self.status == STATUS_WAITING_FOR_APPROVAL
+  # Check the current status of tip
+  def published?
+    # He I don't use the static attr because a finished tip is also published
+    !!self.published_at
+  end
+
+  # Check the current status of tip
+  def rejected?
+    self.status == STATUS_REJECTED
+  end
+
+  alias_method :resubmitable?, :rejected?
+
+  # Check the current status of tip
+  def finished?
+    self.status == STATUS_FINISHED
   end
 
   # Check the tip can be publish or not
@@ -216,16 +234,12 @@ class Tip < ActiveRecord::Base
     self.status == STATUS_WAITING_FOR_APPROVAL
   end
 
+  alias_method :rejectable?, :publishable?
+
   # Check the tip can be finish or not
   def finishable?
     self.status == STATUS_PUBLISHED
   end
-
-  # Check the tip is currently rejected or not or not
-  def rejected?
-    self.status == STATUS_REJECTED
-  end
-
 
   # ===========================================================================
   # PRIVATE METHODS

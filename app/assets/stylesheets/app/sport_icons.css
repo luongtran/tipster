@@ -1,0 +1,60 @@
+.i-baseball, .i-basketball, .i-soccer, .i-football_us, .i-handball,
+.i-hockey, .i-horse_racing, .i-rugby, .i-tennis {
+    vertical-align: middle;
+    display: inline-block;
+    background: url('/assets/sport_icons.png') no-repeat;
+}
+
+.i-baseball {
+    background-position: -0px -0px;
+    width: 16px;
+    height: 16px;
+}
+
+.i-basketball {
+    background-position: -16px -0px;
+    width: 16px;
+    height: 16px;
+}
+
+.i-soccer {
+    background-position: -32px -0px;
+    width: 16px;
+    height: 16px;
+}
+
+.i-football_us {
+    background-position: -0px -16px;
+    width: 16px;
+    height: 16px;
+}
+
+.i-handball {
+    background-position: -16px -16px;
+    width: 16px;
+    height: 16px;
+}
+
+.i-hockey {
+    background-position: -32px -16px;
+    width: 16px;
+    height: 16px;
+}
+
+.i-horse_racing {
+    background-position: -0px -32px;
+    width: 16px;
+    height: 16px;
+}
+
+.i-rugby {
+    background-position: -16px -32px;
+    width: 16px;
+    height: 16px;
+}
+
+.i-tennis {
+    background-position: -32px -32px;
+    width: 16px;
+    height: 16px;
+}

@@ -66,7 +66,7 @@
             - sports_competitions.each do |sport, competitions|
               %li
                 %label.tree-toggler.nav-header
-                  %img{src: sport.icon_path}
+                  %i{class: class_for_sport_icon(sport.code)}
                   -# SPORT
                   = sport.name.titleize
                 %ul.nav.nav-list.tree

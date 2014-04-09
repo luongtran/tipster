@@ -2,7 +2,8 @@ class Admin::TipsController < Admin::AdminBaseController
   before_action :authenticate_admin
 
   def index
-    @tips = Tip.includes(:author, :sport, :match).order('created_at desc').limit(10)
+    @tips = Tip.includes(:author, :sport, :match).order('created_at desc').limit(30)
+    @sports = Sport.all
   end
 
   def show
@@ -37,11 +38,10 @@ class Admin::TipsController < Admin::AdminBaseController
   def finish
     @tip = Tip.find(params[:id])
     if @tip.finishable?
-      @tip.finnish!(current_admin)
+      @tip.finnish!(current_admin, (params[:result] == 'win'))
       redirect_to admin_tips_url, notice: 'The tip has been closed.'
     else
       redirect_to admin_tips_url, alert: 'The tip cannot be closed.'
     end
-    publish_admin_tip_path
   end
 end
