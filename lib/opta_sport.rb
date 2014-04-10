@@ -192,6 +192,30 @@ module OptaSport
     end
   end
 
+  module MatchResult
+    class Base
+      attr_accessor :xml_doc, :opta_match_id
+
+      def initialize(xml_doc)
+        @xml_doc = xml_doc
+      end
+    end
+
+    class SoccerMatchResult < Base
+      def read
+        # TODO: in-progress
+        match = @xml_doc.css("match[match_id='#{@opta_match_id || 1662517}']").first
+        {
+            winner: match['winner'],
+            fs_team_a: match['fs_A'],
+            fs_team_b: match['fs_B'],
+            hts_team_a: match['hts_A'],
+            hts_team_b: match['hts_B']
+        }
+      end
+    end
+
+  end
   # ======================================================================
   # Fetcher Classes
   # ======================================================================
@@ -284,6 +308,11 @@ module OptaSport
               'required_params' => [],
               'options_params' => %w(area_id),
               'result_class' => OptaSport::FetchResult::SoccerArea
+          },
+          'get_match_statistics_v2' => {
+              'required_params' => [:id],
+              'options_params' => [],
+              'result_class' => OptaSport::MatchResult::SoccerMatchResult
           },
           'get_competitions' => {
               'required_params' => [],

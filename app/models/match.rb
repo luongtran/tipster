@@ -134,6 +134,14 @@ class Match < ActiveRecord::Base
     self.start_at.to_date
   end
 
+  def result
+    fetcher = OptaSport::Fetcher.send(self.sport_code)
+    result = fetcher.get_match_statistics_v2(
+        id: self.opta_match_id
+    ).read
+    result
+  end
+
   # Find bets and odds from the given bookmarker
   def find_bets(bookmarker)
     bookmarker.odds_feed_module.find_odds_on_match(self)
