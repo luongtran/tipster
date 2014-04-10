@@ -2,14 +2,20 @@
   .panel-heading
     %strong Recent activities
   .panel-body
-    - @tip_journals.each do |event|
-      %p
-        %span= "#{event.author_type}"
-        %span.text-i.text-info.text-bold= "#{event.author_full_name}"
-        = t "tip.journals.#{event.event}"
-        %span.text-i.text-info.text-bold= event.tip.match_name
-        %span on
-        %span.text-i.text-info.text-bold= event.created_at.strftime(t('time.formats.date_with_time'))
+    - @recent_activities.each do |event|
+      .tip-activity-wrap.pas
+        %p
+          - if event.author == current_admin
+            %span.text-i.text-bold= t 'common.you'
+          - else
+            %span.text-i= "#{event.author_type}"
+            %span.text-i.text-black.text-bold= "#{event.author_full_name}"
+          = t "tip.journals.#{event.event}"
+          %span.text-i.text-black.text-bold
+            %a{href: admin_tip_path(event.tip)}
+              = event.tip.match_name
+          %span on
+          %span.text-i.text-muted= event.created_at.strftime(t('time.formats.date_with_time'))
 
 .panel.panel-default
   .panel-heading

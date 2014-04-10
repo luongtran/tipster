@@ -8,6 +8,6 @@ class Admin::HomeController < Admin::AdminBaseController
   end
 
   def dashboard
-    @tip_journals = TipJournal.includes(:author, tip: [:match]).order('created_at desc')
+    @recent_activities = TipJournal.includes(:author, tip: [:match]).order('created_at desc').limit(7)
   end
 end

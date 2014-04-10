@@ -8,14 +8,16 @@
           .tip-activity-wrap.pas
             %p
               - if event.author == current_tipster
-                = t 'common.you'
+                %span.text-i.text-bold= t 'common.you'
               - else
-                %span= "#{event.author_type}"
+                %span.text-i= "#{event.author_type}"
                 %span.text-i.text-black.text-bold= "#{event.author_full_name}"
               = t "tip.journals.#{event.event}"
-              %span.text-i.text-black.text-bold= event.tip.match_name
+              %span.text-i.text-black.text-bold
+                %a{href: backoffice_tip_path(event.tip)}
+                  = event.tip.match_name
               %span on
-              %span.text-i.text-black.text-bold= event.created_at.strftime(t('time.formats.date_with_time'))
+              %span.text-i.text-muted= event.created_at.strftime(t('time.formats.date_with_time'))
   .panel.panel-success
     .panel-heading
       %strong Profit
@@ -61,7 +63,9 @@
         %tbody
           - @recent_tips.each do |tip|
             %tr
-              %td= tip.match.try :name
+              %td
+                %a{href: backoffice_tip_path(tip)}
+                  = tip.match.try :name
               %td= tip.sport_name.titleize
               %td= tip.created_at
               %td= tip.odds

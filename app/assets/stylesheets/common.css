@@ -27,3 +27,7 @@
 .text-black {
     color: #000 !important;
 }
+
+.text-i {
+    font-style: italic;
+}

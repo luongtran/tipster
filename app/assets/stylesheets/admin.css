@@ -5,10 +5,6 @@
   *= require common
 */
 
-.text-i {
-    font-style: italic;
-}
-
 .navbar {
     background: #fff;
 }

@@ -11,7 +11,7 @@ class Backoffice::HomeController < Backoffice::BaseController
   def dashboard
     @tipster = current_tipster.prepare_statistics_data(params)
     @recent_tips = current_tipster.tips.recent
-    @recent_activities = TipJournal.recent_activities_on_tips(@recent_tips.map{|tip| tip.id})
+    @recent_activities = TipJournal.recent_activities_on_tips(@recent_tips.map { |tip| tip.id })
     @subscribers = @tipster.followers
   end
 
