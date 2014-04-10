@@ -87,7 +87,7 @@ class Match < ActiveRecord::Base
         relation = relation.where('name like ?', "%#{params[:search]}%")
       end
 
-      relation.includes(:sport, :competition => [:area])
+      relation.includes(:sport, :competition => [:area]).order('start_at asc')
     end
 
     # Return betable matches at the current time

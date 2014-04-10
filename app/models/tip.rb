@@ -36,7 +36,7 @@ class Tip < ActiveRecord::Base
 
   RESULT_WIN = 'win'
   RESULT_LOSE = 'lose'
-  RESULT_VOID = 'void' # with handicap bets
+  RESULT_VOID = 'void' # only with handicap bets
 
   STATUSES_MAP = {
       STATUS_WAITING_FOR_APPROVAL => 'waiting_for_approval',
