@@ -23,8 +23,6 @@
       .text-center
         %ul.list-inline.list-unstyled.mbn.dates-list
           %li
-            %a{href: backoffice_my_tips_path(date_filter_param(nil)), class: class_for_date_filter('today')}
-              Today
           - date_range_filter_for_tips.each do |date|
             %li
               %a{href: backoffice_my_tips_path(date_filter_param(date[:value])), class: class_for_date_filter(date[:value])}

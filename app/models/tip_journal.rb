@@ -37,7 +37,7 @@ class TipJournal < ActiveRecord::Base
     # Params: * tips(Array of Tip)
     #         * count(Fixnum)
     def recent_activities_on_tips(tips, count = 7)
-      where(tip_id: tips).includes(:author, tip: [:match]).limit(count)
+      where(tip_id: tips).includes(:author, tip: [:match]).order('created_at desc').limit(count)
     end
   end
 end

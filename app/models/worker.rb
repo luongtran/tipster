@@ -32,6 +32,13 @@ class Worker
       end
     end
 
+    def get_match_details(opta_match_id)
+      fetcher = OptaSport::Fetcher.soccer
+      fetcher.get_matches(
+          id: opta_match_id
+      )
+    end
+
     def update_seasons
       # http://api.core.optasports.com/soccer/get_seasons?authorized=yes&active=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
       # Option: id=13&type=competition

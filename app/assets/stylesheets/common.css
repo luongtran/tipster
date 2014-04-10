@@ -31,3 +31,8 @@
 .text-i {
     font-style: italic;
 }
+
+.tip-details-panel .match-name {
+    font-size: 20px;
+    font-weight: bold;
+}

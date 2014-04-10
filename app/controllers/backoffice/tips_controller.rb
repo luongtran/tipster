@@ -2,7 +2,12 @@ class Backoffice::TipsController < Backoffice::BaseController
   before_action :authenticate_tipster
 
   def my_tips
-    @tips = Tip.by_author(current_tipster, params)
+    @tips =
+        if request.query_parameters.empty?
+           current_tipster.tips.recent(10)
+        else
+          Tip.by_author(current_tipster, params)
+        end
     @tipster_sports = current_tipster.sports
   end
 
