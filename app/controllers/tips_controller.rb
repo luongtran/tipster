@@ -5,11 +5,17 @@ class TipsController < ApplicationController
   end
 
   def last
-    @tips = Tip.load_data(params)
+    @tips =
+        if request.query_parameters.empty?
+          Tip.recent_finished(10)
+        else
+          Tip.load_data(params)
+        end
     @sports = Sport.all
   end
 
   def show
     @tip = Tip.includes(:author, :sport).find(params[:id])
   end
+
 end

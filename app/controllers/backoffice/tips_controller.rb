@@ -4,7 +4,7 @@ class Backoffice::TipsController < Backoffice::BaseController
   def my_tips
     @tips =
         if request.query_parameters.empty?
-           current_tipster.tips.recent(10)
+          current_tipster.tips.recent(10)
         else
           Tip.by_author(current_tipster, params)
         end

@@ -139,6 +139,10 @@ class Tip < ActiveRecord::Base
       relation = relation.where(created_at: date.beginning_of_day..date.end_of_day)
       relation
     end
+
+    def recent_finished(count = 10)
+      self.finished.order('created_at desc').limit(count)
+    end
   end
 
   # ===========================================================================
