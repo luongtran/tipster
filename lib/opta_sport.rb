@@ -31,21 +31,20 @@ module OptaSport
   module FetchResult
     class Base
       attr_accessor :xml_doc
-
       def initialize(xml_doc)
         @xml_doc = xml_doc
       end
     end
     # Old matches: http://api.core.optasports.com/soccer/get_matches?end_date=2014-03-25&id=8318&type=season&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-    # Example URL: http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-    # Response XML structure: / > competition > season > round > match
+    # Example URL: http://api.core.optasports.com/soccer/get_matches?type=season&id=8381&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
+    # Response XML structure: / > competition > season > round [> aggr] > match
     # Return array of matches found
     class SoccerMatch < Base
       def all
-        nodes = @xml_doc.css('competition > season > round > match')
+        nodes = @xml_doc.css('match')
         matches = []
         nodes.each do |node|
-          competition = node.parent.parent.parent
+          competition = node.ancestors('competition').first
           matches << {
               opta_match_id: node['match_id'],
               opta_competition_id: competition['competition_id'],
@@ -59,7 +58,6 @@ module OptaSport
         matches
       end
     end
-
     class SoccerCompetition < Base
       def all
         nodes = @xml_doc.css('competition')
@@ -74,7 +72,6 @@ module OptaSport
         competitions
       end
     end
-
     class SoccerArea < Base
       def all
         nodes = @xml_doc.css('area')
@@ -90,13 +87,12 @@ module OptaSport
         areas
       end
     end
-
     class SoccerSeason < Base
       def all
-        nodes = @xml_doc.css('competition > season')
+        nodes = @xml_doc.css('season')
         seasons = []
         nodes.each do |season|
-          competition = season.parent
+          competition = season.ancestors('competition').first
           seasons << {
               opta_season_id: season['season_id'],
               opta_competition_id: competition['competition_id'],
@@ -110,6 +106,7 @@ module OptaSport
     end
     class SoccerMatchLive < Base
     end
+
     class BasketballArea < Base
     end
     class BasketballCompetition < Base
@@ -128,10 +125,10 @@ module OptaSport
     end
     class BasketballMatch < Base
       def all
-        nodes = @xml_doc.css('competition > season > round > match')
+        nodes = @xml_doc.css('match')
         matches = []
         nodes.each do |node|
-          competition = node.parent.parent.parent
+          competition = node.ancestors('competition').first
           matches << {
               opta_match_id: node['match_id'],
               opta_competition_id: competition['competition_id'],
@@ -150,7 +147,7 @@ module OptaSport
         nodes = @xml_doc.css('competition > season')
         seasons = []
         nodes.each do |season|
-          competition = season.parent
+          competition = season.ancestors('competition').first
           seasons << {
               opta_season_id: season['season_id'],
               opta_competition_id: competition['competition_id'],
