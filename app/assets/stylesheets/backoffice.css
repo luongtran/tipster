@@ -37,14 +37,14 @@
     padding: 5px;
 }
 
-.match .bets button:hover {
-
-}
-
 .match .bets {
     border-top: 1px dashed #dadada;
     margin-top: 8px;
     padding: 5px;
+}
+
+.bets-on-match .bet-type-name {
+    border-bottom: 1px solid #dadada;
 }
 
 .bet-choice {

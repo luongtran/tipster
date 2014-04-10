@@ -98,6 +98,9 @@ $(document).ready(function () {
                     } else {
                         Helper.alert_server_error();
                     }
+                },
+                complete: function () {
+                    Helper.destroy_loading_indicator($bets_wrapper);
                 }
             });
             $match_div.addClass('loaded');
@@ -125,18 +128,18 @@ $(document).ready(function () {
         $(this).removeClass('btn-primary');
     });
 
-    $('body').on('click', '.panel-title a.collapsed', function () {
-        $('body').find('.panel').removeClass('panel-success');
-        $('body').find('.panel').addClass('panel-default');
-
-        $(this).parents('.panel:first').removeClass('panel-default');
-        $(this).parents('.panel:first').addClass('panel-success');
-    });
-
-    $('body').on('click', '.panel-title a:not(.collapsed)', function () {
-        $('body').find('.panel').addClass('panel-default');
-        $(this).parents('.panel:first').removeClass('panel-success');
-    });
+//    $('body').on('click', '.panel-title a.collapsed', function () {
+//        $('body').find('.panel').removeClass('panel-success');
+//        $('body').find('.panel').addClass('panel-default');
+//
+//        $(this).parents('.panel:first').removeClass('panel-default');
+//        $(this).parents('.panel:first').addClass('panel-success');
+//    });
+//
+//    $('body').on('click', '.panel-title a:not(.collapsed)', function () {
+//        $('body').find('.panel').addClass('panel-default');
+//        $(this).parents('.panel:first').removeClass('panel-success');
+//    });
 
     /* Create Post data and show popup to confirm select odd*/
     $('body').on('click', '.choice-odd-button', function () {
@@ -232,7 +235,7 @@ $(document).ready(function () {
     });
 
     $('.btn-filter-mode').on('click', function () {
-        var $advanced_search_form = $('#form-advanced-search');
+        var $advanced_search_form = $('#advanced-search-form-wrap');
         if ($('#switch-advanced-search-form').is(':checked')) {
             if (!$advanced_search_form.is(':visible')) {
                 $advanced_search_form.removeClass('hide');
@@ -242,6 +245,12 @@ $(document).ready(function () {
                 $advanced_search_form.addClass('hide');
             }
         }
+    });
+
+    /* Reset form button*/
+    // TODO: Incomplete
+    $('#btn-reset-form-advanced-search-match').on('click', function () {
+        var $form_search = $('form-advanced-search');
     });
 
     /* Left menu on available matches page */

@@ -25,6 +25,9 @@ class Match < ActiveRecord::Base
   STATUS_PLAYED = 'Played' # Match has been played
   STATUS_CANCELLED = 'Cancelled' # Match is cancelled and won't be played again
 
+  MAXIMUM_DAYS_FROM_NOW = 7
+  MIN_TIME_BEFORE_MATCH_START = 1.hours
+
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -50,39 +53,26 @@ class Match < ActiveRecord::Base
 
     def load_data(params = {}, relation = self)
       if params[:sport].present?
-        if params[:sport].is_a? Array
-          relation = relation.where("sport_code in (?)", params[:sport])
-        else
-          sport = Sport.find_by(code: params[:sport])
-          relation = relation.where(sport_code: sport.code) if sport
-        end
-        relation
+        relation = relation.perform_sport_param(params[:sport])
       end
 
-      # Filter competition
       if params[:competition].present?
         relation = relation.where(opta_competition_id: params[:competition])
       end
 
-      # Do filter date
-      if params[:date].present?
-        date = Date.today
-        begin
-          date = params[:date].to_date
-          date = Date.today if date < Date.today
-        rescue => e
-          date = Date.today
-        end
-        start_from = date.beginning_of_day
-        if date == Date.today
-          start_from = DateTime.now + 1.hours
-        end
-        relation = relation.where(start_at: start_from..date.end_of_day)
-      else
-        relation = relation.where("start_at >= ?", Date.today)
+      if params[:min_date].present?
+        # FIXME: how to use start_at as symbol here?
+        relation = relation.where("start_at >= ?", params[:min_date].to_date)
       end
 
-      # Search in name
+      if params[:max_date].present?
+        relation = relation.where("start_at <= ?", params[:max_date].to_date)
+      end
+
+      if params[:on_date].present?
+        relation = relation.perform_date_param(params[:on_date])
+      end
+      # Search in name of match
       if params[:search].present?
         relation = relation.where('name like ?', "%#{params[:search]}%")
       end
@@ -90,10 +80,39 @@ class Match < ActiveRecord::Base
       relation.includes(:sport, :competition => [:area]).order('start_at asc')
     end
 
-    # Return betable matches at the current time
-    def available_now
+    def available_to_create_tips(params)
+      # Add start and max date to limit
+      load_data(
+          params.merge(
+              if params[:on_date].present?
+                {
+                    on_date: params[:on_date].to_date
+                }
+              else
+                {
+                    min_date: Date.today,
+                    max_date: Date.today + MAXIMUM_DAYS_FROM_NOW
+                }
+              end
+          )
+      )
     end
 
+    def perform_sport_param(sport, relation = self)
+      relation.where(sport_code: sport)
+    end
+
+    # Find match with the start time in the given date
+    def perform_date_param(date, relation = self)
+      date = date.to_date
+      if date <= Date.today
+        start_from = DateTime.now + MIN_TIME_BEFORE_MATCH_START
+      else
+        start_from = date.beginning_of_day
+      end
+      relation = relation.where(start_at: start_from..date.end_of_day)
+      relation
+    end
   end
 
   # ==============================================================================

@@ -1,5 +1,5 @@
 class TipJournal < ActiveRecord::Base
-
+  # Example view:
   # <Tipster> has created a new tip: <Match name> at <time>
   # <Admin x> has approved and published a tip at <time>
   # <Admin y> has rejected the tip <Match name> at <time>
@@ -20,7 +20,8 @@ class TipJournal < ActiveRecord::Base
   delegate :full_name, to: :author, prefix: true
   class << self
     # Dynamically create methods: write_event_<event_name>
-    # Params: tip(Tip), author(Tipster|Admin)
+    # Params: * tip(Tip)
+    #         * author(Tipster|Admin)
     EVENTS.each do |event|
       define_method "write_event_#{event}" do |tip, author|
         create(
@@ -30,6 +31,13 @@ class TipJournal < ActiveRecord::Base
             author_type: author.class.name
         )
       end
+    end
+
+    # Find last activities on the given tips
+    # Params: * tips(Array of Tip)
+    #         * count(Fixnum)
+    def recent_activities_on_tips(tips, count = 7)
+      includes(:author).where(tip_id: tips).limit(count)
     end
   end
 end

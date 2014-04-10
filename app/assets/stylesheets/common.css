@@ -15,3 +15,15 @@
     margin-bottom: 0px;
     border-radius: 2px;
 }
+
+.simple-bordered {
+    border: 1px solid #dadada;
+}
+
+.tip-activity-wrap {
+    border-bottom: 1px dashed #dadada;
+}
+
+.text-black {
+    color: #000 !important;
+}

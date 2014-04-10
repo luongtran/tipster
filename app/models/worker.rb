@@ -1,15 +1,13 @@
 class Worker
   DAY_INTERVAL = 7
   class << self
-    # Get matches on active seasons
+    # Get matches by seasons
     # http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
     def update_matches
-      # TODO: after get matches, try to find id on odds feed from betclic
       sports = Sport.where(code: %w(soccer basketball))
       # Load active seasons
       from_date = DateTime.now
       to_date = from_date + DAY_INTERVAL.days
-
       sports.each do |sport|
         seasons = sport.seasons
         seasons.each do |season|

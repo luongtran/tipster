@@ -8,20 +8,21 @@ class ApplicationController < ActionController::Base
 
   rescue_from Exception, :with => :write_log if Rails.env.production?
 
-  # Define 3 helper methods: current_<subscriber|tipster|admin>
-  # to find current signed in user
+  # Define 3 helper methods: current_<subscriber|tipster|admin> to find current signed in user
   [Tipster, Admin, Subscriber].each do |klass|
     method_name = "current_#{klass.name.downcase}"
     define_method method_name do
-      if current_account && current_account.rolable.is_a?(klass)
-        current_account.rolable
-      else
-        nil
-      end
+      instance_variable_get("@current_#{klass.name.downcase}") ||
+          if current_account && current_account.rolable.is_a?(klass)
+            instance_variable_set(:"@current_#{klass.name.downcase}", current_account.rolable)
+          else
+            nil
+          end
     end
 
     helper_method method_name
 
+    # Define 3 methods: authenticate_<subscriber|tipster|admin> to check user signed in
     define_method "authenticate_#{klass.name.downcase}" do
       if !account_signed_in?
         redirect_to_sign_in(klass)
@@ -151,6 +152,9 @@ class ApplicationController < ActionController::Base
     params.require(:account).permit(:email, :password, :password_confirmation)
   end
 
+
+  private
+
   def redirect_to_sign_in(klass)
     if klass == Subscriber
       flash[:sign_in_box] = true
@@ -163,8 +167,6 @@ class ApplicationController < ActionController::Base
       redirect_to root_url
     end
   end
-
-  private
 
   def load_subscribe_data
     @selected_plan = selected_plan

@@ -3,8 +3,8 @@
 .row
   .col-lg-4
     %h3.text-info Available matches
-  .col-lg-7
-    .mal
+  .col-lg-6.col-lg-offset-2
+    .mtl
       = simple_form_for :nothing, url: search_backoffice_matches_path, html: {id: 'form-group-method'} do |f|
         = hidden_field_tag :mode, 'auto'
         %label.col-sm-3 Group by:
@@ -21,8 +21,9 @@
             %label.control-label
               %input.btn-filter-mode#switch-advanced-search-form{type: :radio, name: :group_by, value: 'none'}
               Advanced Search
-  .clearfix
-    = simple_form_for :nothing, url: search_backoffice_matches_path, html: {id: 'form-advanced-search', class: 'form-horizontal hide'} do |f|
+.row
+  #advanced-search-form-wrap.mal.ptm.simple-bordered.clearfix.hide
+    = simple_form_for :nothing, url: search_backoffice_matches_path, html: {id: 'form-advanced-search', class: 'form-horizontal'} do |f|
       = hidden_field_tag :mode, 'auto'
       .col-lg-6
         .col-lg-5
@@ -47,7 +48,7 @@
             %label.control-label.col-sm-4
               Date
             .col-sm-8.input-group
-              %input.input-sm.form-control.date-picker.limited{type: :text, name: 'date', 'data-max-date' => max_date, 'data-min-date' => min_date}
+              %input.input-sm.form-control.date-picker.limited{type: :text, name: 'on_date', 'data-max-date' => max_date, 'data-min-date' => min_date}
               %span.input-group-addon
                 %i.fa.fa-calendar
         .col-lg-4.col-md-offset-1
@@ -57,35 +58,35 @@
               %span.input-group-btn
                 %button.btn.btn-default.btn-sm
                   %i.fa.fa-search
+      -#.col-lg-1
+        %button.btn.btn-default.btn-sm#btn-reset-form-advanced-search-match{type: :button} Reset
   .clearfix
-    .col-lg-3
-      - sports_competitions = @competitions.group_by(&:sport)
-      .competitions-tree-menu.pas{'data-filter-url' => search_backoffice_matches_path(mode: 'auto')}
-        %div{style: "overflow-y: scroll; overflow-x: hidden; height: 500px;"}
-          %ul.nav.nav-list
-            - sports_competitions.each do |sport, competitions|
-              %li
-                %label.tree-toggler.nav-header
-                  %i{class: class_for_sport_icon(sport.code)}
-                  -# SPORT
-                  = sport.name.titleize
-                %ul.nav.nav-list.tree
-                  - areas_competitions = competitions.group_by(&:area)
-                  - areas_competitions.each do |area, competitions|
-                    %li
-                      -# AREA
-                      %label.tree-toggler.nav-header
-                        %img.flag{class: flag_class_for_area_id(area.opta_area_id)}
-                        = area.name
-                      %ul.nav.nav-list.tree{style: "display: none;"}
-                        - competitions.each do |compt|
-                          %li
-                            %a.lk-select-competition.text-info{href: '#', 'data-competition-id' => compt.opta_competition_id, 'data-sport-code' => sport.code}= compt.name
-
-              %li.divider
-    .col-lg-9
-      #available-matches-wrapper{'data-mode' => 'auto'}
-        = render 'available_matches_list', matches: @matches, group_by: 'date', mode: 'auto'
+    -#.col-lg-3#competitions-tree-wrap.competitions-tree-menu.mas.pas{'data-filter-url' => search_backoffice_matches_path(mode: 'auto')}
+    -#  - sports_competitions = @competitions.group_by(&:sport)
+    -#  %div{style: "overflow-y: scroll; overflow-x: hidden; height: 500px;"}
+    -#    %ul.nav.nav-list
+    -#      - sports_competitions.each do |sport, competitions|
+    -#        %li
+    -#          %label.tree-toggler.nav-header
+    -#            %i{class: class_for_sport_icon(sport.code)}
+    -#            -# SPORT
+    -#            = sport.name.titleize
+    -#          %ul.nav.nav-list.tree
+    -#            - areas_competitions = competitions.group_by(&:area)
+    -#            - areas_competitions.each do |area, competitions|
+    -#              %li
+    -#                -# AREA
+    -#                %label.tree-toggler.nav-header
+    -#                  %img.flag{class: flag_class_for_area_id(area.opta_area_id)}
+    -#                  = area.name
+    -#                %ul.nav.nav-list.tree{style: "display: none;"}
+    -#                  - competitions.each do |compt|
+    -#                    %li
+    -#                      %a.lk-select-competition.text-info{href: '#', 'data-competition-id' => compt.opta_competition_id, 'data-sport-code' => sport.code}= compt.name
+    -#
+    -#        %li.divider
+    .col-lg-12#available-matches-wrapper{'data-mode' => 'auto'}
+      = render 'available_matches_list', matches: @matches, group_by: 'date', mode: 'auto'
 -# The hidden dialog to confirm select odd
 #confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
   .modal-dialog.modal-md

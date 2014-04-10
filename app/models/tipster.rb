@@ -52,7 +52,7 @@ class Tipster < ActiveRecord::Base
 
   has_many :tips, as: :author do
     def recent(count = 10)
-      proxy_association.owner.tips.includes(:sport, :match).order('created_at desc').limit(count)
+      proxy_association.owner.tips.includes(:sport, :match).order('tips.created_at desc').limit(count)
     end
   end
 
@@ -217,6 +217,7 @@ class Tipster < ActiveRecord::Base
     self.full_name.split(' ').try(:second).try(:capitalize)
   end
 
+  # Return array of sport codes of the tipster
   def sport_codes
     self.sports.pluck :code
   end
