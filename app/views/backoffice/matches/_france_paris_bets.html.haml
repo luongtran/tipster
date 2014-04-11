@@ -5,7 +5,7 @@
     %a.btn.btn-warning.btn-xs{href: new_backoffice_tip_path(match: match)}
       Create tip with your own bet
 - else
-  .bets-on-match
+  .bets-on-match.pam
     - grouped_bets = bets.group_by{|bet| bet[:name]}
     - grouped_bets.each do |bet_type, g_bets|
       %h4.bet-type-name.text-warning= bet_type

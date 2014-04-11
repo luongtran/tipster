@@ -1,8 +1,8 @@
 = image_tag 'circle_loading.gif', class: 'hide'
-.row
+.col-lg-12
   .mam
     .text-muted
-      %span{class: class_for_sport_icon(sp)}
+      %span{class: class_for_sport_icon(@match.sport_code)}
       = @match.sport.name.titleize
       \/
       = @match.competition.try(:name)
@@ -12,7 +12,7 @@
       %span.text-bold= @match.start_at.strftime("%A %d %b %Y - %H:%M")
   .mam
     %a.btn.btn-sm.btn-warning{href: new_backoffice_tip_path(match: @match)} Create tip with your own bet
-.row.clearfix
+  .clearfix
   %hr
   %h3.text-info Available bets
   .mal
