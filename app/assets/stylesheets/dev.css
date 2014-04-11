@@ -246,6 +246,13 @@ p.button a:hover {
     background: url('/assets/header-bg.jpg') no-repeat top left;
 }
 
+.tipster-avatar-md {
+    max-width: 92px;
+    max-height: 92px;
+    padding: 5px;
+    border: 1px solid #dadada;
+}
+
 .tipster-top-avatar-mini {
     max-width: 48px;
     max-height: 48px;
@@ -426,4 +433,13 @@ tr.additional {
 
 .tr-area-statistics {
     cursor: pointer;
+}
+
+/* Details tip page */
+.tip-details .tipster-name {
+   font-size: 20px;
+}
+
+.tip-details .block .block-title {
+
 }

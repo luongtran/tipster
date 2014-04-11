@@ -16,6 +16,8 @@ class TipsController < ApplicationController
 
   def show
     @tip = Tip.includes(:author, :sport).find(params[:id])
+    @tipster = @tip.author
+    @tipster.prepare_statistics_data({})
   end
 
 end

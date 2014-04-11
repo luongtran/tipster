@@ -2,7 +2,68 @@
   = @tip.match_name
 .container
   .panel.panel-default
-    .panel-header
     .panel-body
-      %h3= @tip.match_name
-      = @tip.created_at_in_string
+      -#%h3= @tip.match_name
+      -#= @tip.published_at_in_string
+      .clearfix.tip-details
+        .col-lg-4
+          .panel.panel-default
+            .panel-heading.text-bold  Author
+            .panel-body
+              - author_url = '#'
+              - if @tip.author.is_a? Tipster
+                - author_url = tipster_path(@tip.author)
+              = image_tag 'demo.jpg', class: 'tipster-avatar-md pull-left mrm'
+              %div
+                %a.text-bold.text-success{href: author_url, target: 'blank'}
+                  %span.tipster-name= @tip.author_full_name.capitalize
+                = image_tag profit_img_chart_url_for(@tipster.profit_values_for_chart, size: '170x50'), alt: 'Profit chart'
+                %br
+                %span.text-bold Yield:
+                = yield_in_string @tipster.yield
+                |
+                %span.text-bold Profit:
+                = profit_in_string @tipster.profit
+        .col-lg-4
+          .panel.panel-default
+            .panel-heading.text-bold  Tip details
+            .panel-body
+              %p
+                %span.text-bold Selection:
+                %span.text-warning= @tip.selection
+              %p
+                %span.text-bold Odds:
+                = @tip.odds
+                = "(#{@tip.bookmarker_code.titleize})"
+              %p
+                %span.text-bold Stake:
+                = profit_in_string @tip.amount, true
+
+        .col-lg-4
+          .panel.panel-default
+            .panel-heading.text-bold  Tip Result
+            .panel-body
+              %p
+                %span.text-bold Match Result:
+                Updating
+              %p
+                %span.text-bold Result:
+                - if @tip.correct?
+                  %span.text-success
+                    &#x2714;
+                - else
+                  %span.text-danger
+                    &#x2718;
+              %p
+                %span.text-bold Profit:
+                - if @tip.correct?
+                  %span.text-success
+                    = profit_in_string @tip.profit,true
+                - else
+                  %span.text-danger
+                    = profit_in_string @tip.profit, true
+      .clearfix
+        .panel.panel-default
+          .panel-heading.text-bold  Advice
+          .panel-body
+            = @tip.advice

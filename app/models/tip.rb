@@ -214,6 +214,10 @@ class Tip < ActiveRecord::Base
     DateUtil.in_time_zone(self.created_at, I18n.t('time.formats.date_with_time'))
   end
 
+  def published_at_in_string
+    DateUtil.in_time_zone(self.published_at, I18n.t('time.formats.date_with_time'))
+  end
+
   # Check the current status of tip
   def published?
     # He I don't use the static attr because a finished tip is also published
