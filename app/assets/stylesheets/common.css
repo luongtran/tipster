@@ -36,3 +36,30 @@
     font-size: 20px;
     font-weight: bold;
 }
+
+.tip-info .tip-details {
+    border-left: 1px solid #eee;
+    padding-left: 15px;
+}
+
+.tipster-avatar-mini {
+    max-width: 48px;
+    max-height: 48px;
+}
+
+.tip-details-table {
+    margin-left: 15px;
+
+}
+
+.tip-details-table tr {
+    line-height: 27px;
+}
+
+.tip-details-table tr td:first-child {
+    min-width: 150px;
+}
+
+.tip-details-table tr td:last-child {
+    font-style: italic;
+}

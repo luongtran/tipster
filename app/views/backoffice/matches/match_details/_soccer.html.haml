@@ -1,22 +1,28 @@
 -# Require variables:
 -# * match(Match)
-%table.table
+%table.tip-details-table
   %tr
-    %td Competition
+    %td.text-bold Competition
     %td= match.competition_name
   %tr
-    %td Start at
+    %td.text-bold Country
+    - area = match.competition.area
+    %td
+      %img.flag{class: flag_class_for_area_id(area.opta_area_id)}
+      = area.name
+  %tr
+    %td.text-bold Start at
     %td= match.start_at.strftime(t('time.formats.date_with_time'))
   %tr
-    %td Status
+    %td.text-bold Status
     %td= match.result.status
 
   %tr
-    %td Winner
+    %td.text-bold Winner
     %td= match.result.winner
   %tr
-    %td Half Time Score
+    %td.text-bold Half Time Score
     %td= match.result.ht_score
   %tr
-    %td Full Time Score
+    %td.text-bold Full Time Score
     %td= match.result.ft_score

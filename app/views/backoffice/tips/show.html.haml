@@ -7,63 +7,64 @@
       - if @tip.resubmitable?
         %a.btn.btn-default.btn-sm.text-warning{href: '#'} Edit
   .panel-body
-    %table.table.tip-details-table
-      %tr
-        %td Created at:
-        %td
-          %span.text-i= @tip.created_at.strftime(t('time.formats.date_with_time'))
-      %tr
-        %td
-          Sport:
-        %td
-          %span.text-i= @tip.sport_name
-      %tr
-        %td
-          Type of bet:
-        %td
-          %span.text-i= @tip.bet_type_name
-      %tr
-        %td Selection:
-        %td
-          %span.text-i= @tip.selection
-      %tr
-        %td Odds:
-        %td
-          %span.text-i= @tip.odds
-      %tr
-        %td Bookmarker:
-        %td
-          %span.text-i= @tip.bookmarker_code.try(:titleize)
-      %tr
-        %td Amount:
-        %td
-          %span.text-i= @tip.amount
-      %tr
-        %td Advice:
-        %td
-          %span.text-i= truncate @tip.advice, length: 120
-      %tr
-        %td Status:
-        %td
-          %span{class: class_for_tip_status(@tip.status)}= @tip.status_in_string
-    %p
+    .col-lg-6
+      %table.tip-details-table
+        %tr
+          %td.text-bold Created at:
+          %td
+            %span= @tip.created_at.strftime(t('time.formats.date_with_time'))
+        %tr
+          %td.text-bold
+            Sport:
+          %td
+            %span= @tip.sport_name
+        %tr
+          %td.text-bold
+            Type of bet:
+          %td
+            %span= @tip.bet_type_name
+        %tr
+          %td.text-bold Selection:
+          %td
+            %span= @tip.selection
+        %tr
+          %td.text-bold Odds:
+          %td
+            %span
+              = @tip.odds
+              = "(#{@tip.bookmarker_code.try(:titleize)})"
+        %tr
+          %td.text-bold Amount:
+          %td
+            %span= @tip.amount
+        %tr
+          %td.text-bold Status:
+          %td
+            %span.text-bold{class: class_for_tip_status(@tip.status)}= @tip.status_in_string
+    .col-lg-6
+      .panel.panel-default
+        .panel-heading
+          Match infor
+        .panel-body
+          = render "backoffice/matches/match_details/#{@match.sport_code}", match: @match
+    .clearfix
       %hr
-    - if @tip.finished?
-      %h4
-        Tip result:
-        - if @tip.correct?
-          %span.text-success.text-bold
-            = t('tip.result.win')
-            = "(#{profit_in_string(@tip.profit,true)})"
-        - else
-          %span.text-danger.text-bold
-            = t('tip.result.lose')
-            = "(#{profit_in_string(@tip.profit,true)})"
+      - if @tip.finished?
+        %h4
+          Tip result:
+          - if @tip.correct?
+            %span.text-success.text-bold
+              = t('tip.result.win')
+              = "(#{profit_in_string(@tip.profit,true)})"
+          - else
+            %span.text-danger.text-bold
+              = t('tip.result.lose')
+              = "(#{profit_in_string(@tip.profit,true)})"
 
-.panel.panel-default
-  .panel-heading
-    %h3.panel-title
-      Match details
-  .panel-body
-    = render "backoffice/matches/match_details/#{@match.sport_code}", match: @match
+-#.panel.panel-default
+-#  .panel-heading
+-#    %h3.panel-title
+-#      Match details
+-#  .panel-body
+-#    = render "backoffice/matches/match_details/#{@match.sport_code}", match: @match
 

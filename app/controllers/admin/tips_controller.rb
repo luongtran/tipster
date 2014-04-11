@@ -7,7 +7,7 @@ class Admin::TipsController < Admin::AdminBaseController
   end
 
   def show
-    @tip = Tip.includes(:author, :sport, :match).find(params[:id])
+    @tip = Tip.includes(:author, :sport, match: [competition: :area]).find(params[:id])
     @match = @tip.match
     @match.preload_result
   end
