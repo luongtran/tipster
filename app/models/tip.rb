@@ -72,7 +72,6 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   # CALLBACKS
   # ===========================================================================
-  before_validation :valid_beting
   before_create :init_status
   after_create :write_event_created
 
@@ -261,9 +260,9 @@ class Tip < ActiveRecord::Base
     self.status = STATUS_WAITING_FOR_APPROVAL
   end
 
-  def valid_beting
-    if self.bet_type && self.bet_type.has_line?
-      self.errors[:line] = "can't be blank" unless self[:line].present?
-    end
-  end
+  #def valid_beting
+  #  if self.bet_type && self.bet_type.has_line?
+  #    self.errors[:line] = "can't be blank" unless self[:line].present?
+  #  end
+  #end
 end

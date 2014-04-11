@@ -37,7 +37,9 @@ class Backoffice::TipsController < Backoffice::BaseController
     # FIXME: the code bellow has wrote at 18h :))
     @match = Match.includes(sport: [:bet_types]).find_by!(opta_match_id: params[:tip][:match_id])
     @bet_type = @match.sport.bet_types.find_by!(code: params[:tip][:bet_type_code])
-    bookmarker = Bookmarker.find_by!(code: 'betclic')
+
+
+    bookmarker = Bookmarker.find_by!(code: params[:tip][:bookmarker_code])
     @tip = Tip.new(tip_params.merge(
                        bet_type_code: @bet_type.code,
                        sport_code: @match.sport.code,

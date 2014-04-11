@@ -57,7 +57,7 @@ module OddsFeed
       end
 
       # === Perform search bets on the given match
-      def find_bets_on_match(match)
+      def find_odds_on_match(match)
         # Find by name of match
         # Get bet with the type if supported
         # Translate to standard code, name ...
@@ -105,11 +105,16 @@ module OddsFeed
                     odd: choice_node['odds']
                 }
                 translated_choice_name = choice_node['name']
+                translated_choice_name.gsub!('Nul', 'Draw')
+                translated_choice_name.gsub!('Plus', 'Over')
+                translated_choice_name.gsub!('Moins', 'Under')
+                translated_choice_name.gsub!('Aucune équipe', 'No Goal')
 
-                if bet_type_support['has_line']
-                  choice[:selection] = "#{choice_node['name']} #{bet_type_node["number"]}"
+                if bet_type_node["number"].present?
+                  choice[:line] = bet_type_node["number"]
+                  choice[:selection] = "#{translated_choice_name} #{bet_type_node["number"]}"
                 else
-                  choice[:selection] = choice_node['name']
+                  choice[:selection] = translated_choice_name
                 end
 
                 found_choices << choice
@@ -143,13 +148,13 @@ module OddsFeed
       # === Start to feed xml
       # Return Nokogiri::Document object
       def go
-        #uri = URI(ODDS_URL)
-        #response = Net::HTTP.get_response(uri)
-        #doc = Nokogiri::XML(response.body)
+        uri = URI(ODDS_URL)
+        response = Net::HTTP.get_response(uri)
+        doc = Nokogiri::XML(response.body)
+        doc
         #file_name = "#{CODE}_#{Time.now.to_i}.xml"
         #File.open(File.join(Rails.root, 'db', 'odds_xmls', file_name), 'w') { |f| doc.write_xml_to f }
-        #doc
-        read_from_local
+        #read_from_local
       end
 
       # === Save to xml file for use later

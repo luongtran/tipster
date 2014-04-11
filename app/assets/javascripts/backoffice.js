@@ -101,6 +101,9 @@ $(document).ready(function () {
                 },
                 complete: function () {
                     Helper.destroy_loading_indicator($bets_wrapper);
+                },
+                error: function () {
+                    Helper.alert_server_error();
                 }
             });
             $match_div.addClass('loaded');
@@ -150,6 +153,8 @@ $(document).ready(function () {
 
         var $button = $(this);
 
+        var $bookmarker_code = $button.attr('data-bookmarker-code');
+        $form.append('<input type="hidden" name="tip[bookmarker_code]" value="' + $bookmarker_code + '"/>');
         var match_name = $button.attr('data-match-name');
         $form.append('<input type="hidden" name="tip[match_name]" value="' + match_name + '"/>');
         var match_id = $button.attr('data-match-id');

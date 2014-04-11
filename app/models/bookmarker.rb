@@ -18,8 +18,8 @@ class Bookmarker < ActiveRecord::Base
   }
 
   class << self
-    def find_odds_feed_module_by(bookmarker)
-      CODE_TO_MODULE[bookmarker.code]
+    def find_odds_feed_module_by(bookmarker_code)
+      CODE_TO_MODULE[bookmarker_code]
     end
   end
   # Return the class responsible to feed odds for bookmarker

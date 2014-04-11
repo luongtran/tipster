@@ -2,7 +2,7 @@
 .row
   .mam
     .text-muted
-      = image_tag @match.sport.icon_path
+      %span{class: class_for_sport_icon(sp)}
       = @match.sport.name.titleize
       \/
       = @match.competition.try(:name)
