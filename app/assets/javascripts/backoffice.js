@@ -84,7 +84,8 @@ $(document).ready(function () {
 
     /* Loading bet from Betclic */
     $('#available-matches-wrapper').on('click', '.btn-view-bets', function () {
-        var $match_div = $(this).closest('.match');
+        var $this = $(this);
+        var $match_div = $this.closest('.match');
         var $bets_wrapper = $match_div.children('.bets');
         if (!$match_div.hasClass('loaded')) {
             Helper.add_loading_indicator($bets_wrapper);
@@ -92,6 +93,9 @@ $(document).ready(function () {
                 url: $match_div.attr('data-url'),
                 type: 'GET',
                 dataType: 'JSON',
+                beforeSend: function () {
+                    $this.addClass('disabled');
+                },
                 success: function (response) {
                     if (response.success) {
                         $bets_wrapper.html(response.html);
@@ -100,6 +104,7 @@ $(document).ready(function () {
                     }
                 },
                 complete: function () {
+                    $this.removeClass('disabled');
                     Helper.destroy_loading_indicator($bets_wrapper);
                 },
                 error: function () {
@@ -276,5 +281,11 @@ $(document).ready(function () {
         return false;
     });
 
-
+    /* Effect hover title of match in available matches list*/
+    $('.match .summary').mouseover(function () {
+        $(this).find('.btn-view-bets').css('opacity', '1');
+    });
+    $('.match .summary').mouseout(function () {
+        $(this).find('.btn-view-bets').css('opacity', '0.5');
+    })
 });

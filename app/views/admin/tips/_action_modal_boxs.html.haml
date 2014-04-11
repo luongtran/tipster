@@ -32,11 +32,11 @@
           .text-center
             .radio-inline
               %label
-                = radio_button_tag :result, 1
+                = radio_button_tag :fetch_result, 1
                 %span.text-success Win
             .radio-inline
               %label
-                = radio_button_tag :result, 0
+                = radio_button_tag :fetch_result, 0
                 %span.text-danger Lose
             %p.text-warning
               Note: This action cannot be undo.

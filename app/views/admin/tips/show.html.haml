@@ -39,6 +39,10 @@
           %td
             %span.text-i= @tip.odds
         %tr
+          %td Bookmarker:
+          %td
+            %span.text-i= @tip.bookmarker_code.try(:titleize)
+        %tr
           %td Amount:
           %td
             %span.text-i= @tip.amount

@@ -184,3 +184,7 @@ label.control-label {
     background-color: #fff;
     border-color: #ccc;
 }
+
+.btn-view-bets {
+    opacity: 0.5;
+}

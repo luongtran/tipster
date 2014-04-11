@@ -1,6 +1,5 @@
-/* Loading content via AJAX */
+/* Automatically load content via AJAX */
 /* Author: Lht */
-
 $(document).ready(function () {
         var ajax_method = 'GET';
         var $content_by_ajaxs = $('.remote-data:not(.loaded)');

@@ -1,3 +1,5 @@
+/* A JS Helper Class for showing flash message, alert, modal box, scoll, loading indicator */
+/* Author: Lht */
 Helper = {
     scroll_to: function (element, delay_time, container, offset) {
         if (!container)
@@ -129,9 +131,5 @@ Helper = {
                  </div> \
             </div>';
         $(html).modal('show');
-    },
-
-    escape_html: function (html) {
-        if (html) return $('<div />').text(html).html();
     }
 };

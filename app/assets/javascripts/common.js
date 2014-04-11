@@ -29,14 +29,11 @@ $(document).ready(function () {
             endDate = $picker.attr('data-max-date');
             startDate = $picker.attr('data-min-date');
         }
-
         $picker.datepicker({
             forceParse: false,
             endDate: endDate,
             startDate: startDate
         });
     }
-
-    /* Text editor with bootstrap-wysiwyg: http://mindmup.github.io/bootstrap-wysiwyg/*/
 
 });

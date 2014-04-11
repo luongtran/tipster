@@ -1,0 +1,16 @@
+-# Require variables:
+-# * match(Match)
+%table.table
+  %tr
+    %td Competition
+    %td= match.competition_name
+  %tr
+    %td Start at
+    %td= match.start_at.strftime(t('time.formats.date_with_time'))
+  %tr
+    %td Status
+    %td= match.status
+  %tr
+    %td Winner
+    %td
+

@@ -1,8 +1,9 @@
+- match = @tip.match
 .panel.panel-default.tip-details-panel
   .panel-heading
     %h3.panel-title.match-name
       %i{class: class_for_sport_icon(@tip.sport_code)}
-      = @tip.match_name
+      = match.name
       - if @tip.resubmitable?
         %a.btn.btn-default.btn-sm.text-warning{href: '#'} Edit
   .panel-body
@@ -30,6 +31,10 @@
         %td
           %span.text-i= @tip.odds
       %tr
+        %td Bookmarker:
+        %td
+          %span.text-i= @tip.bookmarker_code.try(:titleize)
+      %tr
         %td Amount:
         %td
           %span.text-i= @tip.amount
@@ -41,8 +46,6 @@
         %td Status:
         %td
           %span{class: class_for_tip_status(@tip.status)}= @tip.status_in_string
-
-
     %p
       %hr
     - if @tip.finished?
@@ -56,3 +59,11 @@
           %span.text-danger.text-bold
             = t('tip.result.lose')
             = "(#{profit_in_string(@tip.profit,true)})"
+
+.panel.panel-default
+  .panel-heading
+    %h3.panel-title
+      Match details
+  .panel-body
+    = render "backoffice/matches/match_details/#{match.sport_code}", match: match
+
