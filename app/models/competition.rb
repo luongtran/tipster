@@ -14,17 +14,12 @@
 class Competition < ActiveRecord::Base
 
   belongs_to :area, foreign_key: :opta_area_id, primary_key: :opta_area_id
-
   belongs_to :sport, foreign_key: :sport_code, primary_key: :code
 
   has_many :seasons, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
-
   has_many :matches, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
 
   validates :sport_code, presence: true
-
   validates_uniqueness_of :opta_competition_id, scope: :opta_area_id
 
-
-  # Area -> Competition -> Season -> Round -> Match
 end

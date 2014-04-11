@@ -4,15 +4,16 @@ class Worker
     # Get matches by seasons
     # http://api.core.optasports.com/soccer/get_matches?type=season&id=8318&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
     def update_matches
-      sports = Sport.where(code: %w(soccer basketball))
+      sports = Sport.includes(:seasons).where(code: OptaSport::AVAILABLE_SPORT)
       # Load active seasons
       from_date = DateTime.now
       to_date = from_date + DAY_INTERVAL.days
+
       sports.each do |sport|
-        seasons = sport.seasons
-        seasons.each do |season|
-          fetcher = OptaSport::Fetcher.send(sport.code)
-          if fetcher.respond_to?(:get_matches)
+        fetcher = OptaSport::Fetcher.find_fetcher_for(sport.code)
+        if fetcher && fetcher.respond_to?(:get_matches)
+          seasons = sport.seasons
+          seasons.each do |season|
             res = fetcher.get_matches(
                 id: season.opta_season_id,
                 type: 'season',
@@ -20,16 +21,15 @@ class Worker
                 end_date: to_date
             )
             if fetcher.success?
-              matches = res.all
-              matches.each do |match|
+              res.all.each do |match|
                 Match.create(match.merge(sport_code: sport.code))
               end
             else
-              puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
+              puts fetcher.error.log_format
             end
-          end
+          end # End season
         end
-      end
+      end # End sport
     end
 
     def get_match_details(opta_match_id)
@@ -47,9 +47,7 @@ class Worker
       competitions = Competition.all
 
       competitions.each do |competition|
-        sport = competition.sport
-        fetcher = OptaSport::Fetcher.send(sport.code)
-
+        fetcher = OptaSport::Fetcher.find_fetcher_for(competition.sport_code)
         if fetcher.respond_to?(:get_seasons)
           res = fetcher.get_seasons(
               id: competition.opta_competition_id,
@@ -59,23 +57,25 @@ class Worker
           )
           if fetcher.success?
             founded_seasons += res.all
+          else
+            puts fetcher.error.log_format
           end
         end
 
         # Saving to DB
         founded_seasons.each do |season_attrs|
-          Season.create(season_attrs)
+          Season.create season_attrs
         end
       end
-
+      founded_seasons
     end
 
     def update_competitions
       # http://api.core.optasports.com/soccer/get_competitions?authorized=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-      sports = Sport.where(code: %w(soccer basketball tennis))
+      sports = Sport.where(code: OptaSport::AVAILABLE_SPORT)
       compts = []
       sports.each do |sport|
-        fetcher = OptaSport::Fetcher.send(sport.code)
+        fetcher = OptaSport::Fetcher.find_fetcher_for(sport.code)
         if fetcher.respond_to?(:get_competitions)
           res = fetcher.get_competitions(
               authorized: true
@@ -89,7 +89,7 @@ class Worker
               )
             end
           else
-            puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
+            puts fetcher.error.log_format
           end
         end
       end
@@ -97,10 +97,10 @@ class Worker
     end
 
     def update_france_name_for_competitions
-      sports = Sport.where(code: %w(soccer basketball tennis))
+      sports = Sport.where(code: OptaSport::AVAILABLE_SPORT)
       compts = []
       sports.each do |sport|
-        fetcher = OptaSport::Fetcher.send(sport.code)
+        fetcher = OptaSport::Fetcher.find_fetcher_for(sport.code)
         if fetcher.respond_to?(:get_competitions)
           res = fetcher.get_competitions(
               authorized: true,
@@ -115,7 +115,7 @@ class Worker
               end
             end
           else
-            puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
+            puts fetcher.error.log_format
           end
         end
       end
@@ -123,8 +123,7 @@ class Worker
     end
 
     def old_matches
-      require 'csv'
-      sports = Sport.where("code in (?)", ['soccer', 'basketball'])
+      sports = Sport.where(code: OptaSport::AVAILABLE_SPORT)
       # Load active seasons
       end_date = Date.today
       founded_matches = []
@@ -144,10 +143,9 @@ class Worker
                 match_attrs.merge(sport_code: sport.code)
               end
             else
-              puts "Error: #{res.message}; \n URL: #{fetcher.last_url}"
+              puts fetcher.error.log_format
             end
           end
-
         end # End seasons
       end
       founded_matches.each do |match_attrs|
@@ -177,6 +175,10 @@ class Worker
 
     def update_tipster_statistics
       TipsterStatistics.update_all_statistics
+    end
+
+    def update_match_result
+
     end
   end # End class block
 end

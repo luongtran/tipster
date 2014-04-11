@@ -38,7 +38,7 @@ class Admin::TipsController < Admin::AdminBaseController
   def finish
     @tip = Tip.find(params[:id])
     if @tip.finishable?
-      @tip.finnish!(current_admin, (params[:result] == 'win'))
+      @tip.finnish!(current_admin, (params[:fetch_result] == 'win'))
       redirect_to admin_tips_url, notice: 'The tip has been closed.'
     else
       redirect_to admin_tips_url, alert: 'The tip cannot be closed.'

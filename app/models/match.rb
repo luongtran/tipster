@@ -134,7 +134,13 @@ class Match < ActiveRecord::Base
     self.start_at.to_date
   end
 
-  def result
+  # Update status + start_at
+  def update_info
+
+  end
+
+  # Return a MatchResult object
+  def get_result
     fetcher = OptaSport::Fetcher.send(self.sport_code)
     result = fetcher.get_match_statistics_v2(
         id: self.opta_match_id

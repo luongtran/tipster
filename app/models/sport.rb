@@ -33,58 +33,9 @@ class Sport < ActiveRecord::Base
       'baseball' => 20
   }
 
-  BETCLIC_BET_TYPE = {
-      'football' => [
-          {
-              'code' => 'Ftb_Mr3',
-              'name' => 'Match Result'
-          },
-          {
-              'code' => 'Ftb_Csc',
-              'name' => 'Correct Score'
-          },
-          {
-              'code' => 'Ftb_Htf',
-              'name' => 'Half-Time / Full-Time'
-          },
-          {
-              'code' => 'Ftb_Htr',
-              'name' => 'Half-Time Result'
-          },
-          {
-              'code' => 'Ftb_Tgl',
-              'name' => 'Total Goals'
-          },
-          {
-              'code' => 'Ftb_Dbc',
-              'name' => 'Double Chance'
-          },
-          {
-              'code' => 'Ftb_Fts',
-              'name' => 'First Team To Score'
-          },
-          {
-              'code' => 'Ftb_Hcs',
-              'name' => 'Half-Time Correct Score'
-          },
-          {
-              'code' => 'Ftb_10',
-              'name' => 'Over/Under'
-          }
-      ]
-  }
-
-  def icon_path
-    code = self.code
-    if code == 'soccer'
-      code = 'football'
-    end
-    "/assets/sport-icons/i_#{code}.png"
-  end
-
   private
   def auto_position
-    if  self.position.nil?
+    if self.position.nil?
       self.position = self.id
       self.save
     end

@@ -99,7 +99,9 @@ class Backoffice::TipsController < Backoffice::BaseController
   end
 
   def show
-    @tip = current_tipster.tips.includes(:match, :bet_type, :sport).find(params[:id])
+    @tip = current_tipster.tips.includes(:bet_type, :sport, match: [competition: :area]).find(params[:id])
+    match = @tip.match
+    re = match.get_result
   end
 
   private
