@@ -36,6 +36,20 @@ module OptaSport
           matches
         end
       end
+
+      class MatchStatistics < Base
+        def read
+          match = @xml_doc.css("match").first
+          {
+              status: match['status'],
+              winner: match['winner'],
+              team_a: match['team_A_name'],
+              team_b: match['team_B_name'],
+              fs_team_a: match['fs_A'],
+              fs_team_b: match['fs_B'],
+          }
+        end
+      end
       class Season < Base
         def all
           nodes = @xml_doc.css('competition > season')

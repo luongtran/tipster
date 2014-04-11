@@ -28,6 +28,8 @@ class Match < ActiveRecord::Base
   MAXIMUM_DAYS_FROM_NOW = 7
   MIN_TIME_BEFORE_MATCH_START = 1.hours
 
+  attr_accessor :result
+
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -140,12 +142,11 @@ class Match < ActiveRecord::Base
   end
 
   # Return a MatchResult object
-  def get_result
-    fetcher = OptaSport::Fetcher.send(self.sport_code)
-    result = fetcher.get_match_statistics_v2(
-        id: self.opta_match_id
-    ).read
-    result
+  def preload_result
+    fetcher = OptaSport::Fetcher.find_fetcher_for(self.sport_code)
+    if fetcher
+      @result = MatchResult.new(fetcher.get_match_details(self.opta_match_id).read)
+    end
   end
 
   # Find bets and odds from the given bookmarker

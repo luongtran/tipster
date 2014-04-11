@@ -80,17 +80,6 @@
   .panel-heading
     %h3.panel-title.text-bold Match details
   .panel-body
-    %p.text-i
-      Under construction
-    -# Goal,
-    -#%ul
-    -#  %li
-    -#    Country:
-    -#  %li
-    -#    Competition
-    -#  %li
-    -#    Start At: -----( 30 mins remain)
-    -#  %li
-    -#    Status: Played | Fixture | Cancelled
+    = render "backoffice/matches/match_details/#{@match.sport_code}", match: @match
 = render 'action_modal_boxs'
 

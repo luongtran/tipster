@@ -29,20 +29,22 @@ module OptaSport
           @xml_doc = xml_doc
         end
 
-        MATCH_RESULT_ATTRS_MAP = {
-            'winner' => 'winner',
-            'fs_A' => 'full_time_scrore_team_A',
-            'fs_B' => 'full_time_scrore_team_B',
-            'hts_A' => 'half_time_scrore_team_A',
-            'hts_B' => 'half_time_scrore_team_B',
-            'match_period' => 'match_period'
-        }
-
+        #MATCH_RESULT_ATTRS_MAP = {
+        #    'status' => 'status',
+        #    'winner' => 'winner',
+        #    'fs_A' => 'full_time_scrore_team_A',
+        #    'fs_B' => 'full_time_scrore_team_B',
+        #    'hts_A' => 'half_time_scrore_team_A',
+        #    'hts_B' => 'half_time_scrore_team_B',
+        #    'match_period' => 'match_period'
+        #}
         def read
-          # TODO: in-progress
-          match = @xml_doc.css("match[match_id='1662517']").first
+          match = @xml_doc.css("match").first
           {
+              status: match['status'],
               winner: match['winner'],
+              team_a: match['team_A_name'],
+              team_b: match['team_B_name'],
               fs_team_a: match['fs_A'],
               fs_team_b: match['fs_B'],
               hts_team_a: match['hts_A'],

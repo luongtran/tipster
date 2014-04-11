@@ -48,6 +48,7 @@ module OptaSport
 
       # Send request and return response
       def go(method, params, result_class)
+        puts "\n=== Starting fetch OPTA XML ... \n"
         _url = self.class.url_for(self.sport, method, params)
         response = Net::HTTP.get_response URI(_url)
         if response.is_a? Net::HTTPSuccess

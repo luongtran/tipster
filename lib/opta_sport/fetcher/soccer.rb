@@ -38,6 +38,16 @@ module OptaSport
           return self.go(f_name, params, infor['result_class'])
         end
       end
+
+      def get_match_details(opta_match_id)
+        params = {
+            id: opta_match_id,
+            type: 'match',
+            detailed: true
+        }
+        self.go('get_matches', params, OptaSport::FetchResult::Soccer::MatchStatistics)
+      end
+
     end
   end
 end

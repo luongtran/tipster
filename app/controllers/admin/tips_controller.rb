@@ -8,6 +8,8 @@ class Admin::TipsController < Admin::AdminBaseController
 
   def show
     @tip = Tip.includes(:author, :sport, :match).find(params[:id])
+    @match = @tip.match
+    @match.preload_result
   end
 
   def reject

@@ -9,14 +9,14 @@
     %td= match.start_at.strftime(t('time.formats.date_with_time'))
   %tr
     %td Status
-    %td= match.status
+    %td= match.result.status
 
   %tr
     %td Winner
-    %td Team A
-  %tr
-    %td Full Time Score
-    %td 3 - 0
+    %td= match.result.winner
   %tr
     %td Half Time Score
-    %td 2 - 0
+    %td= match.result.ht_score
+  %tr
+    %td Full Time Score
+    %td= match.result.ft_score
