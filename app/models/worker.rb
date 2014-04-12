@@ -8,7 +8,6 @@ class Worker
       # Load active seasons
       from_date = DateTime.now
       to_date = from_date + DAY_INTERVAL.days
-
       sports.each do |sport|
         fetcher = OptaSport::Fetcher.find_fetcher_for(sport.code)
         if fetcher && fetcher.respond_to?(:get_matches)

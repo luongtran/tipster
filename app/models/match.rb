@@ -40,7 +40,7 @@ class Match < ActiveRecord::Base
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-  validates :opta_match_id, uniqueness: true
+  validates_uniqueness_of :opta_match_id, scope: :opta_competition_id
 
   # ==============================================================================
   # SCOPE

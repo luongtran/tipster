@@ -22,12 +22,62 @@ module OddsFeed
     class << self
 
       attr_accessor :local_xml_document
+
+      # === Find all sports in the response XML
+      def raw_sports
+        xml_doc = self.go
+        sport_nodes = xml_doc.css('sport')
+        re_sports = []
+        sport_nodes.each do |node|
+          re_sports << {
+              name: node['name'],
+              id: node['id']
+          }
+        end
+        re_sports
+      end
+
+      # === Get all matches in the response XML
+      def raw_matches
+        xml_doc = self.go
+        match_nodes = xml_doc.css('match')
+        matches_found = []
+        match_nodes.each do |match_node|
+          sport_node = match_node.ancestors('sport').first
+          event_node = match_node.ancestors('event').first
+          matches_found << {
+              id: match_node['id'],
+              name: match_node['name'],
+              start_date: match_node['start_date'].to_datetime,
+              sport: sport_node['name'],
+              event: event_node['name']
+          }
+        end
+        matches_found
+      end
+
+      # === Get all events in the response XML
+      def raw_events
+        xml_doc = self.go
+        event_nodes = xml_doc.css('event')
+        events_found = []
+        event_nodes.each do |event_node|
+          sport_node = event_node.ancestors('sport').first
+          events_found << {
+              sport: sport_node['name'],
+              name: event_node['name'],
+              id: event_node['id']
+          }
+        end
+        events_found
+      end
+
       # === Translate name bet type of from Betclic to our site
       def translate_bet_type(bet_type)
       end
 
       # === Return the bet types found in the response XML
-      def get_raw_bet_types
+      def raw_bet_types
         xml_doc = self.go
         bet_nodes = xml_doc.css('bet')
         found_bet_types = []
@@ -119,19 +169,6 @@ module OddsFeed
         bets_found
       end
 
-      # === Find all sports in the response XML
-      def support_sports
-        xml_doc = self.go
-        sport_nodes = xml_doc.css('sport')
-        re_sports = []
-        sport_nodes.each do |node|
-          re_sports << {
-              name: node['name'],
-              id: node['id']
-          }
-        end
-        re_sports
-      end
 
       protected
       # Start to feed xml
