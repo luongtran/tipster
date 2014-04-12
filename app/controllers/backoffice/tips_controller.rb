@@ -35,7 +35,7 @@ class Backoffice::TipsController < Backoffice::BaseController
 
   def confirm
     # FIXME: the code bellow has wrote at 18h :))
-    @match = Match.includes(sport: [:bet_types]).find_by!(opta_match_id: params[:tip][:match_id])
+    @match = Match.includes(sport: [:bet_types]).find_by!(uid: params[:tip][:match_uid])
     @bet_type = @match.sport.bet_types.find_by!(code: params[:tip][:bet_type_code])
 
 
@@ -99,14 +99,12 @@ class Backoffice::TipsController < Backoffice::BaseController
   end
 
   def show
-    @tip = current_tipster.tips.includes(:bet_type, :sport, match: [competition: :area]).find(params[:id])
-    @match = @tip.match
-    @match.preload_result
+    @tip = current_tipster.tips.includes(:bet_type, :sport, match: :competition).find(params[:id])
   end
 
   private
   def prepare_data_for_new_tip
-    @competitions = Competition.includes(:sport, :area).load
+    @competitions = Competition.includes(:sport).load
     @tipster_sports = current_tipster.sports
     @bookmarkers = Bookmarker.all
   end

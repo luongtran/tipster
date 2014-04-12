@@ -136,7 +136,7 @@ en:
       finished: "finished the tip"
     created_successfully: 'A tip created successfully!'
     statuses:
-      waiting_for_approval: 'Waiting for approval'
+      pending: 'Pending'
       published: 'Published'
       rejected: 'Rejected'
       finished: 'Finished'

@@ -1,15 +1,12 @@
 class CreateCompetitions < ActiveRecord::Migration
   def change
     create_table :competitions do |t|
-      t.integer :opta_competition_id
-      t.integer :opta_area_id
-      t.string :sport_code
+      t.integer :uid
       t.string :name
+      t.string :sport_code
       t.string :fr_name
-      t.boolean :active, default: true
     end
-    add_index :competitions, :opta_competition_id
-    add_index :competitions, :opta_area_id
     add_index :competitions, :sport_code
+    add_index :competitions, :uid, unique: true
   end
 end

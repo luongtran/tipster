@@ -1,21 +1,28 @@
 -
   name: 'Football'
   code: 'soccer'
+  betclic_id: '1'
   bet_types:
     -
-      code: 'soccer_match_odds'
+      code: 'soccer_match_result'
       name: 'Match Result'
       line: 'no'
       selection_format: "%{selection}"
-      betclic: 'Ftb_Mr3'
+      betclic_code: 'Ftb_Mr3'
       france_paris: '1-N-2'
     -
-      code: 'soccer_match_odds_ht'
+      code: 'soccer_match_result_ht'
       name: 'Match Result HT'
       line: 'no'
       selection_format: "%{selection} Half Time"
       betclic: 'Ftb_Htr'
       france_paris: '1-N-2 Mi-temps'
+    -
+      code: 'soccer_half_time_full_time'
+      name: 'Half-Time/Full-Time'
+      line: 'no'
+      selection_format: "%{selection}"
+      betclic: 'Ftb_Htf'
     -
       code: 'soccer_over_under'
       name: 'Over/Under'
@@ -34,11 +41,17 @@
       name: 'First Team to Score'
       line: 'no'
       selection_format: "%{selection}"
-      betclic: ''
+      betclic: 'Ftb_Fts'
       france_paris: '1ère équipe à marquer'
     -
-      code: 'soccer_european_handicap'
-      name: 'European Handicap'
+      code: 'soccer_last_team_to_score'
+      name: 'Last Team to Score'
+      line: 'no'
+      selection_format: "%{selection}"
+      betclic: 'Ftb_Lts'
+    -
+      code: 'soccer_handicap'
+      name: 'Handicap'
       line: 'yes'
       selection_format: "%{selection} %{line}"
       betclic: ''
@@ -48,16 +61,46 @@
       line: 'yes'
       selection_format: "%{selection} %{line}"
       betclic: ''
+    -
+      code: 'soccer_correct_score'
+      name: 'Correct Score'
+      line: 'no'
+      selection_format: "%{selection}"
+      betclic: 'Ftb_Csc'
+    -
+      code: 'soccer_correct_score_ht'
+      name: 'Correct Score HT'
+      line: 'no'
+      selection_format: "%{selection}"
+      betclic: 'Ftb_Hcs'
+    -
+      code: 'soccer_total_goals'
+      name: 'Total Goals'
+      line: 'no'
+      selection_format: "%{selection}"
+      betclic: 'Ftb_Tgl'
+    -
+      code: 'soccer_double_chance'
+      name: 'Double Chance'
+      line: 'no'
+      selection_format: "%{selection}"
+      betclic: 'Ftb_Dbc'
+    -
+      code: 'soccer_first_goalscorer'
+      name: 'First Goalscorer'
+      line: 'no'
+      selection_format: "%{selection}"
+      betclic: 'Ftb_Fgs'
 -
   name: 'Tennis'
   code: 'tennis'
+  betclic_id: '2'
   bet_types:
     - # Who is winner
-      code: 'tennis_two_way'
-      name: 'Two way'
+      code: 'tennis_match_winner'
+      name: 'Match Winner'
       line: 'no'
       selection_format: "%{selection}"
-      other_name: 'Match Winner'
       betclic: 'Ten_Mr2'
       france_paris: '1-2'
     - # Who will win the first set
@@ -67,6 +110,13 @@
       selection_format: "%{selection} First Set"
       betclic: 'Ten_Fsw'
       france_paris: 'Vainqueur 1er set'
+    - #
+      code: 'tennis_first_set_correct_score'
+      name: 'First Set Correct Score'
+      line: 'no'
+      selection_format: "%{selection}"
+      betclic: 'Ten_Cs1'
+
     -  # Over or under games total games
       code: 'tennis_over_under_games'
       name: 'Over/Under Games'
@@ -87,17 +137,17 @@
 -
   name: 'Basketball'
   code: 'basketball'
+  betclic_id: '4'
   bet_types:
     - # Match winner
-      code: 'basketball_two_way'
-      name: 'Two way'
+      code: 'basketball_match_winner'
+      name: 'Match Winner'
       line: 'no'
       selection_format: "%{selection}"
-      other_name: 'Match winner'
       betclic: 'Bkb_Mr2'
       france_paris: '1-2'
     - # Match result
-      code: 'basketball_match_odds'
+      code: 'basketball_match_result'
       name: 'Match Result'
       line: 'no'
       selection_format: "%{selection}"
@@ -119,9 +169,10 @@
 -
   name: 'Handball'
   code: 'handball'
+  betclic_id: '9'
   bet_types:
     -
-      code: 'handball_match_odds'
+      code: 'handball_match_result'
       name: 'Match Result'
       line: 'no'
       selection_format: "%{selection}"
@@ -133,31 +184,32 @@
       line: 'yes'
       selection_format: "%{selection} %{line}"
     - # Over or Under total goals
-      code: 'handball_over_under'
-      name: 'Over/Under'
+      code: 'handball_over_under_goals'
+      name: 'Total Goals'
       line: 'yes'
       selection_format: "%{selection} %{line}"
       betclic: 'Hdb_Tgt'
 -
   name: 'Rugby'
   code: 'rugby'
+  betclic_id: '5'
   bet_types:
     - # Match result:
-      code: 'rugby_match_odds'
+      code: 'rugby_match_result'
       name: 'Match Result'
       line: 'no'
       selection_format: "%{selection}"
-      betclic: 'Match Result'
+      betclic: 'Rgb_Mr3'
       france_paris: '1-N-2'
     -
-      code: 'rugby_match_odds_ht'
+      code: 'rugby_match_result_ht'
       name: 'Match Result HT'
       line: 'no'
       selection_format: "%{selection} Half Time"
       france_paris: '1-N-2 Mi-temps'
     -  # Over or Under total points
-      code: 'rugby_over_under'
-      name: 'Over/Under'
+      code: 'rugby_over_under_points'
+      name: 'Over/Under Total Points'
       line: 'yes'
       selection_format: "%{selection} %{line}"
       betclic: 'Rgb_Tpt'
@@ -171,17 +223,18 @@
 -
   name: 'Ice Hockey'
   code: 'hockey'
+  betclic_id: '13'
   bet_types:
     - # Match result
-      code: 'hockey_match_odds'
+      code: 'hockey_match_result'
       name: 'Match Result'
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ihk_Mrs'
       france_paris: '1-N-2'
     -  # Match winner
-      code: 'hockey_two_way'
-      name: 'Two way'
+      code: 'hockey_match_winner'
+      name: 'Match winner'
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ihk_Mnl'
@@ -219,10 +272,11 @@
 -
   name: 'Football Us'
   code: 'football_us'
+  betclic_id: '14'
   bet_types:
     -
-      code: 'football_us_two_way'
-      name: 'Two way'
+      code: 'football_us_match_winner'
+      name: 'Match Winner'
       line: 'no'
       selection_format: "%{selection}"
     - # total points
@@ -238,13 +292,14 @@
 -
   name: 'Baseball'
   code: 'baseball'
+  betclic_id: '20'
   bet_types:
     -  # Match winner
-      code: 'baseball_two_way'
-      name: 'Two way'
+      code: 'baseball_match_winner'
+      name: 'Match winner'
       line: 'no'
       selection_format: "%{selection}"
-      betclic: 'Bsb_Win'
+      betclic: 'Bsb_Mwi'
       france_paris: '1-2'
     -
       code: 'baseball_over_under'

@@ -57,7 +57,7 @@ module OddsFeed
       end
 
       # === Perform search bets on the given match
-      def find_odds_on_match(match)
+      def find_odds_on_match(match, supported_bet_types)
         # Find by name of match
         # Get bet with the type if supported
         # Translate to standard code, name ...
@@ -85,7 +85,7 @@ module OddsFeed
             end
           end
         end
-        supported_bet_types = BetType.recognized_bet_types(CODE, match.sport.code)
+
         # === Find bets on the found match
         found_bets = []
         if found_math_id

@@ -35,11 +35,11 @@ class Tipster < ActiveRecord::Base
                 :profit_per_months, :profit_per_dates, :total_months,
                 :tips_per_dates, :profitable_months, :current_statistics_range
 
-  attr_accessor :monthly_statistics, :sports_statistics, :areas_statistics,
+  attr_accessor :monthly_statistics, :sports_statistics, :competitions_statistics,
                 :bet_types_statistics, :odds_statistics
 
   # LazyHighChart objects
-  attr_accessor :monthly_chart, :sports_chart, :areas_chart,
+  attr_accessor :monthly_chart, :sports_chart, :competitions_chart,
                 :bet_types_chart, :odds_chart, :profit_chart
 
   # ==============================================================================
@@ -236,19 +236,6 @@ class Tipster < ActiveRecord::Base
   def subtract_bankroll(amount)
   end
 
-  #def load_chart(type)
-  #  case type
-  #    when 'profit' # Use in tipsters index page
-  #      @profit_chart = self.statistics.get_bet_types_chart.get_profit_chart
-  #    when 'all'
-  #      @profit_chart = self.statistics.get_bet_types_chart.get_profit_chart
-  #      @bet_types_chart = self.statistics.get_bet_types_chart
-  #      @odds_chart = self.statistics.get_odds_chart
-  #      @sports_chart = self.statistics.get_sports_chart
-  #  end
-  #  self
-  #end
-
   def prepare_statistics_data(params, details = false)
     ranking_range ||= self.class.sanitized_ranking_range_param(params).to_sym
     @current_statistics_range = ranking_range # Saving for display or you know what the current range
@@ -279,13 +266,13 @@ class Tipster < ActiveRecord::Base
         @sports_statistics = statistics_data[:sports].map { |statistic| statistic.symbolize_keys }
         @bet_types_statistics = statistics_data[:bet_types].map { |statistic| statistic.symbolize_keys }
         @odds_statistics = statistics_data[:odds].map { |statistic| statistic.symbolize_keys }
-        @areas_statistics = statistics_data[:areas].map { |statistic| statistic.symbolize_keys }
+        @competitions_statistics = statistics_data[:competitions].map { |statistic| statistic.symbolize_keys }
 
         @bet_types_chart = self.statistics.get_bet_types_chart
         @odds_chart = self.statistics.get_odds_chart
         @sports_chart = self.statistics.get_sports_chart
         @monthly_chart = self.statistics.get_monthly_chart
-        @areas_chart = self.statistics.get_areas_chart
+        @competitions_chart = self.statistics.get_competitions_chart
       end
 
       # Prepare charts
@@ -298,7 +285,11 @@ class Tipster < ActiveRecord::Base
   end
 
   def profit_values_for_chart
-    @profit_per_dates.map { |ppd| ppd['profit'] }
+    if @profit_per_dates
+      @profit_per_dates.map { |ppd| ppd['profit'] }
+    else
+      []
+    end
   end
 
   def profit_dates_for_chart

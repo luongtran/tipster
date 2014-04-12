@@ -4,6 +4,6 @@
     %a{href: tipster_path(tipster)}
       .tipster-top-unit.text-center
         = image_tag tipster.avatar.url || 'demo.jpg', class: 'tipster-top-avatar'
-        = image_tag profit_img_chart_url_for(tipster.profit_values_for_chart, size: '125x40'), alt: 'Profit chart'
+        = image_tag profit_img_chart_url_for(tipster.profit_values_for_chart, size: '125x40'), alt: 'Profit chart' if tipster.profit_values_for_chart
         .tipster-top-name.text-success.text-bold
           = tipster.full_name

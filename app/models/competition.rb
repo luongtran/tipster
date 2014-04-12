@@ -1,25 +1,24 @@
-# == Schema Information
-#
-# Table name: competitions
-#
-#  id                  :integer          not null, primary key
-#  opta_competition_id :integer
-#  opta_area_id        :integer
-#  sport_code          :string(255)
-#  name                :string(255)
-#  fr_name             :string(255)
-#  active              :boolean          default(TRUE)
-#
-
 class Competition < ActiveRecord::Base
-
-  belongs_to :area, foreign_key: :opta_area_id, primary_key: :opta_area_id
   belongs_to :sport, foreign_key: :sport_code, primary_key: :code
-
-  has_many :seasons, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
-  has_many :matches, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
+  has_many :matches, foreign_key: :competition_uid, primary_key: :uid
 
   validates :sport_code, presence: true
-  validates_uniqueness_of :opta_competition_id, scope: :opta_area_id
+  validates_uniqueness_of :name, scope: :sport_code
+  validates_uniqueness_of :uid, scope: :sport_code
 
+  class << self
+    def seed
+      raw_competitions = OddsFeed::Betclic.raw_competitions
+      raw_competitions.each do |compt|
+        sport_code = Sport::CODE_TO_BETCLIC_SPORT_ID.key(compt[:sport_id].to_i)
+        if sport_code
+          create(
+              uid: compt[:id],
+              name: compt[:name],
+              sport_code: sport_code
+          )
+        end
+      end
+    end
+  end
 end

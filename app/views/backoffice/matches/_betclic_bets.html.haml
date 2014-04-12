@@ -18,5 +18,5 @@
             - choice_name.gsub!('%2%',match.team_b)
             = choice_name
           %button.btn.btn-xs.btn-default.choice-odd-button{data: {'bookmarker-code' => 'betclic','bet-type-code' => bet[:code], odd: choice[:odd],
-              'choice-name' => choice_name, 'match-id' => match.opta_match_id, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
+              'choice-name' => choice_name, 'match-id' => match.uid, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
             = choice[:odd]

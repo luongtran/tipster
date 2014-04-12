@@ -16,6 +16,6 @@
               - choice_name = choice[:selection]
               = choice_name
             %button.btn.btn-xs.btn-default.choice-odd-button{data: {'bookmarker-code' => 'france_paris', 'bet-type-code' => bet[:code], odd: choice[:odd],
-                'choice-name' => choice_name, 'match-id' => match.opta_match_id, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
+                'choice-name' => choice_name, 'match-id' => match.uid, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
               = choice[:odd]
 

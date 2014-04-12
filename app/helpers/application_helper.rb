@@ -418,7 +418,7 @@ module ApplicationHelper
     options = []
     options << ['All', nil]
     competitions.each do |compt|
-      options << ["#{compt.name.titleize} #{"(#{compt.area.name})"}", compt.opta_competition_id]
+      options << [compt.name.titleize, compt.uid]
     end
     options
   end
@@ -430,9 +430,9 @@ module ApplicationHelper
   end
 
   def profit_in_string(profit, include_unit = false)
-    if profit == 0
+    if profit.zero?
       # Profit is 'Void' with some the handicap bets
-      return I18n.t('tip.result.void')
+      return 0
     else
       sign = '+' if  profit > 0
       "#{sign}#{profit} #{I18n.t('tipster.units') if include_unit}"
@@ -453,7 +453,7 @@ module ApplicationHelper
 
   def class_for_tip_status(status)
     case status
-      when Tip::STATUS_WAITING_FOR_APPROVAL
+      when Tip::STATUS_PENDING
         'text-warning'
       when Tip::STATUS_REJECTED
         'text-muted'

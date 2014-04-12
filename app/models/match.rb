@@ -1,30 +1,5 @@
-# == Schema Information
-#
-# Table name: matches
-#
-#  id                  :integer          not null, primary key
-#  opta_match_id       :integer          not null
-#  sport_code          :string(255)      not null
-#  opta_competition_id :integer
-#  team_a              :string(255)
-#  team_b              :string(255)
-#  name                :string(255)
-#  start_at            :datetime         not null
-#  status              :string(255)
-#  created_at          :datetime
-#  updated_at          :datetime
-#
-
 class Match < ActiveRecord::Base
   TEAM_NAMES_SEPERATOR = '-'
-
-  STATUS_PLAYING = 'Playing' # Match is still playing (live)
-  STATUS_FIXTURE = 'Fixture' # Match has not yet started
-  STATUS_POSTPONED = 'Postponed' # Match is postponed (status will change to Fixture once it's rescheduled)
-  STATUS_SUSPENDED = 'Suspended' # Match is suspended during the match and can be resumed again
-  STATUS_PLAYED = 'Played' # Match has been played
-  STATUS_CANCELLED = 'Cancelled' # Match is cancelled and won't be played again
-
   MAXIMUM_DAYS_FROM_NOW = 7
   MIN_TIME_BEFORE_MATCH_START = 1.hours
 
@@ -33,21 +8,18 @@ class Match < ActiveRecord::Base
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
-  belongs_to :competition, foreign_key: :opta_competition_id, primary_key: :opta_competition_id
-
+  belongs_to :competition, foreign_key: :competition_uid, primary_key: :uid
   belongs_to :sport, foreign_key: :sport_code, primary_key: :code
-  has_many :tips, foreign_key: :match_id, primary_key: :opta_match_id
+
+  has_many :tips, foreign_key: :match_uid, primary_key: :uid
   # ==============================================================================
   # VALIDATIONS
   # ==============================================================================
-  validates_uniqueness_of :opta_match_id, scope: :opta_competition_id
-
-  # ==============================================================================
-  # SCOPE
-  # ==============================================================================
-  scope :betable, -> { where(status: STATUS_FIXTURE) }
+  validates_presence_of :competition_uid, :sport_code
+  validates_uniqueness_of :uid
 
   delegate :name, to: :competition, prefix: true
+  delegate :name, to: :sport, prefix: true
   # ==============================================================================
   # CLASS METHODS
   # ==============================================================================
@@ -59,7 +31,7 @@ class Match < ActiveRecord::Base
       end
 
       if params[:competition].present?
-        relation = relation.where(opta_competition_id: params[:competition])
+        relation = relation.where(competition_uid: params[:competition])
       end
 
       if params[:min_date].present?
@@ -79,7 +51,7 @@ class Match < ActiveRecord::Base
         relation = relation.where('name like ?', "%#{params[:search]}%")
       end
 
-      relation.includes(:sport, :competition => [:area]).order('start_at asc')
+      relation.includes(:sport, :competition).order('start_at asc')
     end
 
     def available_to_create_tips(params)
@@ -115,45 +87,53 @@ class Match < ActiveRecord::Base
       relation = relation.where(start_at: start_from..date.end_of_day)
       relation
     end
+
+    def fetch_from_betclic
+      raw_matches = OddsFeed::Betclic.raw_matches
+      raw_matches.each do |raw_match|
+        # Ignore bets on outright winner of competition
+        if raw_match[:name].include? TEAM_NAMES_SEPERATOR
+          teams = raw_match[:name].split TEAM_NAMES_SEPERATOR
+          # Find sport code corresponding to sport_id in Betclic
+          sport_code = Sport::CODE_TO_BETCLIC_SPORT_ID.key raw_match[:sport_id].to_i
+          if sport_code
+            create(
+                uid: raw_match[:id],
+                name: raw_match[:name],
+                team_a: teams.first,
+                team_b: teams.last,
+                start_at: raw_match[:start_date],
+                competition_uid: raw_match[:event_id],
+                sport_code: sport_code,
+            )
+          end
+        end
+      end
+    end
   end
 
   # ==============================================================================
   # INSTANCE METHODS
   # ==============================================================================
   def to_param
-    "#{self.opta_match_id}-#{self.team_a}-vs-#{self.team_b}".parameterize
+    "#{self.uid}-#{self.team_a}-vs-#{self.team_b}".parameterize
   end
 
   def to_s
-    "#{self.opta_match_id}-#{self.team_a}-#{self.team_b}"
-  end
-
-  def teams
-    self.name.split(TEAM_NAMES_SEPERATOR)
+    "#{self.uid}-#{self.team_a}-vs-#{self.team_b}"
   end
 
   def start_date
     self.start_at.to_date
   end
 
-  # Update status + start_at
-  def update_info
-
-  end
-
-  # Return a MatchResult object
-  def preload_result
-    fetcher = OptaSport::Fetcher.find_fetcher_for(self.sport_code)
-    if fetcher
-      @result = MatchResult.new(fetcher.get_match_details(self.opta_match_id).read)
-    end
-  end
-
   # Find bets and odds from the given bookmarker
-  def find_bets(bookmarker)
+  def find_bets
     bets = {}
     %w(betclic france_paris).each do |bookmarker_code|
-      bets[bookmarker_code] = Bookmarker.find_odds_feed_module_by(bookmarker_code).find_odds_on_match(self)
+      recognized_bet_types = BetType.recognized_bet_types(bookmarker_code, self.sport_code)
+      bets[bookmarker_code] =
+          Bookmarker.find_odds_feed_module_by(bookmarker_code).find_odds_on_match(self, recognized_bet_types)
     end
     bets
   end

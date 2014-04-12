@@ -1,35 +1,6 @@
-# == Schema Information
-#
-# Table name: tips
-#
-#  id              :integer          not null, primary key
-#  author_id       :integer          not null
-#  author_type     :string(255)      not null
-#  match_id        :integer
-#  sport_code      :string(255)      not null
-#  bookmarker_code :string(255)      not null
-#  bet_type_code   :string(255)      not null
-#  odds            :float            not null
-#  selection       :string(255)      not null
-#  line            :float
-#  advice          :text             not null
-#  amount          :integer          not null
-#  correct         :boolean          default(FALSE)
-#  status          :integer          not null
-#  free            :boolean          default(FALSE)
-#  reject_reason   :text
-#  result          :datetime         string
-#  published_by    :integer
-#  published_at    :datetime
-#  finished_at     :datetime
-#  finished_by     :integer
-#  created_at      :datetime
-#  updated_at      :datetime
-#
-
 class Tip < ActiveRecord::Base
 
-  STATUS_WAITING_FOR_APPROVAL = 0
+  STATUS_PENDING = 0
   STATUS_PUBLISHED = 1
   STATUS_REJECTED = 2
   STATUS_FINISHED = 3
@@ -39,13 +10,13 @@ class Tip < ActiveRecord::Base
   RESULT_VOID = 'void' # only with handicap bets
 
   STATUSES_MAP = {
-      STATUS_WAITING_FOR_APPROVAL => 'waiting_for_approval',
+      STATUS_PENDING => 'pending',
       STATUS_PUBLISHED => 'published',
       STATUS_REJECTED => 'rejected',
       STATUS_FINISHED => 'finished'
   }
 
-  CREATE_PARAMS = [:bookmarker_code, :bet_type_code, :sport_code, :odds, :selection, :advice, :amount, :line]
+  CREATE_PARAMS = [:bookmarker_code, :bet_type_code, :sport_code, :odds, :selection, :advice, :amount]
   attr_accessor :match_name, :bet_type_name
   # ===========================================================================
   # ASSOCIATIONS
@@ -56,7 +27,7 @@ class Tip < ActiveRecord::Base
   belongs_to :sport, foreign_key: :sport_code, primary_key: :code
   belongs_to :bet_type, foreign_key: :bet_type_code, primary_key: :code
   belongs_to :bookmarker, foreign_key: :bookmarker_code, primary_key: :code
-  belongs_to :match, foreign_key: :match_id, primary_key: :opta_match_id
+  belongs_to :match, foreign_key: :match_uid, primary_key: :uid
 
   # ===========================================================================
   # VALIDATIONS
@@ -238,7 +209,7 @@ class Tip < ActiveRecord::Base
 
   # Check the tip can be publish or not
   def publishable?
-    self.status == STATUS_WAITING_FOR_APPROVAL
+    self.status == STATUS_PENDING
   end
 
   alias_method :rejectable?, :publishable?
@@ -261,12 +232,7 @@ class Tip < ActiveRecord::Base
   end
 
   def init_status
-    self.status = STATUS_WAITING_FOR_APPROVAL
+    self.status = STATUS_PENDING
   end
 
-  #def valid_beting
-  #  if self.bet_type && self.bet_type.has_line?
-  #    self.errors[:line] = "can't be blank" unless self[:line].present?
-  #  end
-  #end
 end

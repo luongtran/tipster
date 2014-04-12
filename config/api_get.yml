@@ -1,2 +1,0 @@
-get:
-  matches_info: 'get_matches?type=match&detailed=yes&id=%{match_id}'

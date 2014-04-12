@@ -16,7 +16,22 @@
   %hr
   %h3.text-info Available bets
   .mal
-    .bets-on-match.remote-data{'data-url' => find_bets_backoffice_match_path(match_id: @match.opta_match_id)}
+    -#.bets-on-match.remote-data{'data-url' => find_bets_backoffice_match_path(match_id: @match.uid)}
+    .bets-on-match
+      %ul.nav.nav-tabs
+        %li.active
+          %a{href: "##{@match.id}-betclic","data-toggle"=>"tab"}
+            = image_tag 'bookmarkers/betclic.png'
+        %li
+          %a{href: "##{@match.id}-france_paris", "data-toggle"=>"tab"}
+            = image_tag 'bookmarkers/france_paris.png'
+      .tab-content
+        .tab-pane.active{id: "#{@match.id}-betclic"}
+          = render 'betclic_bets', bets: @bets['betclic'], match: @match
+        - if @bets['france_paris']
+          .tab-pane{id: "#{@match.id}-france_paris"}
+            = render 'france_paris_bets', bets: @bets['france_paris'], match: @match
+
 -# The hidden dialog to confirm select odd
 #confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
   .modal-dialog.modal-md

@@ -2,12 +2,13 @@ class Backoffice::MatchesController < Backoffice::BaseController
   before_filter :authenticate_tipster
 
   def show
-    @match = Match.includes(:sport, :competition).find_by!(opta_match_id: params[:id].to_i)
+    @match = Match.includes(:sport, :competition).find_by!(uid: params[:id].to_i)
+    @bets = @match.find_bets
   end
 
   def find_bets
-    match = Match.includes(:sport).find_by(opta_match_id: params[:id])
-    bets = match.find_bets(Bookmarker.first)
+    match = Match.includes(:sport).find_by(uid: params[:id])
+    bets = match.find_bets
     success = true
     html = render_to_string(
         'bets_list',
@@ -18,7 +19,13 @@ class Backoffice::MatchesController < Backoffice::BaseController
   end
 
   def search
-    @matches = Match.available_to_create_tips params.merge(sport: current_tipster.sport_codes)
+    edited_params = params
+
+    unless params[:sport].present?
+      edited_params = params.merge(sport: current_tipster.sport_codes)
+    end
+
+    @matches = Match.available_to_create_tips params.merge(edited_params)
     success = true
     html = render_to_string(
         partial: 'available_matches_list',
@@ -48,7 +55,7 @@ class Backoffice::MatchesController < Backoffice::BaseController
 
   private
   def prepare_data
-    @competitions = Competition.includes(:sport, :area).load
+    @competitions = Competition.includes(:sport).load
     @tipster_sports = current_tipster.sports
     @bookmarkers = Bookmarker.all
   end

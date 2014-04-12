@@ -49,27 +49,27 @@ module OddsFeed
               id: match_node['id'],
               name: match_node['name'],
               start_date: match_node['start_date'].to_datetime,
-              sport: sport_node['name'],
-              event: event_node['name']
+              sport_id: sport_node['id'],
+              event_id: event_node['id']
           }
         end
         matches_found
       end
 
-      # === Get all events in the response XML
-      def raw_events
+      # === Get all competitions(events) in the response XML
+      def raw_competitions
         xml_doc = self.go
-        event_nodes = xml_doc.css('event')
-        events_found = []
-        event_nodes.each do |event_node|
+        competition_nodes = xml_doc.css('event')
+        competitions_found = []
+        competition_nodes.each do |event_node|
           sport_node = event_node.ancestors('sport').first
-          events_found << {
-              sport: sport_node['name'],
+          competitions_found << {
+              id: event_node['id'],
               name: event_node['name'],
-              id: event_node['id']
+              sport_id: sport_node['id']
           }
         end
-        events_found
+        competitions_found
       end
 
       # === Translate name bet type of from Betclic to our site
@@ -94,87 +94,48 @@ module OddsFeed
         found_bet_types.uniq
       end
 
-      def fetch_odds(lang = 'en')
-        xml_doc = self.go
-        match_nodes = xml_doc.css('sport > event > match')
-        result_matches = []
-        match_nodes.each do |node|
-          result_matches << {
-              name: node['name'],
-              betclic_match_id: node['id'],
-              start_date: node['start_date'],
-          }
-        end
-        result_matches
-      end
-
       # === Perform search bets on the given match
-      def find_odds_on_match(target_match)
-        sport_code = target_match.sport_code
-        supported_bet_types = BetType.recognized_bet_types(CODE, sport_code)
+      def find_odds_on_match(match, supported_bet_types)
+        target_match_id = match.uid
         xml_doc = self.go
-        match_nodes = xml_doc.css('sport > event > match')
-
-        # Start find match by name ==============================================
-        result_matches = []
-        match_nodes.each do |node|
-          result_matches << {
-              name: node['name'].downcase,
-              betclic_match_id: node['id'],
-              start_date: node['start_date'],
-          }
-        end
-
-        found_match_betclic_id = nil
-        result_matches.each do |m|
-          if target_match.name.downcase.include?(m[:name]) || m[:name].include?(target_match.name.downcase)
-            found_match_betclic_id = m[:betclic_match_id] # TODO: consider to save the id
-            break
-          end
-        end
-
         # Start get bets on match  ==============================================
+        bet_nodes = xml_doc.css("match##{target_match_id} > bets > bet")
+
         bets_found = []
-        unless found_match_betclic_id.nil?
-          bet_nodes = xml_doc.css("match##{found_match_betclic_id} > bets > bet")
-          bet_nodes.each do |bet|
-            bet_type_support = supported_bet_types.detect { |bet_type| bet_type[CODE] == bet['code'] }
-
-            if bet_type_support
-              # Get choices on current bet
-              choice_nodes = bet.children
-              choices_found = []
-              choice_nodes.each do |choice_node|
-                choice = {
-                    odd: choice_node['odd']
-                }
-                if bet_type_support['has_line']
-                  choice[:line] = choice_node['name'].split(' ').last
-                  choice[:selection] = choice_node['name'].gsub(choice[:line], '')
-                else
-                  choice[:selection] = choice_node['name']
-                end
-
-                choices_found << choice
-              end
-              # Save bets
-              bets_found << {
-                  code: bet_type_support['standard_code'],
-                  name: bet_type_support['standard_name'],
-                  choices: choices_found
+        bet_nodes.each do |bet|
+          bet_type_support = supported_bet_types.detect { |bet_type| bet_type[CODE] == bet['code'] }
+          if bet_type_support
+            # Get choices on current bet
+            choice_nodes = bet.children
+            choices_found = []
+            choice_nodes.each do |choice_node|
+              choice = {
+                  odd: choice_node['odd']
               }
+              if bet_type_support['has_line']
+                choice[:line] = choice_node['name'].split(' ').last
+                choice[:selection] = choice_node['name'].gsub(choice[:line], '')
+              else
+                choice[:selection] = choice_node['name']
+              end
+              choices_found << choice
             end
+            # Save bets
+            bets_found << {
+                code: bet_type_support['standard_code'],
+                name: bet_type_support['standard_name'],
+                choices: choices_found
+            }
           end
         end
         bets_found
       end
 
-
       protected
       # Start to feed xml
       # Return Nokogiri::Document object
       def go
-        if true
+        if false
           uri = URI(ODDS_URL)
           response = Net::HTTP.get_response(uri)
           # TODO: catch timeout error

@@ -56,7 +56,7 @@
 }
 
 #confirm-select-odd-modal .match-name {
-    font-size: 35px;
+    font-size: 25px;
     margin-bottom: 5px;
 }
 
@@ -183,8 +183,4 @@ label.control-label {
 .btn-normal {
     background-color: #fff;
     border-color: #ccc;
-}
-
-.btn-view-bets {
-    opacity: 0.5;
 }

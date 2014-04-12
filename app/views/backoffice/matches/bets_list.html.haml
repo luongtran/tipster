@@ -8,5 +8,6 @@
 .tab-content
   .tab-pane.active{id: "#{match.id}-betclic"}
     = render 'betclic_bets', bets: bets['betclic'], match: match
-  .tab-pane{id: "#{match.id}-france_paris"}
-    = render 'france_paris_bets', bets: bets['france_paris'], match: match
+  - if bets['france_paris']
+    .tab-pane{id: "#{match.id}-france_paris"}
+      = render 'france_paris_bets', bets: bets['france_paris'], match: match
