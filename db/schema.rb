@@ -76,7 +76,6 @@ ActiveRecord::Schema.define(version: 20140407115706) do
     t.string  "name"
     t.string  "sport_code"
     t.string  "fr_name"
-    t.boolean "active",     default: true
   end
 
   add_index "competitions", ["sport_code"], name: "index_competitions_on_sport_code", using: :btree

@@ -10,10 +10,10 @@ class Tip < ActiveRecord::Base
   RESULT_VOID = 'void' # only with handicap bets
 
   STATUSES_MAP = {
-      STATUS_PENDING => 'pending',
-      STATUS_PUBLISHED => 'published',
-      STATUS_REJECTED => 'rejected',
-      STATUS_FINISHED => 'finished'
+    STATUS_PENDING => 'pending',
+    STATUS_PUBLISHED => 'published',
+    STATUS_REJECTED => 'rejected',
+    STATUS_FINISHED => 'finished'
   }
 
   CREATE_PARAMS = [:bookmarker_code, :bet_type_code, :sport_code, :odds, :selection, :advice, :amount]
@@ -129,9 +129,9 @@ class Tip < ActiveRecord::Base
       raise "The tip can not publish by #{admin.class.name}"
     end
     self.update_attributes!(
-        published_at: Time.now,
-        status: STATUS_PUBLISHED,
-        published_by: admin.id
+      published_at: Time.now,
+      status: STATUS_PUBLISHED,
+      published_by: admin.id
     )
     TipJournal.write_event_published(self, admin)
     # Do sending SMS, email
@@ -157,9 +157,9 @@ class Tip < ActiveRecord::Base
       raise "The author object must be a Admin."
     end
     self.update_attributes!(
-        finished_at: Time.now,
-        finished_by: admin.id,
-        status: STATUS_FINISHED
+      finished_at: Time.now,
+      finished_by: admin.id,
+      status: STATUS_FINISHED
     )
     TipJournal.write_event_finished(self, admin)
   end
