@@ -9,12 +9,78 @@ module OddsFeed
     # XML structure: Data > SportList > Sport > RegionList > Region > CompetitionList > Competition > MatchList > Match
     # > OfferList[Team] > Offer > Outcome
 
-
     class << self
       attr_accessor :local_xml_document
 
-      # === Translate name bet type of from FranceParis to our site
-      def translate_bet_type(bet_type)
+      # === Find all sports in the response XML
+      def raw_sports
+        xml_doc = self.go
+        sport_nodes = xml_doc.css('Sport')
+        sports = []
+        sport_nodes.each do |node|
+          sports << {
+              id: node['id'],
+              name: node['name']
+          }
+        end
+        sports.uniq
+      end
+
+      # === Get all competitions in the response XML
+      def raw_competitions
+        xml_doc = self.go
+        competition_nodes = xml_doc.css('Competition')
+        competitions = []
+        competition_nodes.each do |compt_node|
+          sport_node = compt_node.ancestors('Sport').first
+          competitions << {
+              id: compt_node['id'],
+              name: compt_node['name'],
+              sport_id: sport_node['id'],
+              sport_name: sport_node['name']
+          }
+        end
+        competitions.uniq
+      end
+
+      # === Get all areas(Region) in the response XML
+      def raw_areas
+        xml_doc = self.go
+        competition_nodes = xml_doc.css('Region')
+        areas = []
+        competition_nodes.each do |region_node|
+          areas << {
+              id: region_node['id'],
+              name: region_node['name'],
+          }
+        end
+        areas.uniq
+      end
+
+      # === Get all matches in the response XML
+      def raw_matches
+        xml_doc = self.go
+        match_nodes = xml_doc.css('MatchList > Match')
+        matches = []
+        match_nodes.each do |node|
+          teams = node.css('Team')
+          unless teams.empty?
+            competition_node = node.ancestors('Competition').first
+            sport_node = node.ancestors('Sport').first
+            team_a_name = teams[0]['name']
+            team_b_name = teams[1]['name']
+            matches << {
+                id: node['id'],
+                name: "#{team_a_name} - #{team_b_name}",
+                team_a: team_a_name,
+                team_b: team_b_name,
+                sport_id: sport_node['id'],
+                competition_id: competition_node['id'],
+                start_date: node['date']
+            }
+          end
+        end
+        matches
       end
 
       # === Return the bet types found in the response XML
@@ -35,25 +101,7 @@ module OddsFeed
       end
 
       def fetch_odds
-        xml_doc = self.go
-        match_nodes = xml_doc.css('MatchList > Match')
-        result_matches = []
-        #found = []
-        match_nodes.each do |node|
-          teams = node.css('Team')
-          unless teams.empty?
-            team_a_name = teams[0]['name']
-            team_b_name = teams[1]['name']
-            result_matches << {
-                name: "#{team_a_name} vs #{team_b_name}",
-                team_a: team_a_name,
-                team_b: team_b_name,
-                france_paris_match_id: node['id'],
-                start_date: node['date'],
-            }
-          end
-        end
-        result_matches
+
       end
 
       # === Perform search bets on the given match
@@ -130,31 +178,20 @@ module OddsFeed
         found_bets
       end
 
-      # === Find all sports in the response XML
-      def support_sports
-        xml_doc = self.go
-        sport_nodes = xml_doc.css('Sport')
-        found_sports = []
-        sport_nodes.each do |node|
-          found_sports << {
-              name: node['name'],
-              id: node['id']
-          }
-        end
-        found_sports.uniq
-      end
-
       protected
       # === Start to feed xml
       # Return Nokogiri::Document object
       def go
-        uri = URI(ODDS_URL)
-        response = Net::HTTP.get_response(uri)
-        doc = Nokogiri::XML(response.body)
-        doc
-        #file_name = "#{CODE}_#{Time.now.to_i}.xml"
-        #File.open(File.join(Rails.root, 'db', 'odds_xmls', file_name), 'w') { |f| doc.write_xml_to f }
-        #read_from_local
+        if true
+          uri = URI(ODDS_URL)
+          response = Net::HTTP.get_response(uri)
+          doc = Nokogiri::XML(response.body)
+          doc
+        else
+          file_name = "#{CODE}_#{Time.now.to_i}.xml"
+          File.open(File.join(Rails.root, 'db', 'odds_xmls', file_name), 'w') { |f| doc.write_xml_to f }
+          read_from_local
+        end
       end
 
       # === Save to xml file for use later

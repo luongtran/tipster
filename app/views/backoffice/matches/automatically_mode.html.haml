@@ -61,32 +61,21 @@
       -#.col-lg-1
         %button.btn.btn-default.btn-sm#btn-reset-form-advanced-search-match{type: :button} Reset
   .clearfix
-    -#.col-lg-3#competitions-tree-wrap.competitions-tree-menu.mas.pas{'data-filter-url' => search_backoffice_matches_path(mode: 'auto')}
-    -#  - sports_competitions = @competitions.group_by(&:sport)
-    -#  %div{style: "overflow-y: scroll; overflow-x: hidden; height: 500px;"}
-    -#    %ul.nav.nav-list
-    -#      - sports_competitions.each do |sport, competitions|
-    -#        %li
-    -#          %label.tree-toggler.nav-header
-    -#            %i{class: class_for_sport_icon(sport.code)}
-    -#            -# SPORT
-    -#            = sport.name.titleize
-    -#          %ul.nav.nav-list.tree
-    -#            - areas_competitions = competitions.group_by(&:area)
-    -#            - areas_competitions.each do |area, competitions|
-    -#              %li
-    -#                -# AREA
-    -#                %label.tree-toggler.nav-header
-    -#                  %img.flag{class: flag_class_for_area_id(area.opta_area_id)}
-    -#                  = area.name
-    -#                %ul.nav.nav-list.tree{style: "display: none;"}
-    -#                  - competitions.each do |compt|
-    -#                    %li
-    -#                      %a.lk-select-competition.text-info{href: '#', 'data-competition-id' => compt.opta_competition_id, 'data-sport-code' => sport.code}= compt.name
-    -#
-    -#        %li.divider
     .col-lg-12#available-matches-wrapper{'data-mode' => 'auto'}
-      = render 'available_matches_list', matches: @matches, group_by: 'date', mode: 'auto'
+      %ul.nav.nav-tabs
+        %li.active
+          %a{href: "#betclic-matches","data-toggle"=>"tab"}
+            = image_tag 'bookmarkers/betclic.png'
+        %li
+          %a{href: "#france-paris-matches","data-toggle"=>"tab"}
+            = image_tag 'bookmarkers/france_paris.png'
+      .tab-content
+        .tab-pane.active#betclic-matches
+          .mam
+          = render 'betclic_matches', matches: @matches, group_by: 'date', mode: 'auto'
+        .tab-pane#france-paris-matches
+          .mam
+          = render 'france_paris_matches', matches: @matches, group_by: 'date', mode: 'auto'
 -# The hidden dialog to confirm select odd
 #confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
   .modal-dialog.modal-md

@@ -72,6 +72,10 @@ class Match < ActiveRecord::Base
       )
     end
 
+    def available_on_bookmarkers
+
+    end
+
     def perform_sport_param(sport, relation = self)
       relation.where(sport_code: sport)
     end

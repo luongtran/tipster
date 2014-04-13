@@ -4,7 +4,7 @@
   - matches_grouped = matches.group_by {|match| match.start_date}
   -# Sort by start date asc
   - matches_grouped = matches_grouped.sort_by {|date, matches| date}
-#matches-on-date.panel-group
+#matches-group-wrap.panel-group
   - group_index = 0
   -# ===================> Group by date or sport
   - matches_grouped.each do |group, matches|
@@ -20,7 +20,7 @@
     .panel{class: "#{group_index == 1 ? 'panel-success' : 'panel-default'}"}
       .panel-heading
         %h4.panel-title
-          %a{"data-parent" => "#matches-on-date", "data-toggle" => "collapse", href: "##{group.class.name.downcase}-#{group_index}"}
+          %a{"data-parent" => "#matches-group-wrap", "data-toggle" => "collapse", href: "##{group.class.name.downcase}-#{group_index}"}
             %span.text-bold
               = group_title.html_safe
             %span.text-muted

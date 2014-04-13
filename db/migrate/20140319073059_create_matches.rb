@@ -1,8 +1,8 @@
 class CreateMatches < ActiveRecord::Migration
   def change
     create_table :matches do |t|
-      t.integer :uid
-      t.integer :competition_uid
+      t.string :bookmarker_code
+      t.integer :competition_id
       t.string :sport_code, null: false
       t.string :name
 
@@ -15,7 +15,6 @@ class CreateMatches < ActiveRecord::Migration
     end
 
     add_index :matches, :sport_code
-    add_index :matches, :uid
-    add_index :matches, :competition_uid
+    add_index :matches, :competition_id
   end
 end
