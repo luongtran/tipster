@@ -1,0 +1,2 @@
+class ManualMatch < Match
+end

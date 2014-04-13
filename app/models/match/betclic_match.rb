@@ -1,0 +1,2 @@
+class BetclicMatch < Match
+end

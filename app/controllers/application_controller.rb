@@ -152,7 +152,6 @@ class ApplicationController < ActionController::Base
     params.require(:account).permit(:email, :password, :password_confirmation)
   end
 
-
   private
 
   def redirect_to_sign_in(klass)

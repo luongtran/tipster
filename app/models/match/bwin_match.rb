@@ -1,0 +1,2 @@
+class BwinMatch < Match
+end

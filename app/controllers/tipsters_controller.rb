@@ -6,13 +6,11 @@ class TipstersController < ApplicationController
   def index
     @show_checkout_dialog = !!flash[:show_checkout_dialog]
     @selected_plan = selected_plan
-
     @tipsters = Tipster.load_data(params)
-    @top_3 = Tipster.find_tipsters_of_week(3)
+    @top_3 = Tipster.find_tipsters_of_week(3) # TODO: Constantize it!
     @sports = Sport.order('position asc')
 
-    # TODO: Oh my God! How can I increase response time with these bellow lines
-    # remember: this is a Controller not Model
+    # TODO: Can you clean up the bellow codes? This is a Controller not Model
     if current_subscriber && current_subscriber.has_active_subscription?
       @tipsters_in_subscription = current_subscriber.subscription.active_tipsters
     end
@@ -47,7 +45,7 @@ class TipstersController < ApplicationController
   end
 
   def detail_statistics
-    # TODO: make the prepare function to be easier to pass parameter
+    # TODO: make the prepare function to be easier to pass parameters
     @tipster = @tipster.prepare_statistics_data(params, true)
   end
 

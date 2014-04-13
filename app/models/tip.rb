@@ -234,5 +234,4 @@ class Tip < ActiveRecord::Base
   def init_status
     self.status = STATUS_PENDING
   end
-
 end

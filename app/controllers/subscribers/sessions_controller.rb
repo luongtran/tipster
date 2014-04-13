@@ -22,7 +22,6 @@ class Subscribers::SessionsController < Devise::SessionsController
         }
       end
     else
-      1.to_aaa
       self.resource = warden.authenticate!(auth_options)
       set_flash_message(:notice, :signed_in) if is_flashing_format?
       sign_in(resource_name, resource)

@@ -1,0 +1,2 @@
+class FranceParisMatch < Match
+end
