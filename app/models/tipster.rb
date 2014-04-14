@@ -89,7 +89,7 @@ class Tipster < ActiveRecord::Base
 
       tipsters = relation.includes(:statistics)
 
-      # Load statistics data
+      #Load statistics data
       tipsters.each do |tipster|
         tipster.prepare_statistics_data(params)
       end

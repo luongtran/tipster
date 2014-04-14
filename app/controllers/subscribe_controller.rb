@@ -37,6 +37,7 @@ class SubscribeController < ApplicationController
   # ========== NEW ==================================================
   # Request checkout the cart
   def checkout
+    # FIXME: please constantize the step numbers!
     if current_subscriber && session[:step] && session[:step] > 2
       go_to_current_steps
     else
@@ -45,12 +46,14 @@ class SubscribeController < ApplicationController
   end
 
   def change_tipster
+    # FIXME: please constantize the step numberss!
     @step = 2
     session[:old_id] = params[:old_id]
     redirect_to tipsters_path
   end
 
   def shopping_cart
+    # FIXME: please constantize the step numbers!
     @step = 1
     session[:step] = 1 if (session[:step].nil? || session[:step] < 1)
     @tipsters = Tipster.where(id: tipster_ids_in_cart)
@@ -58,6 +61,7 @@ class SubscribeController < ApplicationController
 
   # reg / input information
   def personal_information
+    # FIXME: please constantize the step numbers!
     if selected_plan
       if selected_plan.free?
         @step = 1
@@ -78,14 +82,14 @@ class SubscribeController < ApplicationController
         if params[:i_token] == 'DdM26nAJNTyuaMRXjnrF8vP8'
           if current_subscriber
             current_subscriber.validate_with_paid_account = !selected_plan.free?
-              if current_subscriber.update_attributes(profile_params)
-                if selected_plan.free?
-                  current_subscriber.apply_plan(selected_plan)
-                  empty_cart_session
-                  @subscriber.account.resend_confirmation_instructions unless @subscriber.account.confirmed?
-                end
-                redirect_to subscribe_shared_url
+            if current_subscriber.update_attributes(profile_params)
+              if selected_plan.free?
+                current_subscriber.apply_plan(selected_plan)
+                empty_cart_session
+                @subscriber.account.resend_confirmation_instructions unless @subscriber.account.confirmed?
               end
+              redirect_to subscribe_shared_url
+            end
           else
             s_params = subscriber_params
             account_params = s_params.delete :account
@@ -94,7 +98,7 @@ class SubscribeController < ApplicationController
             @account = Account.new(account_params)
 
             valid = @subscriber.valid?
-            valid = @account.valid?  && valid
+            valid = @account.valid? && valid
             if valid
               @subscriber.save
               @account.rolable = @subscriber
@@ -103,7 +107,7 @@ class SubscribeController < ApplicationController
               redirect_to subscribe_shared_url
             end
           end
-        #  Sign in
+          #  Sign in
         elsif params[:i_token] == 'KCWUzKdK7b2s9CXBDyKjFTcG'
           @account2 = Account.find_by_email(params[:account][:email])
           if @account2 && @account2.valid_password?(params[:account][:password])
@@ -130,6 +134,7 @@ class SubscribeController < ApplicationController
 
   # shared & confirm if plan.free?
   def shared
+    # FIXME: please constantize the step numbers!
     if selected_plan.free?
       @step = 2
       session[:step] = 2 if (session[:step].nil? || session[:step] < 2)
@@ -141,6 +146,7 @@ class SubscribeController < ApplicationController
 
   # select receiver methods, default true
   def receive_methods
+    # FIXME: please constantize the step numbers!
     @step = 4
     session[:step] = 4 if (session[:step].nil? || session[:step] < 4)
     unless account_signed_in?
@@ -159,6 +165,7 @@ class SubscribeController < ApplicationController
   # User is sign_in
   # Only apply for first time payment
   def payment
+    # FIXME: please constantize the step numbers!
     @step = 5
     session[:step] = 5 if (session[:step].nil? || session[:step] < 5)
     @tipsters = Tipster.where(id: tipster_ids_in_cart)
@@ -218,6 +225,7 @@ class SubscribeController < ApplicationController
   end
 
   def go_to_current_steps
+    # FIXME: please constantize the step number!
     case session[:step]
       when 1
         redirect_to subscribe_shopping_cart_path
@@ -235,6 +243,7 @@ class SubscribeController < ApplicationController
   end
 
   def no_subscription_required
+    # FIXME: please constantize the step number!
     if current_subscriber && current_subscriber.subscription && !current_subscriber.subscription.try(:plan).try(:free?) && current_subscriber.subscription.active?
       redirect_to add_tipster_subscription_path
     end
@@ -253,24 +262,25 @@ class SubscribeController < ApplicationController
   end
 
   def ready_to_payment
-    checker = if !current_subscriber
-                {
-                    message: "Please login or signup !",
-                    url: subscribe_identification_url
-                }
-              elsif tipster_ids_in_cart.empty?
-                {
-                    message: "Please choose at least one tipster",
-                    url: tipsters_url
-                }
-              elsif !session[:plan_id] && (!current_subscriber.subscription || !current_subscriber.subscription.active)
-                {
-                    message: "Please choose a plan",
-                    url: pricing_url
-                }
-              else
-                nil
-              end
+    checker =
+        if !current_subscriber
+          {
+              message: "Please login or signup !",
+              url: subscribe_identification_url
+          }
+        elsif tipster_ids_in_cart.empty?
+          {
+              message: "Please choose at least one tipster",
+              url: tipsters_url
+          }
+        elsif !session[:plan_id] && (!current_subscriber.subscription || !current_subscriber.subscription.active)
+          {
+              message: "Please choose a plan",
+              url: pricing_url
+          }
+        else
+          nil
+        end
     redirect_to checker[:url], alert: checker[:message] and return if checker.present?
   end
 

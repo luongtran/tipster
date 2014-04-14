@@ -11,7 +11,7 @@ class CartController < ApplicationController
       end
     end
   end
-  
+
   def add_tipster
     unless selected_plan.nil?
       if selected_plan.price == 0
@@ -61,11 +61,12 @@ class CartController < ApplicationController
     end
     flash[:notice] = "Tipster droped.#{'Your cart is empty.' if tipster_ids_in_cart.empty?}"
     return_url = params[:return_url].presence
-    after_drop_tipster_url = if tipster_ids_in_cart.empty?
-                               tipsters_url
-                             else
-                               cart_url
-                             end
+    after_drop_tipster_url =
+        if tipster_ids_in_cart.empty?
+          tipsters_url
+        else
+          cart_url
+        end
     redirect_to return_url || after_drop_tipster_url
   end
 

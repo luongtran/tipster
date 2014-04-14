@@ -58,8 +58,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
-
   # Destroy session if a singed-in users access to a place not be for them
+  # Example: a tipster logged into backoffice, but if he access to any pages is not belongs to backoffice so
+  # his session will be destroy
+  # Remember: each role have seperate controllers to process, so we don't need CanCan gem or any permission settings
+  # on this project
   def clean_session
     if account_signed_in?
       current_user = current_account.rolable

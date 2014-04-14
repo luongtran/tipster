@@ -33,7 +33,7 @@ TipsterHero::Application.routes.draw do
     end
   end
 
-  resource :cart, controller: 'cart', :only => [:show] do
+  resource :cart, controller: 'cart', only: [:show] do
     post :add_tipster
     post :drop_tipster
     get :empty

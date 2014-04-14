@@ -18,7 +18,7 @@
 class Subscription < ActiveRecord::Base
   MAX_ADDITIONAL_TIPSTERS = 2
   ADDING_TIPSTER_PERCENT = 0.4
-  PAYMENT_STATUS = ["Initial","Pending","Completed","Expired"]
+  PAYMENT_STATUS = ["Initial", "Pending", "Completed", "Expired"]
   # ==============================================================================
   # ASSOCIATIONS
   # ==============================================================================
@@ -45,7 +45,7 @@ class Subscription < ActiveRecord::Base
   # VALIDATIONS
   # ==============================================================================
   validates :subscriber, :plan, presence: true
-  delegate :title, :to => :plan, :prefix => true # Example using: self.plan_title
+  delegate :title, to: :plan, prefix: true # Example using: self.plan_title
 
   # ==============================================================================
   # INSTANCE METHODS
@@ -59,7 +59,7 @@ class Subscription < ActiveRecord::Base
   end
 
   def able_to_add_more_tipsters?(count = 1)
-    (self.active_tipsters.count + count) <= self.plan.number_tipster + Subscription::MAX_ADDITIONAL_TIPSTERS
+    (self.active_tipsters.count + count) <= self.plan.number_tipster + MAX_ADDITIONAL_TIPSTERS
   end
 
   def calculator_price
@@ -75,7 +75,7 @@ class Subscription < ActiveRecord::Base
     if self.using_coupon
       price -= 3
     end
-    return price.round(2)
+    price.round(2)
   end
 
   def monthly_price
@@ -83,18 +83,19 @@ class Subscription < ActiveRecord::Base
     if self.using_coupon
       price -= 3
     end
-    return price.round(2)
+    price.round(2)
   end
 
   # =========NEED TO CALCULATING AGAIN  =======
   def added_price
     price = self.added_tipster * self.plan.adding_price
-    return price.round(2)
+    price.round(2)
   end
 
   def tipsters_size
     self.active_tipsters.size
   end
+
   def need_to_paid
     if self.active
       expires = self.inactive_tipsters.size
@@ -112,6 +113,7 @@ class Subscription < ActiveRecord::Base
 
   def added_tipster
     if self.active? && !self.plan.free?
+      # FIXME: OMG, I don't known why are you hate 'if' 'else' keyword?
       add = self.tipsters.size > [self.active_tipsters.size, self.plan.number_tipster].max ? self.tipsters.size - [self.active_tipsters.size, self.plan.number_tipster].max : 0
     else
       add = self.tipsters.size > self.plan.number_tipster ? self.tipsters.size - self.plan.number_tipster : 0
@@ -146,7 +148,7 @@ class Subscription < ActiveRecord::Base
   # Only set when init payment
 
   def set_primary(id)
-    if Tipster.exists? id && self.tipster_ids.include?(id)
+    if Tipster.exists?(id) && self.tipster_ids.include?(id)
       if self.subscription_tipsters.present?
         self.subscription_tipsters.each do |x|
           x.update_column(:is_primary, false)

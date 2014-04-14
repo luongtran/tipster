@@ -18,6 +18,7 @@ class SubscriptionTipster < ActiveRecord::Base
   belongs_to :tipster
   belongs_to :subscription
   has_one :payment
+  # FIXME: A subscriber have only 1 primary tipster. You shouldn't use scope
   scope :primary_tipster, -> { where(:is_primary => true) }
   validates_uniqueness_of :tipster, scope: [:subscription]
 
