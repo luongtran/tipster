@@ -16,6 +16,8 @@ class Sport < ActiveRecord::Base
   has_many :bet_types, foreign_key: :sport_code, primary_key: :code
   has_many :competitions, foreign_key: :sport_code, primary_key: :code
 
+  has_many :opta_competitions, class_name: Opta::Competition, foreign_key: :sport_code, primary_key: :code
+
   has_many :matches, foreign_key: :sport_code, primary_key: :code
   validates :code, presence: true, uniqueness: {case_sensitive: false}
 

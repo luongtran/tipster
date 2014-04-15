@@ -1,0 +1,19 @@
+- if content_for? :page_head_mid
+  = yield :page_head_mid
+- else
+  #page_header_mid
+    #sub-page-header
+      .container.clearfix
+        .pull-left
+          #sub-page-title.clearfix
+            %span.icon.typcn.typcn-location.pull-left.man
+            .pull-right
+              #sub-page-navi
+                %ul.list-inline.man.text-slim
+                  %li
+                    %a{href: root_path}
+                      Home
+                  %li
+                    %a{href: tipsters_path}
+                      Tipsters
+              %h1#sub-page-h1.man.text-slim= yield(:title)

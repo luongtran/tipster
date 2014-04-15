@@ -1,0 +1,23 @@
+!!!
+%html(ng-app="TS")
+  %head
+  %title Livescore #{"|" << yield(:title) if content_for?(:title)}
+  = stylesheet_link_tag "application", media: "all"
+  = stylesheet_link_tag "livescore", media: "all"
+  = javascript_include_tag "application"
+  = javascript_include_tag "livescore"
+  %meta{name: "viewport",content: "width=device-width, initial-scale=1.0"}
+  %meta{"http-equiv" => "X-UA-Compatible", content: "IE=EmulateIE7;IE=EmulateIE8;IE=EmulateIE9;IE=EmulateIE10;IE=EmulateIE11"}
+  = favicon_link_tag 'demo.png'
+  = csrf_meta_tags
+  %body
+    - content_for :current_menu, 'livescore'
+    = render 'layouts/navbar'
+    #content-wrapper.background-granite
+      = render 'layouts/shared/flash_messages'
+      -#= render 'layouts/livescore/sidebar'
+      = yield
+      .clearfix
+    - unless current_subscriber
+      = render 'layouts/sign_up_box'
+      = render 'layouts/sign_in_box'

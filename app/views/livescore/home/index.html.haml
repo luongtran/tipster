@@ -1,0 +1,15 @@
+.tipster-list#tipster_list.container
+  .tipster-list-inner.container.for-last-tip
+    - current_sport = params[:sport_code].presence
+    - current_sport ||= 'all'
+    .tipster-list-line1
+      - unless @sports.empty?
+        %ul.list-inline
+          %li
+            %a{href: livescore_root_path, class: class_for_sport_filter('all', current_sport)} All
+          - @sports.each do |sport|
+            %li
+              %a{href: livescore_sport_path(sport_code: sport.code), class: class_for_sport_filter(sport.code,current_sport)}= sport.name.titleize
+    .tipster-list-table
+      .row
+        .col-md-12

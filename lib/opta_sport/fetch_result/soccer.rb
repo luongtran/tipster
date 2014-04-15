@@ -21,6 +21,7 @@ module OptaSport
         end
       end
       class MatchLive < Base
+
       end
       class MatchStatistics < Base
         attr_accessor :opta_match_id
@@ -75,8 +76,8 @@ module OptaSport
             areas << {
                 opta_area_id: area['area_id'],
                 name: area['name'],
-                country_code: area['countrycode'],
-                parent_id: area.parent['area_id']
+                country_code: area['countrycode']
+                #parent_id: area.parent['area_id']
             }
           end
           areas

@@ -47,7 +47,6 @@ module OptaSport
         }
         self.go('get_matches', params, OptaSport::FetchResult::Soccer::MatchStatistics)
       end
-
     end
   end
 end

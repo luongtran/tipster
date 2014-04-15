@@ -1,0 +1,24 @@
+.col-lg-12
+  .container
+    .navbar-sports-livescore
+      %ul.list-unstyled.list-inline
+        %li
+          %a{href: livescore_sport_path(sport_code: 'soccer')}
+            %span{class: class_for_sport_icon('soccer')}
+            Football
+        %li
+          %a{href: livescore_sport_path(sport_code: 'tennis')}
+            %span{class: class_for_sport_icon('tennis')}
+            Tennis
+        %li
+          %a{href: livescore_sport_path(sport_code: 'basketball')}
+            %span{class: class_for_sport_icon('basketball')}
+            Basketball
+        %li
+          %a{href: livescore_sport_path(sport_code: 'handball')}
+            %span{class: class_for_sport_icon('handball')}
+            Handball
+        %li
+          %a{href: livescore_sport_path(sport_code: 'rugby')}
+            %span{class: class_for_sport_icon('rugby')}
+            Rugby

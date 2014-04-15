@@ -94,6 +94,16 @@ TipsterHero::Application.routes.draw do
   #draw :backoffice
   #draw :admin
 
+
+  # ==============================================================================
+  # Livescore routes
+  # ==============================================================================
+  namespace :livescore do
+    root 'home#index'
+    get ':sport_code', to: 'sports#filter', as: :sport
+    get ':sport_code/:competition-:competition_id/', to: 'sports#filter'
+  end
+
   # ==============================================================================
   # Backoffice Tipster routes
   # ==============================================================================

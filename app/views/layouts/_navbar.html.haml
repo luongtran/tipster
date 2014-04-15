@@ -31,11 +31,11 @@
     .container
       %ul.list-inline.clearfix
         %li.pull-left
+        %li.pull-left
+          %a{href: livescore_root_path, class: set_current_menu('livescore',current_menu)}
+            = I18n.t('menu.livescore')
           %a{href: 'javascript:void(0);', class: set_current_menu('statistics',current_menu)}
             = I18n.t('menu.statistics')
-        %li.pull-left
-          %a{href: 'javascript:void(0);', class: set_current_menu('livescore',current_menu)}
-            = I18n.t('menu.livescore')
         %li.pull-left
           %a{href: tipsters_path, class: set_current_menu('tipsters',current_menu)}
             = t('menu.tipster')
@@ -69,22 +69,4 @@
             %a.lk-toggle-sign-in-box{href: 'javascript:void(0);'}
               %i.glyphicon.glyphicon-log-in
               = I18n.t('user.sign_in')
-- if content_for? :page_head_mid
-  = yield :page_head_mid
-- else
-  #page_header_mid
-    #sub-page-header
-      .container.clearfix
-        .pull-left
-          #sub-page-title.clearfix
-            %span.icon.typcn.typcn-location.pull-left.man
-            .pull-right
-              #sub-page-navi
-                %ul.list-inline.man.text-slim
-                  %li
-                    %a{href: root_path}
-                      Home
-                  %li
-                    %a{href: tipsters_path}
-                      Tipsters
-              %h1#sub-page-h1.man.text-slim= yield(:title)
+

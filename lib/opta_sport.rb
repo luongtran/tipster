@@ -3,7 +3,6 @@ require 'opta_sport/error'
 require 'opta_sport/fetcher'
 module OptaSport
   AVAILABLE_SPORT = %w(soccer basketball)
-
   API_ROOT_URL = 'http://api.core.optasports.com'
 
   class Configuration

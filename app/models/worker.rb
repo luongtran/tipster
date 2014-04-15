@@ -73,6 +73,7 @@ class Worker
       # http://api.core.optasports.com/soccer/get_competitions?authorized=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
       sports = Sport.where(code: OptaSport::AVAILABLE_SPORT)
       compts = []
+
       sports.each do |sport|
         fetcher = OptaSport::Fetcher.find_fetcher_for(sport.code)
         if fetcher.respond_to?(:get_competitions)
@@ -92,6 +93,7 @@ class Worker
           end
         end
       end
+
       compts
     end
 
@@ -157,7 +159,7 @@ class Worker
       fetcher = OptaSport::Fetcher.soccer
       res = fetcher.get_areas
       res.all.each do |area_attrs|
-        Area.create area_attrs
+        Opta::Area.create area_attrs
       end
     end
 

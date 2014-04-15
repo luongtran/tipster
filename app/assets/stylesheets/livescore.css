@@ -1,0 +1,8 @@
+.navbar-sports-livescore {
+    padding: 0 30px;
+    height: 35px;
+}
+
+.navbar-sports-livescore ul li {
+    float: left;
+}

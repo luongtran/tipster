@@ -1,0 +1,12 @@
+.tipster-list#tipster_list.container
+  .tipster-list-inner.container.for-last-tip
+    .tipster-list-line1
+      %ul.list-inline
+        %li
+          %a{href: livescore_root_path, class: class_for_sport_filter('all', params[:sport_code])} All
+        - @sports.each do |sport|
+          %li
+            %a{href: livescore_sport_path(sport_code: sport.code), class: class_for_sport_filter(sport.code,params[:sport_code])}= sport.name.titleize
+    .tipster-list-table
+      .row
+        .col-md-12

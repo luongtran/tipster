@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140407115706) do
+ActiveRecord::Schema.define(version: 20140415041955) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -93,8 +93,8 @@ ActiveRecord::Schema.define(version: 20140407115706) do
   add_index "coupon_codes", ["subscriber_id"], name: "index_coupon_codes_on_subscriber_id", using: :btree
 
   create_table "matches", force: true do |t|
-    t.integer  "uid"
-    t.integer  "competition_uid"
+    t.string   "bookmarker_code"
+    t.integer  "competition_id"
     t.string   "sport_code",      null: false
     t.string   "name"
     t.string   "team_a"
@@ -105,9 +105,57 @@ ActiveRecord::Schema.define(version: 20140407115706) do
     t.datetime "updated_at"
   end
 
-  add_index "matches", ["competition_uid"], name: "index_matches_on_competition_uid", using: :btree
+  add_index "matches", ["competition_id"], name: "index_matches_on_competition_id", using: :btree
   add_index "matches", ["sport_code"], name: "index_matches_on_sport_code", using: :btree
-  add_index "matches", ["uid"], name: "index_matches_on_uid", using: :btree
+
+  create_table "opta_areas", force: true do |t|
+    t.integer  "opta_area_id"
+    t.string   "name"
+    t.string   "country_code"
+    t.datetime "update_at"
+  end
+
+  create_table "opta_competitions", force: true do |t|
+    t.integer  "opta_area_id"
+    t.integer  "opta_competition_id"
+    t.string   "sport_code"
+    t.string   "name"
+    t.boolean  "active",              default: true
+    t.datetime "updated_at"
+  end
+
+  add_index "opta_competitions", ["opta_competition_id"], name: "index_opta_competitions_on_opta_competition_id", using: :btree
+  add_index "opta_competitions", ["sport_code"], name: "index_opta_competitions_on_sport_code", using: :btree
+
+  create_table "opta_matches", force: true do |t|
+    t.integer  "opta_match_id"
+    t.string   "type"
+    t.string   "name"
+    t.string   "sport_code"
+    t.datetime "start_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "opta_matches", ["opta_match_id"], name: "index_opta_matches_on_opta_match_id", using: :btree
+  add_index "opta_matches", ["sport_code"], name: "index_opta_matches_on_sport_code", using: :btree
+
+  create_table "opta_seasons", force: true do |t|
+    t.integer  "opta_season_id"
+    t.integer  "opta_competition_id"
+    t.string   "name"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "opta_seasons", ["opta_competition_id"], name: "index_opta_seasons_on_opta_competition_id", using: :btree
+  add_index "opta_seasons", ["opta_season_id"], name: "index_opta_seasons_on_opta_season_id", using: :btree
+
+  create_table "opta_tours", force: true do |t|
+    t.integer  "opta_tour_id"
+    t.string   "name"
+    t.datetime "update_at"
+  end
 
   create_table "payments", force: true do |t|
     t.integer  "subscription_id"
