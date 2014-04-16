@@ -133,12 +133,6 @@ class Match < ActiveRecord::Base
 
   # Find bets and odds from the given bookmarker
   def find_bets
-    bets = {}
-    %w(betclic france_paris).each do |bookmarker_code|
-      recognized_bet_types = BetType.recognized_bet_types(bookmarker_code, self.sport_code)
-      bets[bookmarker_code] =
-          Bookmarker.find_odds_feed_module_by(bookmarker_code).find_odds_on_match(self, recognized_bet_types)
-    end
-    bets
+    raise 'Luan HT'
   end
 end

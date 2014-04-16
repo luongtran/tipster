@@ -182,6 +182,7 @@ $(document).ready(function () {
         return false;
     });
 
+
     $('.btn-filter-mode').on('click', function () {
         var $advanced_search_form = $('#advanced-search-form-wrap');
         if ($('#switch-advanced-search-form').is(':checked')) {
@@ -216,6 +217,42 @@ $(document).ready(function () {
         $form.find('.competition').val(competition_id);
         $form.find('.sport').val(sport_code);
         doFilterMatches($form);
+        return false;
+    });
+
+    /* Search bookmarker matchs */
+
+    function doSearchBookmarkerMatches(form) {
+        var $form = $(form);
+        var $result_containner = $($form.attr('data-result-container'));
+
+        $form.addClass('submiting');
+        $.ajax({
+            url: $form.attr('action'),
+            type: 'GET',
+            data: $form.serialize(),
+            dataType: 'JSON',
+            success: function (response) {
+                if (response.success) {
+                    $result_containner.html('');
+                    $result_containner.html(response.html);
+                } else {
+                    Helper.alert_server_error();
+                }
+            },
+            complete: function () {
+                $form.removeClass('submiting');
+            }
+        });
+    }
+
+    $('.form-search-bookmarker-matches').on('submit', function () {
+        doSearchBookmarkerMatches(this);
+        return false;
+    });
+
+    $('.form-search-bookmarker-matches').on('change', 'input[type=radio]', function () {
+        $(this).closest('form').trigger('submit');
         return false;
     });
 });

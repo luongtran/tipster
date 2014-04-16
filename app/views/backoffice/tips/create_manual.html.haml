@@ -1,0 +1,25 @@
+.row
+  .clearfix.mam.bgw
+    %h3.text-info Please enter information for the tip:
+    = simple_form_for @tip, url: backoffice_tips_path, html: {class: 'form-horizontal', id: 'form-new-tip'} do |f|
+
+      .form-group
+        %label.col-md-4.control-label
+          Match:
+        .col-md-7
+          .form-control
+      = f.input :bookmarker_code, as: :select, collection: bookmarkers_for_select(@bookmarkers), label: 'Bookmarker',
+            include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true}
+      = f.input :bet_type_code, collection: bet_types_for_select(@bet_types), label: 'Type of bet',
+            include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true}
+      = f.input :selection
+      = f.input :odds
+      = f.input :amount
+      = f.input :advice
+      .form-group
+        .col-sm-offset-4.col-sm-7
+          %button.btn.btn-primary{type: :submit} Submit
+          %a.btn.btn-default{href: backoffice_my_tips_path } Cancel
+
+
+

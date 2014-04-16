@@ -69,34 +69,6 @@ class Worker
       founded_seasons
     end
 
-    def update_competitions
-      # http://api.core.optasports.com/soccer/get_competitions?authorized=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
-      sports = Sport.where(code: OptaSport::AVAILABLE_SPORT)
-      compts = []
-
-      sports.each do |sport|
-        fetcher = OptaSport::Fetcher.find_fetcher_for(sport.code)
-        if fetcher.respond_to?(:get_competitions)
-          res = fetcher.get_competitions(
-              authorized: true
-          )
-          if fetcher.success?
-            competitions = res.all
-            compts += competitions
-            competitions.each do |competition|
-              Competition.create(
-                  competition.merge(sport_code: sport.code)
-              )
-            end
-          else
-            puts fetcher.error.log_format
-          end
-        end
-      end
-
-      compts
-    end
-
     def update_france_name_for_competitions
       sports = Sport.where(code: OptaSport::AVAILABLE_SPORT)
       compts = []
@@ -171,6 +143,12 @@ class Worker
         if area
           area.update_attribute :fr_name, area_attrs[:name]
         end
+      end
+    end
+
+    def update_bookmarkers_matches
+      Bookmarker.able_to_odds_feed.each do |bookmarker|
+        bookmarker.get_matches
       end
     end
 

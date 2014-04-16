@@ -1,0 +1,40 @@
+- bookmarker_matches = @matches.group_by{|match| match.bookmarker}
+.col-lg-12#available-matches-wrapper{'data-mode' => 'auto'}
+  %ul.nav.nav-tabs
+    - index = 0
+    - bookmarker_matches.each do |bookmarker, matches|
+      - index += 1
+      %li{class: "#{'active' if index == 1}"}
+        %a{href: "##{bookmarker.code}-matches","data-toggle"=>"tab"}
+          %span.text-bold= bookmarker.name
+          = "(#{matches.size})"
+  .tab-content
+    - index = 0
+    - bookmarker_matches.each do |bookmarker, matches|
+      - index += 1
+      .tab-pane{id: "#{bookmarker.code}-matches",class: "#{'active' if index == 1}"}
+        .mam
+          .mbm
+            = simple_form_for :nothing, url: available_bets_backoffice_tips_path, html: {class: 'form-search-bookmarker-matches form-inline', 'data-result-container' => "##{bookmarker.code}-matches-wrapper"} do |f|
+              = hidden_field_tag :bookmarker_code, bookmarker.code
+              .col-lg-offset-2
+                .col-lg-4
+                  .form-group
+                    %label Group:
+                    .radio-inline
+                      %label.control-label
+                        %input.btn-filter-mode{type: :radio, name: :group_by, 'checked' => true, value: 'date'}
+                        Date
+                    .radio-inline
+                      %label.control-label
+                        %input.btn-filter-mode{type: :radio, name: :group_by, value: 'sport'}
+                        Sport
+                .col-lg-4
+                  .form-group
+                    %label Search:
+                    %input.input-sm.form-control{type: :text, placeholder: '', name: 'search'}
+            .pull-right
+              = image_tag "/assets/bookmarkers/#{bookmarker.code}.png"
+          .clearfix
+          .mtm
+          = render "backoffice/tips/bookmarkers/#{bookmarker.code}_matches", matches: matches

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140415041955) do
+ActiveRecord::Schema.define(version: 20140416030809) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -65,6 +65,19 @@ ActiveRecord::Schema.define(version: 20140415041955) do
   end
 
   add_index "bet_types", ["sport_code"], name: "index_bet_types_on_sport_code", using: :btree
+
+  create_table "bookmarker_matches", force: true do |t|
+    t.string   "bookmarker_code",  null: false
+    t.string   "sport_code"
+    t.string   "name",             null: false
+    t.string   "team_a_name"
+    t.string   "team_b_name"
+    t.integer  "match_id",         null: false
+    t.integer  "competition_id"
+    t.string   "competition_name"
+    t.datetime "start_at",         null: false
+    t.datetime "updated_at"
+  end
 
   create_table "bookmarkers", force: true do |t|
     t.string "code", null: false

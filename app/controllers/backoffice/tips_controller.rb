@@ -11,25 +11,34 @@ class Backoffice::TipsController < Backoffice::BaseController
     @tipster_sports = current_tipster.sports
   end
 
-  def new
-    # FIXME: the code bellow has wrote at 18h :))
-    @match = Match.includes(sport: [:bet_types]).find_by(opta_match_id: params[:match].to_i)
-    @bet_types = @match.sport.bet_types
-    prepare_data_for_new_tip
-    @tip = current_tipster.tips.new(
-        match_id: @match.opta_match_id,
-        sport_code: @match.sport_code
-    )
+  # GET|POST /backoffice/tips/create_manual
+  def create_manual
+    if request.get?
+      prepare_data_for_new_tip
+      @match = Match.new
+      @tip = current_tipster.tips.new
+    else
+
+    end
   end
 
-  def available_matches
-    prepare_data_for_new_tip
-    @matches = Match.betable.load_data(sport: current_tipster.sport_codes)
-    if params[:mode] == 'manual'
-      @tip = current_tipster.tips.new
-      render 'manually_mode'
+  # GET /backoffice/tips/available_bets
+  def available_bets
+    if request.xhr?
+      bookmarker = Bookmarker.find_by!(code: params[:bookmarker_code])
+      matches = BookmarkerMatch.betable(params)
+      html = render_to_string(
+          partial: "backoffice/tips/bookmarkers/#{bookmarker.code}_matches",
+          locals: {
+              matches: matches,
+          }
+      ).html_safe
+      render json: {
+          success: true, html: html
+      }
     else
-      render 'automatically_mode'
+      prepare_data_for_new_tip
+      @matches = BookmarkerMatch.betable
     end
   end
 
@@ -77,7 +86,6 @@ class Backoffice::TipsController < Backoffice::BaseController
   # GET
   # Find bets on the given match from Betclic XML feed
   def find_bets_on_match
-
   end
 
   def create
@@ -106,6 +114,7 @@ class Backoffice::TipsController < Backoffice::BaseController
   def prepare_data_for_new_tip
     @competitions = Competition.includes(:sport).load
     @tipster_sports = current_tipster.sports
+    @bet_types = BetType.all
     @bookmarkers = Bookmarker.all
   end
 

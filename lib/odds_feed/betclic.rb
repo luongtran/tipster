@@ -6,16 +6,18 @@ module OddsFeed
     ODDS_URL = 'http://xml.cdn.betclic.com/odds_en.xml'
     FR_ODDS_URL = 'http://xml.cdn.betclic.com/odds_frfr.xml'
 
+    TIME_ZONE = '' # Time_london
+
+    TEAM_NAMES_SEPERATOR = ' - '
     SPORT_CODE_TO_ID = {
-        #'<sport_code>' => '<ID attribute of a "sport" tag in the response XML document>'
-        'soccer' => 1,
-        'tennis' => 2,
-        'basketball' => 3,
-        'rugby' => 5,
-        'handball' => 9,
-        'hockey' => 13,
-        'football_us' => 14,
-        'baseball' => 20
+        'soccer' => %(1),
+        'tennis' => %(2),
+        'basketball' => %(3),
+        'rugby' => %(5 52), # Rugby Union and Rugby League
+        'handball' => %(9),
+        'hockey' => %w(13),
+        'football_us' => %w(14),
+        'baseball' => %w(20)
     }
     # Response XML structure: sports > sport > event > match > bets > bet > choice
 
@@ -43,17 +45,56 @@ module OddsFeed
         match_nodes = xml_doc.css('match')
         matches_found = []
         match_nodes.each do |match_node|
+
           sport_node = match_node.ancestors('sport').first
-          event_node = match_node.ancestors('event').first
-          matches_found << {
-              id: match_node['id'],
-              name: match_node['name'],
-              start_date: match_node['start_date'].to_datetime,
-              sport_id: sport_node['id'],
-              event_id: event_node['id']
-          }
+          competition_node = match_node.ancestors('event').first
+
+          match_name = match_node['name']
+
+          teams = match_name.split(TEAM_NAMES_SEPERATOR)
+          team_a_name, team_b_name = '', ''
+          if teams.size == 2
+            team_a_name = teams.first
+            team_b_name = teams.last
+            matches_found << {
+                id: match_node['id'],
+                name: match_name,
+                team_a_name: team_a_name,
+                team_b_name: team_b_name,
+                start_at: match_node['start_date'].to_datetime,
+                sport_id: sport_node['id'],
+                sport_name: sport_node['name'],
+                competition_id: competition_node['id'],
+                competition_name: competition_node['name']
+            }
+          end
         end
         matches_found
+      end
+
+      # Clean up raw_matches and filter sports
+      def recognized_matches
+        recognized_matches = []
+        raw_matches = self.raw_matches
+        raw_matches.each do |match|
+          # Do filter sport
+          sport_code = SPORT_CODE_TO_ID.detect { |key, sport_ids| sport_ids.include? match[:sport_id] }
+          sport_code = sport_code.first if sport_code
+          if sport_code
+            # Do filter bet types
+            recognized_matches << {
+                match_id: match[:id],
+                name: match[:name],
+                sport_code: sport_code,
+                start_at: match[:start_at],
+                team_a_name: match[:team_a_name],
+                team_b_name: match[:team_b_name],
+                competition_id: match[:competition_id],
+                competition_name: match[:competition_name],
+            }
+          end
+        end
+        recognized_matches
       end
 
       # === Get all competitions(events) in the response XML

@@ -1,8 +1,8 @@
 # encoding: utf-8
 require 'nokogiri'
 module OddsFeed
-  module FranceParis
-    CODE = 'france_paris'
+  module Netbet
+    CODE = 'netbet'
     ODDS_URL = "http://flux.france-pari.fr/cotes/fluxcotesnetbetsport.xml"
 
     # XML structure: Data > SportList > Sport > RegionList > Region > CompetitionList > Competition > MatchList > Match
@@ -77,6 +77,7 @@ module OddsFeed
           unless teams.empty?
             competition_node = node.ancestors('Competition').first
             sport_node = node.ancestors('Sport').first
+            area_node = node.ancestors('Region').first
             team_a_name = teams[0]['name']
             team_b_name = teams[1]['name']
             matches << {
@@ -85,10 +86,10 @@ module OddsFeed
                 team_a_name: team_a_name,
                 team_b_name: team_b_name,
                 sport_id: sport_node['id'],
-                start_at: node['date'],
+                start_at: node['date'].to_datetime,
                 sport_name: sport_node['name'],
                 competition_id: competition_node['id'],
-                competition_id: competition_node['name']
+                competition_name: "#{area_node['name']} #{competition_node['name']}"
             }
           end
         end
@@ -101,9 +102,21 @@ module OddsFeed
         raw_matches = self.raw_matches
         raw_matches.each do |match|
           # Do filter sport
-          if SPORT_CODE_TO_ID.values.any? { |ids| ids.include? match[:sport_id] }
+          sport_code = SPORT_CODE_TO_ID.detect { |key, sport_ids| sport_ids.include?(match[:sport_id]) }
+          sport_code = sport_code.first if sport_code
+
+          if sport_code
             # Do filter bet types
-            recognized_matches << match
+            recognized_matches << {
+                match_id: match[:id],
+                name: match[:name],
+                sport_code: sport_code,
+                start_at: match[:start_at],
+                team_a_name: match[:team_a_name],
+                team_b_name: match[:team_b_name],
+                competition_id: match[:competition_id],
+                competition_name: match[:competition_name],
+            }
           end
         end
         recognized_matches

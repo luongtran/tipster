@@ -63,3 +63,14 @@
 .tip-details-table tr td:last-child {
     font-style: italic;
 }
+
+/* Fix bootstrap border radius*/
+.nav-tabs > li > a {
+    border-radius: 1px;
+}
+
+.form-group label {
+    vertical-align: middle;
+    margin-bottom: 0px;
+    padding-right: 10px;
+}
