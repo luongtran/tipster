@@ -74,8 +74,11 @@ module OddsFeed
 
       # Clean up raw_matches and filter sports
       def recognized_matches
+        log = Logger.new 'log/bookmarker_matches_feed.log'
         recognized_matches = []
+        log.info "======================= Start get matches from: #{CODE.upcase}"
         raw_matches = self.raw_matches
+        log.info "Total matches: #{raw_matches.count}"
         raw_matches.each do |match|
           # Do filter sport
           sport_code = SPORT_CODE_TO_ID.detect { |key, sport_ids| sport_ids.include? match[:sport_id] }
@@ -94,6 +97,8 @@ module OddsFeed
             }
           end
         end
+        log.info "Recognized matches: #{recognized_matches.count}"
+        log.info "============================================================="
         recognized_matches
       end
 

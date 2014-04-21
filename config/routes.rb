@@ -133,10 +133,6 @@ TipsterHero::Application.routes.draw do
 
     resources :tips, except: [:index] do
       collection do
-        get :create_manual
-        post :create_manual
-
-        get :available_bets
         post :confirm
       end
     end
@@ -150,6 +146,10 @@ TipsterHero::Application.routes.draw do
         get :available
       end
     end
+
+    get 'create-tip/available-matches', to: 'create_tip#available_matches', as: :bookmarker_matches
+    get 'create-tip/search-matches', to: 'create_tip#search_matches', as: :search_bookmarker_matches
+    get 'create-tip/manual', to: 'create_tip#search_matches', as: :manual_create_tip
   end
 
   # ==============================================================================

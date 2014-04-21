@@ -1,0 +1,25 @@
+.mal
+  .mbm
+    = simple_form_for :nothing, url: backoffice_search_bookmarker_matches_path,
+        html: {method: 'GET',class: 'form-search-bookmarker-matches form-inline', 'data-update-html-for' => "#bookmarker-matches-wrapper"} do |f|
+      = hidden_field_tag :bookmarker, @bookmarker.code
+      .col-lg-9.col-lg-offset-2
+        .col-lg-5
+          .form-group
+            %label Group by:
+            .radio-inline
+              %label.control-label
+                %input.btn-filter-mode{type: :radio, name: :group_by, 'checked' => true, value: 'date'}
+                Date
+            .radio-inline
+              %label.control-label
+                %input.btn-filter-mode{type: :radio, name: :group_by, value: 'sport'}
+                Sport
+        .col-lg-7
+          %label.col-md-2 Search:
+          .col-md-9
+            %input.input-sm.form-control{type: :text, placeholder: '', name: 'search'}
+            %button.btn.btn-default.btn-sm{type: :submit} Submit
+.mam.clearfix
+#bookmarker-matches-wrapper
+  = render "backoffice/create_tip/bookmarkers/#{@bookmarker.code}_matches", matches: @matches

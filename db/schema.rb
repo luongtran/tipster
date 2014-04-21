@@ -67,12 +67,12 @@ ActiveRecord::Schema.define(version: 20140416030809) do
   add_index "bet_types", ["sport_code"], name: "index_bet_types_on_sport_code", using: :btree
 
   create_table "bookmarker_matches", force: true do |t|
+    t.integer  "match_id",         null: false
     t.string   "bookmarker_code",  null: false
     t.string   "sport_code"
     t.string   "name",             null: false
     t.string   "team_a_name"
     t.string   "team_b_name"
-    t.integer  "match_id",         null: false
     t.integer  "competition_id"
     t.string   "competition_name"
     t.datetime "start_at",         null: false

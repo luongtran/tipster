@@ -148,7 +148,7 @@ class Worker
 
     def update_bookmarkers_matches
       Bookmarker.able_to_odds_feed.each do |bookmarker|
-        bookmarker.get_matches
+        bookmarker.update_matches
       end
     end
 

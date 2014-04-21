@@ -224,12 +224,12 @@ $(document).ready(function () {
 
     function doSearchBookmarkerMatches(form) {
         var $form = $(form);
-        var $result_containner = $($form.attr('data-result-container'));
+        var $result_containner = $($form.data('update-html-for'));
 
         $form.addClass('submiting');
         $.ajax({
             url: $form.attr('action'),
-            type: 'GET',
+            type: $form.attr('method'),
             data: $form.serialize(),
             dataType: 'JSON',
             success: function (response) {
@@ -247,6 +247,7 @@ $(document).ready(function () {
     }
 
     $('.form-search-bookmarker-matches').on('submit', function () {
+        console.log('submit');
         doSearchBookmarkerMatches(this);
         return false;
     });
