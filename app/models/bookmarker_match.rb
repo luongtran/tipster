@@ -42,6 +42,19 @@ class BookmarkerMatch < ActiveRecord::Base
     end
   end
 
+  def to_param
+    "#{self.match_id}-#{self.name}".parameterize
+  end
+
+  def find_odds
+    odd_feeder = Bookmarker.find_odds_feed_module_by self.bookmarker_code
+    if odd_feeder
+      # TODO: Pending here!
+    else
+      []
+    end
+  end
+
   def start_date
     self.start_at.to_date
   end

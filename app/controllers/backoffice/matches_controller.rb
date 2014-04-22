@@ -2,7 +2,7 @@ class Backoffice::MatchesController < Backoffice::BaseController
   before_filter :authenticate_tipster
 
   def show
-    @match = Match.includes(:sport, :competition).find_by!(uid: params[:id].to_i)
+    @match = BookmarkerMatch.includes(:sport, :bookmarker).find_by!(match_id: params[:id])
     @bets = @match.find_bets
   end
 
