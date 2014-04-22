@@ -1,6 +1,6 @@
 class BookmarkerMatch < ActiveRecord::Base
   MIN_TIME_BEFORE_MATCH_START = 30.minutes
-  MAXIMUM_DAYS_FROM_NOW = 7
+  MAXIMUM_DAYS_FROM_NOW = 60
 
   belongs_to :bookmarker, foreign_key: :bookmarker_code, primary_key: :code
 
@@ -14,8 +14,8 @@ class BookmarkerMatch < ActiveRecord::Base
       if params[:sport].present?
         relation = relation.perform_sport_param(params[:sport])
       end
-      if params[:bookmarker_code].present?
-        relation = relation.perform_bookmarker_param(params[:bookmarker_code])
+      if params[:bookmarker].present?
+        relation = relation.perform_bookmarker_param(params[:bookmarker])
       end
 
       if params[:search].present?
@@ -26,7 +26,8 @@ class BookmarkerMatch < ActiveRecord::Base
     end
 
     def betable(params = {})
-      where(start_at: (DateTime.now + MIN_TIME_BEFORE_MATCH_START)..MAXIMUM_DAYS_FROM_NOW.days.from_now).load_data(params)
+      where(start_at: (DateTime.now + MIN_TIME_BEFORE_MATCH_START)..MAXIMUM_DAYS_FROM_NOW.days.from_now).
+          load_data(params)
     end
 
     def perform_sport_param(sport, relation = self)

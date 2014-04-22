@@ -33,8 +33,12 @@ class Bookmarker < ActiveRecord::Base
     end
   end
 
+  def find_available_matches(params= {})
+    self.matches.betable(params)
+  end
+
   # Get matches from XML and save to DB
-  def get_matches
+  def update_matches
     odds_feed_module = self.class.find_odds_feed_module_by(self.code)
     if odds_feed_module
       matches = odds_feed_module.recognized_matches

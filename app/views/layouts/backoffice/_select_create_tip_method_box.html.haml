@@ -5,8 +5,10 @@
         %h3.text-info How do you want to create your tip ?
       .modal-body.text-center{'data-no-turbolink' => true}
         .row
+          .col-md-3
+            %a.btn.btn-default.btn-block.lk-select-create-tip-method{href: backoffice_bookmarker_matches_path(bookmarker: 'betclic')} Betclic
+          .col-md-3
+            %a.btn.btn-default.btn-block.lk-select-create-tip-method{href: backoffice_bookmarker_matches_path(bookmarker: 'netbet')} Netbet
           .col-md-6
-            %a.btn.btn-default.btn-block.lk-select-create-tip-method{href: available_bets_backoffice_tips_path} Automatic
-          .col-md-6
-            %a.btn.btn-default.btn-block.lk-select-create-tip-method{href: create_manual_backoffice_tips_path} Manual
+            %a.btn.btn-default.btn-block.lk-select-create-tip-method{href: backoffice_manual_create_tip_path} Manual
 
