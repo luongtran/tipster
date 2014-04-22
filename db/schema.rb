@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140416030809) do
+ActiveRecord::Schema.define(version: 20140422071617) do
 
   create_table "accounts", force: true do |t|
     t.integer  "rolable_id"
@@ -84,16 +84,6 @@ ActiveRecord::Schema.define(version: 20140416030809) do
     t.string "name", null: false
   end
 
-  create_table "competitions", force: true do |t|
-    t.integer "uid"
-    t.string  "name"
-    t.string  "sport_code"
-    t.string  "fr_name"
-  end
-
-  add_index "competitions", ["sport_code"], name: "index_competitions_on_sport_code", using: :btree
-  add_index "competitions", ["uid"], name: "index_competitions_on_uid", unique: true, using: :btree
-
   create_table "coupon_codes", force: true do |t|
     t.integer  "subscriber_id"
     t.string   "code",                          null: false
@@ -105,21 +95,11 @@ ActiveRecord::Schema.define(version: 20140416030809) do
 
   add_index "coupon_codes", ["subscriber_id"], name: "index_coupon_codes_on_subscriber_id", using: :btree
 
-  create_table "matches", force: true do |t|
-    t.string   "bookmarker_code"
-    t.integer  "competition_id"
-    t.string   "sport_code",      null: false
+  create_table "manual_matches", force: true do |t|
     t.string   "name"
-    t.string   "team_a"
-    t.string   "team_b"
-    t.string   "fr_name"
-    t.datetime "start_at"
+    t.string   "sport_code"
     t.datetime "created_at"
-    t.datetime "updated_at"
   end
-
-  add_index "matches", ["competition_id"], name: "index_matches_on_competition_id", using: :btree
-  add_index "matches", ["sport_code"], name: "index_matches_on_sport_code", using: :btree
 
   create_table "opta_areas", force: true do |t|
     t.integer  "opta_area_id"
@@ -309,19 +289,21 @@ ActiveRecord::Schema.define(version: 20140416030809) do
   end
 
   create_table "tips", force: true do |t|
-    t.integer  "author_id",                       null: false
-    t.string   "author_type",                     null: false
-    t.integer  "match_uid"
-    t.string   "sport_code",                      null: false
-    t.string   "bookmarker_code",                 null: false
-    t.string   "bet_type_code",                   null: false
-    t.float    "odds",                            null: false
-    t.string   "selection",                       null: false
-    t.text     "advice",                          null: false
-    t.integer  "amount",                          null: false
-    t.boolean  "free",            default: false
-    t.string   "result"
-    t.integer  "status",                          null: false
+    t.integer  "author_id",                           null: false
+    t.string   "author_type",                         null: false
+    t.integer  "match_id"
+    t.string   "match_type"
+    t.string   "bookmarker_code",                     null: false
+    t.string   "bet_type_code",                       null: false
+    t.float    "odds",                                null: false
+    t.string   "selection",                           null: false
+    t.text     "advice",                              null: false
+    t.integer  "amount",                              null: false
+    t.string   "sport_code",                          null: false
+    t.integer  "opta_match_id"
+    t.integer  "opta_competition_id"
+    t.boolean  "free",                default: false
+    t.integer  "status",                              null: false
     t.integer  "published_by"
     t.datetime "published_at"
     t.integer  "rejected_by"
@@ -336,7 +318,9 @@ ActiveRecord::Schema.define(version: 20140416030809) do
   add_index "tips", ["author_id", "author_type"], name: "index_tips_on_author_id_and_author_type", using: :btree
   add_index "tips", ["bet_type_code"], name: "index_tips_on_bet_type_code", using: :btree
   add_index "tips", ["bookmarker_code"], name: "index_tips_on_bookmarker_code", using: :btree
-  add_index "tips", ["match_uid"], name: "index_tips_on_match_uid", using: :btree
+  add_index "tips", ["match_id"], name: "index_tips_on_match_id", using: :btree
+  add_index "tips", ["opta_competition_id"], name: "index_tips_on_opta_competition_id", using: :btree
+  add_index "tips", ["opta_match_id"], name: "index_tips_on_opta_match_id", using: :btree
   add_index "tips", ["sport_code"], name: "index_tips_on_sport_code", using: :btree
 
   create_table "tipster_statistics", force: true do |t|

@@ -72,7 +72,7 @@ module OddsFeed
         matches_found
       end
 
-      # Clean up raw_matches and filter sports
+      # Clean up raw matches and filter sports
       def recognized_matches
         log = Logger.new 'log/bookmarker_matches_feed.log'
         recognized_matches = []
@@ -127,7 +127,6 @@ module OddsFeed
         xml_doc = self.go
         bet_nodes = xml_doc.css('bet')
         found_bet_types = []
-
         bet_nodes.each do |bet_node|
           sport_node = bet_node.ancestors('sport').first
           found_bet_types << {
@@ -142,7 +141,7 @@ module OddsFeed
 
       # === Perform search bets on the given match
       def find_odds_on_match(match, supported_bet_types)
-        target_match_id = match.uid
+        target_match_id = match.match_id
         xml_doc = self.go
         # Start get bets on match  ==============================================
         bet_nodes = xml_doc.css("match##{target_match_id} > bets > bet")

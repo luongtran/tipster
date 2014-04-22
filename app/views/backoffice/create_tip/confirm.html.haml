@@ -1,0 +1,47 @@
+.row
+  .clearfix.mam.bgw
+    .text-center
+      %h3 Please complete information for the tip:
+    = simple_form_for @tip, url: backoffice_submit_tip_path, html: {class: 'form-horizontal', id: 'form-new-tip'} do |f|
+      = hidden_field_tag :act, 'confirm'
+      = f.input_field :match_id, as: :hidden
+      = f.input_field :bet_type_code, as: :hidden
+      = f.input_field :odds, as: :hidden
+      = f.input_field :selection, as: :hidden
+      = f.input_field :sport_code, as: :hidden
+      .form-group
+        %label.col-md-4.control-label
+          Match:
+        .col-md-7
+          .form-control
+            = @tip.bookmarker_match_name
+      .form-group
+        %label.col-md-4.control-label
+          Bookmarker:
+        .col-md-7
+          .form-control
+            = @tip.bookmarker_name.titleize
+      .form-group
+        %label.col-md-4.control-label
+          Type of bet:
+        .col-md-7
+          .form-control
+            = @tip.bet_type_name
+      .form-group
+        %label.col-md-4.control-label
+          Selection:
+        .col-md-7
+          .form-control
+            = @tip.selection
+      .form-group
+        %label.col-md-4.control-label
+          Odds:
+        .col-md-7
+          .form-control
+            = @tip.odds
+      = f.input :amount, input_html: {autofocus: true, required: true}
+      = f.input :advice, required: true
+      .form-group
+        .col-sm-offset-4.col-sm-7
+          %button.btn.btn-primary{type: :submit} Submit
+          %a.btn.btn-default{href: backoffice_my_tips_path } Cancel

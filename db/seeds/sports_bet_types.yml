@@ -9,14 +9,14 @@
       line: 'no'
       selection_format: "%{selection}"
       betclic_code: 'Ftb_Mr3'
-      france_paris: '1-N-2'
+      netbet: '1-N-2'
     -
       code: 'soccer_match_result_ht'
       name: 'Match Result HT'
       line: 'no'
       selection_format: "%{selection} Half Time"
       betclic: 'Ftb_Htr'
-      france_paris: '1-N-2 Mi-temps'
+      netbet: '1-N-2 Mi-temps'
     -
       code: 'soccer_half_time_full_time'
       name: 'Half-Time/Full-Time'
@@ -29,7 +29,7 @@
       line: 'yes'
       selection_format: "%{selection} %{line}"
       betclic: 'Ftb_10'
-      france_paris: 'Over Under'
+      netbet: 'Over Under'
     -
       code: 'soccer_over_under_ht'
       name: 'Over/Under HT'
@@ -42,7 +42,7 @@
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ftb_Fts'
-      france_paris: '1ère équipe à marquer'
+      netbet: '1ère équipe à marquer'
     -
       code: 'soccer_last_team_to_score'
       name: 'Last Team to Score'
@@ -102,14 +102,14 @@
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ten_Mr2'
-      france_paris: '1-2'
+      netbet: '1-2'
     - # Who will win the first set
       code: 'tennis_first_set_winner'
       name: 'First Set Winner'
       line: 'no'
       selection_format: "%{selection} First Set"
       betclic: 'Ten_Fsw'
-      france_paris: 'Vainqueur 1er set'
+      netbet: 'Vainqueur 1er set'
     - #
       code: 'tennis_first_set_correct_score'
       name: 'First Set Correct Score'
@@ -122,13 +122,13 @@
       name: 'Over/Under Games'
       line: 'yes'
       selection_format: "%{selection} %{line} games"
-      france_paris: 'Over Under Jeux'
+      netbet: 'Over Under Jeux'
     -  # Over or Under total sets
       code: 'tennis_over_under_sets'
       name: 'Over/Under Sets'
       line: 'yes'
       selection_format: "%{selection} %{line} sets"
-      france_paris: 'Over Under'
+      netbet: 'Over Under'
     -
       code: 'tennis_handicap_sets'
       name: 'Handicap Sets'
@@ -145,14 +145,14 @@
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Bkb_Mr2'
-      france_paris: '1-2'
+      netbet: '1-2'
     - # Match result
       code: 'basketball_match_result'
       name: 'Match Result'
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Bkb_Mrs'
-      france_paris: '1-N-2'
+      netbet: '1-N-2'
     - # Handicap
       code: 'basketball_handicap'
       name: 'Handicap'
@@ -165,7 +165,7 @@
       line: 'yes'
       selection_format: "%{selection} %{line}"
       betclic: 'Bkb_Tpt'
-      france_paris: 'Over Under'
+      netbet: 'Over Under'
 -
   name: 'Handball'
   code: 'handball'
@@ -177,7 +177,7 @@
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Hdb_Mr2'
-      france_paris: '1-N-2'
+      netbet: '1-N-2'
     -
       code: 'handball_handicap'
       name: 'Handicap'
@@ -200,20 +200,20 @@
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Rgb_Mr3'
-      france_paris: '1-N-2'
+      netbet: '1-N-2'
     -
       code: 'rugby_match_result_ht'
       name: 'Match Result HT'
       line: 'no'
       selection_format: "%{selection} Half Time"
-      france_paris: '1-N-2 Mi-temps'
+      netbet: '1-N-2 Mi-temps'
     -  # Over or Under total points
       code: 'rugby_over_under_points'
       name: 'Over/Under Total Points'
       line: 'yes'
       selection_format: "%{selection} %{line}"
       betclic: 'Rgb_Tpt'
-      france_paris: 'Over Under'
+      netbet: 'Over Under'
     -
       code: 'rugby_handicap'
       name: 'Handicap'
@@ -231,20 +231,20 @@
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ihk_Mrs'
-      france_paris: '1-N-2'
+      netbet: '1-N-2'
     -  # Match winner
       code: 'hockey_match_winner'
       name: 'Match winner'
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ihk_Mnl'
-      france_paris: '1-2'
+      netbet: '1-2'
     -
       code: 'hockey_over_under'
       name: 'Over/Under'
       line: 'yes'
       selection_format: "%{selection} %{line}"
-      france_paris: 'Over Under'
+      netbet: 'Over Under'
     -
       code: 'hockey_handicap'
       name: 'Handicap'
@@ -300,13 +300,13 @@
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Bsb_Mwi'
-      france_paris: '1-2'
+      netbet: '1-2'
     -
       code: 'baseball_over_under'
       name: 'Over/Under'
       line: 'yes'
       selection_format: "%{selection} %{line}"
-      france_paris: 'Over Under'
+      netbet: 'Over Under'
     -
       code: 'baseball_handicap'
       name: 'Handicap'

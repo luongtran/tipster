@@ -13,10 +13,10 @@
       - bet[:choices].each do |choice|
         .bet-choice
           %span.text-bold
-            - choice_name = choice[:selection]
-            - choice_name.gsub!('%1%',match.team_a)
-            - choice_name.gsub!('%2%',match.team_b)
-            = choice_name
-          %button.btn.btn-xs.btn-default.choice-odd-button{data: {'bookmarker-code' => 'betclic','bet-type-code' => bet[:code], odd: choice[:odd],
-              'choice-name' => choice_name, 'match-id' => match.uid, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
+            - selection = choice[:selection]
+            - selection.gsub!('%1%',match.team_a_name)
+            - selection.gsub!('%2%',match.team_b_name)
+            = selection
+          %button.btn.btn-xs.btn-default.btn-choice-odd{data: {'bet-type-code' => bet[:code], 'odds' => choice[:odd],
+              'choice-name' => selection, 'match-id' => match.id, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
             = choice[:odd]

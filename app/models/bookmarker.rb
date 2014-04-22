@@ -13,9 +13,10 @@ class Bookmarker < ActiveRecord::Base
   BWIN = 'bwin'
   NETBET = 'netbet'
 
+  # Map the bookmarker code to the correspond module able to feed odds
   ODDS_FEED_MODULES = {
       BETCLIC => OddsFeed::Betclic,
-      NETBET => OddsFeed::Netbet,
+      NETBET => OddsFeed::Netbet
   }
   has_many :matches, class_name: BookmarkerMatch, foreign_key: :bookmarker_code,
            primary_key: :code

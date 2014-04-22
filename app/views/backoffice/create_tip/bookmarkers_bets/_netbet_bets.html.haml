@@ -13,9 +13,9 @@
         - bet[:choices].each do |choice|
           .bet-choice
             %span.text-bold
-              - choice_name = choice[:selection]
-              = choice_name
-            %button.btn.btn-xs.btn-default.choice-odd-button{data: {'bookmarker-code' => 'france_paris', 'bet-type-code' => bet[:code], odd: choice[:odd],
-                'choice-name' => choice_name, 'match-id' => match.uid, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
+              - selection = choice[:selection]
+              = selection
+            %button.btn.btn-xs.btn-default.btn-choice-odd{data: {'bet-type-code' => bet[:code], 'odds' => choice[:odd],
+                'selection' => choice_name, 'match-id' => match.id, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
               = choice[:odd]
 

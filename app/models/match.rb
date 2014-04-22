@@ -72,10 +72,6 @@ class Match < ActiveRecord::Base
       )
     end
 
-    def available_on_bookmarkers
-
-    end
-
     def perform_sport_param(sport, relation = self)
       relation.where(sport_code: sport)
     end
@@ -90,29 +86,6 @@ class Match < ActiveRecord::Base
       end
       relation = relation.where(start_at: start_from..date.end_of_day)
       relation
-    end
-
-    def fetch_from_betclic
-      raw_matches = OddsFeed::Betclic.raw_matches
-      raw_matches.each do |raw_match|
-        # Ignore bets on outright winner of competition
-        if raw_match[:name].include? TEAM_NAMES_SEPERATOR
-          teams = raw_match[:name].split TEAM_NAMES_SEPERATOR
-          # Find sport code corresponding to sport_id in Betclic
-          sport_code = Sport::CODE_TO_BETCLIC_SPORT_ID.key raw_match[:sport_id].to_i
-          if sport_code
-            create(
-                uid: raw_match[:id],
-                name: raw_match[:name],
-                team_a: teams.first,
-                team_b: teams.last,
-                start_at: raw_match[:start_date],
-                competition_uid: raw_match[:event_id],
-                sport_code: sport_code,
-            )
-          end
-        end
-      end
     end
   end
 
@@ -129,10 +102,5 @@ class Match < ActiveRecord::Base
 
   def start_date
     self.start_at.to_date
-  end
-
-  # Find bets and odds from the given bookmarker
-  def find_bets
-    raise 'Luan HT'
   end
 end

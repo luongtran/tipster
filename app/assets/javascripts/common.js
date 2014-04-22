@@ -6,7 +6,7 @@
 $(document).ready(function () {
     $('.select2able').each(function () {
         options = {
-//            width: 'resolve'
+            width: 'resolve'
         };
         if ($(this).attr('data-no-search'))
             options['minimumResultsForSearch'] = -1; // Hide the seach box
@@ -16,6 +16,14 @@ $(document).ready(function () {
     /* Load the link of select box as links */
     $('.select-as-links').on('change', function () {
         window.location = $(this).children('option:selected').attr('data-url');
+        return false;
+    });
+
+    /* For all input,select,radio element has class 'change-immediate'
+     * Trigger submit the parent form if it has changed
+     */
+    $('.change-immediate').on('change', function () {
+        $(this).closest('form').trigger('submit');
         return false;
     });
 

@@ -1,2 +1,0 @@
-class FranceParisMatch < Match
-end

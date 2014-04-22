@@ -1,25 +1,49 @@
+-# Trick for preload image
+= image_tag 'circle_loading.gif', class: 'hide'
+-# Find area_competition to create select box
+- competitions = []
+- competitions << ['All', '']
+- @matches.each {|match| competitions << [match.competition_name, match.competition_id]}
+- competitions.uniq!
 .mal
   .mbm
     = simple_form_for :nothing, url: backoffice_search_bookmarker_matches_path,
         html: {method: 'GET',class: 'form-search-bookmarker-matches form-inline', 'data-update-html-for' => "#bookmarker-matches-wrapper"} do |f|
       = hidden_field_tag :bookmarker, @bookmarker.code
-      .col-lg-9.col-lg-offset-2
+      .col-lg-12
+        .col-lg-3
+          %label.control-label Group:
+          .radio-inline
+            %label.control-label
+              %input.btn-filter-mode.change-immediate{type: :radio, name: :group_by, 'checked' => true, value: 'date'}
+              Date
+          .radio-inline
+            %label.control-label
+              %input.btn-filter-mode.change-immediate{type: :radio, name: :group_by, value: 'sport'}
+              Sport
+        .col-lg-4
+          %label.control-label.col-md-4 Competition:
+          .col-md-8
+            = select_tag :competition, options_for_select(competitions), class: 'select2able change-immediate'
         .col-lg-5
-          .form-group
-            %label Group by:
-            .radio-inline
-              %label.control-label
-                %input.btn-filter-mode{type: :radio, name: :group_by, 'checked' => true, value: 'date'}
-                Date
-            .radio-inline
-              %label.control-label
-                %input.btn-filter-mode{type: :radio, name: :group_by, value: 'sport'}
-                Sport
-        .col-lg-7
-          %label.col-md-2 Search:
-          .col-md-9
+          %label.control-label.col-md-2 Search:
+          .col-md-10
             %input.input-sm.form-control{type: :text, placeholder: '', name: 'search'}
             %button.btn.btn-default.btn-sm{type: :submit} Submit
+
 .mam.clearfix
 #bookmarker-matches-wrapper
-  = render "backoffice/create_tip/bookmarkers/#{@bookmarker.code}_matches", matches: @matches
+  = render "backoffice/create_tip/bookmarker_matches_list", matches: @matches
+
+-# The hidden dialog to confirm select odd
+#confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog.modal-md
+    .modal-content
+      .modal-header.text-warning
+        %h4.modal-title Please confirm your selection
+      .modal-body
+        .selection-infor
+        .row.text-center
+          = form_for :nothing, url: backoffice_confirm_create_tip_path, :method => 'post' do |f|
+            %button.btn.btn-success#submiter{type: :submit} Confirm
+            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel

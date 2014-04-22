@@ -21,18 +21,18 @@ $(document).ready(function () {
     });
 
     /* Loading bet from Betclic */
-    $('#available-matches-wrapper').on('click', '.btn-view-bets', function () {
-        var $this = $(this);
-        var $match_div = $this.closest('.match');
+    $('body').on('click', '.btn-view-odds', function () {
+        var $_this = $(this);
+        var $match_div = $_this.closest('.match');
         var $bets_wrapper = $match_div.children('.bets');
         if (!$match_div.hasClass('loaded')) {
             Helper.add_loading_indicator($bets_wrapper);
             $.ajax({
-                url: $match_div.attr('data-url'),
+                url: $_this.data('url'),
                 type: 'GET',
                 dataType: 'JSON',
                 beforeSend: function () {
-                    $this.addClass('disabled');
+                    $_this.addClass('disabled');
                 },
                 success: function (response) {
                     if (response.success) {
@@ -42,7 +42,7 @@ $(document).ready(function () {
                     }
                 },
                 complete: function () {
-                    $this.removeClass('disabled');
+                    $_this.removeClass('disabled');
                     Helper.destroy_loading_indicator($bets_wrapper);
                 },
                 error: function () {
@@ -56,11 +56,11 @@ $(document).ready(function () {
     });
 
     /* Some effet when hovered on buttons */
-    $('#available-matches-wrapper').on('mouseover', '.choice-odd-button', function () {
+    $('#bookmarker-matches-wrapper').on('mouseover', '.btn-choice-odd', function () {
         $(this).removeClass('btn-default');
         $(this).addClass('btn-primary');
     });
-    $('#available-matches-wrapper').on('mouseleave', '.choice-odd-button', function () {
+    $('#bookmarker-matches-wrapper').on('mouseleave', '.btn-choice-odd', function () {
         $(this).addClass('btn-default');
         $(this).removeClass('btn-primary');
     });
@@ -88,26 +88,23 @@ $(document).ready(function () {
 //    });
 
     /* Create Post data and show popup to confirm select odd*/
-    $('body').on('click', '.choice-odd-button', function () {
+    $('body').on('click', '.btn-choice-odd', function () {
 
+        console.log('selected odd');
         // FIXME: this is a temporally solution
         var $modal = $('#confirm-select-odd-modal');
         var $form = $modal.find('form');
 
         var $button = $(this);
+        var match_name = $button.data('match-name');
+        var match_id = $button.data('match-id');
+        $form.append('<input type="hidden" name="tip[match_id]" value="' + match_id + '"/>');
 
-        var $bookmarker_code = $button.attr('data-bookmarker-code');
-        $form.append('<input type="hidden" name="tip[bookmarker_code]" value="' + $bookmarker_code + '"/>');
-        var match_name = $button.attr('data-match-name');
-        $form.append('<input type="hidden" name="tip[match_name]" value="' + match_name + '"/>');
-        var match_id = $button.attr('data-match-id');
-        $form.append('<input type="hidden" name="tip[match_uid]" value="' + match_id + '"/>');
-
-        var odds_selected = $button.attr('data-odd');
+        var odds_selected = $button.data('odds');
         $form.append('<input type="hidden" name="tip[odds]" value="' + odds_selected + '"/>');
 
-        var choice_name = $button.attr('data-choice-name');
-        $form.append('<input type="hidden" name="tip[selection]" value="' + choice_name + '"/>');
+        var selection = $button.attr('data-choice-name');
+        $form.append('<input type="hidden" name="tip[selection]" value="' + selection + '"/>');
 
         var bet_type_name = $button.attr('data-bet-type-name');
         $form.append('<input type="hidden" name="tip[bet_type_name]" value="' + bet_type_name + '"/>');
@@ -120,7 +117,7 @@ $(document).ready(function () {
         html = '<div class="text-center"> <strong class="match-name text-success">'
             + match_name + '</strong>'
             + '<p>'
-            + '<b>' + bet_type_name + '</b>: ' + '<span class="text-danger">' + choice_name + '</span>'
+            + '<b>' + bet_type_name + '</b>: ' + '<span class="text-danger">' + selection + '</span>'
             + '<br>'
             + '<b>Odds: </b>' + '<span class="text-danger">' + odds_selected + '</span>'
             + '</p>'
@@ -135,7 +132,6 @@ $(document).ready(function () {
         $('#select-create-tip-method-modal').modal();
         return false;
     });
-
 
     function doFilterMatches(form) {
         $result_wrapper = $('#available-matches-wrapper');
@@ -158,44 +154,6 @@ $(document).ready(function () {
             }
         });
     };
-
-    /* Available matches filtering and grouping */
-    $('#form-advanced-search, #form-group-method').on('submit', function () {
-        doFilterMatches($(this));
-        return false;
-    });
-
-    /* Prevent double submit */
-    $('#form-advanced-search').on('change', 'input, select', function () {
-        if (!$('#form-advanced-search').hasClass('submiting')) {
-            $('#form-advanced-search').trigger('submit');
-        }
-    });
-
-    $('#form-group-method').on('change', 'input[name=group_by]', function () {
-        if ($(this).attr('id') !== 'switch-advanced-search-form') {
-            var $form = $('#form-group-method');
-            if (!$form.hasClass('submiting')) {
-                $form.trigger('submit');
-            }
-        }
-        return false;
-    });
-
-
-    $('.btn-filter-mode').on('click', function () {
-        var $advanced_search_form = $('#advanced-search-form-wrap');
-        if ($('#switch-advanced-search-form').is(':checked')) {
-            if (!$advanced_search_form.is(':visible')) {
-                $advanced_search_form.removeClass('hide');
-            }
-        } else {
-            if ($advanced_search_form.is(':visible')) {
-                $advanced_search_form.addClass('hide');
-            }
-        }
-    });
-
     /* Reset form button*/
     // TODO: Incomplete
     $('#btn-reset-form-advanced-search-match').on('click', function () {
@@ -249,11 +207,6 @@ $(document).ready(function () {
     $('.form-search-bookmarker-matches').on('submit', function () {
         console.log('submit');
         doSearchBookmarkerMatches(this);
-        return false;
-    });
-
-    $('.form-search-bookmarker-matches').on('change', 'input[type=radio]', function () {
-        $(this).closest('form').trigger('submit');
         return false;
     });
 });

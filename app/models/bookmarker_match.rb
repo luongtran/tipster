@@ -1,6 +1,6 @@
 class BookmarkerMatch < ActiveRecord::Base
   MIN_TIME_BEFORE_MATCH_START = 30.minutes
-  MAXIMUM_DAYS_FROM_NOW = 60
+  MAXIMUM_DAYS_FROM_NOW = 7
 
   belongs_to :bookmarker, foreign_key: :bookmarker_code, primary_key: :code
 
@@ -22,6 +22,9 @@ class BookmarkerMatch < ActiveRecord::Base
         relation = relation.perform_search_param(params[:search])
       end
 
+      if params[:competition].present?
+        relation = relation.perform_competition_param(params[:competition])
+      end
       relation.includes(:sport, :bookmarker)
     end
 
@@ -38,6 +41,10 @@ class BookmarkerMatch < ActiveRecord::Base
       relation.where(bookmarker_code: bookmarker_code)
     end
 
+    def perform_competition_param(competition_id, relation = self)
+      relation.where(competition_id: competition_id)
+    end
+
     def perform_search_param(search, relation = self)
       relation.where('name like ?', "%#{search}%")
     end
@@ -47,10 +54,10 @@ class BookmarkerMatch < ActiveRecord::Base
     "#{self.match_id}-#{self.name}".parameterize
   end
 
-  def find_odds
-    odd_feeder = Bookmarker.find_odds_feed_module_by self.bookmarker_code
-    if odd_feeder
-      # TODO: Pending here!
+  def find_bets
+    odds_feeder = Bookmarker.find_odds_feed_module_by self.bookmarker_code
+    if odds_feeder
+      odds_feeder.find_odds_on_match(self, BetType.recognized_bet_types(self.bookmarker_code))
     else
       []
     end

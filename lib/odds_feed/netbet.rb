@@ -98,8 +98,11 @@ module OddsFeed
 
       # Clean up raw_matches and filter sports
       def recognized_matches
+        log = Logger.new 'log/bookmarker_matches_feed.log'
         recognized_matches = []
+        log.info "======================= Start get matches from: #{CODE.upcase}"
         raw_matches = self.raw_matches
+        log.info "Total matches: #{raw_matches.count}"
         raw_matches.each do |match|
           # Do filter sport
           sport_code = SPORT_CODE_TO_ID.detect { |key, sport_ids| sport_ids.include?(match[:sport_id]) }
@@ -119,6 +122,8 @@ module OddsFeed
             }
           end
         end
+        log.info "Recognized matches: #{recognized_matches.count}"
+        log.info "============================================================="
         recognized_matches
       end
 
@@ -147,70 +152,52 @@ module OddsFeed
         # Find by name of match
         # Get bet with the type if supported
         # Translate to standard code, name ...
+        match_id = match.match_id
 
         loger = Logger.new('log/match_finder.log')
+        loger.info "Start find odds for match: #{match.name}, id: #{match.match_id}"
         # === Fetch xml
         xml_doc = self.go
 
-        # === Parser xml
-        match_nodes = xml_doc.css('MatchList > Match')
         result_matches = []
-
-        # === Find match by team names
-        found_math_id = nil
-        match_nodes.each do |node|
-          teams = node.css('Team')
-          unless teams.empty?
-            team_a_name = teams[0]['name']
-            team_b_name = teams[1]['name']
-            # TODO: the current filter method is very simple. try to make it more effective
-            if match.name.downcase.include?(team_a_name.downcase) && match.name.downcase.include?(team_b_name.downcase)
-              # Bingooo!
-              found_math_id = node['id']
-              break
-            end
-          end
-        end
 
         # === Find bets on the found match
         found_bets = []
-        if found_math_id
-          bet_type_nodes = xml_doc.css("Match##{found_math_id} > OfferList > Offer")
-          #loger.info bet_type_nodes
-          # Offer node attributes example: <type_id="26088158" type_name="Over Under" number="4.5">  OMG !!!
-          # Offer node attributes example: <type_id="26088130" type_name="1-N-2">
+        bet_type_nodes = xml_doc.css("Match##{match_id} > OfferList > Offer")
+        #loger.info bet_type_nodes
+        # Offer node attributes example: <type_id="26088158" type_name="Over Under" number="4.5">  OMG !!!
+        # Offer node attributes example: <type_id="26088130" type_name="1-N-2">
 
-          bet_type_nodes.each do |bet_type_node|
-            bet_type_support = supported_bet_types.detect { |bet_type| bet_type[CODE] == bet_type_node['type_name'] }
+        bet_type_nodes.each do |bet_type_node|
+          bet_type_support = supported_bet_types.detect { |bet_type| bet_type[CODE] == bet_type_node['type_name'] }
 
-            if bet_type_support
-              choice_nodes = bet_type_node.children
-              found_choices = []
-              choice_nodes.each do |choice_node|
-                choice = {
-                    odd: choice_node['odds']
-                }
-                translated_choice_name = choice_node['name']
-                translated_choice_name.gsub!('Nul', 'Draw')
-                translated_choice_name.gsub!('Plus', 'Over')
-                translated_choice_name.gsub!('Moins', 'Under')
-                translated_choice_name.gsub!('Aucune équipe', 'No Goal')
-
-                if bet_type_node["number"].present?
-                  choice[:line] = bet_type_node["number"]
-                  choice[:selection] = "#{translated_choice_name} #{bet_type_node["number"]}"
-                else
-                  choice[:selection] = translated_choice_name
-                end
-
-                found_choices << choice
-              end
-              found_bets << {
-                  code: bet_type_support['standard_code'],
-                  name: bet_type_support['standard_name'],
-                  choices: found_choices
+          if bet_type_support
+            choice_nodes = bet_type_node.children
+            found_choices = []
+            choice_nodes.each do |choice_node|
+              choice = {
+                  odd: choice_node['odds']
               }
+              translated_choice_name = choice_node['name']
+              translated_choice_name.gsub!('Nul', 'Draw')
+              translated_choice_name.gsub!('Plus', 'Over')
+              translated_choice_name.gsub!('Moins', 'Under')
+              translated_choice_name.gsub!('Aucune équipe', 'No Goal')
+
+              if bet_type_node["number"].present?
+                choice[:line] = bet_type_node["number"]
+                choice[:selection] = "#{translated_choice_name} #{bet_type_node["number"]}"
+              else
+                choice[:selection] = translated_choice_name
+              end
+
+              found_choices << choice
             end
+            found_bets << {
+                code: bet_type_support['standard_code'],
+                name: bet_type_support['standard_name'],
+                choices: found_choices
+            }
           end
         end
         found_bets

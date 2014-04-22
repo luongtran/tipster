@@ -63,7 +63,7 @@ class Worker
 
         # Saving to DB
         founded_seasons.each do |season_attrs|
-          Season.create season_attrs
+          Opta::Season.create season_attrs
         end
       end
       founded_seasons

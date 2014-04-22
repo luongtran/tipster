@@ -5,8 +5,8 @@ class CreateTips < ActiveRecord::Migration
       t.integer :author_id, null: false
       t.string :author_type, null: false
 
-      t.integer :match_uid
-      t.string :sport_code, null: false
+      t.integer :match_id
+      t.string :match_type # ManualMatch or BookmarkerMatch
 
       t.string :bookmarker_code, null: false
       t.string :bet_type_code, null: false # Ex: Over/Under
@@ -16,8 +16,11 @@ class CreateTips < ActiveRecord::Migration
       t.text :advice, null: false
       t.integer :amount, null: false
 
+      # After mapped
+      t.string :sport_code, null: false
+      t.integer :opta_match_id # column 'id' on opta_matches table
+
       t.boolean :free, default: false
-      t.string :result
       t.integer :status, null: false
       t.integer :published_by
       t.datetime :published_at
@@ -35,6 +38,10 @@ class CreateTips < ActiveRecord::Migration
     add_index :tips, :sport_code
     add_index :tips, :bet_type_code
     add_index :tips, :bookmarker_code
-    add_index :tips, :match_uid
+    add_index :tips, :match_id
+
+    add_index :tips, :opta_match_id
+    add_index :tips, :opta_competition_id
+
   end
 end
