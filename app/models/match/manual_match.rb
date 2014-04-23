@@ -1,2 +1,0 @@
-class ManualMatch < Match
-end

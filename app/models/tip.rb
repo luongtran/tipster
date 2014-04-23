@@ -174,6 +174,7 @@ class Tip < ActiveRecord::Base
     update_status(STATUS_REJECTED)
     update_column :reject_reason, reason
     TipJournal.write_event_rejected(self, admin)
+    # TODO: send email to tipster
   end
 
   # Params:

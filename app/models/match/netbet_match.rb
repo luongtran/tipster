@@ -1,2 +1,0 @@
-class BwinMatch < Match
-end

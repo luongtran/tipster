@@ -115,69 +115,40 @@ $(document).ready(function () {
 
         var $container = $modal.find('.selection-infor');
 
-        html = '<div class="text-center"> <strong class="match-name text-success">'
-            + match_name + '</strong>'
+        html = '<div class="text-center"> <strong class="match-name text-success">' + match_name + '</strong>'
         $container.html(html);
         $modal.modal();
     });
 
-    /* Toggle modal box for select method for create new tip*/
+    /* Toggle modal box for select method for create new tip */
     $('#lk-toggle-select-create-tip-method').on('click', function () {
         $('#select-create-tip-method-modal').modal();
         return false;
     });
 
-    function doFilterMatches(form) {
-        $result_wrapper = $('#available-matches-wrapper');
-        form.addClass('submiting');
-        $.ajax({
-            url: form.attr('action'),
-            type: 'GET',
-            data: form.serialize(),
-            dataType: 'JSON',
-            success: function (response) {
-                if (response.success) {
-                    $result_wrapper.html('');
-                    $result_wrapper.html(response.html);
-                } else {
-                    Helper.alert_server_error();
-                }
-            },
-            complete: function () {
-                form.removeClass('submiting');
-            }
-        });
-    };
-    /* Reset form button*/
-    // TODO: Incomplete
-    $('#btn-reset-form-advanced-search-match').on('click', function () {
-        var $form_search = $('form-advanced-search');
-    });
-
-    /* Left menu on available matches page */
-    $('label.tree-toggler').click(function () {
-        $(this).parent().children('ul.tree').toggle(300);
-    });
-
-    /* Toogle tree menu ad do filter by competition */
-    $('.competitions-tree-menu').on('click', '.lk-select-competition', function () {
-        $('.competitions-tree-menu .lk-select-competition.active').removeClass('active');
-        $(this).addClass('active');
-        var competition_id = $(this).attr('data-competition-id');
-        var sport_code = $(this).attr('data-sport-code');
-        var $form = $('#form-filter-available-matches');
-        $form.find('.competition').val(competition_id);
-        $form.find('.sport').val(sport_code);
-        doFilterMatches($form);
-        return false;
-    });
+//    /* Left menu on available matches page */
+//    $('label.tree-toggler').click(function () {
+//        $(this).parent().children('ul.tree').toggle(300);
+//    });
+//
+//    /* Toogle tree menu ad do filter by competition */
+//    $('.competitions-tree-menu').on('click', '.lk-select-competition', function () {
+//        $('.competitions-tree-menu .lk-select-competition.active').removeClass('active');
+//        $(this).addClass('active');
+//        var competition_id = $(this).attr('data-competition-id');
+//        var sport_code = $(this).attr('data-sport-code');
+//        var $form = $('#form-filter-available-matches');
+//        $form.find('.competition').val(competition_id);
+//        $form.find('.sport').val(sport_code);
+//        doFilterMatches($form);
+//        return false;
+//    });
 
     /* Search bookmarker matchs */
 
     function doSearchBookmarkerMatches(form) {
         var $form = $(form);
         var $result_containner = $($form.data('update-html-for'));
-
         $form.addClass('submiting');
         $.ajax({
             url: $form.attr('action'),
@@ -198,8 +169,8 @@ $(document).ready(function () {
         });
     }
 
+    /* Submit search bookmarker matches */
     $('.form-search-bookmarker-matches').on('submit', function () {
-        console.log('submit');
         doSearchBookmarkerMatches(this);
         return false;
     });

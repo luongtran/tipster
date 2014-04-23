@@ -1,2 +1,0 @@
-class BetclicMatch < Match
-end

@@ -184,3 +184,8 @@ label.control-label {
     background-color: #fff;
     border-color: #ccc;
 }
+
+/* Override bootstrap */
+.modal-header, .modal-body {
+    padding: 10px;
+}
