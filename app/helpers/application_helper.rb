@@ -65,6 +65,23 @@ module ApplicationHelper
     options
   end
 
+  def bookmarker_competitions_for_select(competitions)
+    options = []
+    options << ['', [['All', '']]]
+    grouped = competitions.group_by { |compt| compt[:sport] }
+
+    grouped = grouped.sort_by {|sport,compts| sport.position}
+
+    grouped.each do |sport, compts|
+      competition_options = []
+      compts.each do |compt|
+        competition_options << [compt[:name], compt[:id]]
+      end
+      options << [sport.name.titleize, competition_options]
+    end
+    options
+  end
+
   def events_for_select(events)
     options = []
     events.each do |event|

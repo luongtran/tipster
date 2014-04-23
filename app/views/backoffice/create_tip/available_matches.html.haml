@@ -5,8 +5,7 @@
 .clearfix
 -# Find area_competition to create select box
 - competitions = []
-- competitions << ['All', '']
-- @matches.each {|match| competitions << [match.competition_name, match.competition_id]}
+- @matches.each { |match| competitions << { name: match.competition_name, id: match.competition_id, sport: match.sport } }
 - competitions.uniq!
 .mal
   .mbm
@@ -24,11 +23,11 @@
             %label.control-label
               %input.btn-filter-mode.change-immediate{type: :radio, name: :group_by, value: 'sport'}
               Sport
-        .col-lg-4
-          %label.control-label.col-md-4 Competition:
-          .col-md-8
-            = select_tag :competition, options_for_select(competitions), class: 'select2able change-immediate'
         .col-lg-5
+          %label.control-label.col-md-3 Competition:
+          .col-md-9
+            = select_tag :competition, grouped_options_for_select(bookmarker_competitions_for_select(competitions)), class: 'select2able change-immediate'
+        .col-lg-4
           %label.control-label.col-md-2 Search:
           .col-md-10
             %input.input-sm.form-control{type: :text, placeholder: '', name: 'search'}
