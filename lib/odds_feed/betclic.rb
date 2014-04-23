@@ -180,7 +180,7 @@ module OddsFeed
       # Start to feed xml
       # Return Nokogiri::Document object
       def go
-        if false
+        if true
           uri = URI(ODDS_URL)
           response = Net::HTTP.get_response(uri)
           # TODO: catch timeout error

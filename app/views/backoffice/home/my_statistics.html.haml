@@ -14,12 +14,13 @@
             = ("N" + content_tag(:sup, 'o')).html_safe
             of tips
       %tbody
-        - @tipster.monthly_statistics.each do |month_statistics|
-          - unless month_statistics[:number_of_tips].zero?
-            %tr
-              %td= month_statistics[:name]
-              %td= profit_in_string month_statistics[:profit]
-              %td= yield_in_string month_statistics[:yield]
-              %td= hit_rate_in_string month_statistics[:hit_rate]
-              %td= month_statistics[:avg_odds]
-              %td= month_statistics[:number_of_tips]
+        - if @tipster.monthly_statistics
+          - @tipster.monthly_statistics.each do |month_statistics|
+            - unless month_statistics[:number_of_tips].zero?
+              %tr
+                %td= month_statistics[:name]
+                %td= profit_in_string month_statistics[:profit]
+                %td= yield_in_string month_statistics[:yield]
+                %td= hit_rate_in_string month_statistics[:hit_rate]
+                %td= month_statistics[:avg_odds]
+                %td= month_statistics[:number_of_tips]
