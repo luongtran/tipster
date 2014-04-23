@@ -169,12 +169,6 @@ $(document).ready(function () {
         });
     }
 
-    /* Submit search bookmarker matches */
-    $('.form-search-bookmarker-matches').on('submit', function () {
-        doSearchBookmarkerMatches(this);
-        return false;
-    });
-
     /* Constraint select sport vs select bet type */
     $('#select-sport-for-tip').on('change', function () {
         var sport_code_selected = $(this).val();

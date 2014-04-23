@@ -1,5 +1,8 @@
 -# Trick for preload image
 = image_tag 'circle_loading.gif', class: 'hide'
+.pull-right
+  %img{src: "/assets/bookmarkers/#{params[:bookmarker]}.png"}
+.clearfix
 -# Find area_competition to create select box
 - competitions = []
 - competitions << ['All', '']
@@ -8,7 +11,7 @@
 .mal
   .mbm
     = simple_form_for :nothing, url: backoffice_search_bookmarker_matches_path,
-        html: {method: 'GET',class: 'form-search-bookmarker-matches form-inline', 'data-update-html-for' => "#bookmarker-matches-wrapper"} do |f|
+        html: {method: 'GET', class: 'form-ajax form-inline', 'data-update-html-for' => "#bookmarker-matches-wrapper"} do |f|
       = hidden_field_tag :bookmarker, @bookmarker.code
       .col-lg-12
         .col-lg-3

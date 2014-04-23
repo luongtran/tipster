@@ -8,7 +8,6 @@ class Notifier < ActionMailer::Base
   #
   def notify_subscriber
     @greeting = "Hi"
-
     mail to: "thanhquang1988@gmail.com"
   end
 

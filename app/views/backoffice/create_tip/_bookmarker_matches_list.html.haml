@@ -1,6 +1,3 @@
-.pull-right
-  %img{src: "/assets/bookmarkers/#{params[:bookmarker]}.png"}
-.clearfix
 - group_by = params[:group_by]
 - if group_by == 'sport'
   - matches_grouped = matches.group_by {|match| match.sport}

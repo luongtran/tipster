@@ -58,10 +58,11 @@ ActiveRecord::Schema.define(version: 20140422071617) do
     t.string  "code"
     t.string  "sport_code"
     t.string  "name"
-    t.string  "other_name"
-    t.string  "definition"
-    t.string  "example"
     t.boolean "has_line",   default: true
+    t.string  "other_name"
+    t.text    "definition"
+    t.text    "example"
+    t.integer "position"
   end
 
   add_index "bet_types", ["sport_code"], name: "index_bet_types_on_sport_code", using: :btree
@@ -306,9 +307,9 @@ ActiveRecord::Schema.define(version: 20140422071617) do
     t.integer  "status",                              null: false
     t.integer  "published_by"
     t.datetime "published_at"
-    t.integer  "rejected_by"
-    t.integer  "rejected_at"
-    t.text     "reject_reason"
+    t.integer  "last_rejected_by"
+    t.integer  "last_rejected_at"
+    t.text     "last_reject_reason"
     t.datetime "finished_at"
     t.integer  "finished_by"
     t.datetime "created_at"

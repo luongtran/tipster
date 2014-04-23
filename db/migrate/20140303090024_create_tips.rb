@@ -19,15 +19,16 @@ class CreateTips < ActiveRecord::Migration
       # After mapped
       t.string :sport_code, null: false
       t.integer :opta_match_id # column 'id' on opta_matches table
+      t.integer :opta_competition_id # column 'competition_id' on opta_matches table
 
       t.boolean :free, default: false
       t.integer :status, null: false
       t.integer :published_by
       t.datetime :published_at
 
-      t.integer :rejected_by
-      t.integer :rejected_at
-      t.text :reject_reason
+      t.integer :last_rejected_by
+      t.integer :last_rejected_at
+      t.text :last_reject_reason
 
       t.datetime :finished_at
       t.integer :finished_by

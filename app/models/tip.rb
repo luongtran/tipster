@@ -169,10 +169,14 @@ class Tip < ActiveRecord::Base
   #  * reason(string): the reason string
   def reject!(admin, reason)
     unless admin.is_a?(Admin)
-      raise "The author object must be a Admin."
+      raise "The author must be a Admin."
     end
+    self.update_attributes(
+        last_reject_reason: reason,
+        last_rejected_by: admin.id,
+        last_rejected_at: Time.now
+    )
     update_status(STATUS_REJECTED)
-    update_column :reject_reason, reason
     TipJournal.write_event_rejected(self, admin)
     # TODO: send email to tipster
   end
@@ -182,7 +186,7 @@ class Tip < ActiveRecord::Base
   #  * result(boolean): the tip is win | lose
   def finnish!(admin, result)
     unless admin.is_a?(Admin)
-      raise "The author object must be a Admin."
+      raise "The author must be a Admin."
     end
     self.update_attributes!(
         finished_at: Time.now,
