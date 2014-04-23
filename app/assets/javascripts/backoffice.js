@@ -89,7 +89,6 @@ $(document).ready(function () {
 
     /* Create Post data and show popup to confirm select odd*/
     $('body').on('click', '.btn-choice-odd', function () {
-
         console.log('selected odd');
         // FIXME: this is a temporally solution
         var $modal = $('#confirm-select-odd-modal');
@@ -98,31 +97,26 @@ $(document).ready(function () {
         var $button = $(this);
         var match_name = $button.data('match-name');
         var match_id = $button.data('match-id');
-        $form.append('<input type="hidden" name="tip[match_id]" value="' + match_id + '"/>');
+        $form.find('input[name="tip[match_id]"]').val(match_id);
 
         var odds_selected = $button.data('odds');
-        $form.append('<input type="hidden" name="tip[odds]" value="' + odds_selected + '"/>');
+        $form.find('input[name="tip[odds]"]').val(odds_selected);
+        $form.find('#tip-odds').text(odds_selected);
 
-        var selection = $button.attr('data-choice-name');
-        $form.append('<input type="hidden" name="tip[selection]" value="' + selection + '"/>');
+        var selection = $button.data('selection');
+        $form.find('input[name="tip[selection]"]').val(selection);
+        $form.find('#tip-selection').text(selection);
 
-        var bet_type_name = $button.attr('data-bet-type-name');
-        $form.append('<input type="hidden" name="tip[bet_type_name]" value="' + bet_type_name + '"/>');
+        var bet_type_name = $button.data('bet-type-name');
+        $form.find('#tip-bet-type-name').text(bet_type_name);
 
-        var bet_type_code = $button.attr('data-bet-type-code');
-        $form.append('<input type="hidden" name="tip[bet_type_code]" value="' + bet_type_code + '"/>');
+        var bet_type_code = $button.data('bet-type-code');
+        $form.find('input[name="tip[bet_type_code]"]').val(bet_type_code);
 
         var $container = $modal.find('.selection-infor');
 
         html = '<div class="text-center"> <strong class="match-name text-success">'
             + match_name + '</strong>'
-            + '<p>'
-            + '<b>' + bet_type_name + '</b>: ' + '<span class="text-danger">' + selection + '</span>'
-            + '<br>'
-            + '<b>Odds: </b>' + '<span class="text-danger">' + odds_selected + '</span>'
-            + '</p>'
-            + '</div>';
-
         $container.html(html);
         $modal.modal();
     });

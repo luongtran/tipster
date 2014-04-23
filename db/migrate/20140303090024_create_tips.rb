@@ -3,7 +3,7 @@ class CreateTips < ActiveRecord::Migration
     create_table :tips do |t|
       # Polymophic association
       t.integer :author_id, null: false
-      t.string :author_type, null: false
+      t.string :author_type, null: false # Admin | Tipster
 
       t.integer :match_id
       t.string :match_type # ManualMatch or BookmarkerMatch

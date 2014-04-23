@@ -51,7 +51,7 @@ class BookmarkerMatch < ActiveRecord::Base
   end
 
   def to_param
-    "#{self.match_id}-#{self.name}".parameterize
+    "#{self.id}-#{self.name}".parameterize
   end
 
   def find_bets

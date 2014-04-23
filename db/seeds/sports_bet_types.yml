@@ -8,7 +8,7 @@
       name: 'Match Result'
       line: 'no'
       selection_format: "%{selection}"
-      betclic_code: 'Ftb_Mr3'
+      betclic: 'Ftb_Mr3'
       netbet: '1-N-2'
     -
       code: 'soccer_match_result_ht'
@@ -50,6 +50,12 @@
       selection_format: "%{selection}"
       betclic: 'Ftb_Lts'
     -
+      code: 'soccer_double_chance'
+      name: 'Double Chance'
+      line: 'no'
+      selection_format: "%{selection}"
+      betclic: 'Ftb_Dbc'
+    -
       code: 'soccer_handicap'
       name: 'Handicap'
       line: 'yes'
@@ -79,12 +85,6 @@
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ftb_Tgl'
-    -
-      code: 'soccer_double_chance'
-      name: 'Double Chance'
-      line: 'no'
-      selection_format: "%{selection}"
-      betclic: 'Ftb_Dbc'
     -
       code: 'soccer_first_goalscorer'
       name: 'First Goalscorer'

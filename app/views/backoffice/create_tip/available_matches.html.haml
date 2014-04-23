@@ -37,13 +37,45 @@
 
 -# The hidden dialog to confirm select odd
 #confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
-  .modal-dialog.modal-md
+  .modal-dialog.modal-lg
     .modal-content
       .modal-header.text-warning
-        %h4.modal-title Please confirm your selection
+        %h4.modal-title Please complete information for your tip:
       .modal-body
-        .selection-infor
-        .row.text-center
-          = form_for :nothing, url: backoffice_confirm_create_tip_path, :method => 'post' do |f|
-            %button.btn.btn-success#submiter{type: :submit} Confirm
-            %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
+        .selection-infor.text-center
+        .row
+          = simple_form_for :tip, url: backoffice_confirm_create_tip_path, method: 'post',
+            html: {class: 'form-horizontal', novalidate: false, id: 'form-confirm-tip'} do |f|
+            = f.input_field :match_id, as: :hidden
+            = f.input_field :odds, as: :hidden
+            = f.input_field :selection, as: :hidden
+            = f.input_field :bet_type_code, as: :hidden
+            .form-group
+              %label.col-md-3.control-label
+                Type of bet:
+              .col-md-7
+                .form-control#tip-bet-type-name
+            .form-group
+              %label.col-md-3.control-label
+                Selection:
+              .col-md-7
+                .form-control#tip-selection
+            .form-group
+              %label.col-md-3.control-label
+                Odds:
+              .col-md-7
+                .form-control#tip-odds
+            .form-group
+              %label.col-md-3.control-label
+                Amount (*):
+              .col-md-7
+                = f.input_field :amount, autofocus: true, required: true , type: :number
+            .form-group
+              %label.col-md-3.control-label
+                Advice (*):
+              .col-md-7
+                = f.input_field :advice, as: :text, required: true, rows: 4
+            %hr
+            .text-center
+              %button.btn.btn-success#submiter{type: :submit} Submit
+              %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel

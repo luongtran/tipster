@@ -20,6 +20,7 @@ class BetType < ActiveRecord::Base
   validates_uniqueness_of :code, allow_blank: true
   validates_uniqueness_of :name, scope: :sport_code, allow_blank: true
 
+  after_create :auto_position
   class << self
     def translate_bet_type_name_to_standard(ogrinial_bet_type_name, bookmarker_code, sport_code)
       bet_type_found = recognized_bet_types(bookmarker_code, sport_code).detect do |bet_type|
@@ -65,4 +66,11 @@ class BetType < ActiveRecord::Base
     end
   end
 
+  private
+  def auto_position
+    if self.position.nil?
+      self.position = self.id
+      self.save
+    end
+  end
 end

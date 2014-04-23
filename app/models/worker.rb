@@ -41,7 +41,6 @@ class Worker
     def update_seasons
       # http://api.core.optasports.com/soccer/get_seasons?authorized=yes&active=yes&username=innovweb&authkey=8ce4b16b22b58894aa86c421e8759df3
       # Option: id=13&type=competition
-
       founded_seasons = []
       competitions = Competition.all
 

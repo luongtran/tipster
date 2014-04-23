@@ -18,5 +18,5 @@
             - selection.gsub!('%2%',match.team_b_name)
             = selection
           %button.btn.btn-xs.btn-default.btn-choice-odd{data: {'bet-type-code' => bet[:code], 'odds' => choice[:odd],
-              'choice-name' => selection, 'match-id' => match.id, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
+              'selection' => selection, 'match-id' => match.id, 'match-name' => match.name, 'bet-type-name' => bet[:name]}}
             = choice[:odd]

@@ -83,11 +83,6 @@ class Backoffice::TipsController < Backoffice::BaseController
     }
   end
 
-  # GET
-  # Find bets on the given match from Betclic XML feed
-  def find_bets_on_match
-  end
-
   def create
     @tip = current_tipster.tips.new(tip_params)
     if @tip.save
@@ -107,7 +102,7 @@ class Backoffice::TipsController < Backoffice::BaseController
   end
 
   def show
-    @tip = current_tipster.tips.includes(:bet_type, :sport, match: :competition).find(params[:id])
+    @tip = current_tipster.tips.includes(:bet_type, :sport).find(params[:id])
   end
 
   private

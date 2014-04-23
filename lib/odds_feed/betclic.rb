@@ -61,7 +61,7 @@ module OddsFeed
                 name: match_name,
                 team_a_name: team_a_name,
                 team_b_name: team_b_name,
-                start_at: match_node['start_date'].to_datetime,
+                start_at: self.with_time_zone(match_node['start_date']),
                 sport_id: sport_node['id'],
                 sport_name: sport_node['name'],
                 competition_id: competition_node['id'],
@@ -205,6 +205,11 @@ module OddsFeed
       # Called when the lastest file is not experied
       def read_from_local
         @local_xml_document ||= Nokogiri::XML File.open(File.join(Rails.root, 'db', 'odds_xmls', "odds_en.xml"))
+      end
+
+      def with_time_zone(datetime_str)
+        # The datetime is London UTC + 0
+        "#{datetime_str} +0000".to_datetime
       end
     end
   end

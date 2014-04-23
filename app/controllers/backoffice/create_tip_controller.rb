@@ -36,18 +36,17 @@ class Backoffice::CreateTipController < Backoffice::BaseController
     render json: {success: success, html: html}
   end
 
-  # POST
-  # Confirm select odds in automatic mode
+  # POST /backoffice/create-tip/confirm
+  # Confirm select odds from automatic mode
   def confirm
-    @match = BookmarkerMatch.includes(:sport, :bookmarker).find_by!(id: params[:tip][:match_id])
-    @bet_type = @match.sport.bet_types.find_by!(code: params[:tip][:bet_type_code])
     tip_params = automatic_tip_params
-    @tip = Tip.new(tip_params.merge(
-                       bet_type_code: @bet_type.code,
-                       sport_code: @match.sport.code
-                   ))
-    @tip.bookmarker_match_name = @match.name
-    @tip.bookmarker_name = @match.bookmarker.name
+    @match = BookmarkerMatch.includes(:sport, :bookmarker).find_by!(id: params[:tip][:match_id])
+    @tip = Tip.inititalize_from_bookmarker_match(current_tipster, @match, tip_params)
+    if @tip.save
+      redirect_to backoffice_my_tips_url, notice: I18n.t('tip.created_successfully')
+    end
+  rescue ActiveRecord::RecordNotFound => e
+    redirect_to_root_path
   end
 
   def manual
@@ -61,6 +60,11 @@ class Backoffice::CreateTipController < Backoffice::BaseController
     else
 
     end
+  end
+
+  def match_details
+    @match = BookmarkerMatch.includes(:sport, :bookmarker).find(params[:id])
+    @bets = @match.find_bets
   end
 
   private

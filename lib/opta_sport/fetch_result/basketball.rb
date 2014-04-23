@@ -29,7 +29,7 @@ module OptaSport
                 name: "#{node['team_A_name']} - #{node['team_B_name']}",
                 team_a: node['team_A_name'],
                 team_b: node['team_B_name'],
-                start_at: "#{node['date_utc']} #{node['time_utc']}".to_datetime,
+                start_at: "#{node['date_london']} #{node['time_london']} +0000".to_datetime,
                 status: node['status']
             }
           end

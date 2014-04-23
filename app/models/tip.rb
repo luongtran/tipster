@@ -24,13 +24,12 @@ class Tip < ActiveRecord::Base
   # ASSOCIATIONS
   # ===========================================================================
   belongs_to :author, polymorphic: true
+  belongs_to :match, polymorphic: true
 
   # I don't trust the id of record :)
   belongs_to :sport, foreign_key: :sport_code, primary_key: :code
   belongs_to :bet_type, foreign_key: :bet_type_code, primary_key: :code
   belongs_to :bookmarker, foreign_key: :bookmarker_code, primary_key: :code
-
-  belongs_to :match, foreign_key: :match_uid, primary_key: :uid
 
   # ===========================================================================
   # VALIDATIONS
@@ -38,6 +37,7 @@ class Tip < ActiveRecord::Base
   validates :author, :odds, :selection, :advice, :sport, :bookmarker, :bet_type, :amount, presence: true
 
   validates_presence_of :bet_type_code, :bookmarker_code, message: 'Choose at least one'
+  validates_presence_of :bet_type, :bookmarker
 
   validates_length_of :advice, minimum: 50, allow_blank: true
   validates_numericality_of :amount, greater_than_or_equal_to: 10, less_than_or_equal_to: 100, only_integer: true
@@ -117,9 +117,13 @@ class Tip < ActiveRecord::Base
       self.finished.order('created_at desc').limit(count)
     end
 
-
-    def create_from_bookmarker_match(author, params)
-
+    def inititalize_from_bookmarker_match(author, match, params)
+      tip = new(params)
+      tip.author = author
+      tip.match = match
+      tip.bookmarker_code = match.bookmarker_code
+      tip.sport_code = match.sport_code
+      tip
     end
   end
 

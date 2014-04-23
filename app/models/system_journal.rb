@@ -1,36 +1,22 @@
-=begin
-  t.string :code
-  t.string :name
-  t.date_time :start_at
-  t.date_time :end_at
-  t.boolean :success, default: true
-=end
 class SystemJournal < ActiveRecord::Base
 
   EVENTS = [
       # Update the statistics about profit, yield, sports, bet types ... for all tispters
-      EVENT_UPDATE_TIPSTER_STATISTICS = {
+      EVT_UPDATE_TIPSTER_STATISTICS = {
           code: 'update_tipster_statistics',
           name: 'Update tipster statistics'
       },
 
       # Update new info for all matches (played, cancelled, score ...)
-      EVENT_UPDATE_MATCHES = {
-          code: 'update_matches',
-          name: 'Update matches'
+      EVT_UPDATE_MATCHES = {
+          code: 'update_bookmarker_matches',
+          name: 'Update bookmarker matches'
       },
 
-      # Check the match is played, cancelled ...
-      EVENT_UPDATE_TIPS = {
-          code: 'update_tips',
-          name: 'Update tips'
-      },
       # Send sms and email
-      EVENT_PUBLISHED_TIP = {
-
-      },
-      EVENT_TIPSTER_DEACTIVE = {
-
+      EVT_PUBLISHED_TIP = {
+          code: 'update_bookmarker_matches',
+          name: 'Update bookmarker matches'
       }
   ]
 

@@ -58,6 +58,7 @@
             %th Sport
             %th Created at
             %th Odds
+            %th Bookmarker
             %th Selection
             %th Status
         %tbody
@@ -69,6 +70,7 @@
               %td= tip.sport_name.titleize
               %td= tip.created_at
               %td= tip.odds
+              %td= tip.bookmarker_code.titleize
               %td= tip.selection
               %td
                 %span{class: class_for_tip_status(tip.status)}= tip.status_in_string

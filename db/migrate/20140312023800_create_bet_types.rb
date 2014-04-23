@@ -8,6 +8,8 @@ class CreateBetTypes < ActiveRecord::Migration
       t.string :definition
       t.string :example
       t.boolean :has_line, default: true
+      t.integer :position
+
       t.index :sport_code
     end
   end

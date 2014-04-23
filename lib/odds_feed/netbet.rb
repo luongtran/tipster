@@ -86,7 +86,7 @@ module OddsFeed
                 team_a_name: team_a_name,
                 team_b_name: team_b_name,
                 sport_id: sport_node['id'],
-                start_at: node['date'].to_datetime,
+                start_at: self.with_time_zone(node['date']),
                 sport_name: sport_node['name'],
                 competition_id: competition_node['id'],
                 competition_name: "#{area_node['name']} #{competition_node['name']}"
@@ -221,7 +221,6 @@ module OddsFeed
 
       # === Save to xml file for use later
       # Run on seperate thread
-      # TODO: DRYing up with Betclic module
       def save_to_local(doc)
         # Create lock file
         file_name = "#{CODE}#{Time.now.to_i}.xml"
@@ -231,10 +230,16 @@ module OddsFeed
         # Remove lock file
       end
 
+      # === Read lastest xml file for use
+      # Called when the lastest file is not experied
       def read_from_local
         @local_xml_document ||= Nokogiri::XML File.open(File.join(Rails.root, 'db', 'odds_xmls', "france_paris.xml"))
       end
+
+      def with_time_zone(datetime_str)
+        # The time zone is Paris UTC +1
+        "#{datetime_str} +0100".to_datetime
+      end
     end
   end
-
 end

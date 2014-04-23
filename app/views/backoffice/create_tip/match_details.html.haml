@@ -1,0 +1,60 @@
+= image_tag 'circle_loading.gif', class: 'hide'
+.col-lg-12
+  .mam
+    .text-muted
+      %span{class: class_for_sport_icon(@match.sport_code)}
+      = @match.sport.name.titleize
+      \/
+      = @match.competition_name
+    %h2.text-info= @match.name
+    %p
+      Start at:
+      %span.text-bold= @match.start_at.strftime("%A %d %b %Y - %H:%M")
+  %hr
+  .mal
+    %h3.text-info Available bets
+    .bets-on-match.remote-data{'data-url' => backoffice_get_match_bets_path(@match)}
+-# The hidden dialog to confirm select odd
+#confirm-select-odd-modal.modal.fade{"aria-hidden" => "true", role: "dialog", tabindex: "-1"}
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header.text-warning
+        %h4.modal-title Please complete information for your tip:
+      .modal-body
+        .selection-infor.text-center
+        .row
+          = simple_form_for :tip, url: backoffice_confirm_create_tip_path, method: 'post',
+            html: {class: 'form-horizontal', novalidate: false, id: 'form-confirm-tip'} do |f|
+            = f.input_field :match_id, as: :hidden
+            = f.input_field :odds, as: :hidden
+            = f.input_field :selection, as: :hidden
+            = f.input_field :bet_type_code, as: :hidden
+            .form-group
+              %label.col-md-3.control-label
+                Type of bet:
+              .col-md-7
+                .form-control#tip-bet-type-name
+            .form-group
+              %label.col-md-3.control-label
+                Selection:
+              .col-md-7
+                .form-control#tip-selection
+            .form-group
+              %label.col-md-3.control-label
+                Odds:
+              .col-md-7
+                .form-control#tip-odds
+            .form-group
+              %label.col-md-3.control-label
+                Amount (*):
+              .col-md-7
+                = f.input_field :amount, autofocus: true, required: true, type: :number
+            .form-group
+              %label.col-md-3.control-label
+                Advice (*):
+              .col-md-7
+                = f.input_field :advice, as: :text, required: true, rows: 4
+            %hr
+            .text-center
+              %button.btn.btn-success#submiter{type: :submit} Submit
+              %button.btn.btn-default{type: :button, "data-dismiss" => "modal"} Cancel
