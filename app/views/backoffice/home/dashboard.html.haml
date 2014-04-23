@@ -15,7 +15,7 @@
               = t "tip.journals.#{event.event}"
               %span.text-i.text-black.text-bold
                 %a{href: backoffice_tip_path(event.tip)}
-                  = event.tip.match_name
+                  = event.tip.get_match_name
               %span on
               %span.text-i.text-muted= event.created_at.strftime(t('time.formats.date_with_time'))
   .panel.panel-success

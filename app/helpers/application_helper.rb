@@ -60,7 +60,7 @@ module ApplicationHelper
   def sports_for_select(sports)
     options = []
     sports.each do |sp|
-      options << [sp.name.titleize, sp.id]
+      options << [sp.name.titleize, sp.code]
     end
     options
   end
@@ -73,15 +73,23 @@ module ApplicationHelper
     options
   end
 
-  def bet_types_for_select(bet_types)
+  def bet_types_for_select(bet_types, selected_sport_code = nil)
+
     options = []
     bet_types.each do |bet_type|
+      attrs = [
+          bet_type.name.titleize, bet_type.code,
+          'data-sport-code' => bet_type.sport_code
+      ]
       if bet_type.has_line?
-        options << [bet_type.name.titleize, bet_type.code, 'data-has-line' => true]
-      else
-        options << [bet_type.name.titleize, bet_type.code]
+        attrs << {'data-has-line' => true}
       end
 
+      # Hide the bet types not belong to selected sport
+      if selected_sport_code.present? && bet_type.sport_code != selected_sport_code
+        attrs << {class: 'select2-offscreen'}
+      end
+      options << attrs
     end
     options
   end

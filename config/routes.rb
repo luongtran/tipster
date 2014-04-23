@@ -149,10 +149,10 @@ TipsterHero::Application.routes.draw do
 
     get 'create-tip/available-matches', to: 'create_tip#available_matches', as: :bookmarker_matches
     get 'create-tip/search-matches', to: 'create_tip#search_matches', as: :search_bookmarker_matches
-    get 'create-tip/manual', to: 'create_tip#search_matches', as: :manual_create_tip
+    match 'create-tip/manual', to: 'create_tip#manual', as: :manual_create_tip, via: [:get, :post]
+
     get 'create-tip/get-match-bets/:id', to: 'create_tip#get_match_bets', as: :get_match_bets
     post 'create-tip/confirm', to: 'create_tip#confirm', as: :confirm_create_tip
-    post 'create-tip/submit', to: 'create_tip#submit', as: :submit_tip
     get 'create-tip/match-details/:id', to: 'create_tip#match_details', as: :match_details
 
   end

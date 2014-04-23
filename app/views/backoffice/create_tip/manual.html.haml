@@ -1,0 +1,23 @@
+.row
+  .clearfix.mam.bgw
+    .text-center
+      %h3 Please enter information for the tip:
+    = simple_form_for @tip, url: backoffice_manual_create_tip_path, html: {class: 'form-horizontal', id: 'form-new-tip'} do |f|
+      = f.input_field :sport_code, as: :hidden
+      .form-group
+      = f.simple_fields_for @manual_match, as: :match do |match|
+        = match.input :name, label: 'Match'
+      = f.input :bookmarker_code, as: :select, collection: bookmarkers_for_select(@bookmarkers),
+            include_blank: '-- Choose one --', input_html: {class: 'select2able', 'data-no-search' => true}
+      = f.input :sport_code, collection: sports_for_select(@tipster_sports),
+            include_blank: '-- Choose one --', input_html: {class: 'select2able', id: 'select-sport-for-tip', 'data-no-search' => true}
+      = f.input :bet_type_code, collection: bet_types_for_select(@bet_types, @tip.sport_code),
+            include_blank: '-- Choose one --', input_html: {class: 'select2able', id: 'select-bet-type-for-tip'}
+      = f.input :selection
+      = f.input :odds
+      = f.input :amount
+      = f.input :advice
+      .form-group
+        .col-sm-offset-4.col-sm-7
+          %button.btn.btn-primary{type: :submit} Submit
+          %a.btn.btn-default{href: backoffice_my_tips_path } Cancel

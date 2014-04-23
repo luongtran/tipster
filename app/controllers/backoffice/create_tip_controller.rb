@@ -37,7 +37,7 @@ class Backoffice::CreateTipController < Backoffice::BaseController
   end
 
   # POST /backoffice/create-tip/confirm
-  # Confirm select odds from automatic mode
+  # Submit tip form from automatically mode
   def confirm
     tip_params = automatic_tip_params
     @match = BookmarkerMatch.includes(:sport, :bookmarker).find_by!(id: params[:tip][:match_id])
@@ -49,16 +49,23 @@ class Backoffice::CreateTipController < Backoffice::BaseController
     redirect_to_root_path
   end
 
+
+  # GET|POST /backoffice/create-tip/manual
+  # Submit tip form from manually mode
   def manual
-  end
-
-  def submit
-    match = BookmarkerMatch.find_by(id: params[:match_id])
-    @tip = Tip.create_from_bookmarker_match(current_tipster, match, tip_params)
-    if @tip.save
-      redirect_to backoffice_my_tips_url, notice: I18n.t('tip.created_successfully')
+    if request.get?
+      prepare_data_for_new_tip
+      @tip = current_tipster.tips.new
+      @manual_match = ManualMatch.new
     else
-
+      tip_params = manual_tip_params
+      @manual_match = ManualMatch.new(tip_params.delete(:manual_match))
+      @tip = Tip.create_with_manual_match(current_tipster, @manual_match, tip_params)
+      if @tip.persisted?
+        redirect_to backoffice_my_tips_url, notice: I18n.t('tip.created_successfully')
+      else
+        prepare_data_for_new_tip
+      end
     end
   end
 
@@ -69,13 +76,16 @@ class Backoffice::CreateTipController < Backoffice::BaseController
 
   private
   def prepare_data_for_new_tip
-    @competitions = Competition.includes(:sport).load
     @tipster_sports = current_tipster.sports
-    @bet_types = BetType.all
+    @bet_types = BetType.where(sport_code: @tipster_sports.pluck(:code))
     @bookmarkers = Bookmarker.all
   end
 
   def automatic_tip_params
     params.require(:tip).permit(Tip::AUTOMATIC_TIP_ATTRS)
+  end
+
+  def manual_tip_params
+    params.require(:tip).permit(Tip::MANUAL_TIP_PARAMS)
   end
 end

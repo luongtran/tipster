@@ -30,6 +30,7 @@ class BetType < ActiveRecord::Base
     end
 
     attr_accessor :raw_config
+
     # === Find the bet types if the given bookmarker is supported
     # Return example:
     # [

@@ -19,7 +19,8 @@ sports_bet_types.each_with_index do |sport, index|
         sport_code: new_sport.code,
         code: bet_type_attrs[:code],
         name: bet_type_attrs[:name],
-        has_line: (bet_type_attrs[:line] == 'yes')
+        has_line: (bet_type_attrs[:line] == 'yes'),
+        example: bet_type_attrs[:example],
     )
     puts "= Bet type: #{new_bet_type.name}"
   end

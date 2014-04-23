@@ -203,4 +203,24 @@ $(document).ready(function () {
         doSearchBookmarkerMatches(this);
         return false;
     });
+
+    /* Constraint select sport vs select bet type */
+    $('#select-sport-for-tip').on('change', function () {
+        var sport_code_selected = $(this).val();
+        var $bet_type_select_box = $('#select-bet-type-for-tip');
+
+        $bet_type_select_box.find(':not([data-sport-code="' + sport_code_selected + '"])').addClass('select2-offscreen');
+        $bet_type_select_box.find('[data-sport-code="' + sport_code_selected + '"]').removeClass('select2-offscreen');
+
+        // Force the value of bet_type_code is the first of bet types
+        var $first_bet_type_val = $bet_type_select_box.find('[data-sport-code="' + sport_code_selected + '"]:first').val();
+        $bet_type_select_box.select2('val', $first_bet_type_val);
+    });
+
+    /* Constraint select sport vs select bet type */
+    $('#select-bet-type-for-tip').on('change', function () {
+        var sport_code = $($(this).select2('data').element).data('sport-code');
+        $('#select-sport-for-tip').select2('val', sport_code);
+    });
+
 });

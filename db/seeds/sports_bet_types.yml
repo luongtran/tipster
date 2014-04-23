@@ -7,54 +7,56 @@
       code: 'soccer_match_result'
       name: 'Match Result'
       line: 'no'
-      selection_format: "%{selection}"
       betclic: 'Ftb_Mr3'
       netbet: '1-N-2'
+      example: 'Draw; Liverpool'
     -
       code: 'soccer_match_result_ht'
       name: 'Match Result HT'
       line: 'no'
-      selection_format: "%{selection} Half Time"
       betclic: 'Ftb_Htr'
       netbet: '1-N-2 Mi-temps'
+      example: 'Draw; Liverpool'
     -
       code: 'soccer_half_time_full_time'
       name: 'Half-Time/Full-Time'
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ftb_Htf'
+      example: 'Draw/Liverpool; Liverpool/Liverpool; Liverpool/Arsenal'
     -
       code: 'soccer_over_under'
       name: 'Over/Under'
       line: 'yes'
-      selection_format: "%{selection} %{line}"
       betclic: 'Ftb_10'
       netbet: 'Over Under'
+      example: 'Over 1.5; Under 3.0'
     -
       code: 'soccer_over_under_ht'
       name: 'Over/Under HT'
       line: 'yes'
-      selection_format: "%{selection} %{line} Half Time"
       betclic: 'Ftb_60'
+      example: 'Over 2.5; Under 2.0'
     -
       code: 'soccer_first_team_to_score'
       name: 'First Team to Score'
       line: 'no'
-      selection_format: "%{selection}"
       betclic: 'Ftb_Fts'
       netbet: '1ère équipe à marquer'
+      example: 'No Goal; Liverpool; Arsenal'
     -
       code: 'soccer_last_team_to_score'
       name: 'Last Team to Score'
       line: 'no'
-      selection_format: "%{selection}"
       betclic: 'Ftb_Lts'
+      example: 'No Goal; Liverpool; Arsenal'
     -
       code: 'soccer_double_chance'
       name: 'Double Chance'
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ftb_Dbc'
+      example: 'Liverpool or Draw; Liverpool or Arsenal'
     -
       code: 'soccer_handicap'
       name: 'Handicap'
@@ -73,24 +75,28 @@
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ftb_Csc'
+      example: '1 - 1; 2 - 0'
     -
       code: 'soccer_correct_score_ht'
       name: 'Correct Score HT'
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ftb_Hcs'
+      example: '2 - 1; 3 - 0'
     -
       code: 'soccer_total_goals'
       name: 'Total Goals'
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ftb_Tgl'
+      example: '0 - 1; 2 - 3; 4+'
     -
       code: 'soccer_first_goalscorer'
       name: 'First Goalscorer'
       line: 'no'
       selection_format: "%{selection}"
       betclic: 'Ftb_Fgs'
+      example: 'Steven Gerrard'
 -
   name: 'Tennis'
   code: 'tennis'

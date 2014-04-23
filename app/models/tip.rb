@@ -17,9 +17,11 @@ class Tip < ActiveRecord::Base
   }
 
   AUTOMATIC_TIP_ATTRS = [:match_id, :bet_type_code, :odds, :selection, :advice, :amount]
-  MANUAL_TIP_PARAMS = [:match_name, :bookmarker_code, :bet_type_code, :sport_code, :odds, :selection, :advice, :amount]
+  MANUAL_TIP_PARAMS = [:bookmarker_code, :bet_type_code, :sport_code, :odds, :selection, :advice, :amount, manual_match: [:name]]
 
   attr_accessor :bookmarker_match_name, :bet_type_name, :bookmarker_name
+  attr_accessor :manual_match_name
+
   # ===========================================================================
   # ASSOCIATIONS
   # ===========================================================================
@@ -36,7 +38,7 @@ class Tip < ActiveRecord::Base
   # ===========================================================================
   validates :author, :odds, :selection, :advice, :sport, :bookmarker, :bet_type, :amount, presence: true
 
-  validates_presence_of :bet_type_code, :bookmarker_code, message: 'Choose at least one'
+  validates_presence_of :bet_type_code, :bookmarker_code, :sport_code, message: 'Choose at least one'
   validates_presence_of :bet_type, :bookmarker
 
   validates_length_of :advice, minimum: 50, allow_blank: true
@@ -60,7 +62,6 @@ class Tip < ActiveRecord::Base
   scope :moneyable, -> { where(free: false, status: STATUS_FINISHED) }
 
   delegate :name, to: :sport, prefix: true
-  delegate :name, to: :match, prefix: true
   delegate :name, to: :bet_type, prefix: true
   delegate :full_name, to: :author, prefix: true
   # ===========================================================================
@@ -125,6 +126,20 @@ class Tip < ActiveRecord::Base
       tip.sport_code = match.sport_code
       tip
     end
+
+    def create_with_manual_match(author, manual_match, params)
+      tip = Tip.new(params)
+      tip.author = author
+      manual_match.sport_code = params[:sport_code]
+      valid = manual_match.valid?
+      valid = tip.valid? && valid
+      if valid
+        manual_match.save
+        tip.match = manual_match
+        tip.save
+      end
+      tip
+    end
   end
 
   # ===========================================================================
@@ -176,6 +191,9 @@ class Tip < ActiveRecord::Base
     TipJournal.write_event_finished(self, admin)
   end
 
+  def get_match_name
+    self.match.name
+  end
 
   def published_date
     self.published_at.to_date
