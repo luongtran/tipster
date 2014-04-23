@@ -23,7 +23,7 @@
       %tr
         %td
           %a{href: admin_tip_path(tip)}
-            = tip.match_name
+            = tip.get_match_name
         %td.text-info
           - if tip.author.is_a? Tipster
             - author_url = admin_tipster_path(tip.author)
